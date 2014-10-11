@@ -18,10 +18,10 @@ import java.sql.SQLException;
  */
 public class DbConnection {
    /**Parametros de conexion*/
-   static String bd = "casino_utal";
+   static String bd = "clinica";
    static String login = "root";
    static String password = "";
-   static String url = "jdbc:mysql://localhost/"+bd;
+   static String url = "jdbc:mysql://10.3.1.54:8080/"+bd;
  
    Connection connection = null;
  
