@@ -64,7 +64,7 @@ public class Login extends javax.swing.JDialog implements WindowListener{
         jButton5.setBorderPainted(false);
         jButton5.setContentAreaFilled(false);
 
-        jButton4.setIcon(new javax.swing.ImageIcon("C:\\Users\\Mary\\Documents\\GitHub\\Orthodent\\Orthodent\\imagenes\\diente_mini.png")); // NOI18N
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/diente_mini.png"))); // NOI18N
         jButton4.setBorder(null);
         jButton4.setBorderPainted(false);
         jButton4.setContentAreaFilled(false);
@@ -84,7 +84,7 @@ public class Login extends javax.swing.JDialog implements WindowListener{
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Contraseña");
 
-        jButton3.setIcon(new javax.swing.ImageIcon("C:\\Users\\Mary\\Documents\\GitHub\\Orthodent\\Orthodent\\imagenes\\diente2_mini.png")); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/diente2_mini.png"))); // NOI18N
         jButton3.setBorder(null);
         jButton3.setBorderPainted(false);
         jButton3.setContentAreaFilled(false);
