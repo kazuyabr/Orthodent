@@ -4,6 +4,7 @@
  */
 package orthodent;
 
+import autenticacion.Autenticacion;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -188,9 +189,8 @@ public class Login extends javax.swing.JDialog implements WindowListener{
         
         String nombreUsuario = this.campoNombreUsuario.getText();
         String contraseña = this.campoContraseña.getText();
-        
-        //Usuario usuario = Autenticacion.logIn(nombreUsuario, contraseña);
-        Usuario usuario = null;
+                
+        Usuario usuario = Autenticacion.logIn(nombreUsuario, contraseña);
         
         if(usuario!=null){
             this.dispose();

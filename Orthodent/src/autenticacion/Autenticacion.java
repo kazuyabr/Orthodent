@@ -16,7 +16,7 @@ import orthodent.db.DbConnection;
  */
 public class Autenticacion {
     
-    public Usuario logIn(String nombreUsuario, String contrasena){
+    static public Usuario logIn(String nombreUsuario, String contrasena){
         Usuario usuario = null;
         try {
                 DbConnection db = new DbConnection();
@@ -24,7 +24,7 @@ public class Autenticacion {
 
                 java.sql.Statement st = con.createStatement();
 
-                ResultSet rs = st.executeQuery("SELECT * from usuario where nombre_usuario=" + nombreUsuario + " AND contrasena="+contrasena);
+                ResultSet rs = st.executeQuery("SELECT * from usuario where nombre_usuario='" + nombreUsuario + "' AND contrasena='" + contrasena + "'");
                 if (rs.next())
                 {
                     int id_usuario = rs.getInt("id_usuario");
