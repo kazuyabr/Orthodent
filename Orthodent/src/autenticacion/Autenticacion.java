@@ -69,8 +69,8 @@ public class Autenticacion {
                     int id_usuario = rs.getInt("id_usuario");
                     String nuevaContrasena = "12345";
                     st.executeUpdate("UPDATE usuario\n" +
-                                        "SET email='"+nuevaContrasena+"'\n" +
-                                        "WHERE email='"+email+"'");
+                                        "SET contrasena='"+nuevaContrasena+"'\n" +
+                                        "WHERE id_usuario="+id_usuario);
                     resultado = true;
                 }
                 rs.close();             
