@@ -208,12 +208,12 @@ public class Login extends javax.swing.JDialog implements WindowListener{
 
     private void botonOlvidoContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonOlvidoContraseñaActionPerformed
         //Aqui hacer la llamada para cambiar la contraseña
-        String s = (String) JOptionPane.showInputDialog(this,"\nIngrese su correo: \n",
+        String correo = (String) JOptionPane.showInputDialog(this,"\nIngrese su correo: \n",
                 "Orthodent",
                 JOptionPane.PLAIN_MESSAGE,null,null,"");
         
-        if((s != null)&&(s.length()>0)){
-            System.out.println("Mandar correo");
+        if(correo!=null && correo.length()>0){
+            Autenticacion.recuperarContrasena(correo);
         }
     }//GEN-LAST:event_botonOlvidoContraseñaActionPerformed
 
