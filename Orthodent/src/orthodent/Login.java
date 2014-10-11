@@ -199,7 +199,7 @@ public class Login extends javax.swing.JDialog implements WindowListener{
         }
         else{
             JOptionPane.showMessageDialog(this,
-                    "El nombre de usuario o contraseña no corresponden",
+                    "El nombre de usuario o contraseña no coinciden",
                     "Orthodent",
                     JOptionPane.ERROR_MESSAGE);
         }
