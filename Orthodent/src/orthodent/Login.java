@@ -190,13 +190,12 @@ public class Login extends javax.swing.JDialog implements WindowListener{
         String nombreUsuario = this.campoNombreUsuario.getText();
         String contraseña = this.campoContraseña.getText();
                 
-        //Usuario usuario = Autenticacion.logIn(nombreUsuario, contraseña);
-        Usuario usuario = new Usuario(1,1,"ADMIN","ADMIN","ADMIN","ADMIN","root","","",true);
+        Usuario usuario = Autenticacion.logIn(nombreUsuario, contraseña);
         
         if(usuario!=null){
             this.dispose();
-            ((JVentana)this.getParent()).setUsuario(usuario);
-            ((JVentana)this.getParent()).setVisible(true);
+            JVentana ventana = new JVentana(usuario);
+            ventana.setVisible(true);
         }
         else{
             JOptionPane.showMessageDialog(this,

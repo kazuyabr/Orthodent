@@ -24,8 +24,7 @@ public class Orthodent {
         }
         catch(Exception e){
         }
-       
-        JVentana ventana = new JVentana();
-        new Login(ventana,true).setVisible(true);
+        
+        new Login(null,true).setVisible(true);
     }
 }

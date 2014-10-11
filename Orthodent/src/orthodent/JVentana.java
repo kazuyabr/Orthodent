@@ -15,12 +15,14 @@ public class JVentana extends JFrame{
     
     private Image icono;
     private Usuario usuario;//Usuario Actual Logeado!!
+    private PanelOpciones panelOpciones;
 
-    public JVentana(){
+    public JVentana(Usuario usuario){
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setLayout(new BorderLayout());
         super.setTitle("Orthodent");
         
+        this.usuario = usuario;
         this.crearElementosVentana();
         
         this.defineVentana();
@@ -36,9 +38,12 @@ public class JVentana extends JFrame{
         return this.usuario;
     }
 
-    private void crearElementosVentana(){
-        this.icono = new ImageIcon("imagenes/icono.png").getImage();
+    public void crearElementosVentana(){
+        this.icono = new ImageIcon("src/imagenes/icono.png").getImage();
         this.setIconImage(icono);
+        
+        this.panelOpciones = new PanelOpciones(this);
+        this.add(this.panelOpciones,BorderLayout.NORTH);
     }
     
     private void defineVentana(){
