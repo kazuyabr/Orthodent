@@ -9,10 +9,12 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.*;
+import modelo.Usuario;
 
 public class JVentana extends JFrame{
     
     private Image icono;
+    private Usuario usuario;//Usuario Actual Logeado!!
 
     public JVentana(){
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,6 +26,14 @@ public class JVentana extends JFrame{
         this.defineVentana();
         this.setFocusable(true);
         //this.setResizable(false);
+    }
+    
+    public void setUsuario(Usuario usuario){
+        this.usuario = usuario;
+    }
+    
+    public Usuario getUsuario(){
+        return this.usuario;
     }
 
     private void crearElementosVentana(){

@@ -9,6 +9,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import javax.swing.JOptionPane;
+import modelo.Usuario;
 import orthodent.JVentana;
 
 /**
@@ -183,8 +185,24 @@ public class Login extends javax.swing.JDialog implements WindowListener{
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
-        this.dispose();
-        ((JVentana)this.getParent()).setVisible(true);
+        
+        String nombreUsuario = this.campoNombreUsuario.getText();
+        String contraseña = this.campoContraseña.getText();
+        
+        //Usuario usuario = Autenticacion.logIn(nombreUsuario, contraseña);
+        Usuario usuario = null;
+        
+        if(usuario!=null){
+            this.dispose();
+            ((JVentana)this.getParent()).setUsuario(usuario);
+            ((JVentana)this.getParent()).setVisible(true);
+        }
+        else{
+            JOptionPane.showMessageDialog(this,
+                    "El nombre de usuario o contraseña no corresponden",
+                    "Orthodent",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_botonAceptarActionPerformed
 
     private void botonOlvidoContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonOlvidoContraseñaActionPerformed
