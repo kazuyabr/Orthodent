@@ -55,4 +55,32 @@ public class Autenticacion {
             }       
     }
     
+    static public boolean recuperarContrasena(String email){
+        boolean resultado = false;
+        try {
+                DbConnection db = new DbConnection();
+                Connection con = db.getConnection();
+
+                java.sql.Statement st = con.createStatement();
+
+                ResultSet rs = st.executeQuery("SELECT id_usuario from usuario where email='" + email);
+                if (rs.next())
+                {
+                    int id_usuario = rs.getInt("id_usuario");
+                    String nuevaContrasena = "12345";
+                    st.executeUpdate("UPDATE usuario\n" +
+                                        "SET email='"+nuevaContrasena+"'\n" +
+                                        "WHERE email='"+email+"'");
+                    resultado = true;
+                }
+                rs.close();             
+                con.close();
+                return resultado;
+            }
+
+            catch ( SQLException e) { 
+                return false;  
+            }   
+    }
+    
 }
