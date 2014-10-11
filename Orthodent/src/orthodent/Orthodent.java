@@ -5,6 +5,7 @@
 package orthodent;
 
 import de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel;
+
 import javax.swing.UIManager;
 
 /**
@@ -17,11 +18,12 @@ public class Orthodent {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        /*try{
+        
+        try{
             UIManager.setLookAndFeel(new SyntheticaBlueLightLookAndFeel()); // cambia la apariencia de la ventana
         }
         catch(Exception e){
-        }*/
+        }
        
         JVentana ventana = new JVentana();
         new Login(ventana,true).setVisible(true);
