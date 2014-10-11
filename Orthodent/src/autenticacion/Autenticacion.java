@@ -63,14 +63,14 @@ public class Autenticacion {
 
                 java.sql.Statement st = con.createStatement();
 
-                ResultSet rs = st.executeQuery("SELECT id_usuario from usuario where email='" + email);
+                ResultSet rs = st.executeQuery("SELECT id_usuario from usuario where email='" + email +"'");
                 if (rs.next())
                 {
                     int id_usuario = rs.getInt("id_usuario");
-                    String nuevaContrasena = "12345";
-                    st.executeUpdate("UPDATE usuario\n" +
-                                        "SET contrasena='"+nuevaContrasena+"'\n" +
-                                        "WHERE id_usuario="+id_usuario);
+                        String nuevaContrasena = "12345";
+                        st.executeUpdate("UPDATE usuario\n" +
+                                            "SET contrasena='"+nuevaContrasena+"'\n" +
+                                            "WHERE id_usuario="+id_usuario);
                     resultado = true;
                 }
                 rs.close();             
