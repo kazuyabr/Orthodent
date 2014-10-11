@@ -213,7 +213,16 @@ public class Login extends javax.swing.JDialog implements WindowListener{
                 JOptionPane.PLAIN_MESSAGE,null,null,"");
         
         if(correo!=null && correo.length()>0){
-            Autenticacion.recuperarContrasena(correo);
+            boolean respuesta = Autenticacion.recuperarContrasena(correo);
+            
+            if(respuesta){
+                JOptionPane.showMessageDialog(this,
+                        "La nueva contraseña se ha enviado a su correo.");
+            }
+            else{
+                JOptionPane.showMessageDialog(this,
+                        "El correo no coincide con ningún registro.");
+            }
         }
     }//GEN-LAST:event_botonOlvidoContraseñaActionPerformed
 
