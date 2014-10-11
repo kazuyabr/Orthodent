@@ -190,7 +190,8 @@ public class Login extends javax.swing.JDialog implements WindowListener{
         String nombreUsuario = this.campoNombreUsuario.getText();
         String contraseña = this.campoContraseña.getText();
                 
-        Usuario usuario = Autenticacion.logIn(nombreUsuario, contraseña);
+        //Usuario usuario = Autenticacion.logIn(nombreUsuario, contraseña);
+        Usuario usuario = new Usuario(1,1,"ADMIN","ADMIN","ADMIN","ADMIN","root","","",true);
         
         if(usuario!=null){
             this.dispose();
@@ -207,6 +208,13 @@ public class Login extends javax.swing.JDialog implements WindowListener{
 
     private void botonOlvidoContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonOlvidoContraseñaActionPerformed
         //Aqui hacer la llamada para cambiar la contraseña
+        String s = (String) JOptionPane.showInputDialog(this,"\nIngrese su correo: \n",
+                "Orthodent",
+                JOptionPane.PLAIN_MESSAGE,null,null,"");
+        
+        if((s != null)&&(s.length()>0)){
+            System.out.println("Mandar correo");
+        }
     }//GEN-LAST:event_botonOlvidoContraseñaActionPerformed
 
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
