@@ -54,6 +54,11 @@ public class Autenticacion {
             }       
     }
     
+    static public void enviarCorreo(String destino, String asunto, String mensaje){
+        JavaMail mail = new JavaMail();
+        mail.send(destino, asunto, mensaje);        
+    }
+    
     static public boolean recuperarContrasena(String email){
         boolean resultado = false;
         try {
@@ -62,14 +67,17 @@ public class Autenticacion {
 
                 java.sql.Statement st = con.createStatement();
 
-                ResultSet rs = st.executeQuery("SELECT id_usuario from usuario where email='" + email +"'");
+                ResultSet rs = st.executeQuery("SELECT id_usuario, email from usuario where email='" + email +"'");
                 if (rs.next())
                 {
                     int id_usuario = rs.getInt("id_usuario");
-                        String nuevaContrasena = "12345";
-                        st.executeUpdate("UPDATE usuario\n" +
+                    String destino = rs.getString("email");
+                    
+                    String nuevaContrasena = "12345678";
+                    st.executeUpdate("UPDATE usuario\n" +
                                             "SET contrasena='"+nuevaContrasena+"'\n" +
                                             "WHERE id_usuario="+id_usuario);
+                    enviarCorreo(destino, "CAMBIO CONTRASEÑA", "EL SISTEMA ORTHODENT HA CAMBIADO SU CONTRASEÑA A: " + nuevaContrasena);
                     resultado = true;
                 }
                 rs.close();             

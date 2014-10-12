@@ -21,7 +21,7 @@ public class DbConnection {
    static String bd = "clinica";
    static String login = "root";
    static String password = "";
-   static String url = "jdbc:mysql://10.3.1.54:8080/"+bd;
+   static String url = "jdbc:mysql://localhost:8080/"+bd;
  
    Connection connection = null;
  
