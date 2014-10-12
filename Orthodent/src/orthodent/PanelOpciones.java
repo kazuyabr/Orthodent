@@ -12,6 +12,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import modelo.Rol;
+import orthodent.db.RolDB;
 
 /**
  *
@@ -30,6 +32,7 @@ public class PanelOpciones extends JPanel implements ActionListener{
     private JButton titulo;
     private JButton miniUsuario;
     private JLabel nombreUsuario;
+    private Rol rol;
     
     public PanelOpciones(JVentana ventana){
         super();
@@ -37,9 +40,14 @@ public class PanelOpciones extends JPanel implements ActionListener{
         this.setPreferredSize(new Dimension(1441,115));
         this.setBackground(new Color(9,133,179));
         
-        this.initOpciones();
-        this.addListeners();
-        this.addOpcionesPanel();
+        int idRol = this.ventana.getUsuario().getId_rol();
+        this.rol = RolDB.getRol(idRol);
+        
+        if(rol!=null){
+            this.initOpciones();
+            this.addListeners();
+            this.addOpcionesPanel();
+        }
     }
     
     private void initOpciones(){
@@ -53,7 +61,13 @@ public class PanelOpciones extends JPanel implements ActionListener{
         this.diente2 = new JButton();
         this.titulo = new JButton();
         this.miniUsuario = new JButton();
-        this.nombreUsuario = new JLabel(ventana.getUsuario().getNombre()+" "+ventana.getUsuario().getApellido_pat());
+        
+        if(rol.getNombre().equals("ADMINISTRADOR")){
+            this.nombreUsuario = new JLabel(ventana.getUsuario().getNombre());
+        }
+        else{
+            this.nombreUsuario = new JLabel(ventana.getUsuario().getNombre()+" "+ventana.getUsuario().getApellido_pat());
+        }
         
         this.agenda.setForeground(new Color(255, 255, 255));
         this.agenda.setIcon(new ImageIcon("src/imagenes/pacientes.png"));
@@ -120,15 +134,11 @@ public class PanelOpciones extends JPanel implements ActionListener{
     
     private void addOpcionesPanel(){
         
-        int idRol = this.ventana.getUsuario().getId_rol();
-        
-        //Obtener el rol desde la base de datos como nombre!!!
-        
-        if(idRol==1){
+        if(rol.getNombre().equals("ADMINISTRADOR")){
             //ADMIN
             System.out.println("Admin");
         }
-        else if(idRol==2){
+        else if(rol.getNombre().equals("ASISTENTE")){
             //Asistente
             System.out.println("Asistente");
         }
