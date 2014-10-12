@@ -10,6 +10,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import modelo.Usuario;
 import orthodent.JVentana;
@@ -190,7 +192,12 @@ public class Login extends javax.swing.JDialog implements WindowListener{
         String nombreUsuario = this.campoNombreUsuario.getText();
         String contraseña = this.campoContraseña.getText();
                 
-        Usuario usuario = Autenticacion.logIn(nombreUsuario, contraseña);
+        Usuario usuario;
+        try {
+            usuario = Autenticacion.logIn(nombreUsuario, contraseña);
+        } catch (Exception ex) {
+            usuario = null;
+        }
         
         if(usuario!=null){
             this.dispose();
@@ -212,7 +219,12 @@ public class Login extends javax.swing.JDialog implements WindowListener{
                 JOptionPane.PLAIN_MESSAGE,null,null,"");
         
         if(correo!=null && correo.length()>0){
-            boolean respuesta = Autenticacion.recuperarContrasena(correo);
+            boolean respuesta;
+            try {
+                respuesta = Autenticacion.recuperarContrasena(correo);
+            } catch (Exception ex) {
+                respuesta = false;
+            }
             
             if(respuesta){
                 JOptionPane.showMessageDialog(this,

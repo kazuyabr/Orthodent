@@ -8,6 +8,7 @@ import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Random;
 import modelo.Usuario;
 
 /**
@@ -16,14 +17,15 @@ import modelo.Usuario;
  */
 public class Autenticacion {
     
-    static public Usuario logIn(String nombreUsuario, String contrasena){
+    static public Usuario logIn(String nombreUsuario, String contrasena) throws Exception{
         Usuario usuario = null;
         try {
                 DbConnection db = new DbConnection();
                 Connection con = db.getConnection();
 
                 java.sql.Statement st = con.createStatement();
-
+                contrasena = encripMd5(contrasena);
+                
                 ResultSet rs = st.executeQuery("SELECT * from usuario where nombre_usuario='" + nombreUsuario + "' AND contrasena='" + contrasena + "'");
                 if (rs.next())
                 {
@@ -55,12 +57,28 @@ public class Autenticacion {
             }       
     }
     
+    static public String generarContrasenaAleatoria(){
+        int longitud = 6;
+        String cadenaAleatoria = "";
+        long milis = new java.util.GregorianCalendar().getTimeInMillis();
+        Random r = new Random(milis);
+        int i = 0;
+        while ( i < longitud){
+            char c = (char)r.nextInt(255);
+            if ( (c >= '0' && c <='9') || (c >='A' && c <='Z') ){
+                cadenaAleatoria += c;
+                i ++;
+            }
+        }
+        return cadenaAleatoria;
+    }
+    
     static public void enviarCorreo(String destino, String asunto, String mensaje){
         JavaMail mail = new JavaMail();
         mail.send(destino, asunto, mensaje);        
     }
     
-    public String md5(String clear) throws Exception {
+    static public String encripMd5(String clear) throws Exception {
         MessageDigest md = MessageDigest.getInstance("MD5");
         byte[] b = md.digest(clear.getBytes());
         int size = b.length;
@@ -79,7 +97,7 @@ public class Autenticacion {
           return h.toString();
     }    
     
-    static public boolean recuperarContrasena(String email){
+    static public boolean recuperarContrasena(String email) throws Exception{
         boolean resultado = false;
         try {
                 DbConnection db = new DbConnection();
@@ -92,10 +110,10 @@ public class Autenticacion {
                 {
                     int id_usuario = rs.getInt("id_usuario");
                     String destino = rs.getString("email");
-                    
-                    String nuevaContrasena = "12345678";
+                    String nuevaContrasena = generarContrasenaAleatoria();
+                    String auxNuevaContrasena = encripMd5(nuevaContrasena);
                     st.executeUpdate("UPDATE usuario\n" +
-                                            "SET contrasena='"+nuevaContrasena+"'\n" +
+                                            "SET contrasena='"+auxNuevaContrasena+"'\n" +
                                             "WHERE id_usuario="+id_usuario);
                     enviarCorreo(destino, "CAMBIO CONTRASEÑA", "EL SISTEMA ORTHODENT HA CAMBIADO SU CONTRASEÑA A: " + nuevaContrasena);
                     resultado = true;
