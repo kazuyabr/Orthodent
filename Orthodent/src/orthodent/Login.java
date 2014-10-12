@@ -4,7 +4,7 @@
  */
 package orthodent;
 
-import autenticacion.Autenticacion;
+import orthodent.db.Autenticacion;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
