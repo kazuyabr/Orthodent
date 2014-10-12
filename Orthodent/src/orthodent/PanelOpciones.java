@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -24,6 +25,11 @@ public class PanelOpciones extends JPanel implements ActionListener{
     private JButton pagos;
     private JButton historial;
     private JButton usuarios;
+    private JButton diente1;
+    private JButton diente2;
+    private JButton titulo;
+    private JButton miniUsuario;
+    private JLabel nombreUsuario;
     
     public PanelOpciones(JVentana ventana){
         super();
@@ -31,8 +37,80 @@ public class PanelOpciones extends JPanel implements ActionListener{
         this.setPreferredSize(new Dimension(1441,115));
         this.setBackground(new Color(9,133,179));
         
-        initOpciones();
+        this.initOpciones();
+        this.addListeners();
+        this.addOpcionesPanel();
+    }
+    
+    private void initOpciones(){
         
+        this.agenda = new JButton();
+        this.pacientes = new JButton();
+        this.pagos = new JButton();
+        this.historial = new JButton();
+        this.usuarios = new JButton();
+        this.diente1 = new JButton();
+        this.diente2 = new JButton();
+        this.titulo = new JButton();
+        this.miniUsuario = new JButton();
+        this.nombreUsuario = new JLabel(ventana.getUsuario().getNombre()+" "+ventana.getUsuario().getApellido_pat());
+        
+        this.agenda.setForeground(new Color(255, 255, 255));
+        this.agenda.setIcon(new ImageIcon("src/imagenes/pacientes.png"));
+        this.agenda.setBorder(null);
+        this.agenda.setBorderPainted(false);
+        this.agenda.setContentAreaFilled(false);
+        
+        this.pacientes.setForeground(new Color(255, 255, 255));
+        this.pacientes.setIcon(new ImageIcon("src/imagenes/pacientes.png"));
+        this.pacientes.setBorder(null);
+        this.pacientes.setBorderPainted(false);
+        this.pacientes.setContentAreaFilled(false);
+        
+        this.pagos.setForeground(new Color(255, 255, 255));
+        this.pagos.setIcon(new ImageIcon("src/imagenes/pagos.png"));
+        this.pagos.setBorder(null);
+        this.pagos.setBorderPainted(false);
+        this.pagos.setContentAreaFilled(false);
+        
+        this.historial.setForeground(new Color(255, 255, 255));
+        this.historial.setIcon(new ImageIcon("src/imagenes/historial.png"));
+        this.historial.setBorder(null);
+        this.historial.setBorderPainted(false);
+        this.historial.setContentAreaFilled(false);
+        
+        this.usuarios.setForeground(new Color(255, 255, 255));
+        this.usuarios.setIcon(new ImageIcon("src/imagenes/usuarios.png"));
+        this.usuarios.setBorder(null);
+        this.usuarios.setBorderPainted(false);
+        this.usuarios.setContentAreaFilled(false);
+        
+        this.diente1.setForeground(new Color(255, 255, 255));
+        this.diente1.setIcon(new ImageIcon("src/imagenes/diente_mini.png"));
+        this.diente1.setBorder(null);
+        this.diente1.setBorderPainted(false);
+        this.diente1.setContentAreaFilled(false);
+        
+        this.diente2.setForeground(new Color(255, 255, 255));
+        this.diente2.setIcon(new ImageIcon("src/imagenes/diente2_mini.png"));
+        this.diente2.setBorder(null);
+        this.diente2.setBorderPainted(false);
+        this.diente2.setContentAreaFilled(false);
+        
+        this.titulo.setForeground(new Color(255, 255, 255));
+        this.titulo.setIcon(new ImageIcon("src/imagenes/orthodent.png"));
+        this.titulo.setBorder(null);
+        this.titulo.setBorderPainted(false);
+        this.titulo.setContentAreaFilled(false);
+        
+        this.miniUsuario.setForeground(new Color(255, 255, 255));
+        this.miniUsuario.setIcon(new ImageIcon("src/imagenes/user_mini2.png"));
+        this.miniUsuario.setBorder(null);
+        this.miniUsuario.setBorderPainted(false);
+        this.miniUsuario.setContentAreaFilled(false);
+    }
+    
+    private void addListeners(){
         this.agenda.addActionListener(this);
         this.pacientes.addActionListener(this);
         this.pagos.addActionListener(this);
@@ -40,44 +118,24 @@ public class PanelOpciones extends JPanel implements ActionListener{
         this.usuarios.addActionListener(this);
     }
     
-    public void initOpciones(){
+    private void addOpcionesPanel(){
         
-        this.agenda = new JButton();
-        this.pacientes = new JButton();
-        this.pagos = new JButton();
-        this.historial = new JButton();
-        this.usuarios = new JButton();
+        int idRol = this.ventana.getUsuario().getId_rol();
         
-        agenda.setForeground(new Color(255, 255, 255));
-        agenda.setIcon(new ImageIcon("src/imagenes/pacientes.png"));
-        agenda.setBorder(null);
-        agenda.setBorderPainted(false);
-        agenda.setContentAreaFilled(false);
+        //Obtener el rol desde la base de datos como nombre!!!
         
-        pacientes.setForeground(new Color(255, 255, 255));
-        pacientes.setIcon(new ImageIcon("src/imagenes/pacientes.png"));
-        pacientes.setBorder(null);
-        pacientes.setBorderPainted(false);
-        pacientes.setContentAreaFilled(false);
-        
-        pagos.setForeground(new Color(255, 255, 255));
-        pagos.setIcon(new ImageIcon("src/imagenes/pagos.png"));
-        pagos.setBorder(null);
-        pagos.setBorderPainted(false);
-        pagos.setContentAreaFilled(false);
-        
-        historial.setForeground(new Color(255, 255, 255));
-        historial.setIcon(new ImageIcon("src/imagenes/historial.png"));
-        historial.setBorder(null);
-        historial.setBorderPainted(false);
-        historial.setContentAreaFilled(false);
-        
-        usuarios.setForeground(new Color(255, 255, 255));
-        usuarios.setIcon(new ImageIcon("src/imagenes/usuarios.png"));
-        usuarios.setBorder(null);
-        usuarios.setBorderPainted(false);
-        usuarios.setContentAreaFilled(false);
-        
+        if(idRol==1){
+            //ADMIN
+            System.out.println("Admin");
+        }
+        else if(idRol==2){
+            //Asistente
+            System.out.println("Asistente");
+        }
+        else{
+            //Profesional
+            System.out.println("Profesional");
+        }
     }
 
     @Override
