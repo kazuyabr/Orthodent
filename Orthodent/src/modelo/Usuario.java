@@ -38,8 +38,9 @@ public class Usuario {
         this.tiempoCita = tiempoCita;
         this.activo = activo;
     }    
-      //constructor usuarios ASISTENTE Y ADMINISTRADOR
-       public Usuario(int id_usuario, int id_rol, String nombre, String apellido_pat, String apellido_mat, String nombreUsuario, String contraseña, String email, String telefono, boolean activo) {
+    
+    //constructor usuarios ASISTENTE Y ADMINISTRADOR
+    public Usuario(int id_usuario, int id_rol, String nombre, String apellido_pat, String apellido_mat, String nombreUsuario, String contraseña, String email, String telefono, boolean activo) {
         this.id_usuario = id_usuario;
         this.id_rol = id_rol;
         this.nombre = nombre;
