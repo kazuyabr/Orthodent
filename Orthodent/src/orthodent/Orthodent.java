@@ -8,7 +8,7 @@ import de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel;
 import java.sql.SQLException;
 
 import javax.swing.UIManager;
-import orthodent.db.PacienteDB;
+import orthodent.db.Autenticacion;
 
 /**
  *
@@ -19,7 +19,8 @@ public class Orthodent {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args){
+
         try{
             UIManager.setLookAndFeel(new SyntheticaBlueLightLookAndFeel()); // cambia la apariencia de la ventana
         }

@@ -156,7 +156,50 @@ public class Autenticacion {
             catch ( SQLException e) { 
                 return null;
             }
-}        
+       }     
+        
+        
+        public static boolean habilitarUsuario(int id_usuario){
+            try{
+                DbConnection db = new DbConnection();
+                Connection con = db.connection;
+
+                java.sql.Statement st = con.createStatement();
+                int aux = st.executeUpdate("UPDATE usuario\n" +
+                                                "SET activo='"+1+"'\n" +
+                                                "WHERE id_usuario="+id_usuario);           
+                boolean resultado = (aux == 1)? true : false;
+                st.close();
+                con.close();             
+                return resultado;           
+            }
+            catch ( SQLException e) { 
+                return false;
+            }            
+            
+        }
+        
+        public static boolean eliminarUsuario(int id_usuario){
+            try{
+                DbConnection db = new DbConnection();
+                Connection con = db.connection;
+
+                java.sql.Statement st = con.createStatement();
+                int aux = st.executeUpdate("UPDATE usuario\n" +
+                                                "SET activo="+0+"\n" +
+                                                "WHERE id_usuario="+id_usuario);
+                boolean resultado = (aux == 1)? true : false;
+                st.close();
+                con.close();             
+                return resultado;           
+            }
+            catch ( SQLException e) { 
+                return false;
+            }              
+        }           
+       
+        
+       
     
     
 }
