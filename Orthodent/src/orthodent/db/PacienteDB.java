@@ -39,7 +39,6 @@ public class PacienteDB {
             }
 
             catch ( SQLException e) {
-                System.out.println(e);
                 return null;
             }
 }    

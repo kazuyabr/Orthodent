@@ -8,7 +8,9 @@ import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Random;
+import modelo.Paciente;
 import modelo.Usuario;
 
 /**
@@ -127,5 +129,34 @@ public class Autenticacion {
                 return false;  
             }   
     }
+    
+        public static ArrayList<Usuario> listarUsuarios(){
+        ArrayList<Usuario> usuarios = null;        
+        try {
+                DbConnection db = new DbConnection();
+                Connection con = db.getConnection();
+               
+                java.sql.Statement st = con.createStatement();
+
+                ResultSet rs = st.executeQuery("SELECT * FROM usuario");
+                usuarios = new ArrayList<Usuario>();
+                while (rs.next())
+                {
+                   Usuario u = new Usuario(rs.getInt("id_usuario"), rs.getInt("id_rol"), rs.getString("nombre"), 
+                                           rs.getString("apellido_pat"), rs.getString("apellido_mat"), rs.getString("nombre_usuario"),
+                                           rs.getString("contrasena"), rs.getString("email"), rs.getString("telefono"), rs.getString("especialidad"), 
+                                           rs.getInt("tiempo_cita"), rs.getBoolean("activo"));
+                   usuarios.add(u);
+                }
+                rs.close();             
+                con.close();
+                return usuarios;
+            }
+
+            catch ( SQLException e) { 
+                return null;
+            }
+}        
+    
     
 }
