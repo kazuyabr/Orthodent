@@ -41,6 +41,34 @@ public class PacienteDB {
             catch ( SQLException e) {
                 return null;
             }
-}    
+        }
+        
+        public static boolean habilitarPaciente(int id_paciente) throws SQLException{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+
+            java.sql.Statement st = con.createStatement();
+            int aux = st.executeUpdate("UPDATE paciente\n" +
+                                            "SET activo='"+1+"'\n" +
+                                            "WHERE id_paciente="+id_paciente);           
+            boolean resultado = (aux == 1)? true : false;
+            st.close();
+            con.close();             
+            return resultado;           
+        }
+        
+        public static boolean EliminarPaciente(int id_paciente) throws SQLException{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+
+            java.sql.Statement st = con.createStatement();
+            int aux = st.executeUpdate("UPDATE paciente\n" +
+                                            "SET activo="+0+"\n" +
+                                            "WHERE id_paciente="+id_paciente);
+            boolean resultado = (aux == 1)? true : false;
+            st.close();
+            con.close();             
+            return resultado;           
+        }        
     
 }
