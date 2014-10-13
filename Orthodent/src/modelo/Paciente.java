@@ -5,13 +5,24 @@
 package modelo;
 
 import java.util.Date;
-import javax.xml.soap.Text;
 
 /**
  *
  * @author msanhuezal
  */
 public class Paciente {
+
+    public Paciente(int id_paciente, String nombre, String apellido_pat, String apellido_mat, String rut, Date fechaNacimiento, String antecedenteMedico, String telefono, boolean activo) {
+        this.id_paciente = id_paciente;
+        this.nombre = nombre;
+        this.apellido_pat = apellido_pat;
+        this.apellido_mat = apellido_mat;
+        this.rut = rut;
+        this.fechaNacimiento = fechaNacimiento;
+        this.antecedenteMedico = antecedenteMedico;
+        this.telefono = telefono;
+        this.activo = activo;
+    }
     
     private int id_paciente;
     private String nombre;
@@ -19,7 +30,7 @@ public class Paciente {
     private String apellido_mat;
     private String rut;
     private Date fechaNacimiento;
-    private Text antecedenteMedico;
+    private String antecedenteMedico;
     private String telefono;
     private boolean activo;    
 
@@ -71,11 +82,11 @@ public class Paciente {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public Text getAntecedenteMedico() {
+    public String getAntecedenteMedico() {
         return antecedenteMedico;
     }
 
-    public void setAntecedenteMedico(Text antecedenteMedico) {
+    public void setAntecedenteMedico(String antecedenteMedico) {
         this.antecedenteMedico = antecedenteMedico;
     }
 
