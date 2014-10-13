@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class Paciente {
 
-    public Paciente(int id_paciente, String nombre, String apellido_pat, String apellido_mat, String rut, Date fechaNacimiento, String antecedenteMedico, String telefono, boolean activo) {
+    public Paciente(int id_paciente, String nombre, String apellido_pat, String apellido_mat, String rut, String fechaNacimiento, String antecedenteMedico, String telefono, boolean activo) {
         this.id_paciente = id_paciente;
         this.nombre = nombre;
         this.apellido_pat = apellido_pat;
@@ -29,7 +29,7 @@ public class Paciente {
     private String apellido_pat;
     private String apellido_mat;
     private String rut;
-    private Date fechaNacimiento;
+    private String fechaNacimiento;
     private String antecedenteMedico;
     private String telefono;
     private boolean activo;    
@@ -74,11 +74,11 @@ public class Paciente {
         this.rut = rut;
     }
 
-    public Date getFechaNacimiento() {
+    public String getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
+    public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
