@@ -23,7 +23,7 @@ public class Orthodent {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception{
-        
+
         try{
             UIManager.setLookAndFeel(new SyntheticaBlueLightLookAndFeel()); // cambia la apariencia de la ventana
         }
