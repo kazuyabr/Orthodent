@@ -219,6 +219,36 @@ public class Autenticacion {
                 return false;
             }             
             
+        }
+        
+        public static boolean editarUsuario(Usuario usuario){
+            try{
+                DbConnection db = new DbConnection();
+                Connection con = db.connection;
+                java.sql.Statement st = con.createStatement();
+                int aux = st.executeUpdate("UPDATE usuario\n" +
+                                                "SET id_rol="+usuario.getId_rol()+"\n" +
+                                                ",nombre='"+usuario.getNombre()+"'\n" +
+                                                ",apellido_pat='"+usuario.getApellido_pat()+"'\n" +
+                                                ",apellido_mat='"+usuario.getApellido_mat()+"'\n" +
+                                                ",nombre_usuario='"+usuario.getNombreUsuario()+"'\n" +
+                                                ",contrasena='"+usuario.getContraseña()+"'\n" +
+                                                ",email='"+usuario.getEmail()+"'\n" +
+                                                ",telefono='"+usuario.getTelefono()+"'\n" +
+                                                ",especialidad='"+usuario.getEspecialidad()+"'\n" +
+                                                ",tiempo_cita="+usuario.getTiempoCita()+"\n" +
+                                                "WHERE id_usuario="+usuario.getId_usuario());
+                
+                boolean resultado = (aux == 1)? true : false;
+                st.close();
+                con.close();             
+                return resultado;           
+            }
+            catch ( SQLException e) { 
+                System.out.println(e);
+                return false;
+            } 
+            
         }        
        
         

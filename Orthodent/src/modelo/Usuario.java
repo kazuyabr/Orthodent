@@ -141,6 +141,14 @@ public class Usuario {
     public void setEspecialidad(String especialidad) {
         this.especialidad = especialidad;
     }
+    
+    public int getTiempoCita() {
+        return tiempoCita;
+    }
+
+    public void setTiempoCita(int tiempoCita) {
+        this.tiempoCita = tiempoCita;
+    }    
 
  
     

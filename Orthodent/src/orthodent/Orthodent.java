@@ -10,6 +10,7 @@ import java.sql.SQLException;
 
 import javax.swing.UIManager;
 import modelo.Paciente;
+import modelo.Usuario;
 import orthodent.db.Autenticacion;
 import orthodent.db.PacienteDB;
 
