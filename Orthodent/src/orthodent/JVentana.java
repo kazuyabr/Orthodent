@@ -83,7 +83,7 @@ public class JVentana extends JFrame{
     }
     
     private void crearAgenda(){
-        this.contenedorAgenda.setBackground(Color.white);
+        this.contenedorAgenda.setLayout(new BorderLayout());
         this.agenda = new Agenda();
         
         JPanel panel = new JPanel();
@@ -104,7 +104,7 @@ public class JVentana extends JFrame{
     }
     
     private void crearPacientes(){
-        this.contenedorPacientes.setBackground(Color.white);
+        this.contenedorPacientes.setLayout(new BorderLayout());
         this.pacientes = new Pacientes();
         
         JPanel panel = new JPanel();
@@ -125,7 +125,7 @@ public class JVentana extends JFrame{
     }
     
     private void crearPagos(){
-        this.contenedorPagos.setBackground(Color.white);
+        this.contenedorPagos.setLayout(new BorderLayout());
         this.pagos = new Pagos();
         
         JPanel panel = new JPanel();
@@ -167,7 +167,7 @@ public class JVentana extends JFrame{
     }
     
     private void crearHistorial(){
-        this.contenedorHistorial.setBackground(Color.white);
+        this.contenedorHistorial.setLayout(new BorderLayout());
         this.historial = new Historial();
         
         JPanel panel = new JPanel();
