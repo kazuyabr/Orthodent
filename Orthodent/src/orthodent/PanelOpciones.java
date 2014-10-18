@@ -6,12 +6,12 @@ package orthodent;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
+import javax.swing.GroupLayout.ParallelGroup;
+import javax.swing.GroupLayout.SequentialGroup;
 import modelo.Rol;
 import orthodent.db.RolDB;
 
@@ -68,6 +68,9 @@ public class PanelOpciones extends JPanel implements ActionListener{
         else{
             this.nombreUsuario = new JLabel(ventana.getUsuario().getNombre()+" "+ventana.getUsuario().getApellido_pat());
         }
+        
+        this.nombreUsuario.setForeground(new Color(255, 255, 255));
+        this.nombreUsuario.setFont(new Font("Georgia", 1, 11));
         
         this.agenda.setForeground(new Color(255, 255, 255));
         this.agenda.setIcon(new ImageIcon("src/imagenes/pacientes.png"));
@@ -134,23 +137,94 @@ public class PanelOpciones extends JPanel implements ActionListener{
     
     private void addOpcionesPanel(){
         
+        GroupLayout layout = new GroupLayout(this);
+        this.setLayout(layout);
+        
+        SequentialGroup horizontalGroup = layout.createSequentialGroup();
+        ParallelGroup verticalGroup = layout.createParallelGroup(GroupLayout.Alignment.LEADING);
+        
         if(rol.getNombre().equals("ADMINISTRADOR")){
-            //ADMIN
-            System.out.println("Admin");
+            horizontalGroup.addComponent(this.agenda);
+            horizontalGroup.addGap(18,18,18);
+            horizontalGroup.addComponent(this.pacientes);
+            horizontalGroup.addGap(18, 18, 18);
+            horizontalGroup.addComponent(this.pagos);
+            horizontalGroup.addGap(18, 18, 18);
+            horizontalGroup.addComponent(this.usuarios);
+            horizontalGroup.addGap(18, 18, 18);
+            horizontalGroup.addComponent(this.historial);
+            
+            verticalGroup.addComponent(this.agenda);
+            verticalGroup.addComponent(this.pacientes);
+            verticalGroup.addComponent(this.pagos);
+            verticalGroup.addComponent(this.usuarios);
+            verticalGroup.addComponent(this.historial);
         }
         else if(rol.getNombre().equals("ASISTENTE")){
-            //Asistente
-            System.out.println("Asistente");
+            horizontalGroup.addComponent(this.agenda);
+            horizontalGroup.addGap(18,18,18);
+            horizontalGroup.addComponent(this.pacientes);
+            horizontalGroup.addGap(18, 18, 18);
+            horizontalGroup.addComponent(this.pagos);
+            
+            verticalGroup.addComponent(this.agenda);
+            verticalGroup.addComponent(this.pacientes);
+            verticalGroup.addComponent(this.pagos);
         }
         else{
-            //Profesional
-            System.out.println("Profesional");
+            horizontalGroup.addComponent(this.agenda);
+            horizontalGroup.addGap(18,18,18);
+            horizontalGroup.addComponent(this.pacientes);
+            horizontalGroup.addGap(18, 18, 18);
+            horizontalGroup.addComponent(this.pagos);
+            horizontalGroup.addGap(18, 18, 18);
+            
+            verticalGroup.addComponent(this.agenda);
+            verticalGroup.addComponent(this.pacientes);
+            verticalGroup.addComponent(this.pagos);
         }
+        
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(109,109,109)
+                .addComponent(this.diente1)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(horizontalGroup)
+                    .addComponent(this.titulo))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
+                .addComponent(this.diente2)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(this.miniUsuario)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(this.nombreUsuario)
+                .addContainerGap()
+            )
+        );
+        
+        layout.setVerticalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(this.titulo)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(verticalGroup))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(this.nombreUsuario, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(this.miniUsuario, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(this.diente2, GroupLayout.Alignment.TRAILING)
+                    .addComponent(this.diente1, GroupLayout.Alignment.TRAILING)))
+        );
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        /*if (e.getSource() == this.agenda){
+        if (e.getSource() == this.agenda){
             ((JVentana)this.getTopLevelAncestor()).cambiarAgenda();
         }
         if (e.getSource() == this.pacientes){
@@ -164,7 +238,7 @@ public class PanelOpciones extends JPanel implements ActionListener{
         }
         if (e.getSource() == this.historial){
             ((JVentana)this.getTopLevelAncestor()).cambiarHistorial();
-        }*/
+        }
     }
     
 }
