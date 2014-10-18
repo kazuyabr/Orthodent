@@ -4,10 +4,10 @@
  */
 package orthodent;
 
+import java.awt.*;
 import orthodent.db.Autenticacion;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.logging.Level;
@@ -22,9 +22,8 @@ import orthodent.JVentana;
  */
 public class Login extends javax.swing.JDialog implements WindowListener{
 
-    /**
-     * Creates new form Login
-     */
+    private boolean dialog2 = false;
+    
     public Login(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -32,6 +31,26 @@ public class Login extends javax.swing.JDialog implements WindowListener{
         this.setBackground(Color.white);
         this.addWindowListener(this);
         
+        KeyboardFocusManager
+            .getCurrentKeyboardFocusManager()
+            .addKeyEventDispatcher(new KeyEventDispatcher(){
+            public boolean dispatchKeyEvent(KeyEvent e){
+                boolean keyHandled = false;
+                if (e.getID() == KeyEvent.KEY_PRESSED){
+                    if (e.getKeyCode() == KeyEvent.VK_ENTER && !dialog2) {
+                        botonAceptarActionPerformed(null);
+                        keyHandled = true;
+                    }
+                }
+                return keyHandled;
+            }  
+        });
+        
+        
+        this.centrarVentana();
+    }
+    
+    private void centrarVentana(){
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation((screenSize.width - this.getSize().width) / 2 ,
                 (screenSize.height - this.getSize().height) / 2);
@@ -205,10 +224,12 @@ public class Login extends javax.swing.JDialog implements WindowListener{
             ventana.setVisible(true);
         }
         else{
+            this.dialog2 = true;
             JOptionPane.showMessageDialog(this,
                     "El nombre de usuario o contraseña no coinciden",
                     "Orthodent",
                     JOptionPane.ERROR_MESSAGE);
+            this.dialog2 = false;
         }
     }//GEN-LAST:event_botonAceptarActionPerformed
 

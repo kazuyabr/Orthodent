@@ -33,7 +33,7 @@ public class JVentana extends JFrame{
         this.opActual = 1;
         this.crearElementosVentana();
         
-        this.defineVentana();
+        this.centrarVentana();
         this.setFocusable(true);
         //this.setResizable(false);
     }
@@ -46,7 +46,7 @@ public class JVentana extends JFrame{
         return this.usuario;
     }
     
-    private void defineVentana(){
+    private void centrarVentana(){
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         
         super.setMinimumSize(new Dimension(screenSize.width-50, screenSize.height-50));
