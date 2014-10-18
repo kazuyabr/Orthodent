@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import javax.swing.*;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
@@ -31,7 +32,10 @@ public class PanelOpciones extends JPanel implements ActionListener{
     private JButton diente2;
     private JButton titulo;
     private JButton miniUsuario;
-    private JLabel nombreUsuario;
+    private JPopupMenu menuUsuario;
+    private JMenuItem configurarCuenta;
+    private JMenuItem cerrarSesion;
+    private JMenuItem salir;
     private Rol rol;
     
     public PanelOpciones(JVentana ventana){
@@ -61,16 +65,6 @@ public class PanelOpciones extends JPanel implements ActionListener{
         this.diente2 = new JButton();
         this.titulo = new JButton();
         this.miniUsuario = new JButton();
-        
-        if(rol.getNombre().equals("ADMINISTRADOR")){
-            this.nombreUsuario = new JLabel(ventana.getUsuario().getNombre());
-        }
-        else{
-            this.nombreUsuario = new JLabel(ventana.getUsuario().getNombre()+" "+ventana.getUsuario().getApellido_pat());
-        }
-        
-        this.nombreUsuario.setForeground(new Color(255, 255, 255));
-        this.nombreUsuario.setFont(new Font("Georgia", 1, 11));
         
         this.agenda.setForeground(new Color(255, 255, 255));
         this.agenda.setIcon(new ImageIcon("src/imagenes/agenda.png"));
@@ -120,11 +114,49 @@ public class PanelOpciones extends JPanel implements ActionListener{
         this.titulo.setBorderPainted(false);
         this.titulo.setContentAreaFilled(false);
         
+        this.miniUsuario.setFont(new java.awt.Font("Georgia", 1, 11));
         this.miniUsuario.setForeground(new Color(255, 255, 255));
         this.miniUsuario.setIcon(new ImageIcon("src/imagenes/user_mini2.png"));
         this.miniUsuario.setBorder(null);
         this.miniUsuario.setBorderPainted(false);
         this.miniUsuario.setContentAreaFilled(false);
+        this.miniUsuario.setRolloverEnabled(false);
+        this.miniUsuario.setFocusPainted(false);
+        
+        if(rol.getNombre().equals("ADMINISTRADOR")){
+            this.miniUsuario.setText(ventana.getUsuario().getNombre());
+        }
+        else{
+            this.miniUsuario.setText(ventana.getUsuario().getNombre()+" "+ventana.getUsuario().getApellido_pat());
+        }
+        
+        this.addPopupMenuMiniUsuario();
+    }
+    
+    private void addPopupMenuMiniUsuario(){
+        this.menuUsuario = new JPopupMenu("Menu Usuario");
+        
+        this.configurarCuenta = new JMenuItem("Configurar Cuenta");
+        //this.configurarCuenta.setMnemonic('C');
+        //this.configurarCuenta.setAccelerator( KeyStroke.getKeyStroke('C', InputEvent.CTRL_DOWN_MASK  ) );
+        this.configurarCuenta.addActionListener(this);
+        this.menuUsuario.add(this.configurarCuenta);
+        
+        this.cerrarSesion = new JMenuItem("Cerrar Sesión");
+        this.cerrarSesion.addActionListener(this);
+        this.menuUsuario.add(this.cerrarSesion);
+        
+        this.salir = new JMenuItem("Salir");
+        this.salir.addActionListener(this);
+        this.menuUsuario.add(this.salir);
+        
+        this.miniUsuario.addActionListener( new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                //miniUsuario.getWidth()/2
+                //miniUsuario.getX()-menuUsuario.getWidth()
+                menuUsuario.show(miniUsuario, miniUsuario.getWidth()/2, miniUsuario.getHeight());
+            }
+        } );
     }
     
     private void addListeners(){
@@ -197,8 +229,6 @@ public class PanelOpciones extends JPanel implements ActionListener{
                 .addComponent(this.diente2)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(this.miniUsuario)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(this.nombreUsuario)
                 .addContainerGap()
             )
         );
@@ -211,7 +241,6 @@ public class PanelOpciones extends JPanel implements ActionListener{
                 .addGroup(verticalGroup))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(this.nombreUsuario, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(this.miniUsuario, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -224,6 +253,8 @@ public class PanelOpciones extends JPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
+        //Botones
         if (e.getSource() == this.agenda){
             ((JVentana)this.getTopLevelAncestor()).cambiarAgenda();
         }
@@ -239,6 +270,17 @@ public class PanelOpciones extends JPanel implements ActionListener{
         if (e.getSource() == this.historial){
             ((JVentana)this.getTopLevelAncestor()).cambiarHistorial();
         }
+        
+        //Opciones del mini Usuario
+        if(e.getSource() == this.configurarCuenta){
+            System.out.println("Configurar Cuenta");
+        }
+        if(e.getSource() == this.cerrarSesion){
+            ((JVentana)this.getTopLevelAncestor()).dispose();
+            new Login(null,true).setVisible(true);
+        }
+        if(e.getSource() == this.salir){
+            System.exit(0);
+        }
     }
-    
 }

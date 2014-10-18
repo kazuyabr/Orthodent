@@ -22,10 +22,11 @@ import orthodent.JVentana;
  */
 public class Login extends javax.swing.JDialog implements WindowListener{
 
-    private boolean dialog2 = false;
+    private boolean dialog2;
     
     public Login(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.dialog2 = false;
         initComponents();
         
         this.setBackground(Color.white);
@@ -38,8 +39,8 @@ public class Login extends javax.swing.JDialog implements WindowListener{
                 boolean keyHandled = false;
                 if (e.getID() == KeyEvent.KEY_PRESSED){
                     if (e.getKeyCode() == KeyEvent.VK_ENTER && !dialog2) {
-                        botonAceptarActionPerformed(null);
                         keyHandled = true;
+                        botonAceptarActionPerformed(null);
                     }
                 }
                 return keyHandled;
@@ -211,7 +212,8 @@ public class Login extends javax.swing.JDialog implements WindowListener{
         String nombreUsuario = this.campoNombreUsuario.getText();
         String contraseña = this.campoContraseña.getText();
                 
-        Usuario usuario;
+        Usuario usuario = null;
+        
         try {
             usuario = Autenticacion.logIn(nombreUsuario, contraseña);
         } catch (Exception ex) {
