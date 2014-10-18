@@ -4,6 +4,11 @@
  */
 package orthodent;
 
+import orthodent.pagos.Pagos;
+import orthodent.historial.Historial;
+import orthodent.agenda.Agenda;
+import orthodent.pacientes.Pacientes;
+import orthodent.usuarios.Usuarios;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
