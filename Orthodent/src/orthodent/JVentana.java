@@ -22,6 +22,12 @@ public class JVentana extends JFrame{
     private JPanel contenedorPagos;
     private JPanel contenedorUsuarios;
     private JPanel contenedorHistorial;
+    private Agenda agenda;
+    private Pacientes pacientes;
+    private Pagos pagos;
+    private Usuarios usuarios;
+    private Historial historial;
+    
     private int opActual;
 
     public JVentana(Usuario usuario){
@@ -67,57 +73,118 @@ public class JVentana extends JFrame{
         this.contenedorUsuarios = new JPanel();
         this.contenedorHistorial = new JPanel();
         
-        this.agregarAgenda();
-    }
-    
-    private void agregarAgenda(){
-        this.contenedorAgenda.setBackground(Color.white);
-        
-        //Introducir código aquí
-        JLabel mensaje = new JLabel("Agenda... No disponible aún");
-        this.contenedorAgenda.add(mensaje);
-        
+        this.crearAgenda();
         this.add(this.contenedorAgenda,BorderLayout.CENTER);
+        
+        this.pacientes = null;
+        this.pagos = null;
+        this.usuarios = null;
+        this.historial = null;
     }
     
-    private void agregarPacientes(){
+    private void crearAgenda(){
+        this.contenedorAgenda.setBackground(Color.white);
+        this.agenda = new Agenda();
+        
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(this.agenda,BorderLayout.CENTER);
+        
+        JPanel borde1 = new JPanel();
+        borde1.setBackground(Color.white);
+        borde1.setPreferredSize(new Dimension(130, 488));
+        JPanel borde2 = new JPanel();
+        borde2.setBackground(Color.white);
+        borde2.setPreferredSize(new Dimension(130, 488));
+        
+        panel.add(borde1,BorderLayout.WEST);
+        panel.add(borde2,BorderLayout.EAST);
+        
+        this.contenedorAgenda.add(panel,BorderLayout.NORTH);
+    }
+    
+    private void crearPacientes(){
         this.contenedorPacientes.setBackground(Color.white);
+        this.pacientes = new Pacientes();
         
-        //Introducir código aquí
-        JLabel mensaje = new JLabel("Pacientes... No disponible aún");
-        this.contenedorPacientes.add(mensaje);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(this.pacientes,BorderLayout.CENTER);
         
-        this.add(this.contenedorPacientes,BorderLayout.CENTER);
+        JPanel borde1 = new JPanel();
+        borde1.setBackground(Color.white);
+        borde1.setPreferredSize(new Dimension(130, 488));
+        JPanel borde2 = new JPanel();
+        borde2.setBackground(Color.white);
+        borde2.setPreferredSize(new Dimension(130, 488));
+        
+        panel.add(borde1,BorderLayout.WEST);
+        panel.add(borde2,BorderLayout.EAST);
+        
+        this.contenedorPacientes.add(panel,BorderLayout.NORTH);
     }
     
-    private void agregarPagos(){
+    private void crearPagos(){
         this.contenedorPagos.setBackground(Color.white);
+        this.pagos = new Pagos();
         
-        //Introducir código aquí
-        JLabel mensaje = new JLabel("Pagos... No disponible aún");
-        this.contenedorPagos.add(mensaje);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(this.pagos,BorderLayout.CENTER);
         
-        this.add(this.contenedorPagos,BorderLayout.CENTER);
+        JPanel borde1 = new JPanel();
+        borde1.setBackground(Color.white);
+        borde1.setPreferredSize(new Dimension(130, 488));
+        JPanel borde2 = new JPanel();
+        borde2.setBackground(Color.white);
+        borde2.setPreferredSize(new Dimension(130, 488));
+        
+        panel.add(borde1,BorderLayout.WEST);
+        panel.add(borde2,BorderLayout.EAST);
+        
+        this.contenedorPagos.add(panel,BorderLayout.NORTH);
     }
     
-    private void agregarUsuarios(){
-        this.contenedorUsuarios.setBackground(Color.white);
+    private void crearUsuarios(){
+        this.contenedorUsuarios.setLayout(new BorderLayout());
+        this.usuarios = new Usuarios();
         
-        //Introducir código aquí
-        JLabel mensaje = new JLabel("Usuarios... No disponible aún");
-        this.contenedorUsuarios.add(mensaje);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(this.usuarios,BorderLayout.CENTER);
         
-        this.add(this.contenedorUsuarios,BorderLayout.CENTER);
+        JPanel borde1 = new JPanel();
+        borde1.setBackground(Color.white);
+        borde1.setPreferredSize(new Dimension(130, 488));
+        JPanel borde2 = new JPanel();
+        borde2.setBackground(Color.white);
+        borde2.setPreferredSize(new Dimension(130, 488));
+        
+        panel.add(borde1,BorderLayout.WEST);
+        panel.add(borde2,BorderLayout.EAST);
+        
+        this.contenedorUsuarios.add(panel,BorderLayout.NORTH);
     }
     
-    private void agregarHistorial(){
+    private void crearHistorial(){
         this.contenedorHistorial.setBackground(Color.white);
+        this.historial = new Historial();
         
-        //Introducir código aquí
-        JLabel mensaje = new JLabel("Historial... No disponible aún");
-        this.contenedorHistorial.add(mensaje);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(this.historial,BorderLayout.CENTER);
         
-        this.add(this.contenedorHistorial,BorderLayout.CENTER);
+        JPanel borde1 = new JPanel();
+        borde1.setBackground(Color.white);
+        borde1.setPreferredSize(new Dimension(130, 488));
+        JPanel borde2 = new JPanel();
+        borde2.setBackground(Color.white);
+        borde2.setPreferredSize(new Dimension(130, 488));
+        
+        panel.add(borde1,BorderLayout.WEST);
+        panel.add(borde2,BorderLayout.EAST);
+        
+        this.contenedorHistorial.add(panel,BorderLayout.NORTH);
     }
     
     private void removeAncestor(){
@@ -166,9 +233,9 @@ public class JVentana extends JFrame{
         if(opActual!=2){
             this.removeAncestor();
             
-            /*if(this.pacientes==null){
-                this.agregarPacientes();
-            }*/
+            if(this.pacientes==null){
+                this.crearPacientes();
+            }
             
             this.add(this.contenedorPacientes,BorderLayout.CENTER);
             this.contenedorPacientes.updateUI();
@@ -180,9 +247,9 @@ public class JVentana extends JFrame{
         if(opActual!=3){
             this.removeAncestor();
             
-            /*if(this.pagos==null){
-                this.agregarPagos();
-            }*/
+            if(this.pagos==null){
+                this.crearPagos();
+            }
             
             this.add(this.contenedorPagos,BorderLayout.CENTER);
             this.contenedorPagos.updateUI();
@@ -194,9 +261,9 @@ public class JVentana extends JFrame{
         if(opActual!=4){
             this.removeAncestor();
             
-            /*if(this.usuarios==null){
-                this.agregarUsuarios();
-            }*/
+            if(this.usuarios==null){
+                this.crearUsuarios();
+            }
             
             this.add(this.contenedorUsuarios,BorderLayout.CENTER);
             this.contenedorUsuarios.updateUI();
@@ -208,9 +275,9 @@ public class JVentana extends JFrame{
         if(opActual!=5){
             this.removeAncestor();
             
-            /*if(this.historial==null){
-                this.agregarHistorial();
-            }*/
+            if(this.historial==null){
+                this.crearHistorial();
+            }
             
             this.add(this.contenedorHistorial,BorderLayout.CENTER);
             this.contenedorHistorial.updateUI();

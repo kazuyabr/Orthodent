@@ -73,7 +73,7 @@ public class PanelOpciones extends JPanel implements ActionListener{
         this.nombreUsuario.setFont(new Font("Georgia", 1, 11));
         
         this.agenda.setForeground(new Color(255, 255, 255));
-        this.agenda.setIcon(new ImageIcon("src/imagenes/pacientes.png"));
+        this.agenda.setIcon(new ImageIcon("src/imagenes/agenda.png"));
         this.agenda.setBorder(null);
         this.agenda.setBorderPainted(false);
         this.agenda.setContentAreaFilled(false);
