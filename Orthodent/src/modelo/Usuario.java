@@ -148,10 +148,5 @@ public class Usuario {
 
     public void setTiempoCita(int tiempoCita) {
         this.tiempoCita = tiempoCita;
-    }    
-
- 
-    
-
-    
+    }
 }

@@ -102,157 +102,147 @@ public class Autenticacion {
     static public boolean recuperarContrasena(String email) throws Exception{
         boolean resultado = false;
         try {
-                DbConnection db = new DbConnection();
-                Connection con = db.getConnection();
-
-                java.sql.Statement st = con.createStatement();
-
-                ResultSet rs = st.executeQuery("SELECT id_usuario, email from usuario where email='" + email +"'");
-                if (rs.next())
-                {
-                    int id_usuario = rs.getInt("id_usuario");
-                    String destino = rs.getString("email");
-                    String nuevaContrasena = generarContrasenaAleatoria();
-                    String auxNuevaContrasena = encripMd5(nuevaContrasena);
-                    st.executeUpdate("UPDATE usuario\n" +
-                                            "SET contrasena='"+auxNuevaContrasena+"'\n" +
-                                            "WHERE id_usuario="+id_usuario);
-                    enviarCorreo(destino, "CAMBIO CONTRASEÑA", "EL SISTEMA ORTHODENT HA CAMBIADO SU CONTRASEÑA A: " + nuevaContrasena);
-                    resultado = true;
-                }
-                rs.close();             
-                con.close();
-                return resultado;
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT id_usuario, email from usuario where email='" + email +"'");
+            if (rs.next())
+            {
+                int id_usuario = rs.getInt("id_usuario");
+                String destino = rs.getString("email");
+                String nuevaContrasena = generarContrasenaAleatoria();
+                String auxNuevaContrasena = encripMd5(nuevaContrasena);
+                st.executeUpdate("UPDATE usuario\n" +
+                        "SET contrasena='"+auxNuevaContrasena+"'\n" +
+                        "WHERE id_usuario="+id_usuario);
+                enviarCorreo(destino, "CAMBIO CONTRASEÑA", "EL SISTEMA ORTHODENT HA CAMBIADO SU CONTRASEÑA A: " + nuevaContrasena);
+                resultado = true;
             }
-
-            catch ( SQLException e) { 
-                return false;  
-            }   
+            rs.close();
+            con.close();
+            return resultado;
+        }
+        catch ( SQLException e) {
+            return false;
+        }   
     }
     
-        public static ArrayList<Usuario> listarUsuarios(){
+    public static ArrayList<Usuario> listarUsuarios(){
         ArrayList<Usuario> usuarios = null;        
         try {
-                DbConnection db = new DbConnection();
-                Connection con = db.getConnection();
-               
-                java.sql.Statement st = con.createStatement();
-
-                ResultSet rs = st.executeQuery("SELECT * FROM usuario");
-                usuarios = new ArrayList<Usuario>();
-                while (rs.next())
-                {
-                   Usuario u = new Usuario(rs.getInt("id_usuario"), rs.getInt("id_rol"), rs.getString("nombre"), 
-                                           rs.getString("apellido_pat"), rs.getString("apellido_mat"), rs.getString("nombre_usuario"),
-                                           rs.getString("contrasena"), rs.getString("email"), rs.getString("telefono"), rs.getString("especialidad"), 
-                                           rs.getInt("tiempo_cita"), rs.getBoolean("activo"));
-                   usuarios.add(u);
-                }
-                rs.close();             
-                con.close();
-                return usuarios;
-            }
-
-            catch ( SQLException e) { 
-                return null;
-            }
-       }     
-        
-        
-        public static boolean habilitarUsuario(int id_usuario){
-            try{
-                DbConnection db = new DbConnection();
-                Connection con = db.connection;
-
-                java.sql.Statement st = con.createStatement();
-                int aux = st.executeUpdate("UPDATE usuario\n" +
-                                                "SET activo='"+1+"'\n" +
-                                                "WHERE id_usuario="+id_usuario);           
-                boolean resultado = (aux == 1)? true : false;
-                st.close();
-                con.close();             
-                return resultado;           
-            }
-            catch ( SQLException e) { 
-                return false;
-            }            
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
             
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * FROM usuario");
+            usuarios = new ArrayList<Usuario>();
+            while (rs.next())
+            {
+                Usuario u = new Usuario(rs.getInt("id_usuario"), rs.getInt("id_rol"), rs.getString("nombre"),
+                        rs.getString("apellido_pat"), rs.getString("apellido_mat"), rs.getString("nombre_usuario"),
+                        rs.getString("contrasena"), rs.getString("email"), rs.getString("telefono"),
+                        rs.getString("especialidad"),rs.getInt("tiempo_cita"), rs.getBoolean("activo"));
+                usuarios.add(u);
+            }
+            rs.close();
+            con.close();
+            return usuarios;
         }
-        
-        public static boolean eliminarUsuario(int id_usuario){
-            try{
-                DbConnection db = new DbConnection();
-                Connection con = db.connection;
-
-                java.sql.Statement st = con.createStatement();
-                int aux = st.executeUpdate("UPDATE usuario\n" +
-                                                "SET activo="+0+"\n" +
-                                                "WHERE id_usuario="+id_usuario);
-                boolean resultado = (aux == 1)? true : false;
-                st.close();
-                con.close();             
-                return resultado;           
-            }
-            catch ( SQLException e) { 
-                return false;
-            }              
-        }           
-        
-        public static boolean crearUsuario(int idRol, String nombre, String apellidoPat, String apellidoMat, String nombreUsuario, String contrasena,
-                                            String email, String telefono, String especialidad, int tiempoCita) throws Exception{
-            try{
-                DbConnection db = new DbConnection();
-                Connection con = db.connection;
-                java.sql.Statement st = con.createStatement();
-                contrasena = encripMd5(contrasena);
-                int aux = st.executeUpdate("INSERT INTO usuario (id_rol, nombre, apellido_pat, apellido_mat, nombre_usuario, contrasena,"
-                                            + "email, telefono, especialidad, tiempo_cita)\n" +
-                                           "VALUES ("+idRol+",'"+nombre+"','"+apellidoPat+"','"+apellidoMat+"','"+nombreUsuario+"','"+contrasena
-                                                    +"','"+email+"','"+telefono+"','"+especialidad+"',"+tiempoCita+")");
-                boolean resultado = (aux == 1)? true : false;
-                st.close();
-                con.close();             
-                return resultado;           
-            }
-            catch ( SQLException e) { 
-                System.out.println(e);
-                return false;
-            }             
-            
+        catch ( SQLException e) {
+            return null;
         }
-        
-        public static boolean editarUsuario(Usuario usuario){
-            try{
-                DbConnection db = new DbConnection();
-                Connection con = db.connection;
-                java.sql.Statement st = con.createStatement();
-                int aux = st.executeUpdate("UPDATE usuario\n" +
-                                                "SET id_rol="+usuario.getId_rol()+"\n" +
-                                                ",nombre='"+usuario.getNombre()+"'\n" +
-                                                ",apellido_pat='"+usuario.getApellido_pat()+"'\n" +
-                                                ",apellido_mat='"+usuario.getApellido_mat()+"'\n" +
-                                                ",nombre_usuario='"+usuario.getNombreUsuario()+"'\n" +
-                                                ",contrasena='"+usuario.getContraseña()+"'\n" +
-                                                ",email='"+usuario.getEmail()+"'\n" +
-                                                ",telefono='"+usuario.getTelefono()+"'\n" +
-                                                ",especialidad='"+usuario.getEspecialidad()+"'\n" +
-                                                ",tiempo_cita="+usuario.getTiempoCita()+"\n" +
-                                                "WHERE id_usuario="+usuario.getId_usuario());
-                
-                boolean resultado = (aux == 1)? true : false;
-                st.close();
-                con.close();             
-                return resultado;           
-            }
-            catch ( SQLException e) { 
-                System.out.println(e);
-                return false;
-            } 
+    }
+    
+    public static boolean habilitarUsuario(int id_usuario){
+        try{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
             
-        }        
-       
-        
-       
+            java.sql.Statement st = con.createStatement();
+            int aux = st.executeUpdate("UPDATE usuario\n" +
+                    "SET activo='"+1+"'\n" +
+                    "WHERE id_usuario="+id_usuario);
+            boolean resultado = (aux == 1)? true : false;
+            st.close();
+            con.close();
+            return resultado;
+        }
+        catch ( SQLException e) {
+            return false;
+        }
+    }
     
+    public static boolean eliminarUsuario(int id_usuario){
+        try{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            
+            java.sql.Statement st = con.createStatement();
+            int aux = st.executeUpdate("UPDATE usuario\n" +
+                    "SET activo="+0+"\n" +
+                    "WHERE id_usuario="+id_usuario);
+            boolean resultado = (aux == 1)? true : false;
+            st.close();
+            con.close();
+            return resultado;
+        }
+        catch ( SQLException e) {
+            return false;
+        }
+    }
     
+    public static boolean crearUsuario(int idRol, String nombre, String apellidoPat, String apellidoMat, String nombreUsuario, String contrasena,
+                                        String email, String telefono, String especialidad, int tiempoCita) throws Exception{
+        try{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            java.sql.Statement st = con.createStatement();
+            contrasena = encripMd5(contrasena);
+            int aux = st.executeUpdate("INSERT INTO usuario (id_rol, nombre, apellido_pat, apellido_mat, nombre_usuario, contrasena,"
+                                        + "email, telefono, especialidad, tiempo_cita)\n" +
+                                        "VALUES ("+idRol+",'"+nombre+"','"+apellidoPat+"','"+apellidoMat+"','"+nombreUsuario+"','"+contrasena
+                                        +"','"+email+"','"+telefono+"','"+especialidad+"',"+tiempoCita+")");
+            
+            boolean resultado = (aux == 1)? true : false;
+            st.close();
+            con.close();
+            return resultado;
+        }
+        catch ( SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+    
+    public static boolean editarUsuario(Usuario usuario){
+        try{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            java.sql.Statement st = con.createStatement();
+            int aux = st.executeUpdate("UPDATE usuario\n" +
+                    "SET id_rol="+usuario.getId_rol()+"\n" +
+                    ",nombre='"+usuario.getNombre()+"'\n" +
+                    ",apellido_pat='"+usuario.getApellido_pat()+"'\n" +
+                    ",apellido_mat='"+usuario.getApellido_mat()+"'\n" +
+                    ",nombre_usuario='"+usuario.getNombreUsuario()+"'\n" +
+                    ",contrasena='"+usuario.getContraseña()+"'\n" +
+                    ",email='"+usuario.getEmail()+"'\n" +
+                    ",telefono='"+usuario.getTelefono()+"'\n" +
+                    ",especialidad='"+usuario.getEspecialidad()+"'\n" +
+                    ",tiempo_cita="+usuario.getTiempoCita()+"\n" +
+                    "WHERE id_usuario="+usuario.getId_usuario());
+            
+            boolean resultado = (aux == 1)? true : false;
+            st.close();
+            con.close();
+            return resultado;
+        }
+        catch ( SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
 }

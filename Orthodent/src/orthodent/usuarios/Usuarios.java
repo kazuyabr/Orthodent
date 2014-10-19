@@ -7,8 +7,15 @@ package orthodent.usuarios;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import modelo.Rol;
+import modelo.Usuario;
+import orthodent.JVentana;
+import orthodent.db.Autenticacion;
+import orthodent.db.RolDB;
 
 /**
  * 
@@ -21,6 +28,9 @@ public class Usuarios extends JPanel implements ActionListener{
     private JButton botonBuscar;
     private JButton nuevoUsuario;
     private JTable tabla;
+    private TableModel modelo;
+    private Object [][] filas;
+    private String [] columnasNombre;
     
     public Usuarios(){
         this.setBackground(new Color(243,242,243));
@@ -60,17 +70,28 @@ public class Usuarios extends JPanel implements ActionListener{
     }
     
     private void initTabla(){
-        this.tabla.setModel(new DefaultTableModel(
-            new Object [][] {
-                {"Admin", null, null, "Admin", "admin"},
-                {"Gonzalo", "Sotomayor", null, "Admin/Profesional", "gsotomayor"},
-                {"Bernardita", "Romero", null, "Profesional", "bromero"},
-                {"Paula", "Lopez", null, "Asistente", "plopez"}
-            },
-            new String [] {
-                "Nombres", "Apellido Paterno", "Apellido Materno", "Roles", "Nombre de Usuario"
-            }
-        ) {
+        
+        ArrayList<Usuario> usuarios = Autenticacion.listarUsuarios();
+        
+        this.columnasNombre = new String [] {"Nombres", "Apellido Paterno", "Apellido Materno", "Nombre de Usuario", "Rol"};
+        
+        int n = usuarios.size();
+        int m = this.columnasNombre.length;
+        
+        this.filas = new Object [n][m];
+        
+        int i = 0;
+        for(Usuario usuario : usuarios){
+            Rol rol = RolDB.getRol(usuario.getId_rol());
+            
+            Object [] fila = new Object [] {usuario.getNombre(), usuario.getApellido_pat(), usuario.getApellido_mat(),
+                                        usuario.getNombreUsuario(), rol.getNombre().toLowerCase()};
+            
+            filas[i] = fila;
+            i++;
+        }
+        
+        this.modelo = new DefaultTableModel(this.filas, this.columnasNombre) {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
@@ -85,8 +106,9 @@ public class Usuarios extends JPanel implements ActionListener{
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
-        });
+        };
         
+        this.tabla.setModel(modelo);
         this.tabla.getTableHeader().setReorderingAllowed(false) ;
     }
     
@@ -157,7 +179,7 @@ public class Usuarios extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         
         if(e.getSource() == this.nuevoUsuario){
-            System.out.println("Nuevo Usuario");
+            new NuevoUsuario(((JVentana)this.getTopLevelAncestor()),true).setVisible(true);
         }
         
         if(e.getSource() == this.botonBuscar){

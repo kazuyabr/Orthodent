@@ -63,7 +63,7 @@ public class PacienteDB {
             }            
         }
         
-        public static boolean EliminarPaciente(int id_paciente) throws SQLException{
+        public static boolean eliminarPaciente(int id_paciente) throws SQLException{
             try{
                 DbConnection db = new DbConnection();
                 Connection con = db.connection;
