@@ -139,7 +139,6 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
         border.setBorder(BorderFactory.createTitledBorder(""));
         border.setPreferredSize(new Dimension(824,572));
         
-         
         
         
         
