@@ -194,6 +194,7 @@ public class Autenticacion {
         }
     }
     
+    //Profesional
     public static boolean crearUsuario(int idRol, String nombre, String apellidoPat, String apellidoMat, String nombreUsuario, String contrasena,
                                         String email, String telefono, String especialidad, int tiempoCita) throws Exception{
         try{
@@ -205,6 +206,30 @@ public class Autenticacion {
                                         + "email, telefono, especialidad, tiempo_cita)\n" +
                                         "VALUES ("+idRol+",'"+nombre+"','"+apellidoPat+"','"+apellidoMat+"','"+nombreUsuario+"','"+contrasena
                                         +"','"+email+"','"+telefono+"','"+especialidad+"',"+tiempoCita+")");
+            
+            boolean resultado = (aux == 1)? true : false;
+            st.close();
+            con.close();
+            return resultado;
+        }
+        catch ( SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+    
+    //Basico
+    public static boolean crearUsuario(int idRol, String nombre, String apellidoPat, String apellidoMat, String nombreUsuario, String contrasena,
+                                        String email, String telefono) throws Exception{
+        try{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            java.sql.Statement st = con.createStatement();
+            contrasena = encripMd5(contrasena);
+            int aux = st.executeUpdate("INSERT INTO usuario (id_rol, nombre, apellido_pat, apellido_mat, nombre_usuario, contrasena,"
+                                        + "email, telefono)\n" +
+                                        "VALUES ("+idRol+",'"+nombre+"','"+apellidoPat+"','"+apellidoMat+"','"+nombreUsuario+"','"+contrasena
+                                        +"','"+email+"','"+telefono+"')");
             
             boolean resultado = (aux == 1)? true : false;
             st.close();

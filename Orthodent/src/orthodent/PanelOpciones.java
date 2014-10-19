@@ -67,31 +67,26 @@ public class PanelOpciones extends JPanel implements ActionListener{
         this.miniUsuario = new JButton();
         
         this.agenda.setForeground(new Color(255, 255, 255));
-        this.agenda.setIcon(new ImageIcon("src/imagenes/agenda.png"));
         this.agenda.setBorder(null);
         this.agenda.setBorderPainted(false);
         this.agenda.setContentAreaFilled(false);
         
         this.pacientes.setForeground(new Color(255, 255, 255));
-        this.pacientes.setIcon(new ImageIcon("src/imagenes/pacientes.png"));
         this.pacientes.setBorder(null);
         this.pacientes.setBorderPainted(false);
         this.pacientes.setContentAreaFilled(false);
         
         this.pagos.setForeground(new Color(255, 255, 255));
-        this.pagos.setIcon(new ImageIcon("src/imagenes/pagos.png"));
         this.pagos.setBorder(null);
         this.pagos.setBorderPainted(false);
         this.pagos.setContentAreaFilled(false);
         
         this.historial.setForeground(new Color(255, 255, 255));
-        this.historial.setIcon(new ImageIcon("src/imagenes/historial.png"));
         this.historial.setBorder(null);
         this.historial.setBorderPainted(false);
         this.historial.setContentAreaFilled(false);
         
         this.usuarios.setForeground(new Color(255, 255, 255));
-        this.usuarios.setIcon(new ImageIcon("src/imagenes/usuarios.png"));
         this.usuarios.setBorder(null);
         this.usuarios.setBorderPainted(false);
         this.usuarios.setContentAreaFilled(false);
@@ -131,6 +126,34 @@ public class PanelOpciones extends JPanel implements ActionListener{
         }
         
         this.addPopupMenuMiniUsuario();
+        this.setIconButton(1);//1, para que deje "seleccionado" la agenda
+    }
+    
+    public void setIconButton(int value){
+        
+        this.agenda.setIcon(new ImageIcon("src/imagenes/agenda.png"));
+        this.pacientes.setIcon(new ImageIcon("src/imagenes/pacientes.png"));
+        this.pagos.setIcon(new ImageIcon("src/imagenes/pagos.png"));
+        this.usuarios.setIcon(new ImageIcon("src/imagenes/usuarios.png"));
+        this.historial.setIcon(new ImageIcon("src/imagenes/historial.png"));
+        
+        switch(value){
+            case 1:
+                this.agenda.setIcon(new ImageIcon("src/imagenes/agendaSelec.png"));
+                break;
+            case 2:
+                this.pacientes.setIcon(new ImageIcon("src/imagenes/pacientesSelec.png"));
+                break;
+            case 3:
+                this.pagos.setIcon(new ImageIcon("src/imagenes/pagosSelec.png"));
+                break;
+            case 4:
+                this.usuarios.setIcon(new ImageIcon("src/imagenes/usuariosSelec.png"));
+                break;
+            case 5:
+                this.historial.setIcon(new ImageIcon("src/imagenes/historialSelec.png"));
+                break;
+        }
     }
     
     private void addPopupMenuMiniUsuario(){
@@ -163,8 +186,8 @@ public class PanelOpciones extends JPanel implements ActionListener{
         this.agenda.addActionListener(this);
         this.pacientes.addActionListener(this);
         this.pagos.addActionListener(this);
-        this.historial.addActionListener(this);
         this.usuarios.addActionListener(this);
+        this.historial.addActionListener(this);
     }
     
     private void addOpcionesPanel(){

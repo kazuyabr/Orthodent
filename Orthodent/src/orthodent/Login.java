@@ -95,9 +95,11 @@ public class Login extends javax.swing.JDialog implements WindowListener{
         diente1Imagen.setBorderPainted(false);
         diente1Imagen.setContentAreaFilled(false);
 
+        nombreUsuario.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         nombreUsuario.setForeground(new java.awt.Color(255, 255, 255));
         nombreUsuario.setText("Nombre de Usuario");
 
+        botonAceptar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         botonAceptar.setText("Aceptar");
         botonAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,6 +107,7 @@ public class Login extends javax.swing.JDialog implements WindowListener{
             }
         });
 
+        botonCancelar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         botonCancelar.setText("Cancelar");
         botonCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,6 +115,7 @@ public class Login extends javax.swing.JDialog implements WindowListener{
             }
         });
 
+        contraseña.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         contraseña.setForeground(new java.awt.Color(255, 255, 255));
         contraseña.setText("Contraseña");
 
@@ -120,6 +124,7 @@ public class Login extends javax.swing.JDialog implements WindowListener{
         diente2Imagen.setBorderPainted(false);
         diente2Imagen.setContentAreaFilled(false);
 
+        botonOlvidoContraseña.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         botonOlvidoContraseña.setForeground(new java.awt.Color(255, 255, 255));
         botonOlvidoContraseña.setText("Olvido contraseña?");
         botonOlvidoContraseña.setBorder(null);
@@ -139,16 +144,7 @@ public class Login extends javax.swing.JDialog implements WindowListener{
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(34, 34, 34)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(nombreUsuario)
-                                    .addComponent(contraseña))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(campoNombreUsuario)
-                                    .addComponent(campoContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(orthodentImagen)))
+                        .addComponent(orthodentImagen))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(68, 68, 68)
                         .addComponent(botonCancelar)
@@ -162,7 +158,16 @@ public class Login extends javax.swing.JDialog implements WindowListener{
                         .addComponent(diente1Imagen))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(99, 99, 99)
-                        .addComponent(botonOlvidoContraseña)))
+                        .addComponent(botonOlvidoContraseña))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nombreUsuario)
+                            .addComponent(contraseña))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(campoNombreUsuario)
+                            .addComponent(campoContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -172,7 +177,7 @@ public class Login extends javax.swing.JDialog implements WindowListener{
                 .addComponent(orthodentImagen)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(diente1Imagen)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nombreUsuario)
                     .addComponent(campoNombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -180,7 +185,7 @@ public class Login extends javax.swing.JDialog implements WindowListener{
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(campoContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(contraseña))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botonOlvidoContraseña)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)

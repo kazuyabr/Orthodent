@@ -228,6 +228,8 @@ public class JVentana extends JFrame{
     public void cambiarAgenda(){
         if(opActual!=1){
             this.removeAncestor();
+            this.panelOpciones.setIconButton(1);
+            
             this.add(this.contenedorAgenda,BorderLayout.CENTER);
             this.contenedorAgenda.updateUI();
             this.opActual = 1;
@@ -237,6 +239,7 @@ public class JVentana extends JFrame{
     public void cambiarPacientes(){
         if(opActual!=2){
             this.removeAncestor();
+            this.panelOpciones.setIconButton(2);
             
             if(this.pacientes==null){
                 this.crearPacientes();
@@ -251,6 +254,7 @@ public class JVentana extends JFrame{
     public void cambiarPagos(){
         if(opActual!=3){
             this.removeAncestor();
+            this.panelOpciones.setIconButton(3);
             
             if(this.pagos==null){
                 this.crearPagos();
@@ -265,6 +269,7 @@ public class JVentana extends JFrame{
     public void cambiarUsuarios(){
         if(opActual!=4){
             this.removeAncestor();
+            this.panelOpciones.setIconButton(4);
             
             if(this.usuarios==null){
                 this.crearUsuarios();
@@ -279,6 +284,7 @@ public class JVentana extends JFrame{
     public void cambiarHistorial(){
         if(opActual!=5){
             this.removeAncestor();
+            this.panelOpciones.setIconButton(5);
             
             if(this.historial==null){
                 this.crearHistorial();
