@@ -10,6 +10,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
@@ -288,7 +290,11 @@ public class PanelOpciones extends JPanel implements ActionListener{
             ((JVentana)this.getTopLevelAncestor()).cambiarPagos();
         }
         if (e.getSource() == this.usuarios){
-            ((JVentana)this.getTopLevelAncestor()).cambiarUsuarios();
+            try {
+                ((JVentana)this.getTopLevelAncestor()).cambiarUsuarios();
+            } catch (Exception ex) {
+                Logger.getLogger(PanelOpciones.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         if (e.getSource() == this.historial){
             ((JVentana)this.getTopLevelAncestor()).cambiarHistorial();
@@ -297,6 +303,11 @@ public class PanelOpciones extends JPanel implements ActionListener{
         //Opciones del mini Usuario
         if(e.getSource() == this.configurarCuenta){
             System.out.println("Configurar Cuenta");
+            /*try {
+                ((JVentana)this.getTopLevelAncestor()).cambiarUsuarios();
+            } catch (Exception ex) {
+                System.out.println("");
+            }*/
         }
         if(e.getSource() == this.cerrarSesion){
             ((JVentana)this.getTopLevelAncestor()).dispose();

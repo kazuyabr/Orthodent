@@ -16,6 +16,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.*;
 import modelo.Usuario;
+import orthodent.db.Autenticacion;
+import orthodent.usuarios.MostrarInfoUsuario;
 
 public class JVentana extends JFrame{
     
@@ -150,13 +152,17 @@ public class JVentana extends JFrame{
         this.contenedorPagos.add(panel,BorderLayout.NORTH);
     }
     
-    private void crearUsuarios(){
+    private void crearUsuarios() throws Exception{
         this.contenedorUsuarios.setLayout(new BorderLayout());
         this.usuarios = new Usuarios();
         
+        Usuario usuario = Autenticacion.getUsuario("Gonzalo", "gsotomayor@orthodent.cl");
+        MostrarInfoUsuario infoUsuario = new MostrarInfoUsuario(usuario);
+        
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        panel.add(this.usuarios,BorderLayout.CENTER);
+        //panel.add(this.usuarios,BorderLayout.CENTER);
+        panel.add(infoUsuario,BorderLayout.CENTER);
         
         JPanel borde1 = new JPanel();
         borde1.setBackground(Color.white);
@@ -266,7 +272,7 @@ public class JVentana extends JFrame{
         }
     }
     
-    public void cambiarUsuarios(){
+    public void cambiarUsuarios() throws Exception{
         if(opActual!=4){
             this.removeAncestor();
             this.panelOpciones.setIconButton(4);
@@ -294,5 +300,29 @@ public class JVentana extends JFrame{
             this.contenedorHistorial.updateUI();
             this.opActual = 5;
         }
+    }
+    
+    public Agenda getAgenda(){
+        return this.agenda;
+    }
+    
+    public Pacientes getPacientes(){
+        return this.pacientes;
+    }
+    
+    public Pagos getPagos(){
+        return this.pagos;
+    }
+    
+    public Usuarios getUsuarios(){
+        return this.usuarios;
+    }
+    
+    public Historial getHistorial(){
+        return this.historial;
+    }
+    
+    public JPanel getContenedorUsuarios(){
+        return this.contenedorUsuarios;
     }
 }

@@ -4,11 +4,14 @@
  */
 package orthodent.usuarios;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import orthodent.JVentana;
 import orthodent.db.Autenticacion;
 
 /**
@@ -373,6 +376,8 @@ public class NuevoUsuario extends javax.swing.JDialog {
                     System.out.println("");
                 }
                 
+                ((JVentana)this.getParent()).getUsuarios().updateModelo();
+                ((JVentana)this.getParent()).getUsuarios().updateUI();
                 this.dispose();
             }
             else{
@@ -383,28 +388,41 @@ public class NuevoUsuario extends javax.swing.JDialog {
             }
         }
         else{
-            System.out.println("Marcar campos obligatorios faltantes!!");
+            JOptionPane.showMessageDialog(this,
+                    "Faltan campos obligatorios",
+                    "Orthodent",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_aceptarActionPerformed
 
+    private String quitarEspaciosEnBlanco(String var){
+        
+        return var;
+    }
+    
     private boolean validarCamposObligatorios(String nombre, String apellidoPat, String email, String contraseña1, String contraseña2){
         
+        nombre = this.quitarEspaciosEnBlanco(nombre);
         if(nombre.equals("")){
             return false;
         }
         
+        apellidoPat = this.quitarEspaciosEnBlanco(apellidoPat);
         if(apellidoPat.equals("")){
             return false;
         }
         
+        email = this.quitarEspaciosEnBlanco(email);
         if(email.equals("")){
             return false;
         }
         
+        contraseña1 = this.quitarEspaciosEnBlanco(contraseña1);
         if(contraseña1.equals("")){
             return false;
         }
         
+        contraseña2 = this.quitarEspaciosEnBlanco(contraseña2);
         if(contraseña2.equals("")){
             return false;
         }

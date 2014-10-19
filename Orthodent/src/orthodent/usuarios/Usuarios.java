@@ -7,7 +7,11 @@ package orthodent.usuarios;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -31,6 +35,7 @@ public class Usuarios extends JPanel implements ActionListener{
     private TableModel modelo;
     private Object [][] filas;
     private String [] columnasNombre;
+    private MostrarInfoUsuario infoUsuario;
     
     public Usuarios(){
         this.setBackground(new Color(243,242,243));
@@ -43,6 +48,7 @@ public class Usuarios extends JPanel implements ActionListener{
     }
     
     private void initComponents(){
+        this.infoUsuario = null;
         this.bannerFondo = new ImageIcon("src/imagenes/directorioUsuarios.png").getImage();
         
         this.buscador = new JTextField();
@@ -66,14 +72,52 @@ public class Usuarios extends JPanel implements ActionListener{
         this.nuevoUsuario.addActionListener(this);
         
         this.tabla = new JTable();
-        this.initTabla();
+        this.columnasNombre = new String [] {"Nombres", "Apellido Paterno", "Apellido Materno", "Email", "Nombre de Usuario", "Rol"};
+        this.updateModelo();
+        this.tabla.getTableHeader().setReorderingAllowed(false);
+        
+        this.tabla.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                JTable table =(JTable) me.getSource();
+                Point p = me.getPoint();
+                int row = table.rowAtPoint(p);
+                if (me.getClickCount() == 2) {
+                    Object [] fila = getRowAt(row);
+                    try {
+                        Usuario usuario = Autenticacion.getUsuario((String)fila[0], (String)fila[3]);
+                        if(usuario!=null){
+                            JPanel contenedorUsuarios = ((JVentana)getTopLevelAncestor()).getContenedorUsuarios();
+                            contenedorUsuarios.remove(((JVentana)getTopLevelAncestor()).getUsuarios());
+                            
+                            if(infoUsuario==null){
+                                infoUsuario = new MostrarInfoUsuario(usuario);
+                                infoUsuario.updateUI();
+                            }
+                            
+                            contenedorUsuarios.add(infoUsuario, BorderLayout.CENTER);
+                            contenedorUsuarios.updateUI();
+                        }
+                    } catch (Exception ex) {
+                        System.out.println("");
+                    }
+                }
+            }
+        });
     }
     
-    private void initTabla(){
+    private Object[] getRowAt(int row) {
+        Object[] result = new String[this.columnasNombre.length];
         
+        for (int i = 0; i < this.columnasNombre.length; i++) {
+            result[i] = this.tabla.getModel().getValueAt(row, i);
+        }
+        
+        return result;
+    }
+    
+    public void updateModelo(){
+        //Podria ser ordenado!! -> una opcion es que la consulta ordene
         ArrayList<Usuario> usuarios = Autenticacion.listarUsuarios();
-        
-        this.columnasNombre = new String [] {"Nombres", "Apellido Paterno", "Apellido Materno", "Nombre de Usuario", "Rol"};
         
         int n = usuarios.size();
         int m = this.columnasNombre.length;
@@ -85,7 +129,7 @@ public class Usuarios extends JPanel implements ActionListener{
             Rol rol = RolDB.getRol(usuario.getId_rol());
             
             Object [] fila = new Object [] {usuario.getNombre(), usuario.getApellido_pat(), usuario.getApellido_mat(),
-                                        usuario.getNombreUsuario(), rol.getNombre().toLowerCase()};
+                                        usuario.getEmail(), usuario.getNombreUsuario(), rol.getNombre().toLowerCase()};
             
             filas[i] = fila;
             i++;
@@ -93,10 +137,10 @@ public class Usuarios extends JPanel implements ActionListener{
         
         this.modelo = new DefaultTableModel(this.filas, this.columnasNombre) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                String.class, String.class, String.class, String.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -109,7 +153,6 @@ public class Usuarios extends JPanel implements ActionListener{
         };
         
         this.tabla.setModel(modelo);
-        this.tabla.getTableHeader().setReorderingAllowed(false) ;
     }
     
     private void addComponents(){
