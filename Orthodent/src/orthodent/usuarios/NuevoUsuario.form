@@ -189,6 +189,9 @@
               </Events>
             </Component>
             <Component class="javax.swing.JPasswordField" name="contrasena1">
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="contrasena1KeyTyped"/>
+              </Events>
             </Component>
             <Container class="javax.swing.JPanel" name="jPanel1">
               <Properties>
@@ -292,6 +295,9 @@
               </SubComponents>
             </Container>
             <Component class="javax.swing.JTextField" name="apellidoMat">
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="apellidoMatKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="labelApellidoPat">
               <Properties>
@@ -305,6 +311,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="email">
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="emailKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="labelApellidoMat">
               <Properties>
@@ -326,8 +335,14 @@
               </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="apellidoPat">
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="apellidoPatKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="nombres">
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="nombresKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="labelContrase&#xf1;a1">
               <Properties>
@@ -352,6 +367,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="telefono">
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="telefonoKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="labelTelefono">
               <Properties>
@@ -379,6 +397,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JPasswordField" name="contrasena2">
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="contrasena2KeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="labelContrase&#xf1;a2">
               <Properties>

@@ -156,13 +156,13 @@ public class JVentana extends JFrame{
         this.contenedorUsuarios.setLayout(new BorderLayout());
         this.usuarios = new Usuarios();
         
-        Usuario usuario = Autenticacion.getUsuario("Gonzalo", "gsotomayor@orthodent.cl");
-        MostrarInfoUsuario infoUsuario = new MostrarInfoUsuario(usuario);
+        //Usuario usuario = Autenticacion.getUsuario("Gonzalo", "gsotomayor@orthodent.cl");
+        //MostrarInfoUsuario infoUsuario = new MostrarInfoUsuario(usuario);
         
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        //panel.add(this.usuarios,BorderLayout.CENTER);
-        panel.add(infoUsuario,BorderLayout.CENTER);
+        panel.add(this.usuarios,BorderLayout.CENTER);
+        //panel.add(infoUsuario,BorderLayout.CENTER);
         
         JPanel borde1 = new JPanel();
         borde1.setBackground(Color.white);

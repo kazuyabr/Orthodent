@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -28,22 +30,30 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
     private JButton datosPersonales;
     private JButton datosProfesionales;
     private JButton horario;
+    private JButton volver;
     private Usuario usuario;
+    private int opActual;
+    private DatosPersonales datosPersonalesPanel;
+    private DatosProfesional datosProfesionalPanel;
+    private Horario horarioPanel;
+    private JPanel contenedor;
     
     public MostrarInfoUsuario(Usuario usuario){
         this.usuario = usuario;
-        this.setBackground(new Color(243,242,243));
+        this.setBackground(new Color(255,255,255));
         this.setPreferredSize(new Dimension(1073, 561));
         
         this.setLayout(new BorderLayout());
         
         this.initComponents();
+        this.opActual = 1;
         this.addComponents();
     }
     
     private void initComponents(){
         
-        this.nombreUsuario = new JLabel("Gonzalo Sotomayor");
+        this.nombreUsuario = new JLabel();
+        this.nombreUsuario.setText(this.usuario.getNombre()+" "+this.usuario.getApellido_pat());
         this.nombreUsuario.setFont(new Font("Georgia", 1, 14));
         this.nombreUsuario.setForeground(new Color(255, 255, 255));
         
@@ -73,15 +83,112 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
         this.horario.setBorderPainted(false);
         this.horario.setContentAreaFilled(false);
         this.horario.addActionListener(this);
+        
+        this.volver = new JButton();
+        this.volver.setIcon(new ImageIcon("src/imagenes/navigate-left_mini.png"));
+        this.volver.setBorder(null);
+        this.volver.setBorderPainted(false);
+        this.volver.setContentAreaFilled(false);
+        this.volver.addActionListener(this);
+        
+        this.datosPersonalesPanel = new DatosPersonales(this.usuario);
+        this.datosProfesionalPanel = null;
+        this.horarioPanel = null;
+        
+        this.contenedor = new JPanel();
+        this.contenedor.setBackground(new Color(255,255,255));
+        this.contenedor.setLayout(new BorderLayout());
     }
     
     private void addComponents(){
         
         JPanel panelIzq = panelLateral();
-        this.add(panelIzq,BorderLayout.WEST);
+        this.contenedor.add(panelIzq,BorderLayout.WEST);
+        this.contenedor.add(this.datosPersonalesPanel,BorderLayout.CENTER);
         
-        JPanel panelCentral = panelCentral();
-        this.add(panelCentral,BorderLayout.CENTER);
+        GroupLayout layout = new GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(this.contenedor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(this.volver))
+                .addContainerGap(212, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(this.volver)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(this.contenedor, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        
+    }
+    
+    private void removeAncestor(){
+        
+        try{
+            this.contenedor.remove(this.datosPersonalesPanel);
+        }
+        catch(Exception e){
+        }
+        
+        try{
+            this.contenedor.remove(this.datosProfesionalPanel);
+        }
+        catch(Exception e){
+        }
+        
+        try{
+            this.contenedor.remove(this.horarioPanel);
+        }
+        catch(Exception e){
+        }
+    }
+    
+    public void cambiarDatosPersonales(){
+        if(opActual!=1){
+            this.removeAncestor();
+            
+            if(this.datosPersonalesPanel==null){
+                this.datosPersonalesPanel = new DatosPersonales(this.usuario);
+            }
+            
+            this.contenedor.add(this.datosPersonalesPanel,BorderLayout.CENTER);
+            this.updateUI();
+            this.opActual = 1;
+        }
+    }
+    
+    public void cambiarDatosProfesional(){
+        if(opActual!=2){
+            this.removeAncestor();
+            
+            if(this.datosProfesionalPanel==null){
+                this.datosProfesionalPanel = new DatosProfesional(this.usuario);
+            }
+            
+            this.contenedor.add(this.datosProfesionalPanel,BorderLayout.CENTER);
+            this.updateUI();
+            this.opActual = 2;
+        }
+    }
+    
+    public void cambiarHorario(){
+        if(opActual!=3){
+            this.removeAncestor();
+            
+            if(this.horarioPanel==null){
+                this.horarioPanel = new Horario(this.usuario);
+            }
+            
+            this.contenedor.add(this.horarioPanel,BorderLayout.CENTER);
+            this.updateUI();
+            this.opActual = 3;
+        }
     }
     
     private JPanel panelLateral(){
@@ -128,40 +235,6 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
         );
         
         return panelIzq;
-    }
-    
-    private JPanel panelCentral(){
-        JPanel panelCentral = new JPanel();
-        panelCentral.setBackground(new Color(255, 255, 255));
-        
-        JPanel border = new JPanel();
-        border.setBackground(new Color(255, 255, 255));
-        border.setBorder(BorderFactory.createTitledBorder(""));
-        border.setPreferredSize(new Dimension(824,572));
-        
-        
-        
-        
-        
-        GroupLayout layout = new GroupLayout(panelCentral);
-        panelCentral.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(border, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(212, Short.MAX_VALUE))
-        );
-        
-        layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(border, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        
-        return panelCentral;
     }
     
     private JPanel addPanelConNombre(){
@@ -216,18 +289,78 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
                 break;
         }
     }
+    
+    private void guardarAntes(){
+        if(this.opActual==1){
+            //Datos Personales
+            if(this.datosPersonalesPanel.getCambios()){
+                Object[] options = {"Sí","No"};
+        
+                int n = JOptionPane.showOptionDialog(this,
+                            "Hay cambios que no se han guardardo\n\n"+
+                            "¿Desea guardar?",
+                            "Orthodent",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
+
+                if(n==0){
+                    this.datosPersonalesPanel.guardar();
+                }
+            }
+        }
+        else if(this.opActual==2){
+            //Datos profesional
+            if(this.datosProfesionalPanel.getCambios()){
+                Object[] options = {"Sí","No"};
+        
+                int n = JOptionPane.showOptionDialog(this,
+                            "Hay cambios que no se han guardardo\n\n"+
+                            "¿Desea guardar?",
+                            "Orthodent",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
+
+                if(n==0){
+                    this.datosProfesionalPanel.guardar();
+                }
+            }
+        }
+        else{
+            //Horario
+        }
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         
         if(e.getSource() == this.datosPersonales){
+            this.guardarAntes();
             this.setIconButton(1);
+            this.cambiarDatosPersonales();
         }
         if(e.getSource() == this.datosProfesionales){
+            this.guardarAntes();
             this.setIconButton(2);
+            this.cambiarDatosProfesional();
         }
         if(e.getSource() == this.horario){
+            this.guardarAntes();
             this.setIconButton(3);
+            this.cambiarHorario();
+        }
+        if(e.getSource() == this.volver){
+            this.guardarAntes();
+            try {
+                ((Usuarios)this.getParent()).volverUsuarios();
+            } catch (Exception ex) {
+                System.out.println("");
+            }
         }
     }
 }

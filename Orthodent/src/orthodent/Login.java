@@ -32,22 +32,6 @@ public class Login extends javax.swing.JDialog implements WindowListener{
         this.setBackground(Color.white);
         this.addWindowListener(this);
         
-        KeyboardFocusManager
-            .getCurrentKeyboardFocusManager()
-            .addKeyEventDispatcher(new KeyEventDispatcher(){
-            public boolean dispatchKeyEvent(KeyEvent e){
-                boolean keyHandled = false;
-                if (e.getID() == KeyEvent.KEY_PRESSED){
-                    if (e.getKeyCode() == KeyEvent.VK_ENTER && !dialog2) {
-                        keyHandled = true;
-                        botonAceptarActionPerformed(null);
-                    }
-                }
-                return keyHandled;
-            }  
-        });
-        
-        
         this.centrarVentana();
     }
     
@@ -80,7 +64,6 @@ public class Login extends javax.swing.JDialog implements WindowListener{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Orthondent Login");
-        setBackground(new java.awt.Color(255, 255, 255));
         setBounds(new java.awt.Rectangle(0, 0, 0, 0));
 
         jPanel1.setBackground(new java.awt.Color(9, 133, 179));
@@ -98,6 +81,15 @@ public class Login extends javax.swing.JDialog implements WindowListener{
         nombreUsuario.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         nombreUsuario.setForeground(new java.awt.Color(255, 255, 255));
         nombreUsuario.setText("Nombre de Usuario");
+
+        campoNombreUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                campoNombreUsuarioKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                campoNombreUsuarioKeyReleased(evt);
+            }
+        });
 
         botonAceptar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         botonAceptar.setText("Aceptar");
@@ -118,6 +110,12 @@ public class Login extends javax.swing.JDialog implements WindowListener{
         contraseña.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         contraseña.setForeground(new java.awt.Color(255, 255, 255));
         contraseña.setText("Contraseña");
+
+        campoContraseña.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                campoContraseñaKeyPressed(evt);
+            }
+        });
 
         diente2Imagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/diente2_mini.png"))); // NOI18N
         diente2Imagen.setBorder(null);
@@ -268,6 +266,22 @@ public class Login extends javax.swing.JDialog implements WindowListener{
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
         System.exit(0);
     }//GEN-LAST:event_botonCancelarActionPerformed
+
+    private void campoNombreUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoNombreUsuarioKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER && !dialog2) {
+            botonAceptarActionPerformed(null);
+        }
+    }//GEN-LAST:event_campoNombreUsuarioKeyPressed
+
+    private void campoContraseñaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoContraseñaKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER && !dialog2) {
+            botonAceptarActionPerformed(null);
+        }
+    }//GEN-LAST:event_campoContraseñaKeyPressed
+
+    private void campoNombreUsuarioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoNombreUsuarioKeyReleased
+        
+    }//GEN-LAST:event_campoNombreUsuarioKeyReleased
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAceptar;

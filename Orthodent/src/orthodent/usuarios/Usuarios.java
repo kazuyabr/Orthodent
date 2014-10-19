@@ -10,8 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -36,6 +34,8 @@ public class Usuarios extends JPanel implements ActionListener{
     private Object [][] filas;
     private String [] columnasNombre;
     private MostrarInfoUsuario infoUsuario;
+    private JPanel contenedorListarUsuarios;
+    private boolean isListarUsuarios;
     
     public Usuarios(){
         this.setBackground(new Color(243,242,243));
@@ -43,11 +43,16 @@ public class Usuarios extends JPanel implements ActionListener{
         
         this.setLayout(new BorderLayout());
         
+        this.isListarUsuarios = true;
         this.initComponents();
         this.addComponents();
     }
     
     private void initComponents(){
+        
+        this.contenedorListarUsuarios = new JPanel();
+        this.contenedorListarUsuarios.setLayout(new BorderLayout());
+        
         this.infoUsuario = null;
         this.bannerFondo = new ImageIcon("src/imagenes/directorioUsuarios.png").getImage();
         
@@ -86,16 +91,12 @@ public class Usuarios extends JPanel implements ActionListener{
                     try {
                         Usuario usuario = Autenticacion.getUsuario((String)fila[0], (String)fila[3]);
                         if(usuario!=null){
-                            JPanel contenedorUsuarios = ((JVentana)getTopLevelAncestor()).getContenedorUsuarios();
-                            contenedorUsuarios.remove(((JVentana)getTopLevelAncestor()).getUsuarios());
+                            infoUsuario = new MostrarInfoUsuario(usuario);
                             
-                            if(infoUsuario==null){
-                                infoUsuario = new MostrarInfoUsuario(usuario);
-                                infoUsuario.updateUI();
-                            }
-                            
-                            contenedorUsuarios.add(infoUsuario, BorderLayout.CENTER);
-                            contenedorUsuarios.updateUI();
+                            remove(contenedorListarUsuarios);
+                            add(infoUsuario, BorderLayout.CENTER);
+                            isListarUsuarios = false;
+                            updateUI();
                         }
                     } catch (Exception ex) {
                         System.out.println("");
@@ -126,13 +127,15 @@ public class Usuarios extends JPanel implements ActionListener{
         
         int i = 0;
         for(Usuario usuario : usuarios){
-            Rol rol = RolDB.getRol(usuario.getId_rol());
-            
-            Object [] fila = new Object [] {usuario.getNombre(), usuario.getApellido_pat(), usuario.getApellido_mat(),
-                                        usuario.getEmail(), usuario.getNombreUsuario(), rol.getNombre().toLowerCase()};
-            
-            filas[i] = fila;
-            i++;
+            if(usuario.isActivo()){
+                Rol rol = RolDB.getRol(usuario.getId_rol());
+
+                Object [] fila = new Object [] {usuario.getNombre(), usuario.getApellido_pat(), usuario.getApellido_mat(),
+                                            usuario.getEmail(), usuario.getNombreUsuario(), rol.getNombre().toLowerCase()};
+
+                filas[i] = fila;
+                i++;
+            }
         }
         
         this.modelo = new DefaultTableModel(this.filas, this.columnasNombre) {
@@ -153,6 +156,17 @@ public class Usuarios extends JPanel implements ActionListener{
         };
         
         this.tabla.setModel(modelo);
+    }
+    
+    public void volverUsuarios() throws Exception{
+        if(!this.isListarUsuarios){
+            
+            this.remove(this.infoUsuario);
+            this.add(this.contenedorListarUsuarios, BorderLayout.CENTER);
+            this.isListarUsuarios = true;
+            this.updateModelo();
+            this.updateUI();
+        }
     }
     
     private void addComponents(){
@@ -180,14 +194,19 @@ public class Usuarios extends JPanel implements ActionListener{
         auxiliar.add(banner,BorderLayout.CENTER);
         //Fin Panel azul, con el nombre del Directorio
         
-        this.add(auxiliar,BorderLayout.NORTH);
+        this.contenedorListarUsuarios.add(auxiliar,BorderLayout.NORTH);
+        
+        //this.add(auxiliar,BorderLayout.NORTH);
         
         //Inicio tabla
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setViewportView(this.tabla);
         
-        this.add(scrollPane,BorderLayout.CENTER);
+        this.contenedorListarUsuarios.add(scrollPane,BorderLayout.CENTER);
+        //this.add(scrollPane,BorderLayout.CENTER);
         //Fin tabla
+        
+        this.add(this.contenedorListarUsuarios,BorderLayout.CENTER);
     }
     
     private void addComponentPanel1(JPanel panel1){

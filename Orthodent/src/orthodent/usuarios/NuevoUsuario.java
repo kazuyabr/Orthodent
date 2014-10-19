@@ -4,13 +4,10 @@
  */
 package orthodent.usuarios;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import javax.swing.BorderFactory;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 import orthodent.JVentana;
 import orthodent.db.Autenticacion;
 
@@ -81,6 +78,12 @@ public class NuevoUsuario extends javax.swing.JDialog {
             }
         });
 
+        contrasena1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                contrasena1KeyTyped(evt);
+            }
+        });
+
         jPanel1.setBackground(new java.awt.Color(9, 133, 179));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Rol", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Georgia", 0, 12), new java.awt.Color(219, 233, 238))); // NOI18N
 
@@ -142,9 +145,21 @@ public class NuevoUsuario extends javax.swing.JDialog {
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
+        apellidoMat.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                apellidoMatKeyTyped(evt);
+            }
+        });
+
         labelApellidoPat.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         labelApellidoPat.setForeground(new java.awt.Color(255, 255, 255));
         labelApellidoPat.setText("Apellido Paterno (*)");
+
+        email.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                emailKeyTyped(evt);
+            }
+        });
 
         labelApellidoMat.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         labelApellidoMat.setForeground(new java.awt.Color(255, 255, 255));
@@ -157,6 +172,18 @@ public class NuevoUsuario extends javax.swing.JDialog {
             }
         });
 
+        apellidoPat.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                apellidoPatKeyTyped(evt);
+            }
+        });
+
+        nombres.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                nombresKeyTyped(evt);
+            }
+        });
+
         labelContraseña1.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         labelContraseña1.setForeground(new java.awt.Color(255, 255, 255));
         labelContraseña1.setText("Contraseña (*)");
@@ -164,6 +191,12 @@ public class NuevoUsuario extends javax.swing.JDialog {
         labelNombre.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         labelNombre.setForeground(new java.awt.Color(255, 255, 255));
         labelNombre.setText("Nombres (*)");
+
+        telefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                telefonoKeyTyped(evt);
+            }
+        });
 
         labelTelefono.setBackground(new java.awt.Color(9, 133, 179));
         labelTelefono.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
@@ -173,6 +206,12 @@ public class NuevoUsuario extends javax.swing.JDialog {
         labelEmail.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         labelEmail.setForeground(new java.awt.Color(255, 255, 255));
         labelEmail.setText("Email (*)");
+
+        contrasena2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                contrasena2KeyTyped(evt);
+            }
+        });
 
         labelContraseña2.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         labelContraseña2.setForeground(new java.awt.Color(255, 255, 255));
@@ -395,34 +434,115 @@ public class NuevoUsuario extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_aceptarActionPerformed
 
-    private String quitarEspaciosEnBlanco(String var){
+    private void nombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombresKeyTyped
+        char c = evt.getKeyChar();
         
-        return var;
-    }
+        if(c==KeyEvent.VK_ENTER){
+            evt.consume();
+        }
+        else if(c==KeyEvent.VK_SPACE){
+            String antes = this.nombres.getText();
+            
+            if(antes.equals("")){
+                evt.consume();
+            }
+        }
+        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_nombresKeyTyped
+
+    private void apellidoPatKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoPatKeyTyped
+        char c = evt.getKeyChar();
+        
+        if(c==KeyEvent.VK_ENTER){
+            evt.consume();
+        }
+        else if(c==KeyEvent.VK_SPACE){
+            String antes = this.apellidoPat.getText();
+            
+            if(antes.equals("")){
+                evt.consume();
+            }
+        }
+        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_apellidoPatKeyTyped
+
+    private void apellidoMatKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoMatKeyTyped
+        char c = evt.getKeyChar();
+        
+        if(c==KeyEvent.VK_ENTER){
+            evt.consume();
+        }
+        else if(c==KeyEvent.VK_SPACE){
+            String antes = this.nombres.getText();
+            
+            if(antes.equals("")){
+                evt.consume();
+            }
+        }
+        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_apellidoMatKeyTyped
+
+    private void emailKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailKeyTyped
+        char c = evt.getKeyChar();
+        
+        if(c==KeyEvent.VK_ENTER){
+            evt.consume();
+        }
+        else if(c==KeyEvent.VK_SPACE){
+            evt.consume();
+        }
+        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z') || (c>='0' && c<='9') || c=='_' || c=='@' || c=='-')){
+            evt.consume();
+        }
+    }//GEN-LAST:event_emailKeyTyped
+
+    private void contrasena1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contrasena1KeyTyped
+        char c = evt.getKeyChar();
+        
+        if(!((c>='0' && c<='9') || (c>='a' && c<='z') || (c>='A' && c<='Z'))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_contrasena1KeyTyped
+
+    private void contrasena2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contrasena2KeyTyped
+        char c = evt.getKeyChar();
+        
+        if(!((c>='0' && c<='9') || (c>='a' && c<='z') || (c>='A' && c<='Z'))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_contrasena2KeyTyped
+
+    private void telefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefonoKeyTyped
+        char c = evt.getKeyChar();
+        if (!(c>='0' && c<='9')){
+            evt.consume();
+        }
+    }//GEN-LAST:event_telefonoKeyTyped
     
     private boolean validarCamposObligatorios(String nombre, String apellidoPat, String email, String contraseña1, String contraseña2){
         
-        nombre = this.quitarEspaciosEnBlanco(nombre);
         if(nombre.equals("")){
             return false;
         }
         
-        apellidoPat = this.quitarEspaciosEnBlanco(apellidoPat);
         if(apellidoPat.equals("")){
             return false;
         }
         
-        email = this.quitarEspaciosEnBlanco(email);
         if(email.equals("")){
             return false;
         }
         
-        contraseña1 = this.quitarEspaciosEnBlanco(contraseña1);
         if(contraseña1.equals("")){
             return false;
         }
         
-        contraseña2 = this.quitarEspaciosEnBlanco(contraseña2);
         if(contraseña2.equals("")){
             return false;
         }
