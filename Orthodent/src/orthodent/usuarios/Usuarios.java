@@ -98,7 +98,15 @@ public class Usuarios extends JPanel implements ActionListener{
                     try {
                         Usuario usuario = Autenticacion.getUsuario((String)fila[0], (String)fila[3]);
                         if(usuario!=null){
-                            infoUsuario = new MostrarInfoUsuario(usuario, false);
+                            
+                            Usuario actual = ((JVentana)getTopLevelAncestor()).getUsuario();
+                            
+                            if(actual.getId_usuario()==usuario.getId_usuario()){
+                                infoUsuario = new MostrarInfoUsuario(usuario, true, true);
+                            }
+                            else{
+                                infoUsuario = new MostrarInfoUsuario(usuario, false, true);
+                            }
                             
                             remove(contenedorListarUsuarios);
                             add(infoUsuario, BorderLayout.CENTER);
@@ -206,14 +214,11 @@ public class Usuarios extends JPanel implements ActionListener{
         
         this.contenedorListarUsuarios.add(auxiliar,BorderLayout.NORTH);
         
-        //this.add(auxiliar,BorderLayout.NORTH);
-        
         //Inicio tabla
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setViewportView(this.tabla);
         
         this.contenedorListarUsuarios.add(scrollPane,BorderLayout.CENTER);
-        //this.add(scrollPane,BorderLayout.CENTER);
         //Fin tabla
         
         this.add(this.contenedorListarUsuarios,BorderLayout.CENTER);

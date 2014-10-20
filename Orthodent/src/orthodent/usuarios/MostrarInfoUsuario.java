@@ -33,15 +33,17 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
     private JButton volver;
     private Usuario usuario;
     private int opActual;
-    private DatosPersonales datosPersonalesPanel;
+    private JPanel datosPersonalesPanel;
     private DatosProfesional datosProfesionalPanel;
     private Horario horarioPanel;
     private JPanel contenedor;
     private boolean configurarCuenta;
+    private boolean desdeUsuario;
     
-    public MostrarInfoUsuario(Usuario usuario, boolean configurarCuenta){
+    public MostrarInfoUsuario(Usuario usuario, boolean configurarCuenta, boolean desdeUsuario){
         this.usuario = usuario;
         this.configurarCuenta = configurarCuenta;
+        this.desdeUsuario = desdeUsuario;
         this.setBackground(new Color(255,255,255));
         this.setPreferredSize(new Dimension(1073, 561));
         
@@ -93,7 +95,14 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
         this.volver.setContentAreaFilled(false);
         this.volver.addActionListener(this);
         
-        this.datosPersonalesPanel = new DatosPersonales(this.usuario);
+        
+        if(!this.configurarCuenta){
+            this.datosPersonalesPanel = new DatosPersonales(this.usuario);
+        }
+        else{
+            this.datosPersonalesPanel = new ConfigurarCuenta(this.usuario);
+        }
+        
         this.datosProfesionalPanel = null;
         this.horarioPanel = null;
         
@@ -289,21 +298,48 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
     private void guardarAntes(){
         if(this.opActual==1){
             //Datos Personales
-            if(this.datosPersonalesPanel.getCambios()){
-                Object[] options = {"Sí","No"};
-        
-                int n = JOptionPane.showOptionDialog(this,
-                            "Hay cambios que no se han guardardo\n\n"+
-                            "¿Desea guardar?",
-                            "Orthodent",
-                            JOptionPane.YES_NO_CANCEL_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null,
-                            options,
-                            options[0]);
+            
+            if(this.datosPersonalesPanel instanceof DatosPersonales){
+                
+                DatosPersonales panelDatosPersonales = (DatosPersonales) this.datosPersonalesPanel;
+                
+                if(panelDatosPersonales.getCambios()){
+                    Object[] options = {"Sí","No"};
 
-                if(n==0){
-                    this.datosPersonalesPanel.guardar();
+                    int n = JOptionPane.showOptionDialog(this,
+                                "Hay cambios que no se han guardardo\n\n"+
+                                "¿Desea guardar?",
+                                "Orthodent",
+                                JOptionPane.YES_NO_CANCEL_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                options,
+                                options[0]);
+
+                    if(n==0){
+                        panelDatosPersonales.guardar();
+                    }
+                }
+            }
+            else{
+                ConfigurarCuenta panelConfigurarCuenta = (ConfigurarCuenta) this.datosPersonalesPanel;
+                
+                if(panelConfigurarCuenta.getCambios()){
+                    Object[] options = {"Sí","No"};
+
+                    int n = JOptionPane.showOptionDialog(this,
+                                "Hay cambios que no se han guardardo\n\n"+
+                                "¿Desea guardar?",
+                                "Orthodent",
+                                JOptionPane.YES_NO_CANCEL_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                options,
+                                options[0]);
+
+                    if(n==0){
+                        panelConfigurarCuenta.guardar();
+                    }
                 }
             }
         }
@@ -350,7 +386,8 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
     }
     
     public void volver(){
-        if(!this.configurarCuenta){
+        
+        if(!this.configurarCuenta || this.desdeUsuario){
             try {
                 ((Usuarios)this.getParent()).volverUsuarios();
             } catch (Exception ex) {

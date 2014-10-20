@@ -200,7 +200,7 @@ public class JVentana extends JFrame{
     
     private void crearConfigurarCuenta(){
         this.contenedorConfigurarCuenta.setLayout(new BorderLayout());
-        this.configurarCuenta = new MostrarInfoUsuario(this.usuario, true);
+        this.configurarCuenta = new MostrarInfoUsuario(this.usuario, true, false);
         
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
