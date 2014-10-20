@@ -53,7 +53,6 @@ public class Usuario {
         this.activo = activo;
     }
 
-
     public boolean isActivo() {
         return activo;
     }

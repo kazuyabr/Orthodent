@@ -12,6 +12,16 @@ import java.util.Date;
  */
 public class Paciente {
 
+    private int id_paciente;
+    private String nombre;
+    private String apellido_pat;
+    private String apellido_mat;
+    private String rut;
+    private String fechaNacimiento;
+    private String antecedenteMedico;
+    private String telefono;
+    private boolean activo; 
+    
     public Paciente(int id_paciente, String nombre, String apellido_pat, String apellido_mat, String rut, String fechaNacimiento, String antecedenteMedico, String telefono, boolean activo) {
         this.id_paciente = id_paciente;
         this.nombre = nombre;
@@ -24,16 +34,6 @@ public class Paciente {
         this.activo = activo;
     }
     
-    private int id_paciente;
-    private String nombre;
-    private String apellido_pat;
-    private String apellido_mat;
-    private String rut;
-    private String fechaNacimiento;
-    private String antecedenteMedico;
-    private String telefono;
-    private boolean activo;    
-
     public int getId_paciente() {
         return id_paciente;
     }

@@ -10,8 +10,8 @@ package modelo;
  */
 public class Rol {
     
-    int id_rol;
-    String nombre;
+    private int id_rol;
+    private String nombre;
     
     public Rol(int id_rol, String nombre){
         this.id_rol = id_rol;
