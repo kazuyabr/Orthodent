@@ -153,9 +153,7 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
         if(opActual!=1){
             this.removeAncestor();
             
-            if(this.datosPersonalesPanel==null){
-                this.datosPersonalesPanel = new DatosPersonales(this.usuario);
-            }
+            this.datosPersonalesPanel = new DatosPersonales(this.usuario);
             
             this.contenedor.add(this.datosPersonalesPanel,BorderLayout.CENTER);
             this.updateUI();
@@ -167,9 +165,7 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
         if(opActual!=2){
             this.removeAncestor();
             
-            if(this.datosProfesionalPanel==null){
-                this.datosProfesionalPanel = new DatosProfesional(this.usuario);
-            }
+            this.datosProfesionalPanel = new DatosProfesional(this.usuario);
             
             this.contenedor.add(this.datosProfesionalPanel,BorderLayout.CENTER);
             this.updateUI();
@@ -181,9 +177,7 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
         if(opActual!=3){
             this.removeAncestor();
             
-            if(this.horarioPanel==null){
-                this.horarioPanel = new Horario(this.usuario);
-            }
+            this.horarioPanel = new Horario(this.usuario);
             
             this.contenedor.add(this.horarioPanel,BorderLayout.CENTER);
             this.updateUI();

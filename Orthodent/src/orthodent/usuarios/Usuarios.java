@@ -5,12 +5,10 @@
 package orthodent.usuarios;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import modelo.Rol;
@@ -57,6 +55,14 @@ public class Usuarios extends JPanel implements ActionListener{
         this.bannerFondo = new ImageIcon("src/imagenes/directorioUsuarios.png").getImage();
         
         this.buscador = new JTextField();
+        
+        this.buscador.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent evt) {
+                buscadorKeyTyped(evt);
+            }
+        });
+        
         this.botonBuscar = new JButton();
         this.botonBuscar.setForeground(new Color(11, 146, 181));
         this.botonBuscar.setFont(new Font("Georgia", 1, 12));
@@ -65,6 +71,7 @@ public class Usuarios extends JPanel implements ActionListener{
         this.botonBuscar.setBorder(null);
         this.botonBuscar.setBorderPainted(false);
         this.botonBuscar.setContentAreaFilled(false);
+        this.botonBuscar.addActionListener(this);
         
         this.nuevoUsuario = new JButton();
         this.nuevoUsuario.setForeground(new Color(11, 146, 181));
@@ -77,7 +84,7 @@ public class Usuarios extends JPanel implements ActionListener{
         this.nuevoUsuario.addActionListener(this);
         
         this.tabla = new JTable();
-        this.columnasNombre = new String [] {"Nombres", "Apellido Paterno", "Apellido Materno", "Email", "Nombre de Usuario", "Rol"};
+        this.columnasNombre = new String [] {"Nombre", "Apellido Paterno", "Apellido Materno", "Email", "Nombre de Usuario", "Rol"};
         this.updateModelo();
         this.tabla.getTableHeader().setReorderingAllowed(false);
         
@@ -245,7 +252,127 @@ public class Usuarios extends JPanel implements ActionListener{
         }
         
         if(e.getSource() == this.botonBuscar){
-            System.out.println("Boton Buscar");
+            this.buscar();
         }
     }
+    
+    private void buscadorKeyTyped(KeyEvent evt) {
+        char c = evt.getKeyChar();
+        
+        if(c==KeyEvent.VK_ENTER){
+            evt.consume();
+            
+            if(this.buscador.getText().equals("")){
+                this.updateModelo();
+            }
+            else{
+                this.buscar();
+            }
+        }
+        else if(c==KeyEvent.VK_BACK_SPACE){
+            if(this.buscador.getText().equals("")){
+                this.updateModelo();
+            }
+        }
+    }
+    
+    private void buscar(){
+        String value = this.buscador.getText();
+        System.out.println("asdasdads");
+        
+        ArrayList<Usuario> usuarios = Autenticacion.listarUsuarios();
+        
+        int m = this.columnasNombre.length;
+        
+        ArrayList<Object []> objetos = new ArrayList<Object []>();
+        
+        for(Usuario usuario : usuarios){
+            if(usuario.isActivo()){
+                Rol rol = RolDB.getRol(usuario.getId_rol());
+
+                Object [] fila = new Object [] {usuario.getNombre(), usuario.getApellido_pat(), usuario.getApellido_mat(),
+                                            usuario.getEmail(), usuario.getNombreUsuario(), rol.getNombre().toLowerCase()};
+                
+                boolean aux = false;
+                
+                for(Object o : fila){
+                    String obj = (String) o;
+                    obj = obj.toLowerCase();
+                    if(obj.contains(value)){
+                        aux = true;
+                        break;
+                    }
+                }
+                
+                if(aux){
+                    objetos.add(fila);
+                }
+            }
+        }
+        
+        this.filas = new Object [objetos.size()][m];
+        
+        int i = 0;
+        for(Object [] el : objetos){
+            this.filas[i] = el;
+            i++;
+        }
+        
+        this.modelo = new DefaultTableModel(this.filas, this.columnasNombre) {
+            Class[] types = new Class [] {
+                String.class, String.class, String.class, String.class, String.class, String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
+        
+        this.tabla.setModel(modelo);
+        //this.updateUI();
+        
+        
+        
+        /*for (int row = 0; row <= this.tabla.getRowCount() - 1; row++) {
+            for (int col = 0; col <= this.tabla.getColumnCount() - 1; col++) {
+                if (value.equals(this.tabla.getValueAt(row, col))) {
+                    // this will automatically set the view of the scroll in the location of the value
+                    this.tabla.scrollRectToVisible(this.tabla.getCellRect(row, 0, true));
+                    // this will automatically set the focus of the searched/selected row/value
+                    this.tabla.setRowSelectionInterval(row, row);
+
+                    for (int i = 0; i <= this.tabla.getColumnCount() - 1; i++) {
+                        this.tabla.getColumnModel().getColumn(i).setCellRenderer(new HighlightRenderer());
+                    }
+                }
+            }
+        }
+        System.out.println("asdasdasd");*/
+        //this.tabla.updateUI();
+    }
+    
+    private class HighlightRenderer extends DefaultTableCellRenderer {
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            // everything as usual
+            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            // added behavior
+            if(row == table.getSelectedRow()) {
+                // this will customize that kind of border that will be use to highlight a row
+                setBorder(BorderFactory.createMatteBorder(2, 1, 2, 1, Color.BLACK));
+            }
+            return this;
+        }
+    }
+    
 }
+
+

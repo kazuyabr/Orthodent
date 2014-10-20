@@ -121,7 +121,7 @@ public class DatosPersonales extends JPanel{
         labelRol.setText("Rol");
 
         labelNombres.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
-        labelNombres.setText("Nombres");
+        labelNombres.setText("Nombre");
 
         labelApellidoPat.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
         labelApellidoPat.setText("Apellido P.");
@@ -302,7 +302,7 @@ public class DatosPersonales extends JPanel{
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
