@@ -329,6 +329,16 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
             //Horario
         }
     }
+    
+    public void volver(){
+        System.out.println("que xaxu??");
+        try {
+            System.out.println("voy aqui");
+            ((Usuarios)this.getParent()).volverUsuarios();
+        } catch (Exception ex) {
+            System.out.println("");
+        }
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -350,11 +360,7 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
         }
         if(e.getSource() == this.volver){
             this.guardarAntes();
-            try {
-                ((Usuarios)this.getParent()).volverUsuarios();
-            } catch (Exception ex) {
-                System.out.println("");
-            }
+            this.volver();
         }
     }
 }

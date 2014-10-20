@@ -127,22 +127,26 @@ public class Usuarios extends JPanel implements ActionListener{
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
         ArrayList<Usuario> usuarios = Autenticacion.listarUsuarios();
         
-        int n = usuarios.size();
         int m = this.columnasNombre.length;
         
-        this.filas = new Object [n][m];
+        ArrayList<Object []> objetos = new ArrayList<Object []>();
         
-        int i = 0;
         for(Usuario usuario : usuarios){
             if(usuario.isActivo()){
                 Rol rol = RolDB.getRol(usuario.getId_rol());
 
                 Object [] fila = new Object [] {usuario.getNombre(), usuario.getApellido_pat(), usuario.getApellido_mat(),
                                             usuario.getEmail(), usuario.getNombreUsuario(), rol.getNombre().toLowerCase()};
-
-                filas[i] = fila;
-                i++;
+                
+                objetos.add(fila);
             }
+        }
+        
+        this.filas = new Object [objetos.size()][m];
+        int i = 0;
+        for(Object [] o : objetos){
+            this.filas[i] = o;
+            i++;
         }
         
         this.modelo = new DefaultTableModel(this.filas, this.columnasNombre) {
@@ -167,7 +171,7 @@ public class Usuarios extends JPanel implements ActionListener{
     
     public void volverUsuarios() throws Exception{
         if(!this.isListarUsuarios){
-            
+            System.out.println("porque aca no???");
             this.remove(this.infoUsuario);
             this.add(this.contenedorListarUsuarios, BorderLayout.CENTER);
             this.isListarUsuarios = true;
@@ -336,43 +340,5 @@ public class Usuarios extends JPanel implements ActionListener{
         };
         
         this.tabla.setModel(modelo);
-        //this.updateUI();
-        
-        
-        
-        /*for (int row = 0; row <= this.tabla.getRowCount() - 1; row++) {
-            for (int col = 0; col <= this.tabla.getColumnCount() - 1; col++) {
-                if (value.equals(this.tabla.getValueAt(row, col))) {
-                    // this will automatically set the view of the scroll in the location of the value
-                    this.tabla.scrollRectToVisible(this.tabla.getCellRect(row, 0, true));
-                    // this will automatically set the focus of the searched/selected row/value
-                    this.tabla.setRowSelectionInterval(row, row);
-
-                    for (int i = 0; i <= this.tabla.getColumnCount() - 1; i++) {
-                        this.tabla.getColumnModel().getColumn(i).setCellRenderer(new HighlightRenderer());
-                    }
-                }
-            }
-        }
-        System.out.println("asdasdasd");*/
-        //this.tabla.updateUI();
     }
-    
-    private class HighlightRenderer extends DefaultTableCellRenderer {
-
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            // everything as usual
-            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            // added behavior
-            if(row == table.getSelectedRow()) {
-                // this will customize that kind of border that will be use to highlight a row
-                setBorder(BorderFactory.createMatteBorder(2, 1, 2, 1, Color.BLACK));
-            }
-            return this;
-        }
-    }
-    
 }
-
-

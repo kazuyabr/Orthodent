@@ -190,7 +190,7 @@ public class NuevoUsuario extends javax.swing.JDialog {
 
         labelNombre.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         labelNombre.setForeground(new java.awt.Color(255, 255, 255));
-        labelNombre.setText("Nombres (*)");
+        labelNombre.setText("Nombre (*)");
 
         telefono.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -497,7 +497,7 @@ public class NuevoUsuario extends javax.swing.JDialog {
         else if(c==KeyEvent.VK_SPACE){
             evt.consume();
         }
-        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z') || (c>='0' && c<='9') || c=='_' || c=='@' || c=='-')){
+        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z') || (c>='0' && c<='9') || c=='_' || c=='@' || c=='-' || c=='.')){
             evt.consume();
         }
     }//GEN-LAST:event_emailKeyTyped

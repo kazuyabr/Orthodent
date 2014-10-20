@@ -5,6 +5,8 @@
 package orthodent.usuarios;
 
 import java.awt.event.KeyEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import modelo.Rol;
@@ -326,8 +328,18 @@ public class DatosPersonales extends JPanel{
                     options[1]);
         
         if(n==0){
-            //boolean resul = Autenticacion.eliminarUsuario(this.usuario.getId_usuario());
-            System.out.println("Eliminar y volver a la lista de usuarios");
+            boolean resul = Autenticacion.eliminarUsuario(this.usuario.getId_usuario());
+            
+            if(resul){
+                try {
+                    
+                    JPanel contenedor = (JPanel)this.getParent();
+                    
+                    ((MostrarInfoUsuario)contenedor.getParent()).volver();
+                } catch (Exception ex) {
+                    System.out.println("");
+                }
+            }
         }
     }//GEN-LAST:event_eliminarActionPerformed
 
@@ -368,10 +380,6 @@ public class DatosPersonales extends JPanel{
             } catch (Exception ex) {
                 System.out.println("");
             }
-
-            //((JVentana)this.getParent()).getUsuarios().updateModelo();
-            //((JVentana)this.getParent()).getUsuarios().updateUI();
-            
         }
         else{
             JOptionPane.showMessageDialog(this,
