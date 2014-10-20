@@ -13,8 +13,8 @@ public class Horario {
     private int id_horario;
     private int id_usuario;
     private String dia;
-    private int hora_inicio;
-    private int hora_fin;
+    private int hora_inicio;//minutos pasados desde las 00:00
+    private int hora_fin;//minutos pasados desde las 00:00
 
     public Horario(int id_horario, int id_usuario, String dia, int hora_inicio, int hora_fin) {
         this.id_horario = id_horario;

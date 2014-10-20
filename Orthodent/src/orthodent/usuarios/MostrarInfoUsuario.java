@@ -35,7 +35,7 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
     private int opActual;
     private JPanel datosPersonalesPanel;
     private DatosProfesional datosProfesionalPanel;
-    private Horario horarioPanel;
+    private HorarioPanel horarioPanel;
     private JPanel contenedor;
     private boolean configurarCuenta;
     private boolean desdeUsuario;
@@ -188,7 +188,7 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
         if(opActual!=3){
             this.removeAncestor();
             
-            this.horarioPanel = new Horario(this.usuario);
+            this.horarioPanel = new HorarioPanel(this.usuario);
             
             this.contenedor.add(this.horarioPanel,BorderLayout.CENTER);
             this.updateUI();
