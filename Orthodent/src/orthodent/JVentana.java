@@ -29,11 +29,13 @@ public class JVentana extends JFrame{
     private JPanel contenedorPagos;
     private JPanel contenedorUsuarios;
     private JPanel contenedorHistorial;
+    private JPanel contenedorConfigurarCuenta;
     private Agenda agenda;
     private Pacientes pacientes;
     private Pagos pagos;
     private Usuarios usuarios;
     private Historial historial;
+    private MostrarInfoUsuario configurarCuenta;
     
     private int opActual;
 
@@ -79,6 +81,7 @@ public class JVentana extends JFrame{
         this.contenedorPagos = new JPanel();
         this.contenedorUsuarios = new JPanel();
         this.contenedorHistorial = new JPanel();
+        this.contenedorConfigurarCuenta = new JPanel();
         
         this.crearAgenda();
         this.add(this.contenedorAgenda,BorderLayout.CENTER);
@@ -87,6 +90,7 @@ public class JVentana extends JFrame{
         this.pagos = null;
         this.usuarios = null;
         this.historial = null;
+        this.configurarCuenta = null;
     }
     
     private void crearAgenda(){
@@ -156,13 +160,9 @@ public class JVentana extends JFrame{
         this.contenedorUsuarios.setLayout(new BorderLayout());
         this.usuarios = new Usuarios();
         
-        //Usuario usuario = Autenticacion.getUsuario("Gonzalo", "gsotomayor@orthodent.cl");
-        //MostrarInfoUsuario infoUsuario = new MostrarInfoUsuario(usuario);
-        
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(this.usuarios,BorderLayout.CENTER);
-        //panel.add(infoUsuario,BorderLayout.CENTER);
         
         JPanel borde1 = new JPanel();
         borde1.setBackground(Color.white);
@@ -198,6 +198,27 @@ public class JVentana extends JFrame{
         this.contenedorHistorial.add(panel,BorderLayout.NORTH);
     }
     
+    private void crearConfigurarCuenta(){
+        this.contenedorConfigurarCuenta.setLayout(new BorderLayout());
+        this.configurarCuenta = new MostrarInfoUsuario(this.usuario, true);
+        
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(this.configurarCuenta,BorderLayout.CENTER);
+        
+        JPanel borde1 = new JPanel();
+        borde1.setBackground(Color.white);
+        borde1.setPreferredSize(new Dimension(130, 488));
+        JPanel borde2 = new JPanel();
+        borde2.setBackground(Color.white);
+        borde2.setPreferredSize(new Dimension(130, 488));
+        
+        panel.add(borde1,BorderLayout.WEST);
+        panel.add(borde2,BorderLayout.EAST);
+        
+        this.contenedorConfigurarCuenta.add(panel,BorderLayout.NORTH);
+    }
+    
     private void removeAncestor(){
         
         try{
@@ -226,6 +247,12 @@ public class JVentana extends JFrame{
         
         try{
             this.remove(this.contenedorHistorial);
+        }
+        catch(Exception e){
+        }
+        
+        try{
+            this.remove(this.contenedorConfigurarCuenta);
         }
         catch(Exception e){
         }
@@ -299,6 +326,21 @@ public class JVentana extends JFrame{
             this.add(this.contenedorHistorial,BorderLayout.CENTER);
             this.contenedorHistorial.updateUI();
             this.opActual = 5;
+        }
+    }
+    
+    public void cambiarConfigurarCuenta(){
+        if(opActual!=6){
+            this.removeAncestor();
+            this.panelOpciones.setIconButton(6);
+            
+            if(this.configurarCuenta==null){
+                this.crearConfigurarCuenta();
+            }
+            
+            this.add(this.contenedorConfigurarCuenta,BorderLayout.CENTER);
+            this.contenedorConfigurarCuenta.updateUI();
+            this.opActual = 6;
         }
     }
     

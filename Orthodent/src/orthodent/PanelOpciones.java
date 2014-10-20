@@ -302,12 +302,7 @@ public class PanelOpciones extends JPanel implements ActionListener{
         
         //Opciones del mini Usuario
         if(e.getSource() == this.configurarCuenta){
-            System.out.println("Configurar Cuenta");
-            /*try {
-                ((JVentana)this.getTopLevelAncestor()).cambiarUsuarios();
-            } catch (Exception ex) {
-                System.out.println("");
-            }*/
+            ((JVentana)this.getTopLevelAncestor()).cambiarConfigurarCuenta();
         }
         if(e.getSource() == this.cerrarSesion){
             ((JVentana)this.getTopLevelAncestor()).dispose();

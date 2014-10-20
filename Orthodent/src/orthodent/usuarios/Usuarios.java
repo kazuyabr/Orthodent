@@ -98,7 +98,7 @@ public class Usuarios extends JPanel implements ActionListener{
                     try {
                         Usuario usuario = Autenticacion.getUsuario((String)fila[0], (String)fila[3]);
                         if(usuario!=null){
-                            infoUsuario = new MostrarInfoUsuario(usuario);
+                            infoUsuario = new MostrarInfoUsuario(usuario, false);
                             
                             remove(contenedorListarUsuarios);
                             add(infoUsuario, BorderLayout.CENTER);

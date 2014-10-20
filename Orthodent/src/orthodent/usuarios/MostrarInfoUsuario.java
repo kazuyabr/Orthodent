@@ -37,9 +37,11 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
     private DatosProfesional datosProfesionalPanel;
     private Horario horarioPanel;
     private JPanel contenedor;
+    private boolean configurarCuenta;
     
-    public MostrarInfoUsuario(Usuario usuario){
+    public MostrarInfoUsuario(Usuario usuario, boolean configurarCuenta){
         this.usuario = usuario;
+        this.configurarCuenta = configurarCuenta;
         this.setBackground(new Color(255,255,255));
         this.setPreferredSize(new Dimension(1073, 561));
         
@@ -348,10 +350,18 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
     }
     
     public void volver(){
-        try {
-            ((Usuarios)this.getParent()).volverUsuarios();
-        } catch (Exception ex) {
-            System.out.println("");
+        if(!this.configurarCuenta){
+            try {
+                ((Usuarios)this.getParent()).volverUsuarios();
+            } catch (Exception ex) {
+                System.out.println("");
+            }
+        }
+        else{
+            JPanel panel1 = (JPanel) this.getParent();
+            JPanel contenedor = (JPanel) panel1.getParent();
+            
+            ((JVentana)contenedor.getTopLevelAncestor()).cambiarAgenda();
         }
     }
 
