@@ -14,11 +14,32 @@ import modelo.Usuario;
 public class Horario extends JPanel{
 
     private Usuario usuario;
+    private boolean cambios;
     
     public Horario(Usuario usuario) {
         initComponents();
         
         this.usuario = usuario;
+        this.cambios = false;
+        
+        this.guardar.setEnabled(false);
+    }
+    
+    public boolean getCambios(){
+        return this.cambios;
+    }
+    
+    public void setCambios(boolean cambios){
+        this.cambios = cambios;
+    }
+    
+    public void guardar(){
+        this.guardarActionPerformed(null);
+    }
+    
+    private void habilitarBoton(){
+        this.cambios = true;
+        this.guardar.setEnabled(true);
     }
 
     /**
@@ -110,31 +131,61 @@ public class Horario extends JPanel{
         martes.setText("Martes");
         martes.setBorder(null);
         martes.setContentAreaFilled(false);
+        martes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                martesActionPerformed(evt);
+            }
+        });
 
         lunes.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         lunes.setText("Lunes");
         lunes.setBorder(null);
         lunes.setContentAreaFilled(false);
+        lunes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lunesActionPerformed(evt);
+            }
+        });
 
         miercoles.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         miercoles.setText("Miércoles");
         miercoles.setBorder(null);
         miercoles.setContentAreaFilled(false);
+        miercoles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miercolesActionPerformed(evt);
+            }
+        });
 
         jueves.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jueves.setText("Jueves");
         jueves.setBorder(null);
         jueves.setContentAreaFilled(false);
+        jueves.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                juevesActionPerformed(evt);
+            }
+        });
 
         viernes.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         viernes.setText("Viernes");
         viernes.setBorder(null);
         viernes.setContentAreaFilled(false);
+        viernes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viernesActionPerformed(evt);
+            }
+        });
 
         sabado.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         sabado.setText("Sábado");
         sabado.setBorder(null);
         sabado.setContentAreaFilled(false);
+        sabado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sabadoActionPerformed(evt);
+            }
+        });
 
         labelInicio.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         labelInicio.setText("Inicio");
@@ -341,8 +392,33 @@ public class Horario extends JPanel{
     }// </editor-fold>//GEN-END:initComponents
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
-        
+        this.cambios = false;
+        this.guardar.setEnabled(false);
     }//GEN-LAST:event_guardarActionPerformed
+
+    private void lunesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lunesActionPerformed
+        this.habilitarBoton();
+    }//GEN-LAST:event_lunesActionPerformed
+
+    private void martesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_martesActionPerformed
+        this.habilitarBoton();
+    }//GEN-LAST:event_martesActionPerformed
+
+    private void miercolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miercolesActionPerformed
+        this.habilitarBoton();
+    }//GEN-LAST:event_miercolesActionPerformed
+
+    private void juevesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_juevesActionPerformed
+        this.habilitarBoton();
+    }//GEN-LAST:event_juevesActionPerformed
+
+    private void viernesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viernesActionPerformed
+        this.habilitarBoton();
+    }//GEN-LAST:event_viernesActionPerformed
+
+    private void sabadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sabadoActionPerformed
+        this.habilitarBoton();
+    }//GEN-LAST:event_sabadoActionPerformed
         
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox finHoraJueves;

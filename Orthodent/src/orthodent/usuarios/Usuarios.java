@@ -171,7 +171,6 @@ public class Usuarios extends JPanel implements ActionListener{
     
     public void volverUsuarios() throws Exception{
         if(!this.isListarUsuarios){
-            System.out.println("porque aca no???");
             this.remove(this.infoUsuario);
             this.add(this.contenedorListarUsuarios, BorderLayout.CENTER);
             this.isListarUsuarios = true;

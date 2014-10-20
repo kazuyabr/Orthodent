@@ -327,13 +327,28 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
         }
         else{
             //Horario
+            if(this.horarioPanel.getCambios()){
+                Object[] options = {"Sí","No"};
+        
+                int n = JOptionPane.showOptionDialog(this,
+                            "Hay cambios que no se han guardardo\n\n"+
+                            "¿Desea guardar?",
+                            "Orthodent",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
+
+                if(n==0){
+                    this.horarioPanel.guardar();
+                }
+            }
         }
     }
     
     public void volver(){
-        System.out.println("que xaxu??");
         try {
-            System.out.println("voy aqui");
             ((Usuarios)this.getParent()).volverUsuarios();
         } catch (Exception ex) {
             System.out.println("");

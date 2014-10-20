@@ -223,10 +223,6 @@ public class DatosProfesional extends JPanel{
             } catch (Exception ex) {
                 System.out.println("");
             }
-
-            //((JVentana)this.getParent()).getUsuarios().updateModelo();
-            //((JVentana)this.getParent()).getUsuarios().updateUI();
-            
         }
         else{
             JOptionPane.showMessageDialog(this,
