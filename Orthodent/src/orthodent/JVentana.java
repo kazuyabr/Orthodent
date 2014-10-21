@@ -116,7 +116,7 @@ public class JVentana extends JFrame{
     
     private void crearPacientes(){
         this.contenedorPacientes.setLayout(new BorderLayout());
-        this.pacientes = new Pacientes();
+        this.pacientes = new Pacientes(this.usuario);
         
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
