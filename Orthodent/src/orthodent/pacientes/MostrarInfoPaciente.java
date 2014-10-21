@@ -19,18 +19,26 @@ import orthodent.JVentana;
  */
 public class MostrarInfoPaciente extends JPanel implements ActionListener{
     
-    private JLabel nombreUsuario;
-    private JButton userInfo;
+    private JLabel nombrePaciente;
+    private JButton pacienteInfo;
     private JButton datosPersonales;
-    private JButton datosProfesionales;
-    private JButton horario;
+    private JButton clinico;
+    private JButton planesTratamiento;
+    private JButton sesiones;
+    private JButton fichasClinicas;
+    private JButton facturacion;
+    private JButton recaudacion;
+    private JButton pagosRecibidos;
     private JButton volver;
     private Paciente paciente;
     private Usuario actual;
     private int opActual;
-    private JPanel datosPersonalesPanel;
-    private DatosProfesional datosProfesionalPanel;
-    private HorarioPanel horarioPanel;
+    private DatosPersonales datosPersonalesPanel;
+    private PlanesTratamiento planesTratamientoPanel;
+    private Sesiones sesionesPanel;
+    private FichasClinicas fichasClinicasPanel;
+    private Recaudacion recaudacionPanel;
+    private PagosRecibidos pagosRecibidosPanel;
     private JPanel contenedor;
     
     public MostrarInfoPaciente(Paciente paciente, Usuario actual){
@@ -48,16 +56,23 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
     
     private void initComponents(){
         
-        this.nombreUsuario = new JLabel();
-        this.nombreUsuario.setText(this.paciente.getNombre()+" "+this.paciente.getApellido_pat());
-        this.nombreUsuario.setFont(new Font("Georgia", 1, 14));
-        this.nombreUsuario.setForeground(new Color(255, 255, 255));
+        this.nombrePaciente = new JLabel();
         
-        this.userInfo = new JButton();
-        this.userInfo.setIcon(new ImageIcon("src/imagenes/userInfo.png"));
-        this.userInfo.setBorder(null);
-        this.userInfo.setBorderPainted(false);
-        this.userInfo.setContentAreaFilled(false);
+        String nombre = this.paciente.getNombre();
+        
+        if(nombre.contains(" ")){
+            nombre = nombre.substring(0,nombre.indexOf(" "));
+        }
+        
+        this.nombrePaciente.setText(nombre+" "+this.paciente.getApellido_pat());
+        this.nombrePaciente.setFont(new Font("Georgia", 1, 14));
+        this.nombrePaciente.setForeground(new Color(255, 255, 255));
+        
+        this.pacienteInfo = new JButton();
+        this.pacienteInfo.setIcon(new ImageIcon("src/imagenes/userInfo.png"));
+        this.pacienteInfo.setBorder(null);
+        this.pacienteInfo.setBorderPainted(false);
+        this.pacienteInfo.setContentAreaFilled(false);
         
         this.datosPersonales = new JButton();
         this.datosPersonales.setIcon(new ImageIcon("src/imagenes/datosPersonalesInfoSelec.png"));
@@ -66,19 +81,52 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         this.datosPersonales.setContentAreaFilled(false);
         this.datosPersonales.addActionListener(this);
         
-        this.datosProfesionales = new JButton();
-        this.datosProfesionales.setIcon(new ImageIcon("src/imagenes/datosProfesionalInfo.png"));
-        this.datosProfesionales.setBorder(null);
-        this.datosProfesionales.setBorderPainted(false);
-        this.datosProfesionales.setContentAreaFilled(false);
-        this.datosProfesionales.addActionListener(this);
+        this.clinico = new JButton();
+        this.clinico.setIcon(new ImageIcon("src/imagenes/clinico.png"));
+        this.clinico.setBorder(null);
+        this.clinico.setBorderPainted(false);
+        this.clinico.setContentAreaFilled(false);
         
-        this.horario = new JButton();
-        this.horario.setIcon(new ImageIcon("src/imagenes/horarioInfo.png"));
-        this.horario.setBorder(null);
-        this.horario.setBorderPainted(false);
-        this.horario.setContentAreaFilled(false);
-        this.horario.addActionListener(this);
+        this.planesTratamiento = new JButton();
+        this.planesTratamiento.setIcon(new ImageIcon("src/imagenes/planesDeTratamiento.png"));
+        this.planesTratamiento.setBorder(null);
+        this.planesTratamiento.setBorderPainted(false);
+        this.planesTratamiento.setContentAreaFilled(false);
+        this.planesTratamiento.addActionListener(this);
+        
+        this.sesiones = new JButton();
+        this.sesiones.setIcon(new ImageIcon("src/imagenes/sesiones.png"));
+        this.sesiones.setBorder(null);
+        this.sesiones.setBorderPainted(false);
+        this.sesiones.setContentAreaFilled(false);
+        this.sesiones.addActionListener(this);
+        
+        this.fichasClinicas = new JButton();
+        this.fichasClinicas.setIcon(new ImageIcon("src/imagenes/fichasClinicas.png"));
+        this.fichasClinicas.setBorder(null);
+        this.fichasClinicas.setBorderPainted(false);
+        this.fichasClinicas.setContentAreaFilled(false);
+        this.fichasClinicas.addActionListener(this);
+        
+        this.facturacion = new JButton();
+        this.facturacion.setIcon(new ImageIcon("src/imagenes/facturacion.png"));
+        this.facturacion.setBorder(null);
+        this.facturacion.setBorderPainted(false);
+        this.facturacion.setContentAreaFilled(false);
+        
+        this.recaudacion = new JButton();
+        this.recaudacion.setIcon(new ImageIcon("src/imagenes/recaudacion.png"));
+        this.recaudacion.setBorder(null);
+        this.recaudacion.setBorderPainted(false);
+        this.recaudacion.setContentAreaFilled(false);
+        this.recaudacion.addActionListener(this);
+        
+        this.pagosRecibidos = new JButton();
+        this.pagosRecibidos.setIcon(new ImageIcon("src/imagenes/pagosRecibidos.png"));
+        this.pagosRecibidos.setBorder(null);
+        this.pagosRecibidos.setBorderPainted(false);
+        this.pagosRecibidos.setContentAreaFilled(false);
+        this.pagosRecibidos.addActionListener(this);
         
         this.volver = new JButton();
         this.volver.setIcon(new ImageIcon("src/imagenes/navigate-left_mini.png"));
@@ -87,16 +135,13 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         this.volver.setContentAreaFilled(false);
         this.volver.addActionListener(this);
         
+        this.datosPersonalesPanel = new DatosPersonales(this.paciente);
         
-        if(!this.configurarCuenta){
-            this.datosPersonalesPanel = new DatosPersonales(this.paciente);
-        }
-        else{
-            this.datosPersonalesPanel = new ConfigurarCuenta(this.paciente);
-        }
-        
-        this.datosProfesionalPanel = null;
-        this.horarioPanel = null;
+        this.planesTratamientoPanel = null;
+        this.sesionesPanel = null;
+        this.fichasClinicasPanel = null;
+        this.recaudacion = null;
+        this.pagosRecibidosPanel = null;
         
         this.contenedor = new JPanel();
         this.contenedor.setBackground(new Color(255,255,255));
@@ -131,6 +176,17 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         
     }
     
+    public void updateNombre(){
+        String nombre = this.paciente.getNombre();
+        
+        if(nombre.contains(" ")){
+            nombre = nombre.substring(0,nombre.indexOf(" "));
+        }
+        
+        this.nombrePaciente.setText(nombre+" "+this.paciente.getApellido_pat());
+        this.contenedor.updateUI();
+    }
+    
     private void removeAncestor(){
         
         try{
@@ -140,13 +196,28 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         }
         
         try{
-            this.contenedor.remove(this.datosProfesionalPanel);
+            this.contenedor.remove(this.planesTratamientoPanel);
         }
         catch(Exception e){
         }
         
         try{
-            this.contenedor.remove(this.horarioPanel);
+            this.contenedor.remove(this.sesionesPanel);
+        }
+        catch(Exception e){
+        }
+        try{
+            this.contenedor.remove(this.fichasClinicasPanel);
+        }
+        catch(Exception e){
+        }
+        try{
+            this.contenedor.remove(this.recaudacionPanel);
+        }
+        catch(Exception e){
+        }
+        try{
+            this.contenedor.remove(this.pagosRecibidosPanel);
         }
         catch(Exception e){
         }
@@ -164,27 +235,63 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         }
     }
     
-    public void cambiarDatosProfesional(){
+    public void cambiarPlanesTratamiento(){
         if(opActual!=2){
             this.removeAncestor();
             
-            this.datosProfesionalPanel = new DatosProfesional(this.paciente);
+            this.planesTratamientoPanel = new PlanesTratamiento(this.paciente);
             
-            this.contenedor.add(this.datosProfesionalPanel,BorderLayout.CENTER);
+            this.contenedor.add(this.planesTratamientoPanel,BorderLayout.CENTER);
             this.updateUI();
             this.opActual = 2;
         }
     }
     
-    public void cambiarHorario(){
+    public void cambiarSesiones(){
         if(opActual!=3){
             this.removeAncestor();
             
-            this.horarioPanel = new HorarioPanel(this.paciente);
+            this.sesionesPanel = new Sesiones(this.paciente);
             
-            this.contenedor.add(this.horarioPanel,BorderLayout.CENTER);
+            this.contenedor.add(this.sesionesPanel,BorderLayout.CENTER);
             this.updateUI();
             this.opActual = 3;
+        }
+    }
+    
+    public void cambiarFichasClinicas(){
+        if(opActual!=4){
+            this.removeAncestor();
+            
+            this.fichasClinicasPanel = new FichasClinicas(this.paciente);
+            
+            this.contenedor.add(this.fichasClinicasPanel,BorderLayout.CENTER);
+            this.updateUI();
+            this.opActual = 4;
+        }
+    }
+    
+    public void cambiarRecaudacion(){
+        if(opActual!=5){
+            this.removeAncestor();
+            
+            this.recaudacionPanel = new Recaudacion(this.paciente);
+            
+            this.contenedor.add(this.recaudacionPanel,BorderLayout.CENTER);
+            this.updateUI();
+            this.opActual = 5;
+        }
+    }
+    
+    public void cambiarPagosRecibidos(){
+        if(opActual!=6){
+            this.removeAncestor();
+            
+            this.pagosRecibidosPanel = new PagosRecibidos(this.paciente);
+            
+            this.contenedor.add(this.pagosRecibidosPanel,BorderLayout.CENTER);
+            this.updateUI();
+            this.opActual = 6;
         }
     }
     
@@ -202,19 +309,24 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         
         horizontalGroup.addComponent(panel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
         horizontalGroup.addComponent(this.datosPersonales);
+        horizontalGroup.addComponent(this.clinico);
+        horizontalGroup.addComponent(this.planesTratamiento);
+        horizontalGroup.addComponent(this.sesiones);
+        horizontalGroup.addComponent(this.fichasClinicas);
+        horizontalGroup.addComponent(this.facturacion);
+        horizontalGroup.addComponent(this.recaudacion);
+        horizontalGroup.addComponent(this.pagosRecibidos);
         
         verticalGroup.addContainerGap();
         verticalGroup.addComponent(panel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
         verticalGroup.addComponent(this.datosPersonales);
-        
-        if(this.paciente.getId_rol()==3){
-            //Profesional
-            horizontalGroup.addComponent(this.datosProfesionales);
-            horizontalGroup.addComponent(this.horario);
-            
-            verticalGroup.addComponent(this.datosProfesionales);
-            verticalGroup.addComponent(this.horario);
-        }
+        verticalGroup.addComponent(this.clinico);
+        verticalGroup.addComponent(this.planesTratamiento);
+        verticalGroup.addComponent(this.sesiones);
+        verticalGroup.addComponent(this.fichasClinicas);
+        verticalGroup.addComponent(this.facturacion);
+        verticalGroup.addComponent(this.recaudacion);
+        verticalGroup.addComponent(this.pagosRecibidos);
         
         verticalGroup.addContainerGap(411, Short.MAX_VALUE);
         
@@ -246,9 +358,9 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
             groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(groupLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(this.userInfo)
+                .addComponent(this.pacienteInfo)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(this.nombreUsuario)
+                .addComponent(this.nombrePaciente)
                 .addContainerGap(15, Short.MAX_VALUE))
         );
         
@@ -258,10 +370,10 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
                 .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(groupLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(userInfo))
+                        .addComponent(pacienteInfo))
                     .addGroup(groupLayout.createSequentialGroup()
                         .addGap(26, 26, 26)
-                        .addComponent(this.nombreUsuario)))
+                        .addComponent(this.nombrePaciente)))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
         
@@ -271,18 +383,30 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
     public void setIconButton(int value){
         
         this.datosPersonales.setIcon(new ImageIcon("src/imagenes/datosPersonalesInfo.png"));
-        this.datosProfesionales.setIcon(new ImageIcon("src/imagenes/datosProfesionalInfo.png"));
-        this.horario.setIcon(new ImageIcon("src/imagenes/horarioInfo.png"));
+        this.planesTratamiento.setIcon(new ImageIcon("src/imagenes/planesDeTratamiento.png"));
+        this.sesiones.setIcon(new ImageIcon("src/imagenes/sesiones.png"));
+        this.fichasClinicas.setIcon(new ImageIcon("src/imagenes/fichasClinicas.png"));
+        this.recaudacion.setIcon(new ImageIcon("src/imagenes/recaudacion.png"));
+        this.pagosRecibidos.setIcon(new ImageIcon("src/imagenes/pagosRecibidos.png"));
         
         switch(value){
             case 1:
                 this.datosPersonales.setIcon(new ImageIcon("src/imagenes/datosPersonalesInfoSelec.png"));
                 break;
             case 2:
-                this.datosProfesionales.setIcon(new ImageIcon("src/imagenes/datosProfesionalInfoSelec.png"));
+                this.planesTratamiento.setIcon(new ImageIcon("src/imagenes/planesDeTratamientoSelec.png"));
                 break;
             case 3:
-                this.horario.setIcon(new ImageIcon("src/imagenes/horarioInfoSelec.png"));
+                this.sesiones.setIcon(new ImageIcon("src/imagenes/sesiones.png"));
+                break;
+            case 4:
+                this.fichasClinicas.setIcon(new ImageIcon("src/imagenes/fichasClinicasSelec.png"));
+                break;
+            case 5:
+                this.recaudacion.setIcon(new ImageIcon("src/imagenes/recaudacionSelec.png"));
+                break;
+            case 6:
+                this.pagosRecibidos.setIcon(new ImageIcon("src/imagenes/pagosRecibidosSelec.png"));
                 break;
         }
     }
@@ -290,54 +414,27 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
     private void guardarAntes(){
         if(this.opActual==1){
             //Datos Personales
-            
-            if(this.datosPersonalesPanel instanceof DatosPersonales){
-                
-                DatosPersonales panelDatosPersonales = (DatosPersonales) this.datosPersonalesPanel;
-                
-                if(panelDatosPersonales.getCambios()){
-                    Object[] options = {"Sí","No"};
+            if(this.datosPersonalesPanel.getCambios()){
+                Object[] options = {"Sí","No"};
 
-                    int n = JOptionPane.showOptionDialog(this,
-                                "Hay cambios que no se han guardardo\n\n"+
-                                "¿Desea guardar?",
-                                "Orthodent",
-                                JOptionPane.YES_NO_CANCEL_OPTION,
-                                JOptionPane.QUESTION_MESSAGE,
-                                null,
-                                options,
-                                options[0]);
+                int n = JOptionPane.showOptionDialog(this,
+                            "Hay cambios que no se han guardardo\n\n"+
+                            "¿Desea guardar?",
+                            "Orthodent",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
 
-                    if(n==0){
-                        panelDatosPersonales.guardar();
-                    }
-                }
-            }
-            else{
-                ConfigurarCuenta panelConfigurarCuenta = (ConfigurarCuenta) this.datosPersonalesPanel;
-                
-                if(panelConfigurarCuenta.getCambios()){
-                    Object[] options = {"Sí","No"};
-
-                    int n = JOptionPane.showOptionDialog(this,
-                                "Hay cambios que no se han guardardo\n\n"+
-                                "¿Desea guardar?",
-                                "Orthodent",
-                                JOptionPane.YES_NO_CANCEL_OPTION,
-                                JOptionPane.QUESTION_MESSAGE,
-                                null,
-                                options,
-                                options[0]);
-
-                    if(n==0){
-                        panelConfigurarCuenta.guardar();
-                    }
+                if(n==0){
+                    this.datosPersonalesPanel.guardar();
                 }
             }
         }
         else if(this.opActual==2){
-            //Datos profesional
-            if(this.datosProfesionalPanel.getCambios()){
+            //Planes de Tratamiento
+            if(this.planesTratamientoPanel.getCambios()){
                 Object[] options = {"Sí","No"};
         
                 int n = JOptionPane.showOptionDialog(this,
@@ -351,13 +448,73 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
                             options[0]);
 
                 if(n==0){
-                    this.datosProfesionalPanel.guardar();
+                    this.planesTratamientoPanel.guardar();
+                }
+            }
+        }
+        else if(this.opActual==3){
+            //Sesiones
+            if(this.sesionesPanel.getCambios()){
+                Object[] options = {"Sí","No"};
+        
+                int n = JOptionPane.showOptionDialog(this,
+                            "Hay cambios que no se han guardardo\n\n"+
+                            "¿Desea guardar?",
+                            "Orthodent",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
+
+                if(n==0){
+                    this.sesionesPanel.guardar();
+                }
+            }
+        }
+        else if(this.opActual==4){
+            //Fichas Clinicas
+            if(this.fichasClinicasPanel.getCambios()){
+                Object[] options = {"Sí","No"};
+        
+                int n = JOptionPane.showOptionDialog(this,
+                            "Hay cambios que no se han guardardo\n\n"+
+                            "¿Desea guardar?",
+                            "Orthodent",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
+
+                if(n==0){
+                    this.fichasClinicasPanel.guardar();
+                }
+            }
+        }
+        else if(this.opActual==5){
+            //Recaudacion
+            if(this.recaudacionPanel.getCambios()){
+                Object[] options = {"Sí","No"};
+        
+                int n = JOptionPane.showOptionDialog(this,
+                            "Hay cambios que no se han guardardo\n\n"+
+                            "¿Desea guardar?",
+                            "Orthodent",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
+
+                if(n==0){
+                    this.recaudacionPanel.guardar();
                 }
             }
         }
         else{
-            //Horario
-            if(this.horarioPanel.getCambios()){
+            //Pagos Recibidos
+            if(this.pagosRecibidosPanel.getCambios()){
                 Object[] options = {"Sí","No"};
         
                 int n = JOptionPane.showOptionDialog(this,
@@ -371,7 +528,7 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
                             options[0]);
 
                 if(n==0){
-                    this.horarioPanel.guardar();
+                    this.pagosRecibidosPanel.guardar();
                 }
             }
         }
@@ -379,18 +536,10 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
     
     public void volver(){
         
-        if(!this.configurarCuenta || this.desdeUsuario){
-            try {
-                ((Usuarios)this.getParent()).volverUsuarios();
-            } catch (Exception ex) {
-                System.out.println("");
-            }
-        }
-        else{
-            JPanel panel1 = (JPanel) this.getParent();
-            JPanel contenedor = (JPanel) panel1.getParent();
-            
-            ((JVentana)contenedor.getTopLevelAncestor()).cambiarAgenda();
+        try {
+            ((Pacientes)this.getParent()).volverPacientes();
+        } catch (Exception ex) {
+            System.out.println("");
         }
     }
 
@@ -402,15 +551,30 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
             this.setIconButton(1);
             this.cambiarDatosPersonales();
         }
-        if(e.getSource() == this.datosProfesionales){
+        if(e.getSource() == this.planesTratamiento){
             this.guardarAntes();
             this.setIconButton(2);
-            this.cambiarDatosProfesional();
+            this.cambiarPlanesTratamiento();
         }
-        if(e.getSource() == this.horario){
+        if(e.getSource() == this.sesiones){
             this.guardarAntes();
             this.setIconButton(3);
-            this.cambiarHorario();
+            this.cambiarSesiones();
+        }
+        if(e.getSource() == this.fichasClinicas){
+            this.guardarAntes();
+            this.setIconButton(4);
+            this.cambiarFichasClinicas();
+        }
+        if(e.getSource() == this.recaudacion){
+            this.guardarAntes();
+            this.setIconButton(5);
+            this.cambiarRecaudacion();
+        }
+        if(e.getSource() == this.pagosRecibidos){
+            this.guardarAntes();
+            this.setIconButton(6);
+            this.cambiarPagosRecibidos();
         }
         if(e.getSource() == this.volver){
             this.guardarAntes();

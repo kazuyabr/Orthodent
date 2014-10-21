@@ -56,8 +56,14 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
     
     private void initComponents(){
         
+        String nombre = this.usuario.getNombre();
+        
+        if(nombre.contains(" ")){
+            nombre = nombre.substring(0,nombre.indexOf(" "));
+        }
+        
         this.nombreUsuario = new JLabel();
-        this.nombreUsuario.setText(this.usuario.getNombre()+" "+this.usuario.getApellido_pat());
+        this.nombreUsuario.setText(nombre+" "+this.usuario.getApellido_pat());
         this.nombreUsuario.setFont(new Font("Georgia", 1, 14));
         this.nombreUsuario.setForeground(new Color(255, 255, 255));
         
@@ -109,6 +115,17 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
         this.contenedor = new JPanel();
         this.contenedor.setBackground(new Color(255,255,255));
         this.contenedor.setLayout(new BorderLayout());
+    }
+    
+    public void updateNombre(){
+        String nombre = this.usuario.getNombre();
+        
+        if(nombre.contains(" ")){
+            nombre = nombre.substring(0,nombre.indexOf(" "));
+        }
+        
+        this.nombreUsuario.setText(nombre+" "+this.usuario.getApellido_pat());
+        this.contenedor.updateUI();
     }
     
     private void addComponents(){
