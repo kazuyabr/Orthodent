@@ -403,6 +403,7 @@
                 <StringItem index="10" value="19"/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="inicioMinLunes">
@@ -424,6 +425,7 @@
                 <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="finHoraLunes">
@@ -443,6 +445,7 @@
                 <StringItem index="10" value="19"/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="finMinLunes">
@@ -464,6 +467,7 @@
                 <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="inicioHoraMartes">
@@ -483,6 +487,7 @@
                 <StringItem index="10" value="19"/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="inicioMinMartes">
@@ -504,6 +509,7 @@
                 <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="finHoraMartes">
@@ -523,6 +529,7 @@
                 <StringItem index="10" value="19"/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="finMinMartes">
@@ -544,6 +551,7 @@
                 <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="inicioHoraMiercoles">
@@ -563,6 +571,7 @@
                 <StringItem index="10" value="19"/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="inicioMinMiercoles">
@@ -584,6 +593,7 @@
                 <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="finHoraMiercoles">
@@ -603,6 +613,7 @@
                 <StringItem index="10" value="19"/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="finMinMiercoles">
@@ -624,6 +635,7 @@
                 <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="inicioHoraJueves">
@@ -643,6 +655,7 @@
                 <StringItem index="10" value="19"/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="inicioMinJueves">
@@ -664,6 +677,7 @@
                 <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="finHoraJueves">
@@ -683,6 +697,7 @@
                 <StringItem index="10" value="19"/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="finMinJueves">
@@ -704,6 +719,7 @@
                 <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="inicioHoraViernes">
@@ -723,6 +739,7 @@
                 <StringItem index="10" value="19"/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="inicioMinViernes">
@@ -744,6 +761,7 @@
                 <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="finHoraViernes">
@@ -763,6 +781,7 @@
                 <StringItem index="10" value="19"/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="finMinViernes">
@@ -784,6 +803,7 @@
                 <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="inicioHoraSabado">
@@ -796,6 +816,7 @@
                 <StringItem index="3" value="12"/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="inicioMinSabado">
@@ -817,6 +838,7 @@
                 <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="finHoraSabado">
@@ -829,6 +851,7 @@
                 <StringItem index="3" value="12"/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="finMinSabado">
@@ -850,6 +873,7 @@
                 <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
       </SubComponents>

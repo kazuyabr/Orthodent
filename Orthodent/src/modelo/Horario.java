@@ -32,7 +32,7 @@ public class Horario {
         this.dia = dia;
     }
 
-    public int getHora_fin() {
+    private int getHora_fin() {
         return hora_fin;
     }
 
@@ -40,7 +40,7 @@ public class Horario {
         this.hora_fin = hora_fin;
     }
 
-    public int getHora_inicio() {
+    private int getHora_inicio() {
         return hora_inicio;
     }
 
@@ -62,5 +62,62 @@ public class Horario {
 
     public void setId_usuario(int id_usuario) {
         this.id_usuario = id_usuario;
+    }
+    
+    private String getHora(int min){
+        
+        int horaAux = min/60;
+        String hora = "";
+        
+        if(horaAux<=9){
+            hora = hora + "0";
+        }
+        
+        hora = hora + horaAux;
+        
+        return hora;
+    }
+    
+    private String getMin(int minAux){
+        
+        String min = "";
+        
+        if(minAux<9){
+            min = min + "0";
+        }
+        
+        min = min + minAux;
+        
+        return min;
+    }
+    
+    public String getHoraInicio(){
+        int inicio = this.getHora_inicio();
+        String horaInicio = this.getHora(inicio);
+        
+        return horaInicio;
+    }
+    
+    public String getMinInicio(){
+        int inicio = this.getHora_inicio();
+        inicio = inicio%60;
+        String minInicio = this.getMin(inicio);
+        
+        return minInicio;
+    }
+    
+    public String getHoraFin(){
+        int fin = this.getHora_fin();
+        String horaFin = this.getHora(fin);
+        
+        return horaFin;
+    }
+    
+    public String getMinFin(){
+        int fin = this.getHora_fin();
+        fin = fin%60;
+        String minFin = this.getMin(fin);
+        
+        return minFin;
     }
 }

@@ -4,6 +4,7 @@
  */
 package orthodent.usuarios;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import modelo.Horario;
@@ -29,33 +30,6 @@ public class HorarioPanel extends JPanel{
         this.guardar.setEnabled(false);
     }
     
-    private String getHora(int min){
-        
-        int horaAux = min/60;
-        String hora = "";
-        
-        if(horaAux<=9){
-            hora = hora + "0";
-        }
-        
-        hora = hora + horaAux;
-        
-        return hora;
-    }
-    
-    private String getMin(int minAux){
-        
-        String min = "";
-        
-        if(minAux<9){
-            min = min + "0";
-        }
-        
-        min = min + minAux;
-        
-        return min;
-    }
-    
     private void addInfo(){
         ArrayList<Horario> horarios = HorarioDB.getHorarios(this.usuario.getId_usuario());
         
@@ -66,117 +40,123 @@ public class HorarioPanel extends JPanel{
                 
                 if(dia.equals("Lunes")){
                     this.lunes.setSelected(true);
-                    int inicio = o.getHora_inicio();
-                    int fin = o.getHora_fin();
                     
-                    String horaInicio = this.getHora(inicio);
-                    inicio = inicio%60;
+                    String horaInicio = o.getHoraInicio();
                     this.inicioHoraLunes.setSelectedItem(horaInicio);
                     
-                    String minInicio = this.getMin(inicio);
+                    String minInicio = o.getMinInicio();
                     this.inicioMinLunes.setSelectedItem(minInicio);
                     
-                    String horaFin = this.getHora(fin);
-                    fin = fin%60;
+                    String horaFin = o.getHoraFin();
                     this.finHoraLunes.setSelectedItem(horaFin);
                     
-                    String minFin = this.getMin(fin);
+                    String minFin = o.getMinFin();
                     this.finMinLunes.setSelectedItem(minFin);
+                    
+                    this.inicioHoraLunes.setEnabled(true);
+                    this.inicioMinLunes.setEnabled(true);
+                    this.finHoraLunes.setEnabled(true);
+                    this.finMinLunes.setEnabled(true);
                 }
                 else if(dia.equals("Martes")){
                     this.martes.setSelected(true);
-                    int inicio = o.getHora_inicio();
-                    int fin = o.getHora_fin();
                     
-                    String horaInicio = this.getHora(inicio);
-                    inicio = inicio%60;
+                    String horaInicio = o.getHoraInicio();
                     this.inicioHoraMartes.setSelectedItem(horaInicio);
                     
-                    String minInicio = this.getMin(inicio);
+                    String minInicio = o.getMinInicio();
                     this.inicioMinMartes.setSelectedItem(minInicio);
                     
-                    String horaFin = this.getHora(fin);
-                    fin = fin%60;
+                    String horaFin = o.getHoraFin();
                     this.finHoraMartes.setSelectedItem(horaFin);
                     
-                    String minFin = this.getMin(fin);
+                    String minFin = o.getMinFin();
                     this.finMinMartes.setSelectedItem(minFin);
+                    
+                    this.inicioHoraMartes.setEnabled(true);
+                    this.inicioMinMartes.setEnabled(true);
+                    this.finHoraMartes.setEnabled(true);
+                    this.finMinMartes.setEnabled(true);
                 }
                 else if(dia.equals("Miercoles")){
                     this.miercoles.setSelected(true);
-                    int inicio = o.getHora_inicio();
-                    int fin = o.getHora_fin();
                     
-                    String horaInicio = this.getHora(inicio);
-                    inicio = inicio%60;
+                    String horaInicio = o.getHoraInicio();
                     this.inicioHoraMiercoles.setSelectedItem(horaInicio);
                     
-                    String minInicio = this.getMin(inicio);
+                    String minInicio = o.getMinInicio();
                     this.inicioMinMiercoles.setSelectedItem(minInicio);
                     
-                    String horaFin = this.getHora(fin);
-                    fin = fin%60;
+                    String horaFin = o.getHoraFin();
                     this.finHoraMiercoles.setSelectedItem(horaFin);
                     
-                    String minFin = this.getMin(fin);
+                    String minFin = o.getMinFin();
                     this.finMinMiercoles.setSelectedItem(minFin);
+                    
+                    this.inicioHoraMiercoles.setEnabled(true);
+                    this.inicioMinMiercoles.setEnabled(true);
+                    this.finHoraMiercoles.setEnabled(true);
+                    this.finMinMiercoles.setEnabled(true);
                 }
                 else if(dia.equals("Jueves")){
                     this.jueves.setSelected(true);
-                    int inicio = o.getHora_inicio();
-                    int fin = o.getHora_fin();
                     
-                    String horaInicio = this.getHora(inicio);
-                    inicio = inicio%60;
+                    String horaInicio = o.getHoraInicio();
                     this.inicioHoraJueves.setSelectedItem(horaInicio);
                     
-                    String minInicio = this.getMin(inicio);
+                    String minInicio = o.getMinInicio();
                     this.inicioMinJueves.setSelectedItem(minInicio);
                     
-                    String horaFin = this.getHora(fin);
-                    fin = fin%60;
+                    String horaFin = o.getHoraFin();
                     this.finHoraJueves.setSelectedItem(horaFin);
                     
-                    String minFin = this.getMin(fin);
+                    String minFin = o.getMinFin();
                     this.finMinJueves.setSelectedItem(minFin);
+                    
+                    this.inicioHoraJueves.setEnabled(true);
+                    this.inicioMinJueves.setEnabled(true);
+                    this.finHoraJueves.setEnabled(true);
+                    this.finMinJueves.setEnabled(true);
                 }
                 else if(dia.equals("Viernes")){
                     this.viernes.setSelected(true);
-                    int inicio = o.getHora_inicio();
-                    int fin = o.getHora_fin();
                     
-                    String horaInicio = this.getHora(inicio);
-                    inicio = inicio%60;
+                    String horaInicio = o.getHoraInicio();
                     this.inicioHoraViernes.setSelectedItem(horaInicio);
                     
-                    String minInicio = this.getMin(inicio);
+                    String minInicio = o.getMinInicio();
                     this.inicioMinViernes.setSelectedItem(minInicio);
                     
-                    String horaFin = this.getHora(fin);
-                    fin = fin%60;
+                    String horaFin = o.getHoraFin();
                     this.finHoraViernes.setSelectedItem(horaFin);
                     
-                    String minFin = this.getMin(fin);
+                    String minFin = o.getMinFin();
                     this.finMinViernes.setSelectedItem(minFin);
+                    
+                    this.inicioHoraViernes.setEnabled(true);
+                    this.inicioMinViernes.setEnabled(true);
+                    this.finHoraViernes.setEnabled(true);
+                    this.finMinViernes.setEnabled(true);
                 }
                 else{
                     this.sabado.setSelected(true);
-                    int inicio = o.getHora_inicio();
-                    int fin = o.getHora_fin();
                     
-                    String horaInicio = this.getHora(inicio);
-                    inicio = inicio%60;
+                    String horaInicio = o.getHoraInicio();
                     this.inicioHoraSabado.setSelectedItem(horaInicio);
                     
-                    String minInicio = this.getMin(inicio);
+                    String minInicio = o.getMinInicio();
                     this.inicioMinSabado.setSelectedItem(minInicio);
                     
-                    String horaFin = this.getHora(fin);
-                    fin = fin%60;
+                    String horaFin = o.getHoraFin();
                     this.finHoraSabado.setSelectedItem(horaFin);
                     
-                    String minFin = this.getMin(fin);
+                    String minFin = o.getMinFin();
                     this.finMinSabado.setSelectedItem(minFin);
+                    
+                    this.inicioHoraSabado.setEnabled(true);
+                    this.inicioMinSabado.setEnabled(true);
+                    this.finHoraSabado.setEnabled(true);
+                    this.finMinSabado.setEnabled(true);
                 }
             }
         }
@@ -351,52 +331,76 @@ public class HorarioPanel extends JPanel{
         labelFin.setText("Fin");
 
         inicioHoraLunes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
+        inicioHoraLunes.setEnabled(false);
 
         inicioMinLunes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        inicioMinLunes.setEnabled(false);
 
         finHoraLunes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
+        finHoraLunes.setEnabled(false);
 
         finMinLunes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        finMinLunes.setEnabled(false);
 
         inicioHoraMartes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
+        inicioHoraMartes.setEnabled(false);
 
         inicioMinMartes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        inicioMinMartes.setEnabled(false);
 
         finHoraMartes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
+        finHoraMartes.setEnabled(false);
 
         finMinMartes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        finMinMartes.setEnabled(false);
 
         inicioHoraMiercoles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
+        inicioHoraMiercoles.setEnabled(false);
 
         inicioMinMiercoles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        inicioMinMiercoles.setEnabled(false);
 
         finHoraMiercoles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
+        finHoraMiercoles.setEnabled(false);
 
         finMinMiercoles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        finMinMiercoles.setEnabled(false);
 
         inicioHoraJueves.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
+        inicioHoraJueves.setEnabled(false);
 
         inicioMinJueves.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        inicioMinJueves.setEnabled(false);
 
         finHoraJueves.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
+        finHoraJueves.setEnabled(false);
 
         finMinJueves.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        finMinJueves.setEnabled(false);
 
         inicioHoraViernes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
+        inicioHoraViernes.setEnabled(false);
 
         inicioMinViernes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        inicioMinViernes.setEnabled(false);
 
         finHoraViernes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
+        finHoraViernes.setEnabled(false);
 
         finMinViernes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        finMinViernes.setEnabled(false);
 
         inicioHoraSabado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12" }));
+        inicioHoraSabado.setEnabled(false);
 
         inicioMinSabado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        inicioMinSabado.setEnabled(false);
 
         finHoraSabado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12" }));
+        finHoraSabado.setEnabled(false);
 
         finMinSabado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        finMinSabado.setEnabled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -548,33 +552,194 @@ public class HorarioPanel extends JPanel{
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private int convertToMin(String hora){
+        
+        int min = Integer.parseInt(hora);
+        
+        min = min*60;
+        
+        return min;
+    }
+    
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
+        
+        try {
+            boolean aux = HorarioDB.eliminarHorario(this.usuario.getId_usuario());
+        } catch (SQLException ex) {
+            System.out.println("");
+        }
+        
+        if(this.lunes.isSelected()){
+            int horaInicio = this.convertToMin((String)this.inicioHoraLunes.getSelectedItem());
+            horaInicio = horaInicio + Integer.parseInt((String)this.inicioMinLunes.getSelectedItem());
+            
+            int horaFin = this.convertToMin((String)this.finHoraLunes.getSelectedItem());
+            horaFin = horaFin + Integer.parseInt((String)this.finMinLunes.getSelectedItem());
+            
+            HorarioDB.crearHorario(this.usuario.getId_usuario(), "Lunes", horaInicio, horaFin);
+        }
+        if(this.martes.isSelected()){
+            int horaInicio = this.convertToMin((String)this.inicioHoraMartes.getSelectedItem());
+            horaInicio = horaInicio + Integer.parseInt((String)this.inicioMinMartes.getSelectedItem());
+            
+            int horaFin = this.convertToMin((String)this.finHoraMartes.getSelectedItem());
+            horaFin = horaFin + Integer.parseInt((String)this.finMinMartes.getSelectedItem());
+            
+            HorarioDB.crearHorario(this.usuario.getId_usuario(), "Martes", horaInicio, horaFin);
+        }
+        if(this.miercoles.isSelected()){
+            int horaInicio = this.convertToMin((String)this.inicioHoraMiercoles.getSelectedItem());
+            horaInicio = horaInicio + Integer.parseInt((String)this.inicioMinMiercoles.getSelectedItem());
+            
+            int horaFin = this.convertToMin((String)this.finHoraMiercoles.getSelectedItem());
+            horaFin = horaFin + Integer.parseInt((String)this.finMinMiercoles.getSelectedItem());
+            
+            HorarioDB.crearHorario(this.usuario.getId_usuario(), "Miercoles", horaInicio, horaFin);
+        }
+        if(this.jueves.isSelected()){
+            int horaInicio = this.convertToMin((String)this.inicioHoraJueves.getSelectedItem());
+            horaInicio = horaInicio + Integer.parseInt((String)this.inicioMinJueves.getSelectedItem());
+            
+            int horaFin = this.convertToMin((String)this.finHoraJueves.getSelectedItem());
+            horaFin = horaFin + Integer.parseInt((String)this.finMinJueves.getSelectedItem());
+            
+            HorarioDB.crearHorario(this.usuario.getId_usuario(), "Jueves", horaInicio, horaFin);
+        }
+        if(this.viernes.isSelected()){
+            int horaInicio = this.convertToMin((String)this.inicioHoraViernes.getSelectedItem());
+            horaInicio = horaInicio + Integer.parseInt((String)this.inicioMinViernes.getSelectedItem());
+            
+            int horaFin = this.convertToMin((String)this.finHoraViernes.getSelectedItem());
+            horaFin = horaFin + Integer.parseInt((String)this.finMinViernes.getSelectedItem());
+            
+            HorarioDB.crearHorario(this.usuario.getId_usuario(), "Viernes", horaInicio, horaFin);
+        }
+        if(this.sabado.isSelected()){
+            int horaInicio = this.convertToMin((String)this.inicioHoraSabado.getSelectedItem());
+            horaInicio = horaInicio + Integer.parseInt((String)this.inicioMinSabado.getSelectedItem());
+            
+            int horaFin = this.convertToMin((String)this.finHoraSabado.getSelectedItem());
+            horaFin = horaFin + Integer.parseInt((String)this.finMinSabado.getSelectedItem());
+            
+            HorarioDB.crearHorario(this.usuario.getId_usuario(), "Sabado", horaInicio, horaFin);
+        }
+        
         this.cambios = false;
         this.guardar.setEnabled(false);
     }//GEN-LAST:event_guardarActionPerformed
 
     private void lunesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lunesActionPerformed
         this.habilitarBoton();
+        
+        if(this.lunes.isSelected()){
+            //Ahora lo marco
+            this.inicioHoraLunes.setEnabled(true);
+            this.inicioMinLunes.setEnabled(true);
+            this.finHoraLunes.setEnabled(true);
+            this.finMinLunes.setEnabled(true);
+        }
+        else{
+            //Ahora lo desmarco
+            this.inicioHoraLunes.setEnabled(false);
+            this.inicioMinLunes.setEnabled(false);
+            this.finHoraLunes.setEnabled(false);
+            this.finMinLunes.setEnabled(false);
+        }
     }//GEN-LAST:event_lunesActionPerformed
 
     private void martesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_martesActionPerformed
         this.habilitarBoton();
+        
+        if(this.martes.isSelected()){
+            //Ahora lo marco
+            this.inicioHoraMartes.setEnabled(true);
+            this.inicioMinMartes.setEnabled(true);
+            this.finHoraMartes.setEnabled(true);
+            this.finMinMartes.setEnabled(true);
+        }
+        else{
+            //Ahora lo desmarco
+            this.inicioHoraMartes.setEnabled(false);
+            this.inicioMinMartes.setEnabled(false);
+            this.finHoraMartes.setEnabled(false);
+            this.finMinMartes.setEnabled(false);
+        }
     }//GEN-LAST:event_martesActionPerformed
 
     private void miercolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miercolesActionPerformed
         this.habilitarBoton();
+        
+        if(this.miercoles.isSelected()){
+            //Ahora lo marco
+            this.inicioHoraMiercoles.setEnabled(true);
+            this.inicioMinMiercoles.setEnabled(true);
+            this.finHoraMiercoles.setEnabled(true);
+            this.finMinMiercoles.setEnabled(true);
+        }
+        else{
+            //Ahora lo desmarco
+            this.inicioHoraMiercoles.setEnabled(false);
+            this.inicioMinMiercoles.setEnabled(false);
+            this.finHoraMiercoles.setEnabled(false);
+            this.finMinMiercoles.setEnabled(false);
+        }
     }//GEN-LAST:event_miercolesActionPerformed
 
     private void juevesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_juevesActionPerformed
         this.habilitarBoton();
+        
+        if(this.jueves.isSelected()){
+            //Ahora lo marco
+            this.inicioHoraJueves.setEnabled(true);
+            this.inicioMinJueves.setEnabled(true);
+            this.finHoraJueves.setEnabled(true);
+            this.finMinJueves.setEnabled(true);
+        }
+        else{
+            //Ahora lo desmarco
+            this.inicioHoraJueves.setEnabled(false);
+            this.inicioMinJueves.setEnabled(false);
+            this.finHoraJueves.setEnabled(false);
+            this.finMinJueves.setEnabled(false);
+        }
     }//GEN-LAST:event_juevesActionPerformed
 
     private void viernesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viernesActionPerformed
         this.habilitarBoton();
+        
+        if(this.viernes.isSelected()){
+            //Ahora lo marco
+            this.inicioHoraViernes.setEnabled(true);
+            this.inicioMinViernes.setEnabled(true);
+            this.finHoraViernes.setEnabled(true);
+            this.finMinViernes.setEnabled(true);
+        }
+        else{
+            //Ahora lo desmarco
+            this.inicioHoraViernes.setEnabled(false);
+            this.inicioMinViernes.setEnabled(false);
+            this.finHoraViernes.setEnabled(false);
+            this.finMinViernes.setEnabled(false);
+        }
     }//GEN-LAST:event_viernesActionPerformed
 
     private void sabadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sabadoActionPerformed
         this.habilitarBoton();
+        
+        if(this.sabado.isSelected()){
+            //Ahora lo marco
+            this.inicioHoraSabado.setEnabled(true);
+            this.inicioMinSabado.setEnabled(true);
+            this.finHoraSabado.setEnabled(true);
+            this.finMinSabado.setEnabled(true);
+        }
+        else{
+            //Ahora lo desmarco
+            this.inicioHoraSabado.setEnabled(false);
+            this.inicioMinSabado.setEnabled(false);
+            this.finHoraSabado.setEnabled(false);
+            this.finMinSabado.setEnabled(false);
+        }
     }//GEN-LAST:event_sabadoActionPerformed
         
     // Variables declaration - do not modify//GEN-BEGIN:variables
