@@ -71,6 +71,7 @@ public class NuevoUsuario extends javax.swing.JDialog {
 
         jPanel3.setBackground(new java.awt.Color(9, 133, 179));
 
+        cancelar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         cancelar.setText("Cancelar");
         cancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -78,6 +79,7 @@ public class NuevoUsuario extends javax.swing.JDialog {
             }
         });
 
+        contrasena1.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         contrasena1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 contrasena1KeyTyped(evt);
@@ -145,6 +147,7 @@ public class NuevoUsuario extends javax.swing.JDialog {
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
+        apellidoMat.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         apellidoMat.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 apellidoMatKeyTyped(evt);
@@ -155,6 +158,7 @@ public class NuevoUsuario extends javax.swing.JDialog {
         labelApellidoPat.setForeground(new java.awt.Color(255, 255, 255));
         labelApellidoPat.setText("Apellido Paterno (*)");
 
+        email.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         email.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 emailKeyTyped(evt);
@@ -165,6 +169,7 @@ public class NuevoUsuario extends javax.swing.JDialog {
         labelApellidoMat.setForeground(new java.awt.Color(255, 255, 255));
         labelApellidoMat.setText("Apellido Materno");
 
+        aceptar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         aceptar.setText("Aceptar");
         aceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -172,12 +177,14 @@ public class NuevoUsuario extends javax.swing.JDialog {
             }
         });
 
+        apellidoPat.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         apellidoPat.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 apellidoPatKeyTyped(evt);
             }
         });
 
+        nombres.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         nombres.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 nombresKeyTyped(evt);
@@ -192,6 +199,7 @@ public class NuevoUsuario extends javax.swing.JDialog {
         labelNombre.setForeground(new java.awt.Color(255, 255, 255));
         labelNombre.setText("Nombre (*)");
 
+        telefono.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         telefono.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 telefonoKeyTyped(evt);
@@ -207,6 +215,7 @@ public class NuevoUsuario extends javax.swing.JDialog {
         labelEmail.setForeground(new java.awt.Color(255, 255, 255));
         labelEmail.setText("Email (*)");
 
+        contrasena2.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         contrasena2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 contrasena2KeyTyped(evt);

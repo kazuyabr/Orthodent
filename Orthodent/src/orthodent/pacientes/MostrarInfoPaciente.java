@@ -138,7 +138,7 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         this.planesTratamientoPanel = null;
         this.sesionesPanel = null;
         this.fichasClinicasPanel = null;
-        this.recaudacion = null;
+        this.recaudacionPanel = null;
         this.pagosRecibidosPanel = null;
         
         this.contenedor = new JPanel();
@@ -395,7 +395,7 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
                 this.planesTratamiento.setIcon(new ImageIcon("src/imagenes/planesDeTratamientoSelec.png"));
                 break;
             case 3:
-                this.sesiones.setIcon(new ImageIcon("src/imagenes/sesiones.png"));
+                this.sesiones.setIcon(new ImageIcon("src/imagenes/sesionesSelec.png"));
                 break;
             case 4:
                 this.fichasClinicas.setIcon(new ImageIcon("src/imagenes/fichasClinicasSelec.png"));

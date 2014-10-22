@@ -15,8 +15,12 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.*;
+import modelo.Paciente;
 import modelo.Usuario;
 import orthodent.db.Autenticacion;
+import orthodent.db.PacienteDB;
+import orthodent.pacientes.DatosPersonales;
+import orthodent.pacientes.MostrarInfoPaciente;
 import orthodent.usuarios.MostrarInfoUsuario;
 
 public class JVentana extends JFrame{
@@ -114,13 +118,17 @@ public class JVentana extends JFrame{
         this.contenedorAgenda.add(panel,BorderLayout.NORTH);
     }
     
-    private void crearPacientes(){
+    private void crearPacientes() throws Exception{
         this.contenedorPacientes.setLayout(new BorderLayout());
         this.pacientes = new Pacientes(this.usuario);
+        
+        //Paciente paciente = PacienteDB.getPaciente("17157036-0");
+        //MostrarInfoPaciente infoPaciente = new MostrarInfoPaciente(paciente, this.usuario);
         
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(this.pacientes,BorderLayout.CENTER);
+        //panel.add(infoPaciente,BorderLayout.CENTER);
         
         JPanel borde1 = new JPanel();
         borde1.setBackground(Color.white);
@@ -269,7 +277,7 @@ public class JVentana extends JFrame{
         }
     }
     
-    public void cambiarPacientes(){
+    public void cambiarPacientes() throws Exception{
         if(opActual!=2){
             this.removeAncestor();
             this.panelOpciones.setIconButton(2);

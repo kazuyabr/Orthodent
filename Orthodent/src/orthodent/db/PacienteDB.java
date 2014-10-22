@@ -31,8 +31,9 @@ public class PacienteDB {
             while (rs.next())
             {
                 Paciente p = new Paciente(rs.getInt("id_paciente"), rs.getString("nombre"), rs.getString("apellido_pat"), rs.getString("apellido_mat"),
-                                            rs.getString("rut"), rs.getString("fecha_nacimiento"), rs.getString("antecedente_medico"), rs.getString("telefono"), 
-                                            rs.getBoolean("activo"));
+                                            rs.getString("rut"), rs.getString("email"), rs.getString("fecha_nacimiento"), rs.getInt("sexo"),
+                                            rs.getString("antecedente_medico"), rs.getString("telefono"), rs.getString("ciudad"),
+                                            rs.getString("comuna"), rs.getString("direccion"), rs.getBoolean("activo"));
                 pacientes.add(p);
             }
             rs.close();
@@ -82,16 +83,18 @@ public class PacienteDB {
         }
     }
         
-    public static boolean crearPaciente(String nombre, String apellidoPat, String apellidoMat, String rut, String fechaNacimiento,
-                                        String antecedenteMedico, String telefono){
+    public static boolean crearPaciente(String nombre, String apellidoPat, String apellidoMat, String rut, String email,
+                                        String fechaNacimiento, int sexo, String antecedenteMedico, String telefono,
+                                        String ciudad, String comuna, String direccion){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
             
             java.sql.Statement st = con.createStatement();
-            int aux = st.executeUpdate("INSERT INTO paciente (nombre, apellido_pat, apellido_mat, rut, fecha_nacimiento, antecedente_medico, telefono)\n" +
+            int aux = st.executeUpdate("INSERT INTO paciente (nombre, apellido_pat, apellido_mat, rut, email, fecha_nacimiento, sexo, antecedente_medico, telefono, ciudad, comuna, direccion)\n" +
                                         "VALUES ('"+nombre+"','"+apellidoPat+"','"+apellidoMat+"','"+rut+"','"+
-                                                    fechaNacimiento+"','"+antecedenteMedico+"','"+telefono+"')");
+                                                    email+"','"+fechaNacimiento+"',"+sexo+",'"+antecedenteMedico+"','"+
+                                                    telefono+"','"+ciudad+"','"+comuna+"','"+direccion+"')");
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
@@ -113,9 +116,14 @@ public class PacienteDB {
                                             ",apellido_pat='"+paciente.getApellido_pat()+"'\n" +
                                             ",apellido_mat='"+paciente.getApellido_mat()+"'\n" +
                                             ",rut='"+paciente.getRut()+"'\n" +
+                                            ",email='"+paciente.getEmail()+"'\n" +
                                             ",fecha_nacimiento='"+paciente.getFechaNacimiento()+"'\n" +
+                                            ",sexo="+paciente.getSexo()+"\n" +
                                             ",antecedente_medico='"+paciente.getAntecedenteMedico()+"'\n" +
                                             ",telefono='"+paciente.getTelefono()+"'\n" +
+                                            ",ciudad='"+paciente.getCiudad()+"'\n" +
+                                            ",comuna='"+paciente.getComuna()+"'\n" +
+                                            ",direccion='"+paciente.getDireccion()+"'\n" +
                                             "WHERE id_paciente="+paciente.getId_paciente());
             boolean resultado = (aux == 1)? true : false;
             st.close();
@@ -143,12 +151,17 @@ public class PacienteDB {
                 String apellido_pat = rs.getString("apellido_pat");
                 String apellido_mat = rs.getString("apellido_mat");
                 String rut = rs.getString("rut");
+                String email = rs.getString("email");
                 String fecha_nacimiento = rs.getString("fecha_nacimiento");
+                int sexo = rs.getInt("sexo");
                 String antecedente_medico = rs.getString("antecedente_medico");
                 String telefono  = rs.getString("telefono");
+                String ciudad = rs.getString("ciudad");
+                String comuna = rs.getString("comuna");
+                String direccion = rs.getString("direccion");
                 boolean activo = rs.getBoolean("activo");
 
-                paciente = new Paciente(id_paciente, nombre, apellido_pat, apellido_mat, rut, fecha_nacimiento, antecedente_medico, telefono, activo);
+                paciente = new Paciente(id_paciente, nombre, apellido_pat, apellido_mat, rut, email, fecha_nacimiento, sexo, antecedente_medico, telefono, ciudad, comuna, direccion, activo);
             }
             else{
                 paciente = null;

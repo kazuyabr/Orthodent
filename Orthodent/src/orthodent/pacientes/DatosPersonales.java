@@ -4,8 +4,17 @@
  */
 package orthodent.pacientes;
 
+import java.awt.event.KeyEvent;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import modelo.Paciente;
+import orthodent.db.Autenticacion;
+import orthodent.db.PacienteDB;
+import orthodent.usuarios.MostrarInfoUsuario;
 
 /**
  *
@@ -22,7 +31,7 @@ public class DatosPersonales extends JPanel{
         this.paciente = paciente;
         this.cambios = false;
         
-        //this.addInfo();
+        this.addInfo();
         this.guardar.setEnabled(false);
     }
     
@@ -32,6 +41,49 @@ public class DatosPersonales extends JPanel{
     
     public void setCambios(boolean cambios){
         this.cambios = cambios;
+    }
+    
+    private void addInfo(){
+        
+        this.nombres.setText(this.paciente.getNombre());
+        this.apellidoPat.setText(this.paciente.getApellido_pat());
+        this.apellidoMat.setText(this.paciente.getApellido_mat());
+        this.rut.setText(this.paciente.getRut());
+        this.email.setText(this.paciente.getEmail());
+        this.telefono.setText(this.paciente.getTelefono());
+        this.antecedentesMedicos.setText(this.paciente.getAntecedenteMedico());
+        
+        if(this.paciente.getSexo()==1){
+            //Femenino
+            this.sexo.setSelectedItem("Femenino");
+        }
+        else{
+            this.sexo.setSelectedItem("Masculino");
+        }
+        
+        this.fechaNacimiento.setDate(this.getFecha(this.paciente.getFechaNacimiento()));
+        
+        this.ciudad.setSelectedItem(this.paciente.getCiudad());
+        this.comuna.setSelectedItem(this.paciente.getComuna());
+        this.direccion.setText(this.paciente.getDireccion());
+    }
+    
+    private Date getFecha(String fechaNacimiento){
+        
+        if(fechaNacimiento!=null){
+            int año = Integer.parseInt(fechaNacimiento.substring(0, fechaNacimiento.indexOf("-")))-1900;
+            fechaNacimiento = fechaNacimiento.substring(fechaNacimiento.indexOf("-")+1, fechaNacimiento.length());
+
+            int mes = Integer.parseInt(fechaNacimiento.substring(0, fechaNacimiento.indexOf("-")))-1;
+            fechaNacimiento = fechaNacimiento.substring(fechaNacimiento.indexOf("-")+1, fechaNacimiento.length());
+
+            int dia = Integer.parseInt(fechaNacimiento);
+            
+            return new Date(año, mes, dia);
+        }
+        else{
+            return null;
+        }
     }
 
     /**
@@ -46,11 +98,33 @@ public class DatosPersonales extends JPanel{
         jPanel2 = new javax.swing.JPanel();
         panelTitulo = new javax.swing.JPanel();
         labelTitulo = new javax.swing.JLabel();
-        labelRol = new javax.swing.JLabel();
-        imagenProfesional = new javax.swing.JButton();
-        telefono = new javax.swing.JTextField();
+        labelNombres = new javax.swing.JLabel();
+        nombres = new javax.swing.JTextField();
         guardar = new javax.swing.JButton();
         eliminar = new javax.swing.JButton();
+        labelApellidoPat = new javax.swing.JLabel();
+        apellidoPat = new javax.swing.JTextField();
+        apellidoMat = new javax.swing.JTextField();
+        labelApellidoMat = new javax.swing.JLabel();
+        rut = new javax.swing.JTextField();
+        labelRut = new javax.swing.JLabel();
+        email = new javax.swing.JTextField();
+        labelEmail = new javax.swing.JLabel();
+        labelAntecedentesMedicos = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        antecedentesMedicos = new javax.swing.JTextArea();
+        sexo = new javax.swing.JComboBox();
+        labelSexo = new javax.swing.JLabel();
+        labelFechaNacimiento = new javax.swing.JLabel();
+        labelCiudad = new javax.swing.JLabel();
+        labelComuna = new javax.swing.JLabel();
+        labelDireccion = new javax.swing.JLabel();
+        telefono = new javax.swing.JTextField();
+        labelTelefono = new javax.swing.JLabel();
+        ciudad = new javax.swing.JComboBox();
+        comuna = new javax.swing.JComboBox();
+        direccion = new javax.swing.JTextField();
+        fechaNacimiento = new com.toedter.calendar.JDateChooser();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(850, 551));
@@ -83,21 +157,16 @@ public class DatosPersonales extends JPanel{
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        labelRol.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
-        labelRol.setText("Rol");
+        labelNombres.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelNombres.setText("Nombres");
 
-        imagenProfesional.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/doctor.png"))); // NOI18N
-        imagenProfesional.setBorder(null);
-        imagenProfesional.setBorderPainted(false);
-        imagenProfesional.setContentAreaFilled(false);
-
-        telefono.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
-        telefono.addKeyListener(new java.awt.event.KeyAdapter() {
+        nombres.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        nombres.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                telefonoKeyReleased(evt);
+                nombresKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                telefonoKeyTyped(evt);
+                nombresKeyTyped(evt);
             }
         });
 
@@ -117,6 +186,129 @@ public class DatosPersonales extends JPanel{
             }
         });
 
+        labelApellidoPat.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelApellidoPat.setText("Apellido P.");
+
+        apellidoPat.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        apellidoPat.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                apellidoPatKeyTyped(evt);
+            }
+        });
+
+        apellidoMat.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        apellidoMat.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                apellidoMatKeyTyped(evt);
+            }
+        });
+
+        labelApellidoMat.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelApellidoMat.setText("Apellido M.");
+
+        rut.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        rut.setEnabled(false);
+        rut.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                rutKeyTyped(evt);
+            }
+        });
+
+        labelRut.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelRut.setText("Rut");
+
+        email.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        email.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                emailKeyTyped(evt);
+            }
+        });
+
+        labelEmail.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelEmail.setText("Email");
+
+        labelAntecedentesMedicos.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelAntecedentesMedicos.setText("Antecedentes Medicos");
+
+        antecedentesMedicos.setColumns(20);
+        antecedentesMedicos.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        antecedentesMedicos.setRows(5);
+        antecedentesMedicos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                antecedentesMedicosKeyTyped(evt);
+            }
+        });
+        jScrollPane1.setViewportView(antecedentesMedicos);
+
+        sexo.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        sexo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Femenino", "Masculino" }));
+        sexo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sexoActionPerformed(evt);
+            }
+        });
+
+        labelSexo.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelSexo.setText("Sexo");
+
+        labelFechaNacimiento.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelFechaNacimiento.setText("Fecha de Nacimiento");
+
+        labelCiudad.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelCiudad.setText("Ciudad");
+
+        labelComuna.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelComuna.setText("Comuna");
+
+        labelDireccion.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelDireccion.setText("Dirección");
+
+        telefono.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        telefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                telefonoKeyTyped(evt);
+            }
+        });
+
+        labelTelefono.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelTelefono.setText("Telefono");
+
+        ciudad.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        ciudad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Curico", "Talca", "Linaes" }));
+
+        comuna.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        comuna.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Curico", "Talca", "Linares" }));
+
+        direccion.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        direccion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                direccionKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                direccionKeyTyped(evt);
+            }
+        });
+
+        fechaNacimiento.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                fechaNacimientoFocusLost(evt);
+            }
+        });
+        fechaNacimiento.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                fechaNacimientoPropertyChange(evt);
+            }
+        });
+        fechaNacimiento.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                fechaNacimientoAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -124,38 +316,101 @@ public class DatosPersonales extends JPanel{
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(panelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(61, 61, 61)
-                .addComponent(labelRol)
-                .addGap(94, 94, 94)
-                .addComponent(telefono, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
-                .addComponent(imagenProfesional)
-                .addGap(239, 239, 239))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(eliminar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(guardar)
-                .addGap(83, 83, 83))
+                .addContainerGap(66, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelNombres)
+                            .addComponent(labelAntecedentesMedicos)
+                            .addComponent(labelSexo)
+                            .addComponent(labelFechaNacimiento)
+                            .addComponent(labelCiudad)
+                            .addComponent(labelComuna)
+                            .addComponent(labelDireccion)
+                            .addComponent(labelApellidoPat)
+                            .addComponent(labelApellidoMat)
+                            .addComponent(labelRut)
+                            .addComponent(labelEmail)
+                            .addComponent(labelTelefono))
+                        .addGap(39, 39, 39)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(sexo, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nombres)
+                            .addComponent(apellidoPat)
+                            .addComponent(apellidoMat, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(rut)
+                            .addComponent(email)
+                            .addComponent(telefono)
+                            .addComponent(jScrollPane1)
+                            .addComponent(fechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ciudad, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comuna, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(direccion, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(319, 319, 319))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(eliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(guardar)
+                        .addGap(41, 41, 41))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(panelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelRol)
-                    .addComponent(telefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(imagenProfesional)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 328, Short.MAX_VALUE)
+                    .addComponent(labelNombres)
+                    .addComponent(nombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(apellidoPat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelApellidoPat))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(apellidoMat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelApellidoMat))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelRut))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelEmail))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(telefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelTelefono))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelAntecedentesMedicos))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(sexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelSexo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(fechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelFechaNacimiento))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ciudad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelCiudad))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(comuna, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelComuna))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(direccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelDireccion))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(guardar)
                     .addComponent(eliminar))
-                .addContainerGap())
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -171,13 +426,39 @@ public class DatosPersonales extends JPanel{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
+        Object[] options = {"Sí","No"};
         
+        int n = JOptionPane.showOptionDialog(this,
+                    "¿Esta seguro que desea eliminar el paciente?",
+                    "Orthodent",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[1]);
+        
+        if(n==0){
+            try {
+                boolean resul = PacienteDB.eliminarPaciente(this.paciente.getId_paciente());
+                if(resul){
+                    try {
+
+                        JPanel contenedor = (JPanel)this.getParent();
+
+                        ((MostrarInfoPaciente)contenedor.getParent()).volver();
+                    } catch (Exception ex) {
+                        System.out.println("");
+                    }
+                }
+            } catch (SQLException ex) {
+            }
+        }
     }//GEN-LAST:event_eliminarActionPerformed
 
     public void guardar(){
@@ -186,29 +467,294 @@ public class DatosPersonales extends JPanel{
     
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
         
+        String nombre = this.nombres.getText();
+        String apellidoPat = this.apellidoPat.getText();
+        String apellidoMat = this.apellidoMat.getText();
+        String email = this.email.getText();
+        
+        Date date = this.fechaNacimiento.getDate();
+        
+        String fechaNacimiento = getFechaString(date);
+        
+        int sexo = 0;
+        if(((String)this.sexo.getSelectedItem()).equals("Femenino")){
+            sexo = 1;
+        }
+        else{
+            sexo = 2;
+        }
+        
+        String antecedenteMedico = this.antecedentesMedicos.getText();
+        String telefono1 = this.telefono.getText();
+        String ciudad = (String)this.ciudad.getSelectedItem();
+        String comuna = (String)this.comuna.getSelectedItem();
+        String direccion = this.direccion.getText();
+        
+        boolean aux = validarCamposObligatorios(nombre,apellidoPat,fechaNacimiento,telefono1);
+        
+        if(aux){
+            try {
+                this.paciente.setNombre(nombre);
+                this.paciente.setApellido_pat(apellidoPat);
+                this.paciente.setApellido_mat(apellidoMat);
+                this.paciente.setEmail(email);
+                this.paciente.setFechaNacimiento(fechaNacimiento);
+                this.paciente.setSexo(sexo);
+                this.paciente.setAntecedenteMedico(antecedenteMedico);
+                this.paciente.setTelefono(telefono1);
+                this.paciente.setCiudad(ciudad);
+                this.paciente.setComuna(comuna);
+                this.paciente.setDireccion(direccion);
+                
+                boolean respuesta = PacienteDB.editarPaciente(paciente);
+
+                if(respuesta){
+                    
+                    JPanel contenedor = (JPanel)this.getParent();
+                    
+                    ((MostrarInfoPaciente)contenedor.getParent()).updateNombre();
+                    
+                    this.cambios = false;
+                    this.guardar.setEnabled(false);
+                }
+            } catch (Exception ex) {
+                System.out.println("");
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(this,
+                    "Faltan campos obligatorios",
+                    "Orthodent",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_guardarActionPerformed
+    
+    private boolean validarCamposObligatorios(String nombre, String apellidoPat, String fechaNacimiento, String telefono){
+        
+        if(nombre.equals("")){
+            return false;
+        }
+        
+        if(apellidoPat.equals("")){
+            return false;
+        }
+        
+        if(fechaNacimiento.equals("")){
+            return false;
+        }
+        
+        if(telefono.equals("")){
+            return false;
+        }
+        
+        return true;
+    }
     
     private void habilitarBoton(){
         this.cambios = true;
         this.guardar.setEnabled(true);
     }
     
-    private void telefonoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefonoKeyReleased
+    private void nombresKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombresKeyReleased
         
-    }//GEN-LAST:event_telefonoKeyReleased
+    }//GEN-LAST:event_nombresKeyReleased
+
+    private void nombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombresKeyTyped
+        char c = evt.getKeyChar();
+        
+        if(c==KeyEvent.VK_ENTER){
+            evt.consume();
+        }
+        else if(c==KeyEvent.VK_SPACE){
+            String antes = this.nombres.getText();
+            
+            if(antes.equals("")){
+                evt.consume();
+            }
+            else{
+                this.habilitarBoton();
+            }
+        }
+        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
+            evt.consume();
+        }
+        else{
+            this.habilitarBoton();
+        }
+    }//GEN-LAST:event_nombresKeyTyped
+
+    private void apellidoPatKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoPatKeyTyped
+        char c = evt.getKeyChar();
+        
+        if(c==KeyEvent.VK_ENTER){
+            evt.consume();
+        }
+        else if(c==KeyEvent.VK_SPACE){
+            String antes = this.apellidoPat.getText();
+            
+            if(antes.equals("")){
+                evt.consume();
+            }
+            else{
+                this.habilitarBoton();
+            }
+        }
+        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
+            evt.consume();
+        }
+        else{
+            this.habilitarBoton();
+        }
+    }//GEN-LAST:event_apellidoPatKeyTyped
+
+    private void apellidoMatKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoMatKeyTyped
+        char c = evt.getKeyChar();
+        
+        if(c==KeyEvent.VK_ENTER){
+            evt.consume();
+        }
+        else if(c==KeyEvent.VK_SPACE){
+            String antes = this.apellidoMat.getText();
+            
+            if(antes.equals("")){
+                evt.consume();
+            }
+            else{
+                this.habilitarBoton();
+            }
+        }
+        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
+            evt.consume();
+        }
+        else{
+            this.habilitarBoton();
+        }
+    }//GEN-LAST:event_apellidoMatKeyTyped
+
+    private void rutKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rutKeyTyped
+        char c = evt.getKeyChar();
+        
+        if(c==KeyEvent.VK_ENTER){
+            evt.consume();
+        }
+        else if(!((c>='0' && c<='9') || (c=='-'))){
+            evt.consume();
+        }
+        else{
+            this.habilitarBoton();
+        }
+    }//GEN-LAST:event_rutKeyTyped
+
+    private void emailKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailKeyTyped
+        char c = evt.getKeyChar();
+        
+        if(c==KeyEvent.VK_ENTER){
+            evt.consume();
+        }
+        else if(c==KeyEvent.VK_SPACE){
+            evt.consume();
+        }
+        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z') || (c>='0' && c<='9') || c=='_' || c=='@' || c=='-' || c=='.')){
+            evt.consume();
+        }
+        else{
+            this.habilitarBoton();
+        }
+    }//GEN-LAST:event_emailKeyTyped
 
     private void telefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefonoKeyTyped
-        
+        char c = evt.getKeyChar();
+        if (!(c>='0' && c<='9')){
+            evt.consume();
+        }
+        else{
+            this.habilitarBoton();
+        }
     }//GEN-LAST:event_telefonoKeyTyped
 
+    private void antecedentesMedicosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_antecedentesMedicosKeyTyped
+        this.habilitarBoton();
+    }//GEN-LAST:event_antecedentesMedicosKeyTyped
+
+    private void direccionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_direccionKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_direccionKeyReleased
+
+    private void direccionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_direccionKeyTyped
+        this.habilitarBoton();
+    }//GEN-LAST:event_direccionKeyTyped
+
+    private void sexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sexoActionPerformed
+        
+    }//GEN-LAST:event_sexoActionPerformed
+
+    private void fechaNacimientoAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_fechaNacimientoAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fechaNacimientoAncestorAdded
+
+    private void fechaNacimientoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fechaNacimientoFocusLost
+        
+    }//GEN-LAST:event_fechaNacimientoFocusLost
+
+    private void fechaNacimientoPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_fechaNacimientoPropertyChange
+        
+        Date date = this.fechaNacimiento.getDate();
+        if(date!=null){
+            if(!this.paciente.getFechaNacimiento().equals(this.getFechaString(date))){
+                this.habilitarBoton();
+            }
+        }
+    }//GEN-LAST:event_fechaNacimientoPropertyChange
+
+    private String getFechaString(Date date){
+        
+        String fechaNacimiento = (date.getYear()+1900) + "-";
+        
+        if((date.getMonth()+1)<9){
+            fechaNacimiento = fechaNacimiento + "0";
+        }
+        
+        fechaNacimiento = fechaNacimiento +(date.getMonth()+1)+"-";
+        
+        if(date.getDate()<9){
+            fechaNacimiento = fechaNacimiento + "0";
+        }
+        
+        fechaNacimiento = fechaNacimiento + date.getDate();
+        
+        return fechaNacimiento;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea antecedentesMedicos;
+    private javax.swing.JTextField apellidoMat;
+    private javax.swing.JTextField apellidoPat;
+    private javax.swing.JComboBox ciudad;
+    private javax.swing.JComboBox comuna;
+    private javax.swing.JTextField direccion;
     private javax.swing.JButton eliminar;
+    private javax.swing.JTextField email;
+    private com.toedter.calendar.JDateChooser fechaNacimiento;
     private javax.swing.JButton guardar;
-    private javax.swing.JButton imagenProfesional;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JLabel labelRol;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelAntecedentesMedicos;
+    private javax.swing.JLabel labelApellidoMat;
+    private javax.swing.JLabel labelApellidoPat;
+    private javax.swing.JLabel labelCiudad;
+    private javax.swing.JLabel labelComuna;
+    private javax.swing.JLabel labelDireccion;
+    private javax.swing.JLabel labelEmail;
+    private javax.swing.JLabel labelFechaNacimiento;
+    private javax.swing.JLabel labelNombres;
+    private javax.swing.JLabel labelRut;
+    private javax.swing.JLabel labelSexo;
+    private javax.swing.JLabel labelTelefono;
     private javax.swing.JLabel labelTitulo;
+    private javax.swing.JTextField nombres;
     private javax.swing.JPanel panelTitulo;
+    private javax.swing.JTextField rut;
+    private javax.swing.JComboBox sexo;
     private javax.swing.JTextField telefono;
     // End of variables declaration//GEN-END:variables
 }

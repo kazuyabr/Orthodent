@@ -17,20 +17,30 @@ public class Paciente {
     private String apellido_pat;
     private String apellido_mat;
     private String rut;
+    private String email;
     private String fechaNacimiento;
+    private int sexo;//1 femenino, 2 masculino
     private String antecedenteMedico;
     private String telefono;
+    private String ciudad;
+    private String comuna;
+    private String direccion;
     private boolean activo; 
     
-    public Paciente(int id_paciente, String nombre, String apellido_pat, String apellido_mat, String rut, String fechaNacimiento, String antecedenteMedico, String telefono, boolean activo) {
+    public Paciente(int id_paciente, String nombre, String apellido_pat, String apellido_mat, String rut, String email, String fechaNacimiento, int sexo, String antecedenteMedico, String telefono, String ciudad, String comuna, String direccion, boolean activo) {
         this.id_paciente = id_paciente;
         this.nombre = nombre;
         this.apellido_pat = apellido_pat;
         this.apellido_mat = apellido_mat;
         this.rut = rut;
+        this.email = email;
         this.fechaNacimiento = fechaNacimiento;
+        this.sexo = sexo;
         this.antecedenteMedico = antecedenteMedico;
         this.telefono = telefono;
+        this.ciudad = ciudad;
+        this.comuna = comuna;
+        this.direccion = direccion;
         this.activo = activo;
     }
     
@@ -105,5 +115,44 @@ public class Paciente {
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
-    
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getComuna() {
+        return comuna;
+    }
+
+    public void setComuna(String comuna) {
+        this.comuna = comuna;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(int sexo) {
+        this.sexo = sexo;
+    }
 }

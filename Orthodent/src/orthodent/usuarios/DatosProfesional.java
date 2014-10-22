@@ -39,7 +39,10 @@ public class DatosProfesional extends JPanel{
     
     private void addInfo(){
         
-        this.especialidad.setText(this.usuario.getEspecialidad());
+        if(!this.usuario.getEspecialidad().equals("null")){
+            this.especialidad.setText(this.usuario.getEspecialidad());
+        }
+        
         this.tiempoCita.setText(this.usuario.getTiempoCita()+"");
     }
 

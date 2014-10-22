@@ -82,6 +82,7 @@ public class Login extends javax.swing.JDialog implements WindowListener{
         nombreUsuario.setForeground(new java.awt.Color(255, 255, 255));
         nombreUsuario.setText("Nombre de Usuario");
 
+        campoNombreUsuario.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         campoNombreUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 campoNombreUsuarioKeyPressed(evt);
@@ -111,6 +112,7 @@ public class Login extends javax.swing.JDialog implements WindowListener{
         contraseña.setForeground(new java.awt.Color(255, 255, 255));
         contraseña.setText("Contraseña");
 
+        campoContraseña.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         campoContraseña.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 campoContraseñaKeyPressed(evt);

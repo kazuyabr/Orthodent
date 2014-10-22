@@ -330,75 +330,99 @@ public class HorarioPanel extends JPanel{
         labelFin.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         labelFin.setText("Fin");
 
+        inicioHoraLunes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioHoraLunes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         inicioHoraLunes.setEnabled(false);
 
+        inicioMinLunes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioMinLunes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         inicioMinLunes.setEnabled(false);
 
+        finHoraLunes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finHoraLunes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         finHoraLunes.setEnabled(false);
 
+        finMinLunes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finMinLunes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         finMinLunes.setEnabled(false);
 
+        inicioHoraMartes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioHoraMartes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         inicioHoraMartes.setEnabled(false);
 
+        inicioMinMartes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioMinMartes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         inicioMinMartes.setEnabled(false);
 
+        finHoraMartes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finHoraMartes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         finHoraMartes.setEnabled(false);
 
+        finMinMartes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finMinMartes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         finMinMartes.setEnabled(false);
 
+        inicioHoraMiercoles.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioHoraMiercoles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         inicioHoraMiercoles.setEnabled(false);
 
+        inicioMinMiercoles.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioMinMiercoles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         inicioMinMiercoles.setEnabled(false);
 
+        finHoraMiercoles.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finHoraMiercoles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         finHoraMiercoles.setEnabled(false);
 
+        finMinMiercoles.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finMinMiercoles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         finMinMiercoles.setEnabled(false);
 
+        inicioHoraJueves.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioHoraJueves.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         inicioHoraJueves.setEnabled(false);
 
+        inicioMinJueves.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioMinJueves.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         inicioMinJueves.setEnabled(false);
 
+        finHoraJueves.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finHoraJueves.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         finHoraJueves.setEnabled(false);
 
+        finMinJueves.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finMinJueves.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         finMinJueves.setEnabled(false);
 
+        inicioHoraViernes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioHoraViernes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         inicioHoraViernes.setEnabled(false);
 
+        inicioMinViernes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioMinViernes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         inicioMinViernes.setEnabled(false);
 
+        finHoraViernes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finHoraViernes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         finHoraViernes.setEnabled(false);
 
+        finMinViernes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finMinViernes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         finMinViernes.setEnabled(false);
 
+        inicioHoraSabado.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioHoraSabado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12" }));
         inicioHoraSabado.setEnabled(false);
 
+        inicioMinSabado.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioMinSabado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         inicioMinSabado.setEnabled(false);
 
+        finHoraSabado.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finHoraSabado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12" }));
         finHoraSabado.setEnabled(false);
 
+        finMinSabado.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finMinSabado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         finMinSabado.setEnabled(false);
 
