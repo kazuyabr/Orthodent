@@ -23,9 +23,9 @@ public class PacienteDB {
         try {
             DbConnection db = new DbConnection();
             Connection con = db.getConnection();
-
+            
             java.sql.Statement st = con.createStatement();
-
+            
             ResultSet rs = st.executeQuery("SELECT * FROM paciente");
             pacientes = new ArrayList<Paciente>();
             while (rs.next())
@@ -35,7 +35,7 @@ public class PacienteDB {
                                             rs.getBoolean("activo"));
                 pacientes.add(p);
             }
-            rs.close();             
+            rs.close();
             con.close();
             return pacientes;
         }
@@ -67,19 +67,19 @@ public class PacienteDB {
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
-
+            
             java.sql.Statement st = con.createStatement();
             int aux = st.executeUpdate("UPDATE paciente\n" +
                                             "SET activo="+0+"\n" +
                                             "WHERE id_paciente="+id_paciente);
             boolean resultado = (aux == 1)? true : false;
             st.close();
-            con.close();             
-            return resultado;           
+            con.close();
+            return resultado;
         }
-        catch ( SQLException e) { 
+        catch ( SQLException e) {
             return false;
-        } 
+        }
     }
         
     public static boolean crearPaciente(String nombre, String apellidoPat, String apellidoMat, String rut, String fechaNacimiento,
@@ -87,27 +87,26 @@ public class PacienteDB {
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
-
+            
             java.sql.Statement st = con.createStatement();
             int aux = st.executeUpdate("INSERT INTO paciente (nombre, apellido_pat, apellido_mat, rut, fecha_nacimiento, antecedente_medico, telefono)\n" +
                                         "VALUES ('"+nombre+"','"+apellidoPat+"','"+apellidoMat+"','"+rut+"','"+
                                                     fechaNacimiento+"','"+antecedenteMedico+"','"+telefono+"')");
             boolean resultado = (aux == 1)? true : false;
             st.close();
-            con.close();             
-            return resultado;           
+            con.close();
+            return resultado;
         }
-        catch ( SQLException e) { 
+        catch ( SQLException e) {
             return false;
-        }             
-
+        }
     }
         
     public static boolean editarPaciente(Paciente paciente){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
-
+            
             java.sql.Statement st = con.createStatement();
             int aux = st.executeUpdate("UPDATE paciente\n" +
                                             "SET nombre='"+paciente.getNombre()+"'\n" +
@@ -120,13 +119,12 @@ public class PacienteDB {
                                             "WHERE id_paciente="+paciente.getId_paciente());
             boolean resultado = (aux == 1)? true : false;
             st.close();
-            con.close();             
-            return resultado;           
+            con.close();
+            return resultado;
         }
-        catch ( SQLException e) { 
+        catch ( SQLException e) {
             return false;
-        } 
-
+        }
     }
     
     static public Paciente getPaciente(String rutB) throws Exception{
@@ -134,10 +132,9 @@ public class PacienteDB {
         try {
             DbConnection db = new DbConnection();
             Connection con = db.getConnection();
-
+            
             java.sql.Statement st = con.createStatement();
-            //contrasena = encripMd5(contrasena);
-
+            
             ResultSet rs = st.executeQuery("SELECT * from paciente where rut='" + rutB + "'");
             if (rs.next())
             {
@@ -156,13 +153,13 @@ public class PacienteDB {
             else{
                 paciente = null;
             }
-            rs.close();             
+            rs.close();
             con.close();
             return paciente;
         }
 
-        catch ( SQLException e) { 
-            return null;  
+        catch ( SQLException e) {
+            return null;
         }
     }
 }

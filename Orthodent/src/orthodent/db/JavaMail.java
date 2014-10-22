@@ -45,7 +45,6 @@ public class JavaMail {
             t.sendMessage(message, message.getAllRecipients());
             t.close();
         } catch (MessagingException e) {
-            
         }
     }
 }

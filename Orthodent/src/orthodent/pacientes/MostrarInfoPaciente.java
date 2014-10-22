@@ -4,14 +4,12 @@
  */
 package orthodent.pacientes;
 
-import orthodent.usuarios.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import modelo.Paciente;
 import modelo.Usuario;
-import orthodent.JVentana;
 
 /**
  * 
@@ -148,6 +146,17 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         this.contenedor.setLayout(new BorderLayout());
     }
     
+    public void updateNombre(){
+        String nombre = this.paciente.getNombre();
+        
+        if(nombre.contains(" ")){
+            nombre = nombre.substring(0,nombre.indexOf(" "));
+        }
+        
+        this.nombrePaciente.setText(nombre+" "+this.paciente.getApellido_pat());
+        this.contenedor.updateUI();
+    }
+    
     private void addComponents(){
         
         JPanel panelIzq = panelLateral();
@@ -174,17 +183,6 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
                 .addContainerGap())
         );
         
-    }
-    
-    public void updateNombre(){
-        String nombre = this.paciente.getNombre();
-        
-        if(nombre.contains(" ")){
-            nombre = nombre.substring(0,nombre.indexOf(" "));
-        }
-        
-        this.nombrePaciente.setText(nombre+" "+this.paciente.getApellido_pat());
-        this.contenedor.updateUI();
     }
     
     private void removeAncestor(){

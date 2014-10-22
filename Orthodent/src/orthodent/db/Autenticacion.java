@@ -200,8 +200,10 @@ public class Autenticacion {
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
+            
             java.sql.Statement st = con.createStatement();
             contrasena = encripMd5(contrasena);
+            
             int aux = st.executeUpdate("INSERT INTO usuario (id_rol, nombre, apellido_pat, apellido_mat, nombre_usuario, contrasena,"
                                         + "email, telefono, especialidad, tiempo_cita)\n" +
                                         "VALUES ("+idRol+",'"+nombre+"','"+apellidoPat+"','"+apellidoMat+"','"+nombreUsuario+"','"+contrasena
@@ -224,8 +226,10 @@ public class Autenticacion {
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
+            
             java.sql.Statement st = con.createStatement();
             contrasena = encripMd5(contrasena);
+            
             int aux = st.executeUpdate("INSERT INTO usuario (id_rol, nombre, apellido_pat, apellido_mat, nombre_usuario, contrasena,"
                                         + "email, telefono)\n" +
                                         "VALUES ("+idRol+",'"+nombre+"','"+apellidoPat+"','"+apellidoMat+"','"+nombreUsuario+"','"+contrasena
@@ -246,7 +250,9 @@ public class Autenticacion {
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
+            
             java.sql.Statement st = con.createStatement();
+            
             int aux = st.executeUpdate("UPDATE usuario\n" +
                     "SET id_rol="+usuario.getId_rol()+"\n" +
                     ",nombre='"+usuario.getNombre()+"'\n" +
@@ -276,9 +282,8 @@ public class Autenticacion {
         try {
                 DbConnection db = new DbConnection();
                 Connection con = db.getConnection();
-
+                
                 java.sql.Statement st = con.createStatement();
-                //contrasena = encripMd5(contrasena);
                 
                 ResultSet rs = st.executeQuery("SELECT * from usuario where nombre='" + nombreB + "' AND email='" + emailB + "'");
                 if (rs.next())
@@ -294,20 +299,19 @@ public class Autenticacion {
                     String telefono  = rs.getString("telefono");
                     String especialidad  = rs.getString("especialidad");
                     int tiempoCita = rs.getInt("tiempo_cita");
-                    boolean activo = rs.getBoolean("activo");  
+                    boolean activo = rs.getBoolean("activo");
                     
                     usuario = new Usuario(id_usuario, id_rol, nombre, apellido_pat, apellido_mat, userName, contraseña, email, telefono, especialidad, tiempoCita, activo);
                 }
                 else{
                     usuario = null;
                 }
-                rs.close();             
+                rs.close();
                 con.close();
                 return usuario;
             }
-
-            catch ( SQLException e) { 
-                return null;  
+            catch ( SQLException e) {
+                return null;
             }       
     }
 }

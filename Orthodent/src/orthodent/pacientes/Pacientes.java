@@ -35,7 +35,7 @@ public class Pacientes extends JPanel implements ActionListener{
     private String [] columnasNombre;
     private MostrarInfoPaciente infoPaciente;
     private JPanel contenedorListarPacientes;
-    private boolean isListarUsuarios;
+    private boolean isListarPacientes;
     
     public Pacientes(Usuario actual){
         this.actual = actual;
@@ -44,7 +44,7 @@ public class Pacientes extends JPanel implements ActionListener{
         
         this.setLayout(new BorderLayout());
         
-        this.isListarUsuarios = true;
+        this.isListarPacientes = true;
         this.initComponents();
         this.addComponents();
     }
@@ -108,7 +108,7 @@ public class Pacientes extends JPanel implements ActionListener{
                             
                             remove(contenedorListarPacientes);
                             add(infoPaciente, BorderLayout.CENTER);
-                            isListarUsuarios = false;
+                            isListarPacientes = false;
                             updateUI();
                         }
                     } catch (Exception ex) {
@@ -193,10 +193,10 @@ public class Pacientes extends JPanel implements ActionListener{
     }
     
     public void volverPacientes() throws Exception{
-        if(!this.isListarUsuarios){
+        if(!this.isListarPacientes){
             this.remove(this.infoPaciente);
             this.add(this.contenedorListarPacientes, BorderLayout.CENTER);
-            this.isListarUsuarios = true;
+            this.isListarPacientes = true;
             this.updateModelo();
             this.updateUI();
         }

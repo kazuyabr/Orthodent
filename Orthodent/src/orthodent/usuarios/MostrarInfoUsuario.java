@@ -7,17 +7,9 @@ package orthodent.usuarios;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import modelo.Rol;
 import modelo.Usuario;
 import orthodent.JVentana;
-import orthodent.db.Autenticacion;
-import orthodent.db.RolDB;
 
 /**
  * 

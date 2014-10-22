@@ -44,7 +44,7 @@ public class HorarioDB {
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
-
+            
             java.sql.Statement st = con.createStatement();
             int aux = st.executeUpdate("DELETE FROM horario "+
                                             "WHERE id_usuario="+id_usuario);
@@ -53,27 +53,26 @@ public class HorarioDB {
             con.close();
             return resultado;
         }
-        catch ( SQLException e) { 
+        catch ( SQLException e) {
             return false;
-        } 
+        }
     }
     
     public static boolean crearHorario(int id_usuario, String dia, int hora_inicio, int hora_fin){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
-
+            
             java.sql.Statement st = con.createStatement();
             int aux = st.executeUpdate("INSERT INTO horario (id_usuario, dia, hora_inicio, hora_fin)\n" +
                                         "VALUES ("+id_usuario+",'"+dia+"',"+hora_inicio+","+hora_fin+")");
             boolean resultado = (aux == 1)? true : false;
             st.close();
-            con.close();             
-            return resultado;           
+            con.close();
+            return resultado;
         }
-        catch ( SQLException e) { 
+        catch ( SQLException e) {
             return false;
-        }             
-
+        }
     }
 }
