@@ -31,7 +31,7 @@ public class PacienteDB {
             while (rs.next())
             {
                 Paciente p = new Paciente(rs.getInt("id_paciente"), rs.getString("nombre"), rs.getString("apellido_pat"), rs.getString("apellido_mat"),
-                                            rs.getString("rut"), rs.getString("email"), rs.getString("fecha_nacimiento"), rs.getInt("sexo"),
+                                            rs.getString("rut"), rs.getString("email"), rs.getString("fecha_nacimiento"), rs.getInt("edad"), rs.getInt("sexo"),
                                             rs.getString("antecedente_medico"), rs.getString("telefono"), rs.getString("ciudad"),
                                             rs.getString("comuna"), rs.getString("direccion"), rs.getBoolean("activo"));
                 pacientes.add(p);
@@ -84,16 +84,16 @@ public class PacienteDB {
     }
         
     public static boolean crearPaciente(String nombre, String apellidoPat, String apellidoMat, String rut, String email,
-                                        String fechaNacimiento, int sexo, String antecedenteMedico, String telefono,
+                                        String fechaNacimiento, int edad, int sexo, String antecedenteMedico, String telefono,
                                         String ciudad, String comuna, String direccion){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
             
             java.sql.Statement st = con.createStatement();
-            int aux = st.executeUpdate("INSERT INTO paciente (nombre, apellido_pat, apellido_mat, rut, email, fecha_nacimiento, sexo, antecedente_medico, telefono, ciudad, comuna, direccion)\n" +
+            int aux = st.executeUpdate("INSERT INTO paciente (nombre, apellido_pat, apellido_mat, rut, email, fecha_nacimiento, edad, sexo, antecedente_medico, telefono, ciudad, comuna, direccion)\n" +
                                         "VALUES ('"+nombre+"','"+apellidoPat+"','"+apellidoMat+"','"+rut+"','"+
-                                                    email+"','"+fechaNacimiento+"',"+sexo+",'"+antecedenteMedico+"','"+
+                                                    email+"','"+fechaNacimiento+"',"+edad+","+sexo+",'"+antecedenteMedico+"','"+
                                                     telefono+"','"+ciudad+"','"+comuna+"','"+direccion+"')");
             boolean resultado = (aux == 1)? true : false;
             st.close();
@@ -118,6 +118,7 @@ public class PacienteDB {
                                             ",rut='"+paciente.getRut()+"'\n" +
                                             ",email='"+paciente.getEmail()+"'\n" +
                                             ",fecha_nacimiento='"+paciente.getFechaNacimiento()+"'\n" +
+                                            ",edad='"+paciente.getEdad()+"'\n" +
                                             ",sexo="+paciente.getSexo()+"\n" +
                                             ",antecedente_medico='"+paciente.getAntecedenteMedico()+"'\n" +
                                             ",telefono='"+paciente.getTelefono()+"'\n" +
@@ -153,6 +154,7 @@ public class PacienteDB {
                 String rut = rs.getString("rut");
                 String email = rs.getString("email");
                 String fecha_nacimiento = rs.getString("fecha_nacimiento");
+                int edad = rs.getInt("edad");
                 int sexo = rs.getInt("sexo");
                 String antecedente_medico = rs.getString("antecedente_medico");
                 String telefono  = rs.getString("telefono");
@@ -161,7 +163,7 @@ public class PacienteDB {
                 String direccion = rs.getString("direccion");
                 boolean activo = rs.getBoolean("activo");
 
-                paciente = new Paciente(id_paciente, nombre, apellido_pat, apellido_mat, rut, email, fecha_nacimiento, sexo, antecedente_medico, telefono, ciudad, comuna, direccion, activo);
+                paciente = new Paciente(id_paciente, nombre, apellido_pat, apellido_mat, rut, email, fecha_nacimiento, edad, sexo, antecedente_medico, telefono, ciudad, comuna, direccion, activo);
             }
             else{
                 paciente = null;

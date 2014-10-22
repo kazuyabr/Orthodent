@@ -19,6 +19,7 @@ public class Paciente {
     private String rut;
     private String email;
     private String fechaNacimiento;
+    private int edad;
     private int sexo;//1 femenino, 2 masculino
     private String antecedenteMedico;
     private String telefono;
@@ -27,7 +28,7 @@ public class Paciente {
     private String direccion;
     private boolean activo; 
     
-    public Paciente(int id_paciente, String nombre, String apellido_pat, String apellido_mat, String rut, String email, String fechaNacimiento, int sexo, String antecedenteMedico, String telefono, String ciudad, String comuna, String direccion, boolean activo) {
+    public Paciente(int id_paciente, String nombre, String apellido_pat, String apellido_mat, String rut, String email, String fechaNacimiento, int edad, int sexo, String antecedenteMedico, String telefono, String ciudad, String comuna, String direccion, boolean activo) {
         this.id_paciente = id_paciente;
         this.nombre = nombre;
         this.apellido_pat = apellido_pat;
@@ -35,6 +36,7 @@ public class Paciente {
         this.rut = rut;
         this.email = email;
         this.fechaNacimiento = fechaNacimiento;
+        this.edad = edad;
         this.sexo = sexo;
         this.antecedenteMedico = antecedenteMedico;
         this.telefono = telefono;
@@ -154,5 +156,13 @@ public class Paciente {
 
     public void setSexo(int sexo) {
         this.sexo = sexo;
+    }
+
+    public int getEdad() {
+        return edad;
+    }
+
+    public void setEdad(int edad) {
+        this.edad = edad;
     }
 }

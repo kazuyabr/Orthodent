@@ -6,15 +6,13 @@ package orthodent.pacientes;
 
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import modelo.Paciente;
-import orthodent.db.Autenticacion;
 import orthodent.db.PacienteDB;
-import orthodent.usuarios.MostrarInfoUsuario;
 
 /**
  *
@@ -63,9 +61,63 @@ public class DatosPersonales extends JPanel{
         
         this.fechaNacimiento.setDate(this.getFecha(this.paciente.getFechaNacimiento()));
         
+        this.edad.setText(this.paciente.getEdad()+"");
+        
         this.ciudad.setSelectedItem(this.paciente.getCiudad());
         this.comuna.setSelectedItem(this.paciente.getComuna());
         this.direccion.setText(this.paciente.getDireccion());
+    }
+    
+    //Recibe la fecha en fomato DD-MM-AAAA
+    private int calculaEdad(String fecha){//M2
+        
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        
+        int edad = 0;
+        
+        int a1 = date.getYear()+1900;
+        int m1 = date.getMonth()+1;
+        int d1 = date.getDate();
+        
+        int d2 = Integer.parseInt(fecha.substring(0, fecha.indexOf("-")));
+        fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
+        int m2 = Integer.parseInt(fecha.substring(0, fecha.indexOf("-")));
+        fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
+        int a2 = Integer.parseInt(fecha);
+        
+        if(m1>m2){
+            edad = a1-a2;
+        }
+        else if(m1<m2){
+            edad = a1-a2-1;
+        }
+        else{
+            if(d1>=d2){
+                edad = a1-a2;
+            }
+            else{
+                edad = a1-a2-1;
+            }
+        }
+        
+        return edad;
+    }
+    
+    private String girarFecha(String fecha){
+        
+        if(fecha!=null){
+            String año = fecha.substring(0, fecha.indexOf("-"));
+            fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
+
+            String mes = fecha.substring(0, fecha.indexOf("-"));
+            fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
+
+            String fechaNueva = fecha+"-"+mes+"-"+año;
+            return fechaNueva;
+        }
+        
+        return fecha;
     }
     
     private Date getFecha(String fechaNacimiento){
@@ -125,6 +177,8 @@ public class DatosPersonales extends JPanel{
         comuna = new javax.swing.JComboBox();
         direccion = new javax.swing.JTextField();
         fechaNacimiento = new com.toedter.calendar.JDateChooser();
+        edad = new javax.swing.JTextField();
+        labelEdad = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(850, 551));
@@ -275,6 +329,11 @@ public class DatosPersonales extends JPanel{
 
         ciudad.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         ciudad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Curico", "Talca", "Linaes" }));
+        ciudad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ciudadActionPerformed(evt);
+            }
+        });
 
         comuna.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         comuna.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Curico", "Talca", "Linares" }));
@@ -309,6 +368,12 @@ public class DatosPersonales extends JPanel{
             }
         });
 
+        edad.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        edad.setEnabled(false);
+
+        labelEdad.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelEdad.setText("Edad");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -320,39 +385,42 @@ public class DatosPersonales extends JPanel{
                 .addContainerGap(66, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(eliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(guardar)
+                        .addGap(41, 41, 41))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelNombres)
                             .addComponent(labelAntecedentesMedicos)
                             .addComponent(labelSexo)
                             .addComponent(labelFechaNacimiento)
-                            .addComponent(labelCiudad)
-                            .addComponent(labelComuna)
-                            .addComponent(labelDireccion)
                             .addComponent(labelApellidoPat)
                             .addComponent(labelApellidoMat)
                             .addComponent(labelRut)
                             .addComponent(labelEmail)
-                            .addComponent(labelTelefono))
+                            .addComponent(labelTelefono)
+                            .addComponent(labelEdad)
+                            .addComponent(labelCiudad)
+                            .addComponent(labelComuna)
+                            .addComponent(labelDireccion))
                         .addGap(39, 39, 39)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(sexo, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(nombres)
-                            .addComponent(apellidoPat)
-                            .addComponent(apellidoMat, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(rut)
-                            .addComponent(email)
-                            .addComponent(telefono)
-                            .addComponent(jScrollPane1)
-                            .addComponent(fechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(sexo, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(nombres)
+                                .addComponent(apellidoPat)
+                                .addComponent(apellidoMat, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(rut)
+                                .addComponent(email)
+                                .addComponent(telefono)
+                                .addComponent(jScrollPane1)
+                                .addComponent(fechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(edad, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(ciudad, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(comuna, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(direccion, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(319, 319, 319))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(eliminar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(guardar)
-                        .addGap(41, 41, 41))))
+                        .addGap(319, 319, 319))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -394,6 +462,10 @@ public class DatosPersonales extends JPanel{
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(fechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelFechaNacimiento))
+                .addGap(4, 4, 4)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(edad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelEdad))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ciudad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -410,7 +482,7 @@ public class DatosPersonales extends JPanel{
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(guardar)
                     .addComponent(eliminar))
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -476,6 +548,8 @@ public class DatosPersonales extends JPanel{
         
         String fechaNacimiento = getFechaString(date);
         
+        int edad = Integer.parseInt(this.edad.getText());
+        
         int sexo = 0;
         if(((String)this.sexo.getSelectedItem()).equals("Femenino")){
             sexo = 1;
@@ -499,6 +573,7 @@ public class DatosPersonales extends JPanel{
                 this.paciente.setApellido_mat(apellidoMat);
                 this.paciente.setEmail(email);
                 this.paciente.setFechaNacimiento(fechaNacimiento);
+                this.paciente.setEdad(edad);
                 this.paciente.setSexo(sexo);
                 this.paciente.setAntecedenteMedico(antecedenteMedico);
                 this.paciente.setTelefono(telefono);
@@ -701,10 +776,17 @@ public class DatosPersonales extends JPanel{
         Date date = this.fechaNacimiento.getDate();
         if(date!=null){
             if(!this.paciente.getFechaNacimiento().equals(this.getFechaString(date))){
+                String fechaNacimiento = getFechaString(date);
+                int edad = this.calculaEdad(this.girarFecha(fechaNacimiento));
+                this.edad.setText(edad+"");
                 this.habilitarBoton();
             }
         }
     }//GEN-LAST:event_fechaNacimientoPropertyChange
+
+    private void ciudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ciudadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ciudadActionPerformed
 
     private String getFechaString(Date date){
         
@@ -732,6 +814,7 @@ public class DatosPersonales extends JPanel{
     private javax.swing.JComboBox ciudad;
     private javax.swing.JComboBox comuna;
     private javax.swing.JTextField direccion;
+    private javax.swing.JTextField edad;
     private javax.swing.JButton eliminar;
     private javax.swing.JTextField email;
     private com.toedter.calendar.JDateChooser fechaNacimiento;
@@ -744,6 +827,7 @@ public class DatosPersonales extends JPanel{
     private javax.swing.JLabel labelCiudad;
     private javax.swing.JLabel labelComuna;
     private javax.swing.JLabel labelDireccion;
+    private javax.swing.JLabel labelEdad;
     private javax.swing.JLabel labelEmail;
     private javax.swing.JLabel labelFechaNacimiento;
     private javax.swing.JLabel labelNombres;

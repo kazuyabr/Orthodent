@@ -7,6 +7,8 @@ package orthodent.pacientes;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -385,6 +387,58 @@ public class NuevoPaciente extends javax.swing.JDialog {
         return null;
     }
     
+    //Recibe la fecha en fomato DD-MM-AAAA
+    private int calculaEdad(String fecha){
+        
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        
+        int edad = 0;
+        
+        int a1 = date.getYear()+1900;
+        int m1 = date.getMonth()+1;
+        int d1 = date.getDate();
+        
+        int d2 = Integer.parseInt(fecha.substring(0, fecha.indexOf("-")));
+        fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
+        int m2 = Integer.parseInt(fecha.substring(0, fecha.indexOf("-")));
+        fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
+        int a2 = Integer.parseInt(fecha);
+        
+        if(m1>m2){
+            edad = a1-a2;
+        }
+        else if(m1<m2){
+            edad = a1-a2-1;
+        }
+        else{
+            if(d1>=d2){
+                edad = a1-a2;
+            }
+            else{
+                edad = a1-a2-1;
+            }
+        }
+        
+        return edad;
+    }
+    
+    private String girarFecha(String fecha){
+        
+        if(fecha!=null){
+            String año = fecha.substring(0, fecha.indexOf("-"));
+            fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
+
+            String mes = fecha.substring(0, fecha.indexOf("-"));
+            fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
+
+            String fechaNueva = fecha+"-"+mes+"-"+año;
+            return fechaNueva;
+        }
+        
+        return fecha;
+    }
+    
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
         
         String nombre = this.nombres.getText();
@@ -404,6 +458,8 @@ public class NuevoPaciente extends javax.swing.JDialog {
         
         String fechaNacimiento = getFechaString(date);
         
+        int edad = this.calculaEdad(this.girarFecha(fechaNacimiento));
+        
         String email = this.email.getText();
         
         String telefono = this.telefono.getText();
@@ -421,7 +477,7 @@ public class NuevoPaciente extends javax.swing.JDialog {
                     boolean valida = PacienteDB.validaRut(rut);
                     if(valida){
                         try {
-                            boolean respuesta = PacienteDB.crearPaciente(nombre,apellidoPat,apellidoMat,rut,email,fechaNacimiento,
+                            boolean respuesta = PacienteDB.crearPaciente(nombre,apellidoPat,apellidoMat,rut,email,fechaNacimiento,edad,
                                                                         sexo,"",telefono,ciudad,comuna,direccion);
 
                             if(respuesta){
