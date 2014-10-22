@@ -175,4 +175,27 @@ public class PacienteDB {
             return null;
         }
     }
+    
+    static public boolean validaRut(String rutB) throws Exception{
+        boolean aux = true;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * from paciente where rut='" + rutB + "'");
+            if (rs.next())
+            {
+                aux = false;
+            }
+            rs.close();
+            con.close();
+            return aux;
+        }
+
+        catch ( SQLException e) {
+            return false;
+        }
+    }
 }

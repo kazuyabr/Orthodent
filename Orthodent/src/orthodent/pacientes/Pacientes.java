@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import modelo.Paciente;
 import modelo.Usuario;
+import orthodent.JVentana;
 import orthodent.db.PacienteDB;
 
 /**
@@ -83,7 +84,7 @@ public class Pacientes extends JPanel implements ActionListener{
         this.nuevoPaciente.addActionListener(this);
         
         this.tabla = new JTable();
-        this.columnasNombre = new String [] {"Nombre", "Apellido Paterno", "Apellido Materno", "Rut", "Fecha de Nacimiento", "Telefono", "Antecedente Médico"};
+        this.columnasNombre = new String [] {"Nombre", "Apellido Paterno", "Apellido Materno", "Rut", "Fecha de Nacimiento", "Telefono", "Antecedentes Médicos"};
         this.updateModelo();
         this.tabla.getTableHeader().setReorderingAllowed(false);
         
@@ -267,8 +268,7 @@ public class Pacientes extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         
         if(e.getSource() == this.nuevoPaciente){
-            //new NuevoUsuario(((JVentana)this.getTopLevelAncestor()),true).setVisible(true);
-            System.out.println("Implementar Nuevo PACIENTE");
+            new NuevoPaciente(((JVentana)this.getTopLevelAncestor()),true).setVisible(true);
         }
         
         if(e.getSource() == this.botonBuscar){

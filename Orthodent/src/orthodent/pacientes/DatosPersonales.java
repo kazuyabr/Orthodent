@@ -485,12 +485,12 @@ public class DatosPersonales extends JPanel{
         }
         
         String antecedenteMedico = this.antecedentesMedicos.getText();
-        String telefono1 = this.telefono.getText();
+        String telefono = this.telefono.getText();
         String ciudad = (String)this.ciudad.getSelectedItem();
         String comuna = (String)this.comuna.getSelectedItem();
         String direccion = this.direccion.getText();
         
-        boolean aux = validarCamposObligatorios(nombre,apellidoPat,fechaNacimiento,telefono1);
+        boolean aux = validarCamposObligatorios(nombre,apellidoPat,fechaNacimiento,telefono);
         
         if(aux){
             try {
@@ -501,7 +501,7 @@ public class DatosPersonales extends JPanel{
                 this.paciente.setFechaNacimiento(fechaNacimiento);
                 this.paciente.setSexo(sexo);
                 this.paciente.setAntecedenteMedico(antecedenteMedico);
-                this.paciente.setTelefono(telefono1);
+                this.paciente.setTelefono(telefono);
                 this.paciente.setCiudad(ciudad);
                 this.paciente.setComuna(comuna);
                 this.paciente.setDireccion(direccion);
