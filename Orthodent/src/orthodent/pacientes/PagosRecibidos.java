@@ -4,14 +4,8 @@
  */
 package orthodent.pacientes;
 
-import orthodent.usuarios.*;
-import java.awt.event.KeyEvent;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import modelo.Paciente;
-import modelo.Rol;
-import orthodent.db.Autenticacion;
-import orthodent.db.RolDB;
 
 /**
  *

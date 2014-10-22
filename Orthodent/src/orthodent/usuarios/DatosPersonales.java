@@ -5,8 +5,6 @@
 package orthodent.usuarios;
 
 import java.awt.event.KeyEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import modelo.Rol;
