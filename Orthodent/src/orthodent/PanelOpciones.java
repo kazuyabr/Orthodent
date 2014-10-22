@@ -9,7 +9,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -162,16 +161,19 @@ public class PanelOpciones extends JPanel implements ActionListener{
         this.menuUsuario = new JPopupMenu("Menu Usuario");
         
         this.configurarCuenta = new JMenuItem("Configurar Cuenta");
+        this.configurarCuenta.setFont(new Font("Georgia", 0, 11));
         //this.configurarCuenta.setMnemonic('C');
         //this.configurarCuenta.setAccelerator( KeyStroke.getKeyStroke('C', InputEvent.CTRL_DOWN_MASK  ) );
         this.configurarCuenta.addActionListener(this);
         this.menuUsuario.add(this.configurarCuenta);
         
         this.cerrarSesion = new JMenuItem("Cerrar Sesión");
+        this.cerrarSesion.setFont(new Font("Georgia", 0, 11));
         this.cerrarSesion.addActionListener(this);
         this.menuUsuario.add(this.cerrarSesion);
         
         this.salir = new JMenuItem("Salir");
+        this.salir.setFont(new Font("Georgia", 0, 11));
         this.salir.addActionListener(this);
         this.menuUsuario.add(this.salir);
         
@@ -284,7 +286,10 @@ public class PanelOpciones extends JPanel implements ActionListener{
             ((JVentana)this.getTopLevelAncestor()).cambiarAgenda();
         }
         if (e.getSource() == this.pacientes){
-            ((JVentana)this.getTopLevelAncestor()).cambiarPacientes();
+            try {
+                ((JVentana)this.getTopLevelAncestor()).cambiarPacientes();
+            } catch (Exception ex) {
+            }
         }
         if (e.getSource() == this.pagos){
             ((JVentana)this.getTopLevelAncestor()).cambiarPagos();

@@ -22,7 +22,7 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
     private JButton datosPersonales;
     private JButton clinico;
     private JButton planesTratamiento;
-    private JButton sesiones;
+    private JButton presupuesto;
     private JButton fichasClinicas;
     private JButton facturacion;
     private JButton recaudacion;
@@ -33,7 +33,7 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
     private int opActual;
     private DatosPersonales datosPersonalesPanel;
     private PlanesTratamiento planesTratamientoPanel;
-    private Sesiones sesionesPanel;
+    private Presupuestos presupuestoPanel;
     private FichasClinicas fichasClinicasPanel;
     private Recaudacion recaudacionPanel;
     private PagosRecibidos pagosRecibidosPanel;
@@ -92,12 +92,12 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         this.planesTratamiento.setContentAreaFilled(false);
         this.planesTratamiento.addActionListener(this);
         
-        this.sesiones = new JButton();
-        this.sesiones.setIcon(new ImageIcon("src/imagenes/sesiones.png"));
-        this.sesiones.setBorder(null);
-        this.sesiones.setBorderPainted(false);
-        this.sesiones.setContentAreaFilled(false);
-        this.sesiones.addActionListener(this);
+        this.presupuesto = new JButton();
+        this.presupuesto.setIcon(new ImageIcon("src/imagenes/presupuesto.png"));
+        this.presupuesto.setBorder(null);
+        this.presupuesto.setBorderPainted(false);
+        this.presupuesto.setContentAreaFilled(false);
+        this.presupuesto.addActionListener(this);
         
         this.fichasClinicas = new JButton();
         this.fichasClinicas.setIcon(new ImageIcon("src/imagenes/fichasClinicas.png"));
@@ -136,7 +136,7 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         this.datosPersonalesPanel = new DatosPersonales(this.paciente);
         
         this.planesTratamientoPanel = null;
-        this.sesionesPanel = null;
+        this.presupuestoPanel = null;
         this.fichasClinicasPanel = null;
         this.recaudacionPanel = null;
         this.pagosRecibidosPanel = null;
@@ -200,7 +200,7 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         }
         
         try{
-            this.contenedor.remove(this.sesionesPanel);
+            this.contenedor.remove(this.presupuestoPanel);
         }
         catch(Exception e){
         }
@@ -249,9 +249,9 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         if(opActual!=3){
             this.removeAncestor();
             
-            this.sesionesPanel = new Sesiones(this.paciente);
+            this.presupuestoPanel = new Presupuestos(this.paciente);
             
-            this.contenedor.add(this.sesionesPanel,BorderLayout.CENTER);
+            this.contenedor.add(this.presupuestoPanel,BorderLayout.CENTER);
             this.updateUI();
             this.opActual = 3;
         }
@@ -309,7 +309,7 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         horizontalGroup.addComponent(this.datosPersonales);
         horizontalGroup.addComponent(this.clinico);
         horizontalGroup.addComponent(this.planesTratamiento);
-        horizontalGroup.addComponent(this.sesiones);
+        horizontalGroup.addComponent(this.presupuesto);
         horizontalGroup.addComponent(this.fichasClinicas);
         horizontalGroup.addComponent(this.facturacion);
         horizontalGroup.addComponent(this.recaudacion);
@@ -320,7 +320,7 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         verticalGroup.addComponent(this.datosPersonales);
         verticalGroup.addComponent(this.clinico);
         verticalGroup.addComponent(this.planesTratamiento);
-        verticalGroup.addComponent(this.sesiones);
+        verticalGroup.addComponent(this.presupuesto);
         verticalGroup.addComponent(this.fichasClinicas);
         verticalGroup.addComponent(this.facturacion);
         verticalGroup.addComponent(this.recaudacion);
@@ -382,7 +382,7 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         
         this.datosPersonales.setIcon(new ImageIcon("src/imagenes/datosPersonalesInfo.png"));
         this.planesTratamiento.setIcon(new ImageIcon("src/imagenes/planesDeTratamiento.png"));
-        this.sesiones.setIcon(new ImageIcon("src/imagenes/sesiones.png"));
+        this.presupuesto.setIcon(new ImageIcon("src/imagenes/presupuesto.png"));
         this.fichasClinicas.setIcon(new ImageIcon("src/imagenes/fichasClinicas.png"));
         this.recaudacion.setIcon(new ImageIcon("src/imagenes/recaudacion.png"));
         this.pagosRecibidos.setIcon(new ImageIcon("src/imagenes/pagosRecibidos.png"));
@@ -395,7 +395,7 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
                 this.planesTratamiento.setIcon(new ImageIcon("src/imagenes/planesDeTratamientoSelec.png"));
                 break;
             case 3:
-                this.sesiones.setIcon(new ImageIcon("src/imagenes/sesionesSelec.png"));
+                this.presupuesto.setIcon(new ImageIcon("src/imagenes/presupuestoSelec.png"));
                 break;
             case 4:
                 this.fichasClinicas.setIcon(new ImageIcon("src/imagenes/fichasClinicasSelec.png"));
@@ -452,7 +452,7 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         }
         else if(this.opActual==3){
             //Sesiones
-            if(this.sesionesPanel.getCambios()){
+            if(this.presupuestoPanel.getCambios()){
                 Object[] options = {"Sí","No"};
         
                 int n = JOptionPane.showOptionDialog(this,
@@ -466,7 +466,7 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
                             options[0]);
 
                 if(n==0){
-                    this.sesionesPanel.guardar();
+                    this.presupuestoPanel.guardar();
                 }
             }
         }
@@ -554,7 +554,7 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
             this.setIconButton(2);
             this.cambiarPlanesTratamiento();
         }
-        if(e.getSource() == this.sesiones){
+        if(e.getSource() == this.presupuesto){
             this.guardarAntes();
             this.setIconButton(3);
             this.cambiarSesiones();

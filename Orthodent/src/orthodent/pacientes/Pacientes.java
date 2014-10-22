@@ -84,6 +84,7 @@ public class Pacientes extends JPanel implements ActionListener{
         this.nuevoPaciente.addActionListener(this);
         
         this.tabla = new JTable();
+        this.tabla.setFont(new Font("Georgia", 0, 11));
         this.columnasNombre = new String [] {"Nombre", "Apellido Paterno", "Apellido Materno", "Rut", "Fecha de Nacimiento", "Telefono", "Antecedentes Médicos"};
         this.updateModelo();
         this.tabla.getTableHeader().setReorderingAllowed(false);

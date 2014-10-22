@@ -83,6 +83,7 @@ public class Usuarios extends JPanel implements ActionListener{
         this.nuevoUsuario.addActionListener(this);
         
         this.tabla = new JTable();
+        this.tabla.setFont(new Font("Georgia", 0, 11));
         this.columnasNombre = new String [] {"Nombre", "Apellido Paterno", "Apellido Materno", "Email", "Nombre de Usuario", "Rol"};
         this.updateModelo();
         this.tabla.getTableHeader().setReorderingAllowed(false);

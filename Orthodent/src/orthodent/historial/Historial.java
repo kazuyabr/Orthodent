@@ -6,6 +6,7 @@ package orthodent.historial;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -21,6 +22,7 @@ public class Historial extends JPanel{
         this.setPreferredSize(new Dimension(1073, 561));
         
         JLabel mensaje = new JLabel("Historial... No disponible aún");
+        mensaje.setFont(new Font("Georgia", 0, 11));
         this.add(mensaje);
     }
     
