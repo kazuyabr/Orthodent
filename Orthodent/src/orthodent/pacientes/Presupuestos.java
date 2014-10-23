@@ -24,6 +24,8 @@ public class Presupuestos extends JPanel{
         
         this.addInfo();
         this.guardar.setEnabled(false);
+        this.tablaPresupuestos.getTableHeader().setReorderingAllowed(false);
+        this.tablaPiezaTratamiento.getTableHeader().setReorderingAllowed(false);
     }
     
     public boolean getCambios(){
@@ -52,8 +54,23 @@ public class Presupuestos extends JPanel{
         labelTitulo = new javax.swing.JLabel();
         guardar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaPresupuestos = new javax.swing.JTable();
         eliminar = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        labelProfesional = new javax.swing.JLabel();
+        profesional = new javax.swing.JComboBox();
+        labelEstado = new javax.swing.JLabel();
+        estado = new javax.swing.JComboBox();
+        labelFechaCreacion = new javax.swing.JLabel();
+        fechaCreacion = new javax.swing.JTextField();
+        labelFechaUltimaModificacion = new javax.swing.JLabel();
+        fechaUltimaModificacion = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaPiezaTratamiento = new javax.swing.JTable();
+        labelTotal = new javax.swing.JLabel();
+        costoTotal = new javax.swing.JTextField();
+        aprobar = new javax.swing.JButton();
+        nuevoPresupuesto = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(850, 551));
@@ -94,23 +111,20 @@ public class Presupuestos extends JPanel{
             }
         });
 
-        jTable1.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaPresupuestos.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        tablaPresupuestos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
-                "Profesional", "Cantida de Tratamientosl", "Costo Total", "Estado", "Fecha Creación", "Seleccionar"
+                "Profesional", "Cantidad de Tratamientos", "Costo Total", "Estado", "Fecha Creación"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -121,10 +135,136 @@ public class Presupuestos extends JPanel{
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaPresupuestos);
 
         eliminar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         eliminar.setText("Eliminar");
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+
+        labelProfesional.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelProfesional.setText("Profesional");
+
+        profesional.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        profesional.setEnabled(false);
+
+        labelEstado.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelEstado.setText("Estado");
+
+        estado.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        estado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Activo", "Cancelado" }));
+        estado.setEnabled(false);
+
+        labelFechaCreacion.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelFechaCreacion.setText("Fecha de Creación");
+
+        fechaCreacion.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        fechaCreacion.setEnabled(false);
+
+        labelFechaUltimaModificacion.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelFechaUltimaModificacion.setText("Fecha Modificación");
+
+        fechaUltimaModificacion.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        fechaUltimaModificacion.setEnabled(false);
+
+        tablaPiezaTratamiento.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        tablaPiezaTratamiento.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Pieza", "Tratamiento", "Valor Colegio O.", "Valor Orthodent"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, true, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tablaPiezaTratamiento);
+
+        labelTotal.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelTotal.setText("Total");
+
+        costoTotal.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        costoTotal.setEnabled(false);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelProfesional)
+                            .addComponent(labelEstado)
+                            .addComponent(labelFechaUltimaModificacion)
+                            .addComponent(labelFechaCreacion))
+                        .addGap(44, 44, 44)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(fechaCreacion)
+                            .addComponent(fechaUltimaModificacion)
+                            .addComponent(estado, 0, 175, Short.MAX_VALUE)
+                            .addComponent(profesional, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(labelTotal)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(122, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelProfesional)
+                    .addComponent(profesional, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelTotal))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(estado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelEstado))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelFechaCreacion))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelFechaUltimaModificacion)
+                    .addComponent(fechaUltimaModificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        aprobar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        aprobar.setText("Aprobar");
+        aprobar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aprobarActionPerformed(evt);
+            }
+        });
+
+        nuevoPresupuesto.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        nuevoPresupuesto.setText("Nuevo Presupuesto");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -134,29 +274,36 @@ public class Presupuestos extends JPanel{
                 .addComponent(panelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(0, 615, Short.MAX_VALUE)
-                .addComponent(guardar)
-                .addGap(83, 83, 83))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(61, 61, 61)
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(eliminar)
-                .addContainerGap())
+                .addGap(54, 54, 54)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(nuevoPresupuesto)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(eliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(aprobar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(guardar))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane1)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(panelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(eliminar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 254, Short.MAX_VALUE)
-                .addComponent(guardar)
-                .addContainerGap())
+                .addComponent(nuevoPresupuesto)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(guardar)
+                    .addComponent(eliminar)
+                    .addComponent(aprobar))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -172,8 +319,8 @@ public class Presupuestos extends JPanel{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 539, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -184,14 +331,33 @@ public class Presupuestos extends JPanel{
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
         
     }//GEN-LAST:event_guardarActionPerformed
+
+    private void aprobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aprobarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_aprobarActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton aprobar;
+    private javax.swing.JTextField costoTotal;
     private javax.swing.JButton eliminar;
+    private javax.swing.JComboBox estado;
+    private javax.swing.JTextField fechaCreacion;
+    private javax.swing.JTextField fechaUltimaModificacion;
     private javax.swing.JButton guardar;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel labelEstado;
+    private javax.swing.JLabel labelFechaCreacion;
+    private javax.swing.JLabel labelFechaUltimaModificacion;
+    private javax.swing.JLabel labelProfesional;
     private javax.swing.JLabel labelTitulo;
+    private javax.swing.JLabel labelTotal;
+    private javax.swing.JButton nuevoPresupuesto;
     private javax.swing.JPanel panelTitulo;
+    private javax.swing.JComboBox profesional;
+    private javax.swing.JTable tablaPiezaTratamiento;
+    private javax.swing.JTable tablaPresupuestos;
     // End of variables declaration//GEN-END:variables
 }

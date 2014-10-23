@@ -15,12 +15,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.*;
-import modelo.Paciente;
 import modelo.Usuario;
-import orthodent.db.Autenticacion;
-import orthodent.db.PacienteDB;
-import orthodent.pacientes.DatosPersonales;
-import orthodent.pacientes.MostrarInfoPaciente;
 import orthodent.usuarios.MostrarInfoUsuario;
 
 public class JVentana extends JFrame{
@@ -50,6 +45,9 @@ public class JVentana extends JFrame{
         
         this.usuario = usuario;
         this.opActual = 1;
+        
+        
+        
         this.crearElementosVentana();
         
         this.centrarVentana();

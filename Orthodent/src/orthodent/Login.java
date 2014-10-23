@@ -7,14 +7,11 @@ package orthodent;
 import java.awt.*;
 import orthodent.db.Autenticacion;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import modelo.Usuario;
-import orthodent.JVentana;
 
 /**
  *

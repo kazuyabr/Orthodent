@@ -245,7 +245,7 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         }
     }
     
-    public void cambiarSesiones(){
+    public void cambiarPresupuesto(){
         if(opActual!=3){
             this.removeAncestor();
             
@@ -557,7 +557,7 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         if(e.getSource() == this.presupuesto){
             this.guardarAntes();
             this.setIconButton(3);
-            this.cambiarSesiones();
+            this.cambiarPresupuesto();
         }
         if(e.getSource() == this.fichasClinicas){
             this.guardarAntes();
