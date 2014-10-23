@@ -27,7 +27,6 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
     private JButton facturacion;
     private JButton recaudacion;
     private JButton pagosRecibidos;
-    private JButton volver;
     private Paciente paciente;
     private Usuario actual;
     private int opActual;
@@ -126,13 +125,6 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         this.pagosRecibidos.setContentAreaFilled(false);
         this.pagosRecibidos.addActionListener(this);
         
-        this.volver = new JButton();
-        this.volver.setIcon(new ImageIcon("src/imagenes/navigate-left_mini.png"));
-        this.volver.setBorder(null);
-        this.volver.setBorderPainted(false);
-        this.volver.setContentAreaFilled(false);
-        this.volver.addActionListener(this);
-        
         this.datosPersonalesPanel = new DatosPersonales(this.paciente);
         
         this.planesTratamientoPanel = null;
@@ -169,15 +161,13 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(this.contenedor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(this.volver))
+                    .addComponent(this.contenedor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(212, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(this.volver)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(this.contenedor, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -409,7 +399,7 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         }
     }
     
-    private void guardarAntes(){
+    public void guardarAntes(){
         if(this.opActual==1){
             //Datos Personales
             if(this.datosPersonalesPanel.getCambios()){
@@ -573,10 +563,6 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
             this.guardarAntes();
             this.setIconButton(6);
             this.cambiarPagosRecibidos();
-        }
-        if(e.getSource() == this.volver){
-            this.guardarAntes();
-            this.volver();
         }
     }
 }

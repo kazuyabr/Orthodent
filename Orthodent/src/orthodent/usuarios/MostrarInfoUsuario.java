@@ -22,7 +22,6 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
     private JButton datosPersonales;
     private JButton datosProfesionales;
     private JButton horario;
-    private JButton volver;
     private Usuario usuario;
     private int opActual;
     private JPanel datosPersonalesPanel;
@@ -44,6 +43,38 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
         this.initComponents();
         this.opActual = 1;
         this.addComponents();
+    }
+
+    public int getOpActual() {
+        return opActual;
+    }
+
+    public void setOpActual(int opActual) {
+        this.opActual = opActual;
+    }
+
+    public JPanel getDatosPersonalesPanel() {
+        return datosPersonalesPanel;
+    }
+
+    public void setDatosPersonalesPanel(JPanel datosPersonalesPanel) {
+        this.datosPersonalesPanel = datosPersonalesPanel;
+    }
+
+    public DatosProfesional getDatosProfesionalPanel() {
+        return datosProfesionalPanel;
+    }
+
+    public void setDatosProfesionalPanel(DatosProfesional datosProfesionalPanel) {
+        this.datosProfesionalPanel = datosProfesionalPanel;
+    }
+
+    public HorarioPanel getHorarioPanel() {
+        return horarioPanel;
+    }
+
+    public void setHorarioPanel(HorarioPanel horarioPanel) {
+        this.horarioPanel = horarioPanel;
     }
     
     private void initComponents(){
@@ -86,14 +117,6 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
         this.horario.setContentAreaFilled(false);
         this.horario.addActionListener(this);
         
-        this.volver = new JButton();
-        this.volver.setIcon(new ImageIcon("src/imagenes/navigate-left_mini.png"));
-        this.volver.setBorder(null);
-        this.volver.setBorderPainted(false);
-        this.volver.setContentAreaFilled(false);
-        this.volver.addActionListener(this);
-        
-        
         if(!this.configurarCuenta){
             this.datosPersonalesPanel = new DatosPersonales(this.usuario);
         }
@@ -132,15 +155,13 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(this.contenedor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(this.volver))
+                    .addComponent(this.contenedor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(212, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(this.volver)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(this.contenedor, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -304,7 +325,7 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
         }
     }
     
-    private void guardarAntes(){
+    public void guardarAntes(){
         if(this.opActual==1){
             //Datos Personales
             
@@ -428,10 +449,6 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
             this.guardarAntes();
             this.setIconButton(3);
             this.cambiarHorario();
-        }
-        if(e.getSource() == this.volver){
-            this.guardarAntes();
-            this.volver();
         }
     }
 }

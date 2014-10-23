@@ -373,4 +373,12 @@ public class JVentana extends JFrame{
     public JPanel getContenedorUsuarios(){
         return this.contenedorUsuarios;
     }
+
+    public int getOpActual() {
+        return opActual;
+    }
+
+    public void setOpActual(int opActual) {
+        this.opActual = opActual;
+    }
 }

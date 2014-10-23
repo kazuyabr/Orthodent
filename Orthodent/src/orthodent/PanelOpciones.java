@@ -16,6 +16,10 @@ import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
 import modelo.Rol;
 import orthodent.db.RolDB;
+import orthodent.pacientes.MostrarInfoPaciente;
+import orthodent.usuarios.ConfigurarCuenta;
+import orthodent.usuarios.DatosPersonales;
+import orthodent.usuarios.MostrarInfoUsuario;
 
 /**
  *
@@ -283,38 +287,142 @@ public class PanelOpciones extends JPanel implements ActionListener{
         
         //Botones
         if (e.getSource() == this.agenda){
-            ((JVentana)this.getTopLevelAncestor()).cambiarAgenda();
+            try {
+                int op = this.revisarCambios();
+                ((JVentana)this.getTopLevelAncestor()).cambiarAgenda();
+            } catch (Exception ex) {
+            }
         }
         if (e.getSource() == this.pacientes){
             try {
-                ((JVentana)this.getTopLevelAncestor()).cambiarPacientes();
+                int op = this.revisarCambios();
+                
+                if(op!=4){
+                    if(((JVentana)this.getTopLevelAncestor()).getPacientes()!=null){
+                        boolean aux = ((JVentana)this.getTopLevelAncestor()).getPacientes().isIsListarPacientes();
+
+                        if(aux){
+                            ((JVentana)this.getTopLevelAncestor()).cambiarPacientes();
+                        }
+                        else{
+                            MostrarInfoPaciente infoPaciente = ((JVentana)this.getTopLevelAncestor()).getPacientes().getInfoPaciente();
+                            infoPaciente.volver();
+                            ((JVentana)this.getTopLevelAncestor()).cambiarPacientes();
+                        }
+                    }
+                    else{
+                        ((JVentana)this.getTopLevelAncestor()).cambiarPacientes();
+                    }
+                }
+                else{
+                    boolean aux = ((JVentana)this.getTopLevelAncestor()).getPacientes().isIsListarPacientes();
+
+                    if(aux){
+                        ((JVentana)this.getTopLevelAncestor()).cambiarPacientes();
+                    }
+                    else{
+                        MostrarInfoPaciente infoPaciente = ((JVentana)this.getTopLevelAncestor()).getPacientes().getInfoPaciente();
+                        infoPaciente.volver();
+                    }
+                }
             } catch (Exception ex) {
             }
         }
         if (e.getSource() == this.pagos){
-            ((JVentana)this.getTopLevelAncestor()).cambiarPagos();
+            try {
+                int op = this.revisarCambios();
+                ((JVentana)this.getTopLevelAncestor()).cambiarPagos();
+            } catch (Exception ex) {
+            }
         }
         if (e.getSource() == this.usuarios){
             try {
-                ((JVentana)this.getTopLevelAncestor()).cambiarUsuarios();
+                int op = this.revisarCambios();
+                
+                if(op!=4){
+                    if(((JVentana)this.getTopLevelAncestor()).getUsuarios()!=null){
+                        boolean aux = ((JVentana)this.getTopLevelAncestor()).getUsuarios().isIsListarUsuarios();
+
+                        if(aux){
+                            ((JVentana)this.getTopLevelAncestor()).cambiarUsuarios();
+                        }
+                        else{
+                            MostrarInfoUsuario infoUsuario = ((JVentana)this.getTopLevelAncestor()).getUsuarios().getInfoUsuario();
+                            infoUsuario.volver();
+                            ((JVentana)this.getTopLevelAncestor()).cambiarUsuarios();
+                        }
+                    }
+                    else{
+                        ((JVentana)this.getTopLevelAncestor()).cambiarUsuarios();
+                    }
+                }
+                else{
+                    boolean aux = ((JVentana)this.getTopLevelAncestor()).getUsuarios().isIsListarUsuarios();
+
+                    if(aux){
+                        ((JVentana)this.getTopLevelAncestor()).cambiarUsuarios();
+                    }
+                    else{
+                        MostrarInfoUsuario infoUsuario = ((JVentana)this.getTopLevelAncestor()).getUsuarios().getInfoUsuario();
+                        infoUsuario.volver();
+                    }
+                }
             } catch (Exception ex) {
-                Logger.getLogger(PanelOpciones.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         if (e.getSource() == this.historial){
-            ((JVentana)this.getTopLevelAncestor()).cambiarHistorial();
+            try {
+                int op = this.revisarCambios();
+                ((JVentana)this.getTopLevelAncestor()).cambiarHistorial();
+            } catch (Exception ex) {
+            }
         }
         
         //Opciones del mini Usuario
         if(e.getSource() == this.configurarCuenta){
-            ((JVentana)this.getTopLevelAncestor()).cambiarConfigurarCuenta();
+            try {
+                int op = this.revisarCambios();
+                ((JVentana)this.getTopLevelAncestor()).cambiarConfigurarCuenta();
+            } catch (Exception ex) {
+            }
         }
         if(e.getSource() == this.cerrarSesion){
-            ((JVentana)this.getTopLevelAncestor()).dispose();
-            new Login(null,true).setVisible(true);
+            try {
+                int op = this.revisarCambios();
+                ((JVentana)this.getTopLevelAncestor()).dispose();
+                new Login(null,true).setVisible(true);
+            } catch (Exception ex) {
+            }
         }
         if(e.getSource() == this.salir){
-            System.exit(0);
+            try {
+                int op = this.revisarCambios();
+                System.exit(0);
+            } catch (Exception ex) {
+            }
         }
+    }
+    
+    private int revisarCambios() throws Exception{
+        int opVentana = ((JVentana)this.getTopLevelAncestor()).getOpActual();
+        
+        if(opVentana==2){//Revisar cambios en pacientes
+            boolean aux = ((JVentana)this.getTopLevelAncestor()).getPacientes().isIsListarPacientes();
+            
+            if(!aux){
+                MostrarInfoPaciente infoPaciente = ((JVentana)this.getTopLevelAncestor()).getPacientes().getInfoPaciente();
+                infoPaciente.guardarAntes();
+            }
+        }
+        if(opVentana==4){//Revisar cambios en usuarios
+            boolean aux = ((JVentana)this.getTopLevelAncestor()).getUsuarios().isIsListarUsuarios();
+
+            if(!aux){
+                MostrarInfoUsuario infoUsuario = ((JVentana)this.getTopLevelAncestor()).getUsuarios().getInfoUsuario();
+                infoUsuario.guardarAntes();
+            }
+        }
+        
+        return opVentana;
     }
 }

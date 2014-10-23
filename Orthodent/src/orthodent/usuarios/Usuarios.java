@@ -44,6 +44,18 @@ public class Usuarios extends JPanel implements ActionListener{
         this.initComponents();
         this.addComponents();
     }
+
+    public boolean isIsListarUsuarios() {
+        return isListarUsuarios;
+    }
+
+    public void setIsListarUsuarios(boolean isListarUsuarios) {
+        this.isListarUsuarios = isListarUsuarios;
+    }
+    
+    public MostrarInfoUsuario getInfoUsuario(){
+        return this.infoUsuario;
+    }
     
     private void initComponents(){
         

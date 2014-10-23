@@ -45,6 +45,18 @@ public class Pacientes extends JPanel implements ActionListener{
         this.initComponents();
         this.addComponents();
     }
+
+    public boolean isIsListarPacientes() {
+        return isListarPacientes;
+    }
+
+    public void setIsListarPacientes(boolean isListarPacientes) {
+        this.isListarPacientes = isListarPacientes;
+    }
+    
+    public MostrarInfoPaciente getInfoPaciente(){
+        return this.infoPaciente;
+    }
     
     private void initComponents(){
         
