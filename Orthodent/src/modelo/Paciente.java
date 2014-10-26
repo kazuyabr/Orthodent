@@ -26,7 +26,7 @@ public class Paciente {
     private String ciudad;
     private String comuna;
     private String direccion;
-    private boolean activo; 
+    private boolean activo;
     
     public Paciente(int id_paciente, String nombre, String apellido_pat, String apellido_mat, String rut, String email, String fechaNacimiento, int edad, int sexo, String antecedenteMedico, String telefono, String ciudad, String comuna, String direccion, boolean activo) {
         this.id_paciente = id_paciente;
