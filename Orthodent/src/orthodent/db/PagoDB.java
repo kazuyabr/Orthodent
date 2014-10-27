@@ -42,9 +42,10 @@ public class PagoDB {
             
             java.sql.Statement st = con.createStatement();
             int aux = st.executeUpdate("UPDATE pago\n" +
-                                            "SET fecha="+pago.getFecha()+"\n" +
+                                            "SET id_plantratamiento = "+pago.getIdPlanTratamiento()+"\n" +
+                                            "fecha="+pago.getFecha()+"\n" +
                                             ",abono="+pago.getAbono()+"\n" +
-                                            "WHERE id_plantratamiento="+pago.getIdPlanTratamiento());
+                                            "WHERE id_pago="+pago.getIdPago());
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
@@ -67,7 +68,7 @@ public class PagoDB {
             pagos = new ArrayList<Pago>();
             while (rs.next())
             {
-                Pago p = new Pago(rs.getInt("id_plantratamiento"), rs.getString("fecha"), rs.getInt("abono"));
+                Pago p = new Pago(rs.getInt("id_pago"), rs.getInt("id_plantratamiento"), rs.getString("fecha"), rs.getInt("abono"));
                 pagos.add(p);
             }
             rs.close();
@@ -91,7 +92,7 @@ public class PagoDB {
             pagos = new ArrayList<Pago>();
             while (rs.next())
             {
-                Pago p = new Pago(rs.getInt("id_plantratamiento"), rs.getString("fecha"), rs.getInt("abono"));
+                Pago p = new Pago(rs.getInt("id_pago"), rs.getInt("id_plantratamiento"), rs.getString("fecha"), rs.getInt("abono"));
                 pagos.add(p);
             }
             rs.close();

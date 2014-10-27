@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 27-10-2014 a las 17:49:07
+-- Tiempo de generación: 27-10-2014 a las 20:05:52
 -- Versión del servidor: 5.6.12-log
 -- Versión de PHP: 5.4.12
 
@@ -106,12 +106,13 @@ INSERT INTO `paciente` (`id_paciente`, `nombre`, `apellido_pat`, `apellido_mat`,
 --
 
 CREATE TABLE IF NOT EXISTS `pago` (
-  `id_plantratamiento` int(11) NOT NULL AUTO_INCREMENT,
+  `id_pago` int(11) NOT NULL AUTO_INCREMENT,
+  `id_plantratamiento` int(11) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   `abono` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id_plantratamiento`)
+  PRIMARY KEY (`id_pago`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------

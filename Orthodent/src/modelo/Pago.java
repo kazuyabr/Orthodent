@@ -10,17 +10,27 @@ package modelo;
  * @author msanhuezal
  */
 public class Pago {
-
+    
+    private int idPago;
     private int idPlanTratamiento;
     private String fecha;
     private int abono;   
     
-    public Pago(int idPlanTratamiento, String fecha, int abono) {
+    public Pago(int idPago, int idPlanTratamiento, String fecha, int abono) {
+        this.idPago = idPago;
         this.idPlanTratamiento = idPlanTratamiento;
         this.fecha = fecha;
         this.abono = abono;
     }
 
+    public int getIdPago() {
+        return idPago;
+    }
+
+    public void setIdPago(int idPago) {
+        this.idPago = idPago;
+    }    
+    
     public int getIdPlanTratamiento() {
         return idPlanTratamiento;
     }
