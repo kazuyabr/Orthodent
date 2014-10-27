@@ -5,7 +5,11 @@
 package orthodent.db;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import modelo.Presupuesto;
+import modelo.TratamientoPiezaPresupuesto;
 
 /**
  *
@@ -29,6 +33,31 @@ public class TratamientoPiezaPresupuestoDB {
         catch ( SQLException e) {
             return false;
         }
-    }    
+    }  
+    
+    public static ArrayList<TratamientoPiezaPresupuesto> listarTratamientosPiezaPresupuesto(){
+        ArrayList<TratamientoPiezaPresupuesto> tratamientosPP = null;        
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * FROM tratamiento_piezapresupuesto");
+            tratamientosPP = new ArrayList<TratamientoPiezaPresupuesto>();
+            while (rs.next())
+            {
+                TratamientoPiezaPresupuesto t = new TratamientoPiezaPresupuesto(rs.getInt("id_tratamiento"), rs.getInt("id_presupuesto"), rs.getString("pieza"));
+                tratamientosPP.add(t);
+            }
+            rs.close();
+            con.close();
+            return tratamientosPP;
+        }
+        catch ( SQLException e) {
+            return null;
+        }
+    }      
+    
     
 }
