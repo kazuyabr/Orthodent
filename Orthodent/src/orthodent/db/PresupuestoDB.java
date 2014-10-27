@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import modelo.Paciente;
 import modelo.Presupuesto;
 
 /**
@@ -106,5 +105,38 @@ public class PresupuestoDB {
             return null;
         }
     }     
+    
+    static public Presupuesto getPresupuesto(int idPresupuesto) throws Exception{
+        Presupuesto presupuesto = null;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * from presupuesto where id_presupuesto=" + idPresupuesto);
+            if (rs.next())
+            {
+                int idPaciente = rs.getInt("id_paciente");
+                int idProfesional = rs.getInt("id_profesional");
+                boolean estado = rs.getBoolean("estado");
+                int costoTotal = rs.getInt("costo_total");
+                int cantidadTratamiento = rs.getInt("cantidad_tratamiento");
+                boolean activo = rs.getBoolean("activo");
+
+                presupuesto = new Presupuesto(idPresupuesto, idPaciente, idProfesional, estado, costoTotal, cantidadTratamiento, activo);
+            }
+            else{
+                presupuesto = null;
+            }
+            rs.close();
+            con.close();
+            return presupuesto;
+        }
+
+        catch ( SQLException e) {
+            return null;
+        }
+    }    
     
 }
