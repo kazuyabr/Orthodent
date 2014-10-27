@@ -56,6 +56,37 @@ public class TratamientoDB {
         catch ( SQLException e) {
             return null;
         }
+    }
+    
+    static public Tratamiento getTratamiento(int idTratamiento) throws Exception{
+        Tratamiento tratamiento = null;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * from tratamiento where id_tratamiento=" + idTratamiento);
+            if (rs.next())
+            {
+                int idProfesional = rs.getInt("id_profesional");
+                String nombre = rs.getString("nombre");
+                int valorColegio = rs.getInt("valor_colegio");
+                int valorClinica = rs.getInt("valor_clinica");
+
+                tratamiento = new Tratamiento(idTratamiento, nombre, valorColegio, valorClinica);
+            }
+            else{
+                tratamiento = null;
+            }
+            rs.close();
+            con.close();
+            return tratamiento;
+        }
+
+        catch ( SQLException e) {
+            return null;
+        }
     }     
     
     
