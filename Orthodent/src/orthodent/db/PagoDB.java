@@ -102,6 +102,36 @@ public class PagoDB {
         catch ( SQLException e) {
             return null;
         }
+    }
+    
+    static public Pago getPago(int idPago) throws Exception{
+        Pago pago = null;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * from pago where id_pago=" + idPago);
+            if (rs.next())
+            {
+                int idPlanTratamiento = rs.getInt("id_plantratamiento");
+                String fecha = rs.getString("fecha");
+                int abono = rs.getInt("abono");
+
+                pago = new Pago(idPago, idPlanTratamiento, fecha, abono);
+            }
+            else{
+                pago = null;
+            }
+            rs.close();
+            con.close();
+            return pago;
+        }
+
+        catch ( SQLException e) {
+            return null;
+        }
     }     
     
 }
