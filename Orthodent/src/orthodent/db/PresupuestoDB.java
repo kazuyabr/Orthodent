@@ -5,7 +5,11 @@
 package orthodent.db;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import modelo.Paciente;
+import modelo.Presupuesto;
 
 /**
  *
@@ -48,6 +52,32 @@ public class PresupuestoDB {
         }
         catch ( SQLException e) {
             return false;
+        }
+    }    
+    
+    public static ArrayList<Presupuesto> listarPresupuestos(){
+        ArrayList<Presupuesto> presupuestos = null;        
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * FROM presupuesto");
+            presupuestos = new ArrayList<Presupuesto>();
+            while (rs.next())
+            {
+                Presupuesto p = new Presupuesto(rs.getInt("id_presupuesto"), rs.getInt("id_paciente"), rs.getInt("id_profesional"),
+                                                rs.getBoolean("estado"), rs.getInt("costo_total"), rs.getInt("cantidad_tratamiento"),
+                                                rs.getBoolean("activo"));
+                presupuestos.add(p);
+            }
+            rs.close();
+            con.close();
+            return presupuestos;
+        }
+        catch ( SQLException e) {
+            return null;
         }
     }    
     
