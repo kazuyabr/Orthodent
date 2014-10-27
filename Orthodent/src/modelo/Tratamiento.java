@@ -11,11 +11,13 @@ package modelo;
 public class Tratamiento {
     
     private int idTratamiento;
+    private String nombre;
     private int valorColegio;
     private int valorClinica;    
     
-    public Tratamiento(int idTratamiento, int valorColegio, int valorClinica) {
+    public Tratamiento(int idTratamiento, String nombre, int valorColegio, int valorClinica) {
         this.idTratamiento = idTratamiento;
+        this.nombre = nombre;
         this.valorColegio = valorColegio;
         this.valorClinica = valorClinica;
     }    
@@ -26,6 +28,14 @@ public class Tratamiento {
 
     public void setIdTratamiento(int idTratamiento) {
         this.idTratamiento = idTratamiento;
+    }
+    
+    public String getNombre(){
+        return nombre;
+    }
+    
+    public void setNombre(String nombre){
+        this.nombre = nombre;
     }
 
     public int getValorColegio() {

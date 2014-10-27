@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 27-10-2014 a las 16:38:10
+-- Tiempo de generación: 27-10-2014 a las 17:49:07
 -- Versión del servidor: 5.6.12-log
 -- Versión de PHP: 5.4.12
 
@@ -155,7 +155,14 @@ CREATE TABLE IF NOT EXISTS `presupuesto` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id_presupuesto`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci AUTO_INCREMENT=2 ;
+
+--
+-- Volcado de datos para la tabla `presupuesto`
+--
+
+INSERT INTO `presupuesto` (`id_presupuesto`, `id_paciente`, `id_profesional`, `estado`, `costo_total`, `cantidad_tratamiento`, `activo`, `created_at`, `update_at`) VALUES
+(1, 12, 12, 1, 2000, 3000, 1, '2014-10-27 17:07:47', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -188,7 +195,8 @@ INSERT INTO `roles` (`id_rol`, `nombre`, `created_at`, `update_at`) VALUES
 
 CREATE TABLE IF NOT EXISTS `tratamiento` (
   `id_tratamiento` int(11) NOT NULL AUTO_INCREMENT,
-  `valor_colegiomedico` int(11) DEFAULT NULL,
+  `nombre` varchar(100) COLLATE latin1_spanish_ci DEFAULT NULL,
+  `valor_colegio` int(11) DEFAULT NULL,
   `valor_clinica` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
