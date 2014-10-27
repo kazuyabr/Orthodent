@@ -32,6 +32,17 @@ public class Presupuesto {
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
     }    
+    
+    public Presupuesto(int idPresupuesto, int idPaciente, int idProfesional, boolean estado, int costoTotal, int cantidadTratamiento, boolean activo, String fechaCreacion) {
+        this.idPresupuesto = idPresupuesto;
+        this.idPaciente = idPaciente;
+        this.idProfesional = idProfesional;
+        this.estado = estado;
+        this.costoTotal = costoTotal;
+        this.cantidadTratamiento = cantidadTratamiento;
+        this.activo = activo;
+        this.fechaCreacion = fechaCreacion;
+    } 
 
     public int getIdPresupuesto() {
         return idPresupuesto;

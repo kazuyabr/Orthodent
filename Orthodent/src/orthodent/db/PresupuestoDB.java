@@ -7,7 +7,9 @@ package orthodent.db;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import modelo.Presupuesto;
 
 /**
@@ -112,11 +114,13 @@ public class PresupuestoDB {
             
             ResultSet rs = st.executeQuery("SELECT * FROM presupuesto where id_paciente=" + id_paciente);
             presupuestos = new ArrayList<Presupuesto>();
+            
             while (rs.next())
             {
                 Presupuesto p = new Presupuesto(rs.getInt("id_presupuesto"), rs.getInt("id_paciente"), rs.getInt("id_profesional"),
                                                 rs.getBoolean("estado"), rs.getInt("costo_total"), rs.getInt("cantidad_tratamiento"),
-                                                rs.getBoolean("activo"), rs.getString("created_at"), rs.getString("update_at"));
+                                                rs.getBoolean("activo"), PresupuestoDB.convertTimestampToString(rs.getTimestamp("created_at")),
+                                                PresupuestoDB.convertTimestampToString(rs.getTimestamp("update_at")));
                 presupuestos.add(p);
             }
             rs.close();
@@ -126,9 +130,48 @@ public class PresupuestoDB {
         catch ( SQLException e) {
             return null;
         }
-    }     
+    }
     
-    static public Presupuesto getPresupuesto(int idPresupuesto) throws Exception{
+    public static String convertTimestampToString(Timestamp date){
+        
+        if(date!=null){
+            String fecha = "";
+
+            if(date.getDate()<9){
+                fecha = fecha + "0";
+            }
+            fecha = fecha + date.getDate() + "-";
+
+            if((date.getMonth()+1)<9){
+                fecha = fecha + "0";
+            }
+            fecha = fecha + (date.getMonth()+1) + "-";
+
+            fecha = fecha + (date.getYear()+1900) + " ";
+
+            if((date.getHours())<9){
+                fecha = fecha + "0";
+            }
+            fecha = fecha + date.getHours() + ":";
+
+            if((date.getMinutes())<9){
+                fecha = fecha + "0";
+            }
+            fecha = fecha + date.getMinutes()+ ":";
+
+            if((date.getSeconds())<9){
+                fecha = fecha + "0";
+            }
+            fecha = fecha + date.getSeconds();
+
+            System.out.println(""+fecha);
+
+            return fecha;
+        }
+        return "";
+    }
+    
+    static public Presupuesto getPresupuesto(String fechaCreacion) throws Exception{
         Presupuesto presupuesto = null;
         try {
             DbConnection db = new DbConnection();
@@ -136,17 +179,17 @@ public class PresupuestoDB {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * from presupuesto where id_presupuesto=" + idPresupuesto);
+            ResultSet rs = st.executeQuery("SELECT * from presupuesto where created_at='" + fechaCreacion + "'");
             if (rs.next())
             {
+                int idPresupuesto = rs.getInt("id_presupuesto");
                 int idPaciente = rs.getInt("id_paciente");
                 int idProfesional = rs.getInt("id_profesional");
                 boolean estado = rs.getBoolean("estado");
                 int costoTotal = rs.getInt("costo_total");
                 int cantidadTratamiento = rs.getInt("cantidad_tratamiento");
                 boolean activo = rs.getBoolean("activo");
-                String fechaCreacion = rs.getString("created_at");
-                String fechaModificacion = rs.getString("uodate_at");
+                String fechaModificacion = PresupuestoDB.convertTimestampToString(rs.getTimestamp("update_at"));
 
                 presupuesto = new Presupuesto(idPresupuesto, idPaciente, idProfesional, estado, costoTotal, cantidadTratamiento, activo, fechaCreacion, fechaModificacion);
             }

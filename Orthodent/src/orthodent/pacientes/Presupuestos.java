@@ -4,8 +4,19 @@
  */
 package orthodent.pacientes;
 
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import modelo.Paciente;
+import modelo.Presupuesto;
+import modelo.Usuario;
+import orthodent.db.Autenticacion;
+import orthodent.db.PresupuestoDB;
 
 /**
  *
@@ -15,8 +26,11 @@ public class Presupuestos extends JPanel{
 
     private Paciente paciente;
     private boolean cambios;
+    private String [] columnasNombrePresupuestos;
+    private Object [][] filasPresupuesto;
+    private TableModel modeloPresupuesto;
     
-    public Presupuestos(Paciente paciente) {
+    public Presupuestos(Paciente paciente) throws Exception {
         initComponents();
         
         this.paciente = paciente;
@@ -36,8 +50,137 @@ public class Presupuestos extends JPanel{
         this.cambios = cambios;
     }
     
-    private void addInfo(){
+    private void addInfo() throws Exception{
+        this.iniciarTablaPresupuestos();
+    }
+    
+    public void iniciarTablaPresupuestos() throws Exception{
         
+        this.columnasNombrePresupuestos = new String [] {"Profesional", "Cantidad de Tratamientos", "Costo Total", "Estado", "Fecha de Creación"};
+        this.updateTablaPresupuestos();
+        this.tablaPresupuestos.getTableHeader().setReorderingAllowed(false);
+        
+        this.tablaPresupuestos.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                JTable table =(JTable) me.getSource();
+                Point p = me.getPoint();
+                int row = table.rowAtPoint(p);
+                if (me.getClickCount() == 1) {
+                    Object [] fila = getRowAt(row);
+                    try {
+                        
+                        Presupuesto presupuesto = PresupuestoDB.getPresupuesto((String)fila[4]);
+                        
+                        if(presupuesto!=null){
+                            //AQUI ALGO
+                        }
+                    } catch (Exception ex) {
+                        System.out.println("");
+                    }
+                }
+            }
+        });
+    }
+    
+    private Object[] getRowAt(int row) {
+        Object[] result = new String[this.columnasNombrePresupuestos.length];
+        
+        for (int i = 0; i < this.columnasNombrePresupuestos.length; i++) {
+            result[i] = this.tablaPresupuestos.getModel().getValueAt(row, i);
+        }
+        
+        return result;
+    }
+    
+    public void updateTablaPresupuestos() throws Exception{
+        //Podria ser ordenado!! -> una opcion es que la consulta ordene
+        ArrayList<Presupuesto> presupuestos = PresupuestoDB.listarPresupuestosDePaciente(paciente.getId_paciente());
+        
+        int m = this.columnasNombrePresupuestos.length;
+        
+        ArrayList<Object []> objetos = new ArrayList<Object []>();
+        
+        if(presupuestos==null){
+            System.out.println("WTF");
+        }
+        
+        for(Presupuesto presupuesto : presupuestos){
+            if(presupuesto.isActivo()){
+                
+                Usuario profesional = Autenticacion.getUsuario(presupuesto.getIdProfesional());
+                
+                String nombre = profesional.getNombre();
+        
+                if(nombre.contains(" ")){
+                    nombre = nombre.substring(0,nombre.indexOf(" "));
+                }
+                
+                nombre = nombre + " " + profesional.getApellido_pat();
+                
+                String estado = "";
+                
+                String costoTotal = this.getMoneda(presupuesto.getCostoTotal());
+                
+                if(presupuesto.getEstado()){
+                    estado = "Activo";
+                }
+                else{
+                    estado = "Cancelado";
+                }
+                
+                Object [] fila = new Object [] {nombre, presupuesto.getCantidadTratamiento(), costoTotal, estado, presupuesto.getFechaCreacion()};
+                
+                objetos.add(fila);
+            }
+        }
+        
+        this.filasPresupuesto = new Object [objetos.size()][m];
+        int i = 0;
+        for(Object [] o : objetos){
+            this.filasPresupuesto[i] = o;
+            i++;
+        }
+        
+        this.modeloPresupuesto = new DefaultTableModel(this.filasPresupuesto, this.columnasNombrePresupuestos) {
+            Class[] types = new Class [] {
+                String.class, Integer.class, String.class, String.class, String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
+        
+        this.tablaPresupuestos.setModel(modeloPresupuesto);
+    }
+    
+    private String getMoneda(int costo){
+        
+        String costoTotal = "$" + costo;
+        return costoTotal;
+    }
+    
+    private String girarFecha(String fecha){
+        
+        if(fecha!=null){
+            String año = fecha.substring(0, fecha.indexOf("-"));
+            fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
+
+            String mes = fecha.substring(0, fecha.indexOf("-"));
+            fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
+
+            String fechaNueva = fecha+"-"+mes+"-"+año;
+            return fechaNueva;
+        }
+        
+        return fecha;
     }
 
     /**
@@ -286,7 +429,7 @@ public class Presupuestos extends JPanel{
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane1)
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -303,7 +446,7 @@ public class Presupuestos extends JPanel{
                     .addComponent(guardar)
                     .addComponent(eliminar)
                     .addComponent(aprobar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
