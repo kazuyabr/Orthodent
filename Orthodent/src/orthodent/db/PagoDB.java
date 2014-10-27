@@ -13,14 +13,14 @@ import java.sql.SQLException;
  */
 public class PagoDB {
     
-    public static boolean crearPago(int idPlanTratamiento, String fechaCita, String descripcion){
+    public static boolean crearPago(int idPlanTratamiento, String fechaCita, int abono){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
             
             java.sql.Statement st = con.createStatement();
-            int aux = st.executeUpdate("INSERT INTO pago (id_plantratamiento, fecha_cita, descripcion)\n" +
-                                        "VALUES ("+idPlanTratamiento+",'"+fechaCita+"','"+descripcion+"')");
+            int aux = st.executeUpdate("INSERT INTO pago (id_plantratamiento, fecha, abono)\n" +
+                                        "VALUES ("+idPlanTratamiento+",'"+fechaCita+"',"+abono+")");
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
