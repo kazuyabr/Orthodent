@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import modelo.Pago;
+import modelo.Presupuesto;
 
 /**
  *
@@ -76,6 +77,30 @@ public class PagoDB {
         catch ( SQLException e) {
             return null;
         }
-    }      
+    }   
+    
+    public static ArrayList<Pago> listarPagosDePlanTratamiento(int idPlanTratamiento){
+        ArrayList<Pago> pagos = null;        
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * FROM pago where id_plantratamiento=" + idPlanTratamiento);
+            pagos = new ArrayList<Pago>();
+            while (rs.next())
+            {
+                Pago p = new Pago(rs.getInt("id_plantratamiento"), rs.getString("fecha"), rs.getInt("abono"));
+                pagos.add(p);
+            }
+            rs.close();
+            con.close();
+            return pagos;
+        }
+        catch ( SQLException e) {
+            return null;
+        }
+    }     
     
 }
