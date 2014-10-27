@@ -17,9 +17,11 @@ public class Presupuesto {
     private boolean estado;
     private int costoTotal;
     private int cantidadTratamiento;
-    private boolean activo;    
+    private String fechaCreacion;
+    private String fechaModificacion;
+    private boolean activo;
     
-    public Presupuesto(int idPresupuesto, int idPaciente, int idProfesional, boolean estado, int costoTotal, int cantidadTratamiento, boolean activo) {
+    public Presupuesto(int idPresupuesto, int idPaciente, int idProfesional, boolean estado, int costoTotal, int cantidadTratamiento, boolean activo, String fechaCreacion, String fechaModificacion) {
         this.idPresupuesto = idPresupuesto;
         this.idPaciente = idPaciente;
         this.idProfesional = idProfesional;
@@ -27,6 +29,8 @@ public class Presupuesto {
         this.costoTotal = costoTotal;
         this.cantidadTratamiento = cantidadTratamiento;
         this.activo = activo;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaModificacion = fechaModificacion;
     }    
 
     public int getIdPresupuesto() {
@@ -53,7 +57,7 @@ public class Presupuesto {
         this.idProfesional = idProfesional;
     }
 
-    public boolean isEstado() {
+    public boolean getEstado() {
         return estado;
     }
 
@@ -85,5 +89,19 @@ public class Presupuesto {
         this.activo = activo;
     }
 
-    
+    public String getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(String fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public String getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(String fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
 }

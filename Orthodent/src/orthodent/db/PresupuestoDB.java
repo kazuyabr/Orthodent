@@ -35,6 +35,28 @@ public class PresupuestoDB {
         }
     }
     
+    public static boolean editarPresupuesto(Presupuesto presupuesto){
+        try{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            
+            java.sql.Statement st = con.createStatement();
+            int aux = st.executeUpdate("UPDATE presupuesto\n" +
+                                            "SET estado="+presupuesto.getEstado()+"\n" +
+                                            ",costo_total="+presupuesto.getCostoTotal()+"\n" +
+                                            ",cantidad_tratamiento="+presupuesto.getCantidadTratamiento()+"\n" +
+                                            ",update_at='"+presupuesto.getFechaModificacion()+"'\n" +
+                                            "WHERE id_presupueto="+presupuesto.getIdPresupuesto());
+            boolean resultado = (aux == 1)? true : false;
+            st.close();
+            con.close();
+            return resultado;
+        }
+        catch ( SQLException e) {
+            return false;
+        }
+    }
+    
     public static boolean eliminarPresupuesto(int idPresupuesto) throws SQLException{
         try{
             DbConnection db = new DbConnection();
@@ -68,7 +90,7 @@ public class PresupuestoDB {
             {
                 Presupuesto p = new Presupuesto(rs.getInt("id_presupuesto"), rs.getInt("id_paciente"), rs.getInt("id_profesional"),
                                                 rs.getBoolean("estado"), rs.getInt("costo_total"), rs.getInt("cantidad_tratamiento"),
-                                                rs.getBoolean("activo"));
+                                                rs.getBoolean("activo"), rs.getString("created_at"), rs.getString("update_at"));
                 presupuestos.add(p);
             }
             rs.close();
@@ -94,7 +116,7 @@ public class PresupuestoDB {
             {
                 Presupuesto p = new Presupuesto(rs.getInt("id_presupuesto"), rs.getInt("id_paciente"), rs.getInt("id_profesional"),
                                                 rs.getBoolean("estado"), rs.getInt("costo_total"), rs.getInt("cantidad_tratamiento"),
-                                                rs.getBoolean("activo"));
+                                                rs.getBoolean("activo"), rs.getString("created_at"), rs.getString("update_at"));
                 presupuestos.add(p);
             }
             rs.close();
@@ -123,8 +145,10 @@ public class PresupuestoDB {
                 int costoTotal = rs.getInt("costo_total");
                 int cantidadTratamiento = rs.getInt("cantidad_tratamiento");
                 boolean activo = rs.getBoolean("activo");
+                String fechaCreacion = rs.getString("created_at");
+                String fechaModificacion = rs.getString("uodate_at");
 
-                presupuesto = new Presupuesto(idPresupuesto, idPaciente, idProfesional, estado, costoTotal, cantidadTratamiento, activo);
+                presupuesto = new Presupuesto(idPresupuesto, idPaciente, idProfesional, estado, costoTotal, cantidadTratamiento, activo, fechaCreacion, fechaModificacion);
             }
             else{
                 presupuesto = null;

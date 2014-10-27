@@ -246,7 +246,7 @@ public class Autenticacion {
         }
     }
     
-    public static boolean editarUsuario(Usuario usuario){
+    public static boolean editarUsuario(Usuario usuario) throws Exception{
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
@@ -259,7 +259,7 @@ public class Autenticacion {
                     ",apellido_pat='"+usuario.getApellido_pat()+"'\n" +
                     ",apellido_mat='"+usuario.getApellido_mat()+"'\n" +
                     ",nombre_usuario='"+usuario.getNombreUsuario()+"'\n" +
-                    ",contrasena='"+usuario.getContraseña()+"'\n" +
+                    ",contrasena='"+encripMd5(usuario.getContraseña())+"'\n" +
                     ",email='"+usuario.getEmail()+"'\n" +
                     ",telefono='"+usuario.getTelefono()+"'\n" +
                     ",especialidad='"+usuario.getEspecialidad()+"'\n" +
