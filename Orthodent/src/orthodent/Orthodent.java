@@ -7,6 +7,7 @@ package orthodent;
 import de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel;
 
 import javax.swing.UIManager;
+import orthodent.db.PresupuestoDB;
 
 /**
  *
