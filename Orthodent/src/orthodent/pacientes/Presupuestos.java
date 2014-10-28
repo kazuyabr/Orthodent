@@ -10,17 +10,24 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Vector;
+import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import modelo.Paciente;
 import modelo.Presupuesto;
 import modelo.Tratamiento;
 import modelo.TratamientoPiezaPresupuesto;
 import modelo.Usuario;
+import orthodent.ComboBoxItem;
+import orthodent.Item;
+import orthodent.ItemRenderer;
 import orthodent.db.Autenticacion;
 import orthodent.db.PresupuestoDB;
 import orthodent.db.TratamientoDB;
@@ -40,10 +47,12 @@ public class Presupuestos extends JPanel{
     private TableModel modeloPresupuesto;
     private String [] columnasNombrePiezaTratamiento;
     private Object [][] filasPiezaTratamiento;
-    private TableModel modeloPiezaTratamiento;
+    private DefaultTableModel modeloPiezaTratamiento;
     private String profesionalSelected;
     private String estadoSelected;
     private Presupuesto presupuestoSelected;
+    private ArrayList<Tratamiento> auxiliar;
+    private int rowSelected;
     
     public Presupuestos(Paciente paciente, Usuario actual) throws Exception {
         initComponents();
@@ -81,13 +90,13 @@ public class Presupuestos extends JPanel{
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
                 if (me.getClickCount() == 1) {
-                    System.out.println("1 click");
-                }
-                if (me.getClickCount() == 2) {
                     int col = table.columnAtPoint(p);
                     if(col==1){
-                        System.out.println("Mostrar comboBox!! =/");
+                        rowSelected = row;
                     }
+                }
+                if (me.getClickCount() == 2) {
+                    habilitarBoton();
                 }
             }
         });
@@ -136,6 +145,37 @@ public class Presupuestos extends JPanel{
         };
         
         this.tablaPiezaTratamiento.setModel(modeloPiezaTratamiento);
+        
+        TableColumn tratamientos = tablaPiezaTratamiento.getColumnModel().getColumn(1);
+        JComboBox comboBox = new JComboBox(){
+            public void fireItemStateChanged(ItemEvent evt){
+                for(Tratamiento trat : auxiliar){
+                    if(trat.getNombre().equals((String)evt.getItem())){
+                        modeloPiezaTratamiento.setValueAt("$"+trat.getValorColegio(), rowSelected, 2);
+                        modeloPiezaTratamiento.setValueAt("$"+trat.getValorClinica(), rowSelected, 3);
+                        
+                        int total = 0;
+                        for(int i=0; i<modeloPiezaTratamiento.getRowCount(); i++){
+                            String valor = (String) modeloPiezaTratamiento.getValueAt(i, 3);
+                            valor = valor.substring(valor.indexOf("$")+1, valor.length());
+                            int precio = Integer.parseInt(valor);
+                            total = total + precio;
+                        }
+                        
+                        costoTotal.setText("$"+total);
+                        habilitarBoton();
+                    }
+                }
+            }
+        };
+        
+        this.auxiliar = TratamientoDB.listarTratamientos();
+        if(auxiliar!=null && auxiliar.size()>0){
+            for(Tratamiento trat : auxiliar){
+                comboBox.addItem(trat.getNombre());
+            }
+        }
+        tratamientos.setCellEditor(new DefaultCellEditor(comboBox));
     }
     
     public void iniciarTablaPresupuestos() throws Exception{
@@ -152,11 +192,11 @@ public class Presupuestos extends JPanel{
                 if (me.getClickCount() == 1) {
                     Object [] fila = getRowAt(row);
                     try {
-                        
                         presupuestoSelected = PresupuestoDB.getPresupuesto((String)fila[4], paciente.getId_paciente());
                         
                         if(presupuestoSelected!=null){
                             eliminar.setEnabled(true);
+                            aprobar.setEnabled(true);
                             
                             if(actual.getId_rol()==3){
                                 //Profesional
@@ -165,9 +205,14 @@ public class Presupuestos extends JPanel{
                                 if(nombre.contains(" ")){
                                     nombre = nombre.substring(0,nombre.indexOf(" "));
                                 }
-                                profesional.setModel(new DefaultComboBoxModel(new String[] {(nombre+" "+actual.getApellido_pat())}));
+                                
+                                Vector model = new Vector();
+                                Item item = new Item(nombre+" "+actual.getApellido_pat(), actual.getId_usuario());
+                                model.addElement(item);
+                                
+                                profesional.setModel(new DefaultComboBoxModel(model));
                                 profesionalSelected = nombre+" "+actual.getApellido_pat();
-                                profesional.setSelectedItem(nombre+" "+actual.getApellido_pat());
+                                profesional.setSelectedItem(item);
                             }
                             else{
                                 profesional.setEnabled(true);
@@ -175,22 +220,6 @@ public class Presupuestos extends JPanel{
                                 ArrayList<Usuario> usuarios = Autenticacion.listarProfesionales();
                                 
                                 if(usuarios!=null && usuarios.size()>0){
-                                    String [] profesionales = new String [usuarios.size()];
-                                    
-                                    int i = 0;
-                                    for(Usuario user : usuarios){
-                                        String name = user.getNombre();
-
-                                        if(name.contains(" ")){
-                                            name = name.substring(0,name.indexOf(" "));
-                                        }
-                                        name = name + " " + user.getApellido_pat();
-                                        profesionales[i] = name;
-                                        i++;
-                                    }
-
-                                    profesional.setModel(new DefaultComboBoxModel(profesionales));
-
                                     Usuario profesional1 = Autenticacion.getUsuario(presupuestoSelected.getIdProfesional());
 
                                     String nombre = profesional1.getNombre();
@@ -199,7 +228,29 @@ public class Presupuestos extends JPanel{
                                         nombre = nombre.substring(0,nombre.indexOf(" "));
                                     }
                                     profesionalSelected = nombre+" "+profesional1.getApellido_pat();
-                                    profesional.setSelectedItem(nombre+" "+profesional1.getApellido_pat());
+                                    
+                                    Vector model = new Vector();
+                                    Item item = null;
+                                    int i = 0;
+                                    for(Usuario user : usuarios){
+                                        String name = user.getNombre();
+
+                                        if(name.contains(" ")){
+                                            name = name.substring(0,name.indexOf(" "));
+                                        }
+                                        name = name + " " + user.getApellido_pat();
+                                        
+                                        if(profesionalSelected.equals(name)){
+                                            item = new Item(name,user.getId_usuario());
+                                            model.addElement(item);
+                                        }
+                                        else{
+                                            model.addElement(new Item(name,user.getId_usuario()));
+                                        }
+                                        i++;
+                                    }
+                                    profesional.setModel(new DefaultComboBoxModel(model));
+                                    profesional.setSelectedItem(item);
                                 }
                             }
                             
@@ -221,6 +272,7 @@ public class Presupuestos extends JPanel{
                             
                             tablaPiezaTratamiento.setEnabled(true);
                             iniciarTablaPiezaTratamiento();
+                            guardar.setEnabled(false);
                         }
                     } catch (Exception ex) {
                         System.out.println("");
@@ -367,6 +419,7 @@ public class Presupuestos extends JPanel{
         add = new javax.swing.JButton();
         remove = new javax.swing.JButton();
         nuevoPresupuesto = new javax.swing.JButton();
+        aprobar = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(850, 551));
@@ -528,11 +581,21 @@ public class Presupuestos extends JPanel{
         add.setBorder(null);
         add.setBorderPainted(false);
         add.setContentAreaFilled(false);
+        add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addActionPerformed(evt);
+            }
+        });
 
         remove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/delete_mini.png"))); // NOI18N
         remove.setBorder(null);
         remove.setBorderPainted(false);
         remove.setContentAreaFilled(false);
+        remove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -603,6 +666,15 @@ public class Presupuestos extends JPanel{
         nuevoPresupuesto.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         nuevoPresupuesto.setText("Nuevo Presupuesto");
 
+        aprobar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        aprobar.setText("Aprobar");
+        aprobar.setEnabled(false);
+        aprobar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aprobarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -616,6 +688,8 @@ public class Presupuestos extends JPanel{
                     .addComponent(nuevoPresupuesto)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(eliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(aprobar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(guardar))
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -636,7 +710,8 @@ public class Presupuestos extends JPanel{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(guardar)
-                    .addComponent(eliminar))
+                    .addComponent(eliminar)
+                    .addComponent(aprobar))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
 
@@ -664,6 +739,74 @@ public class Presupuestos extends JPanel{
     
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
         
+        Item selecProfesional = (Item)this.profesional.getSelectedItem();
+        
+        System.out.println("id"+selecProfesional.getId());
+        System.out.println("nombre: "+selecProfesional.getValue());
+        
+        /*String nombre = this.nombres.getText();
+        String apellidoPat = this.apellidoPat.getText();
+        String apellidoMat = this.apellidoMat.getText();
+        String email = this.email.getText();
+        
+        Date date = this.fechaNacimiento.getDate();
+        
+        String fechaNacimiento = getFechaString(date);
+        
+        int edad = Integer.parseInt(this.edad.getText());
+        
+        int sexo = 0;
+        if(((String)this.sexo.getSelectedItem()).equals("Femenino")){
+            sexo = 1;
+        }
+        else{
+            sexo = 2;
+        }
+        
+        String antecedenteMedico = this.antecedentesMedicos.getText();
+        String telefono = this.telefono.getText();
+        String ciudad = (String)this.ciudad.getSelectedItem();
+        String comuna = (String)this.comuna.getSelectedItem();
+        String direccion = this.direccion.getText();
+        
+        boolean aux = validarCamposObligatorios(nombre,apellidoPat,fechaNacimiento,telefono);
+        
+        if(aux){
+            try {
+                this.paciente.setNombre(nombre);
+                this.paciente.setApellido_pat(apellidoPat);
+                this.paciente.setApellido_mat(apellidoMat);
+                this.paciente.setEmail(email);
+                this.paciente.setFechaNacimiento(fechaNacimiento);
+                this.paciente.setEdad(edad);
+                this.paciente.setSexo(sexo);
+                this.paciente.setAntecedenteMedico(antecedenteMedico);
+                this.paciente.setTelefono(telefono);
+                this.paciente.setCiudad(ciudad);
+                this.paciente.setComuna(comuna);
+                this.paciente.setDireccion(direccion);
+                
+                boolean respuesta = PacienteDB.editarPaciente(paciente);
+
+                if(respuesta){
+                    
+                    JPanel contenedor = (JPanel)this.getParent();
+                    
+                    ((MostrarInfoPaciente)contenedor.getParent()).updateNombre();
+                    
+                    this.cambios = false;
+                    this.guardar.setEnabled(false);
+                }
+            } catch (Exception ex) {
+                System.out.println("");
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(this,
+                    "Faltan campos obligatorios",
+                    "Orthodent",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }*/
     }//GEN-LAST:event_guardarActionPerformed
 
     private void profesionalPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_profesionalPropertyChange
@@ -676,10 +819,10 @@ public class Presupuestos extends JPanel{
 
     private void profesionalItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_profesionalItemStateChanged
         if (evt.getStateChange() == ItemEvent.SELECTED) {
-            Object item = evt.getItem();
+            Item item = (Item)evt.getItem();
             
             if(this.profesionalSelected!=null){
-                if(!this.profesionalSelected.equals((String)item)){
+                if(!this.profesionalSelected.equals(item.getValue())){
                     this.habilitarBoton();
                 }
             }
@@ -730,6 +873,7 @@ public class Presupuestos extends JPanel{
                         this.fechaUltimaModificacion.setText("");
                         this.presupuestoSelected = null;
                         this.eliminar.setEnabled(false);
+                        this.aprobar.setEnabled(false);
                         this.guardar.setEnabled(false);
                         this.tablaPiezaTratamiento.setEnabled(false);
                     } catch (Exception ex) {
@@ -740,6 +884,21 @@ public class Presupuestos extends JPanel{
             }
         }
     }//GEN-LAST:event_eliminarActionPerformed
+
+    private void aprobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aprobarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_aprobarActionPerformed
+
+    private void removeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeActionPerformed
+        int SelectedRow = this.tablaPiezaTratamiento.getSelectedRow();
+        this.modeloPiezaTratamiento.removeRow(this.tablaPiezaTratamiento.convertRowIndexToModel(SelectedRow));
+        this.habilitarBoton();
+    }//GEN-LAST:event_removeActionPerformed
+
+    private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
+        this.modeloPiezaTratamiento.addRow(new Object []{"","","",""});
+        this.habilitarBoton();
+    }//GEN-LAST:event_addActionPerformed
     
     private void habilitarBoton(){
         this.cambios = true;
@@ -748,6 +907,7 @@ public class Presupuestos extends JPanel{
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add;
+    private javax.swing.JButton aprobar;
     private javax.swing.JTextField costoTotal;
     private javax.swing.JButton eliminar;
     private javax.swing.JComboBox estado;
