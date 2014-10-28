@@ -171,7 +171,24 @@ public class PresupuestoDB {
         return "";
     }
     
-    static public Presupuesto getPresupuesto(String fechaCreacion) throws Exception{
+    public static String girarFecha(String fecha){
+        
+        if(fecha!=null){
+            String dia = fecha.substring(0, fecha.indexOf("-"));
+            fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
+            
+            String mes = fecha.substring(0, fecha.indexOf("-"));
+            fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
+            
+            String año = fecha.substring(0, fecha.indexOf(" "));
+            fecha = fecha.substring(fecha.indexOf(" ")+1, fecha.length());
+
+            return (año+"-"+mes+"-"+dia+" "+fecha);
+        }
+        return "";
+    }
+    
+    static public Presupuesto getPresupuesto(String fechaCreacion, int id_paciente) throws Exception{
         Presupuesto presupuesto = null;
         try {
             DbConnection db = new DbConnection();
@@ -179,7 +196,7 @@ public class PresupuestoDB {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * from presupuesto where created_at='" + fechaCreacion + "'");
+            ResultSet rs = st.executeQuery("SELECT * from presupuesto where created_at='" + girarFecha(fechaCreacion) + "' AND id_paciente="+id_paciente);
             if (rs.next())
             {
                 int idPresupuesto = rs.getInt("id_presupuesto");

@@ -5,9 +5,13 @@
 package orthodent.pacientes;
 
 import java.awt.Point;
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -24,16 +28,21 @@ import orthodent.db.PresupuestoDB;
  */
 public class Presupuestos extends JPanel{
 
+    private Usuario actual;
     private Paciente paciente;
     private boolean cambios;
     private String [] columnasNombrePresupuestos;
     private Object [][] filasPresupuesto;
     private TableModel modeloPresupuesto;
+    private String profesionalSelected;
+    private String estadoSelected;
+    private Presupuesto presupuestoSelected;
     
-    public Presupuestos(Paciente paciente) throws Exception {
+    public Presupuestos(Paciente paciente, Usuario actual) throws Exception {
         initComponents();
         
         this.paciente = paciente;
+        this.actual = actual;
         this.cambios = false;
         
         this.addInfo();
@@ -69,10 +78,71 @@ public class Presupuestos extends JPanel{
                     Object [] fila = getRowAt(row);
                     try {
                         
-                        Presupuesto presupuesto = PresupuestoDB.getPresupuesto((String)fila[4]);
+                        presupuestoSelected = PresupuestoDB.getPresupuesto((String)fila[4], paciente.getId_paciente());
                         
-                        if(presupuesto!=null){
-                            //AQUI ALGO
+                        if(presupuestoSelected!=null){
+                            eliminar.setEnabled(true);
+                            
+                            if(actual.getId_rol()==3){
+                                //Profesional
+                                String nombre = actual.getNombre();
+        
+                                if(nombre.contains(" ")){
+                                    nombre = nombre.substring(0,nombre.indexOf(" "));
+                                }
+                                profesional.setModel(new DefaultComboBoxModel(new String[] {(nombre+" "+actual.getApellido_pat())}));
+                                profesionalSelected = nombre+" "+actual.getApellido_pat();
+                                profesional.setSelectedItem(nombre+" "+actual.getApellido_pat());
+                            }
+                            else{
+                                profesional.setEnabled(true);
+                                
+                                ArrayList<Usuario> usuarios = Autenticacion.listarProfesionales();
+                                
+                                if(usuarios!=null && usuarios.size()>0){
+                                    String [] profesionales = new String [usuarios.size()];
+                                    
+                                    int i = 0;
+                                    for(Usuario user : usuarios){
+                                        String name = user.getNombre();
+
+                                        if(name.contains(" ")){
+                                            name = name.substring(0,name.indexOf(" "));
+                                        }
+                                        name = name + " " + user.getApellido_pat();
+                                        profesionales[i] = name;
+                                        i++;
+                                    }
+
+                                    profesional.setModel(new DefaultComboBoxModel(profesionales));
+
+                                    Usuario profesional1 = Autenticacion.getUsuario(presupuestoSelected.getIdProfesional());
+
+                                    String nombre = profesional1.getNombre();
+
+                                    if(nombre.contains(" ")){
+                                        nombre = nombre.substring(0,nombre.indexOf(" "));
+                                    }
+                                    profesionalSelected = nombre+" "+profesional1.getApellido_pat();
+                                    profesional.setSelectedItem(nombre+" "+profesional1.getApellido_pat());
+                                }
+                            }
+                            
+                            costoTotal.setText("$"+presupuestoSelected.getCostoTotal());
+                            
+                            estado.setModel(new DefaultComboBoxModel(new String [] {"Activo","Cancelado"}));
+                            estado.setEnabled(true);
+                            if(presupuestoSelected.getEstado()){
+                                estadoSelected = "Activo";
+                                estado.setSelectedItem("Activo");
+                            }
+                            else{
+                                estadoSelected = "Cancelado";
+                                estado.setSelectedItem("Cancelado");
+                            }
+                            
+                            fechaCreacion.setText(presupuestoSelected.getFechaCreacion());
+                            fechaUltimaModificacion.setText(presupuestoSelected.getFechaModificacion());
                         }
                     } catch (Exception ex) {
                         System.out.println("");
@@ -100,10 +170,6 @@ public class Presupuestos extends JPanel{
         
         ArrayList<Object []> objetos = new ArrayList<Object []>();
         
-        if(presupuestos==null){
-            System.out.println("WTF");
-        }
-        
         for(Presupuesto presupuesto : presupuestos){
             if(presupuesto.isActivo()){
                 
@@ -128,7 +194,7 @@ public class Presupuestos extends JPanel{
                     estado = "Cancelado";
                 }
                 
-                Object [] fila = new Object [] {nombre, presupuesto.getCantidadTratamiento(), costoTotal, estado, presupuesto.getFechaCreacion()};
+                Object [] fila = new Object [] {nombre, presupuesto.getCantidadTratamiento()+"", costoTotal, estado, presupuesto.getFechaCreacion()};
                 
                 objetos.add(fila);
             }
@@ -143,7 +209,7 @@ public class Presupuestos extends JPanel{
         
         this.modeloPresupuesto = new DefaultTableModel(this.filasPresupuesto, this.columnasNombrePresupuestos) {
             Class[] types = new Class [] {
-                String.class, Integer.class, String.class, String.class, String.class
+                String.class, String.class, String.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false
@@ -212,7 +278,6 @@ public class Presupuestos extends JPanel{
         tablaPiezaTratamiento = new javax.swing.JTable();
         labelTotal = new javax.swing.JLabel();
         costoTotal = new javax.swing.JTextField();
-        aprobar = new javax.swing.JButton();
         nuevoPresupuesto = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -248,6 +313,7 @@ public class Presupuestos extends JPanel{
 
         guardar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         guardar.setText("Guardar Cambios");
+        guardar.setEnabled(false);
         guardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 guardarActionPerformed(evt);
@@ -282,6 +348,12 @@ public class Presupuestos extends JPanel{
 
         eliminar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         eliminar.setText("Eliminar");
+        eliminar.setEnabled(false);
+        eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -291,6 +363,21 @@ public class Presupuestos extends JPanel{
 
         profesional.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         profesional.setEnabled(false);
+        profesional.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                profesionalItemStateChanged(evt);
+            }
+        });
+        profesional.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                profesionalFocusGained(evt);
+            }
+        });
+        profesional.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                profesionalPropertyChange(evt);
+            }
+        });
 
         labelEstado.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
         labelEstado.setText("Estado");
@@ -298,6 +385,11 @@ public class Presupuestos extends JPanel{
         estado.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         estado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Activo", "Cancelado" }));
         estado.setEnabled(false);
+        estado.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                estadoItemStateChanged(evt);
+            }
+        });
 
         labelFechaCreacion.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
         labelFechaCreacion.setText("Fecha de Creación");
@@ -398,14 +490,6 @@ public class Presupuestos extends JPanel{
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        aprobar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        aprobar.setText("Aprobar");
-        aprobar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aprobarActionPerformed(evt);
-            }
-        });
-
         nuevoPresupuesto.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         nuevoPresupuesto.setText("Nuevo Presupuesto");
 
@@ -422,8 +506,6 @@ public class Presupuestos extends JPanel{
                     .addComponent(nuevoPresupuesto)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(eliminar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(aprobar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(guardar))
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -444,8 +526,7 @@ public class Presupuestos extends JPanel{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(guardar)
-                    .addComponent(eliminar)
-                    .addComponent(aprobar))
+                    .addComponent(eliminar))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
 
@@ -475,12 +556,86 @@ public class Presupuestos extends JPanel{
         
     }//GEN-LAST:event_guardarActionPerformed
 
-    private void aprobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aprobarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_aprobarActionPerformed
+    private void profesionalPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_profesionalPropertyChange
+        
+    }//GEN-LAST:event_profesionalPropertyChange
+
+    private void profesionalFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_profesionalFocusGained
+        
+    }//GEN-LAST:event_profesionalFocusGained
+
+    private void profesionalItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_profesionalItemStateChanged
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            Object item = evt.getItem();
+            
+            if(this.profesionalSelected!=null){
+                if(!this.profesionalSelected.equals((String)item)){
+                    this.habilitarBoton();
+                }
+            }
+       }
+    }//GEN-LAST:event_profesionalItemStateChanged
+
+    private void estadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_estadoItemStateChanged
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            Object item = evt.getItem();
+            
+            if(this.estadoSelected!=null){
+                if(!this.estadoSelected.equals((String)item)){
+                    this.habilitarBoton();
+                }
+            }
+       }
+    }//GEN-LAST:event_estadoItemStateChanged
+
+    private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
+        Object[] options = {"Sí","No"};
+        
+        int n = JOptionPane.showOptionDialog(this,
+                    "¿Esta seguro que desea eliminar el presupuesto?",
+                    "Orthodent",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[1]);
+        
+        if(n==0){
+            try {
+                boolean resul = PresupuestoDB.eliminarPresupuesto(this.presupuestoSelected.getIdPresupuesto());
+                if(resul){
+                    try {
+                        this.updateTablaPresupuestos();
+                        this.profesional.setEnabled(false);
+                        this.profesionalSelected = null;
+                        this.profesional.setModel(new DefaultComboBoxModel(new String [] {""}));
+                        this.profesional.setSelectedItem("");
+                        this.costoTotal.setEnabled(false);
+                        this.costoTotal.setText("");
+                        this.estadoSelected = null;
+                        this.estado.setModel(new DefaultComboBoxModel(new String [] {""}));
+                        this.estado.setSelectedItem("");
+                        this.estado.setEnabled(false);
+                        this.fechaCreacion.setText("");
+                        this.fechaUltimaModificacion.setText("");
+                        this.presupuestoSelected = null;
+                        this.eliminar.setEnabled(false);
+                        this.guardar.setEnabled(false);
+                    } catch (Exception ex) {
+                        System.out.println("");
+                    }
+                }
+            } catch (SQLException ex) {
+            }
+        }
+    }//GEN-LAST:event_eliminarActionPerformed
+    
+    private void habilitarBoton(){
+        this.cambios = true;
+        this.guardar.setEnabled(true);
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton aprobar;
     private javax.swing.JTextField costoTotal;
     private javax.swing.JButton eliminar;
     private javax.swing.JComboBox estado;

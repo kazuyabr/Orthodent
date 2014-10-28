@@ -7,6 +7,8 @@ package orthodent.pacientes;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import modelo.Paciente;
 import modelo.Usuario;
@@ -235,11 +237,11 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         }
     }
     
-    public void cambiarPresupuesto(){
+    public void cambiarPresupuesto() throws Exception{
         if(opActual!=3){
             this.removeAncestor();
             
-            this.presupuestoPanel = new Presupuestos(this.paciente);
+            this.presupuestoPanel = new Presupuestos(this.paciente, this.actual);
             
             this.contenedor.add(this.presupuestoPanel,BorderLayout.CENTER);
             this.updateUI();
@@ -547,7 +549,10 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         if(e.getSource() == this.presupuesto){
             this.guardarAntes();
             this.setIconButton(3);
-            this.cambiarPresupuesto();
+            try {
+                this.cambiarPresupuesto();
+            } catch (Exception ex) {
+            }
         }
         if(e.getSource() == this.fichasClinicas){
             this.guardarAntes();

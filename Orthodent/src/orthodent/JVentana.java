@@ -46,8 +46,6 @@ public class JVentana extends JFrame{
         this.usuario = usuario;
         this.opActual = 1;
         
-        
-        
         this.crearElementosVentana();
         
         this.centrarVentana();

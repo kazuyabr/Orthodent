@@ -157,7 +157,15 @@ public class Pacientes extends JPanel implements ActionListener{
     
     public void updateModelo(){
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
-        ArrayList<Paciente> pacientes = PacienteDB.listarPacientes();
+        ArrayList<Paciente> pacientes = null;
+        
+        if(this.actual.getId_rol()==3){
+            //Profesional
+            pacientes = PacienteDB.listarPacientes(this.actual.getId_usuario());
+        }
+        else{
+            pacientes = PacienteDB.listarPacientes();
+        }
         
         int m = this.columnasNombre.length;
         

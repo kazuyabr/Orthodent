@@ -19,7 +19,7 @@ import modelo.Usuario;
 public class PacienteDB {
     
     public static ArrayList<Paciente> listarPacientes(){
-        ArrayList<Paciente> pacientes = null;        
+        ArrayList<Paciente> pacientes = null;
         try {
             DbConnection db = new DbConnection();
             Connection con = db.getConnection();
@@ -27,6 +27,47 @@ public class PacienteDB {
             java.sql.Statement st = con.createStatement();
             
             ResultSet rs = st.executeQuery("SELECT * FROM paciente");
+            pacientes = new ArrayList<Paciente>();
+            while (rs.next())
+            {
+                Paciente p = new Paciente(rs.getInt("id_paciente"), rs.getString("nombre"), rs.getString("apellido_pat"), rs.getString("apellido_mat"),
+                                            rs.getString("rut"), rs.getString("email"), rs.getString("fecha_nacimiento"), rs.getInt("edad"), rs.getInt("sexo"),
+                                            rs.getString("antecedente_medico"), rs.getString("telefono"), rs.getString("ciudad"),
+                                            rs.getString("comuna"), rs.getString("direccion"), rs.getBoolean("activo"));
+                pacientes.add(p);
+            }
+            rs.close();
+            con.close();
+            return pacientes;
+        }
+        catch ( SQLException e) {
+            return null;
+        }
+    }
+    
+    public static ArrayList<Paciente> listarPacientes(int id_usuario){
+        ArrayList<Paciente> pacientes = null;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT paciente.id_paciente, paciente.nombre, paciente.apellido_pat,"
+                    + "paciente.apellido_mat, paciente.rut, paciente.email, paciente.fecha_nacimiento, paciente.edad,"
+                    + "paciente.sexo, paciente.antecedente_medico, paciente.telefono, paciente.ciudad, paciente.comuna, "
+                    + "paciente.direccion, paciente.activo FROM `paciente`, `usuario`, `presupuesto` WHERE "
+                    + "paciente.activo=1 AND presupuesto.activo=1 AND "
+                    + "usuario.id_usuario="+id_usuario+" AND presupuesto.id_profesional=usuario.id_usuario AND "
+                    + "presupuesto.id_paciente=paciente.id_paciente UNION "
+                    + "SELECT paciente.id_paciente, paciente.nombre, paciente.apellido_pat,"
+                    + "paciente.apellido_mat, paciente.rut, paciente.email, paciente.fecha_nacimiento, paciente.edad,"
+                    + "paciente.sexo, paciente.antecedente_medico, paciente.telefono, paciente.ciudad, paciente.comuna, "
+                    + "paciente.direccion, paciente.activo FROM `paciente`, `usuario`, `plan_tratamiento` WHERE "
+                    + "paciente.activo=1 AND plan_tratamiento.activo=1 AND "
+                    + "usuario.id_usuario="+id_usuario+" AND plan_tratamiento.id_profesional=usuario.id_usuario AND "
+                    + "plan_tratamiento.id_paciente=paciente.id_paciente");
+            
             pacientes = new ArrayList<Paciente>();
             while (rs.next())
             {
