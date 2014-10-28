@@ -92,7 +92,8 @@ public class PresupuestoDB {
             {
                 Presupuesto p = new Presupuesto(rs.getInt("id_presupuesto"), rs.getInt("id_paciente"), rs.getInt("id_profesional"),
                                                 rs.getBoolean("estado"), rs.getInt("costo_total"), rs.getInt("cantidad_tratamiento"),
-                                                rs.getBoolean("activo"), rs.getString("created_at"), rs.getString("update_at"));
+                                                rs.getBoolean("activo"), PresupuestoDB.convertTimestampToString(rs.getTimestamp("created_at")),
+                                                PresupuestoDB.convertTimestampToString(rs.getTimestamp("update_at")));
                 presupuestos.add(p);
             }
             rs.close();
@@ -103,6 +104,36 @@ public class PresupuestoDB {
             return null;
         }
     }    
+    
+    public static ArrayList<Presupuesto> listarPresupuestosDePaciente(int id_paciente, int id_usuario){
+        ArrayList<Presupuesto> presupuestos = null;        
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * FROM presupuesto WHERE id_paciente=" + id_paciente + " AND "
+                    + "id_profesional="+id_usuario);
+            
+            presupuestos = new ArrayList<Presupuesto>();
+            
+            while (rs.next())
+            {
+                Presupuesto p = new Presupuesto(rs.getInt("id_presupuesto"), rs.getInt("id_paciente"), rs.getInt("id_profesional"),
+                                                rs.getBoolean("estado"), rs.getInt("costo_total"), rs.getInt("cantidad_tratamiento"),
+                                                rs.getBoolean("activo"), PresupuestoDB.convertTimestampToString(rs.getTimestamp("created_at")),
+                                                PresupuestoDB.convertTimestampToString(rs.getTimestamp("update_at")));
+                presupuestos.add(p);
+            }
+            rs.close();
+            con.close();
+            return presupuestos;
+        }
+        catch ( SQLException e) {
+            return null;
+        }
+    }
     
     public static ArrayList<Presupuesto> listarPresupuestosDePaciente(int id_paciente){
         ArrayList<Presupuesto> presupuestos = null;        

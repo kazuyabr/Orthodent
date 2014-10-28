@@ -164,7 +164,15 @@ public class Presupuestos extends JPanel{
     
     public void updateTablaPresupuestos() throws Exception{
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
-        ArrayList<Presupuesto> presupuestos = PresupuestoDB.listarPresupuestosDePaciente(paciente.getId_paciente());
+        ArrayList<Presupuesto> presupuestos = null;
+        
+        if(this.actual.getId_rol()==3){
+            //Profesional
+            presupuestos = PresupuestoDB.listarPresupuestosDePaciente(paciente.getId_paciente(),actual.getId_usuario());
+        }
+        else{
+            presupuestos = PresupuestoDB.listarPresupuestosDePaciente(paciente.getId_paciente());
+        }
         
         int m = this.columnasNombrePresupuestos.length;
         
