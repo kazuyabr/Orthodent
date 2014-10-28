@@ -12,9 +12,9 @@ public class TratamientoPiezaPresupuesto {
 
     private int id_tratamiento;
     private int id_presupuesto;
-    String pieza;    
+    private int pieza;
     
-    public TratamientoPiezaPresupuesto(int id_tratamiento, int id_presupuesto, String pieza) {
+    public TratamientoPiezaPresupuesto(int id_tratamiento, int id_presupuesto, int pieza) {
         this.id_tratamiento = id_tratamiento;
         this.id_presupuesto = id_presupuesto;
         this.pieza = pieza;
@@ -36,11 +36,11 @@ public class TratamientoPiezaPresupuesto {
         this.id_presupuesto = id_presupuesto;
     }
 
-    public String getPieza() {
+    public int getPieza() {
         return pieza;
     }
 
-    public void setPieza(String pieza) {
+    public void setPieza(int pieza) {
         this.pieza = pieza;
     }
     

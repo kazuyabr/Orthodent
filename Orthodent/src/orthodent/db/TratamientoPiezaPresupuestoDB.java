@@ -34,7 +34,7 @@ public class TratamientoPiezaPresupuestoDB {
         }
     }  
     
-    public static ArrayList<TratamientoPiezaPresupuesto> listarTratamientosPiezaPresupuesto(){
+    public static ArrayList<TratamientoPiezaPresupuesto> listarTratamientosPiezaPresupuesto(int id_presupuesto){
         ArrayList<TratamientoPiezaPresupuesto> tratamientosPP = null;        
         try {
             DbConnection db = new DbConnection();
@@ -42,11 +42,11 @@ public class TratamientoPiezaPresupuestoDB {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM tratamiento_piezapresupuesto");
+            ResultSet rs = st.executeQuery("SELECT * FROM tratamiento_piezapresupuesto WHERE id_presupuesto="+id_presupuesto);
             tratamientosPP = new ArrayList<TratamientoPiezaPresupuesto>();
             while (rs.next())
             {
-                TratamientoPiezaPresupuesto t = new TratamientoPiezaPresupuesto(rs.getInt("id_tratamiento"), rs.getInt("id_presupuesto"), rs.getString("pieza"));
+                TratamientoPiezaPresupuesto t = new TratamientoPiezaPresupuesto(rs.getInt("id_tratamiento"), rs.getInt("id_presupuesto"), rs.getInt("pieza"));
                 tratamientosPP.add(t);
             }
             rs.close();
@@ -56,7 +56,5 @@ public class TratamientoPiezaPresupuestoDB {
         catch ( SQLException e) {
             return null;
         }
-    }      
-    
-    
+    }
 }

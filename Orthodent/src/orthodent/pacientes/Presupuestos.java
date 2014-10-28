@@ -18,9 +18,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import modelo.Paciente;
 import modelo.Presupuesto;
+import modelo.Tratamiento;
+import modelo.TratamientoPiezaPresupuesto;
 import modelo.Usuario;
 import orthodent.db.Autenticacion;
 import orthodent.db.PresupuestoDB;
+import orthodent.db.TratamientoDB;
+import orthodent.db.TratamientoPiezaPresupuestoDB;
 
 /**
  *
@@ -34,6 +38,9 @@ public class Presupuestos extends JPanel{
     private String [] columnasNombrePresupuestos;
     private Object [][] filasPresupuesto;
     private TableModel modeloPresupuesto;
+    private String [] columnasNombrePiezaTratamiento;
+    private Object [][] filasPiezaTratamiento;
+    private TableModel modeloPiezaTratamiento;
     private String profesionalSelected;
     private String estadoSelected;
     private Presupuesto presupuestoSelected;
@@ -61,6 +68,74 @@ public class Presupuestos extends JPanel{
     
     private void addInfo() throws Exception{
         this.iniciarTablaPresupuestos();
+    }
+    
+    public void iniciarTablaPiezaTratamiento() throws Exception{
+        this.columnasNombrePiezaTratamiento = new String [] {"Pieza", "Tratamiento", "Valor Colegio O.", "Valor Orthodent"};
+        this.updateTablaPiezaTratamiento();
+        this.tablaPiezaTratamiento.getTableHeader().setReorderingAllowed(false);
+        
+        this.tablaPiezaTratamiento.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                JTable table =(JTable) me.getSource();
+                Point p = me.getPoint();
+                int row = table.rowAtPoint(p);
+                if (me.getClickCount() == 1) {
+                    System.out.println("1 click");
+                }
+                if (me.getClickCount() == 2) {
+                    int col = table.columnAtPoint(p);
+                    if(col==1){
+                        System.out.println("Mostrar comboBox!! =/");
+                    }
+                }
+            }
+        });
+    }
+    
+    public void updateTablaPiezaTratamiento() throws Exception{
+        //Podria ser ordenado!! -> una opcion es que la consulta ordene
+        ArrayList<TratamientoPiezaPresupuesto> piezasPresupuesto = TratamientoPiezaPresupuestoDB.listarTratamientosPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto());
+        
+        int m = this.columnasNombrePiezaTratamiento.length;
+        
+        ArrayList<Object []> objetos = new ArrayList<Object []>();
+        
+        for(TratamientoPiezaPresupuesto piezaPresupuesto : piezasPresupuesto){
+            String pieza = piezaPresupuesto.getPieza()+"";
+            
+            Tratamiento tratamiento = TratamientoDB.getTratamiento(piezaPresupuesto.getId_tratamiento());
+            
+            Object [] fila = new Object [] {pieza, tratamiento.getNombre(), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
+
+            objetos.add(fila);
+        }
+        
+        this.filasPiezaTratamiento = new Object [objetos.size()][m];
+        int i = 0;
+        for(Object [] o : objetos){
+            this.filasPiezaTratamiento[i] = o;
+            i++;
+        }
+        
+        this.modeloPiezaTratamiento = new DefaultTableModel(this.filasPiezaTratamiento, this.columnasNombrePiezaTratamiento) {
+            Class[] types = new Class [] {
+                String.class, String.class, String.class, String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, true, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
+        
+        this.tablaPiezaTratamiento.setModel(modeloPiezaTratamiento);
     }
     
     public void iniciarTablaPresupuestos() throws Exception{
@@ -143,6 +218,9 @@ public class Presupuestos extends JPanel{
                             
                             fechaCreacion.setText(presupuestoSelected.getFechaCreacion());
                             fechaUltimaModificacion.setText(presupuestoSelected.getFechaModificacion());
+                            
+                            tablaPiezaTratamiento.setEnabled(true);
+                            iniciarTablaPiezaTratamiento();
                         }
                     } catch (Exception ex) {
                         System.out.println("");
@@ -286,6 +364,8 @@ public class Presupuestos extends JPanel{
         tablaPiezaTratamiento = new javax.swing.JTable();
         labelTotal = new javax.swing.JLabel();
         costoTotal = new javax.swing.JTextField();
+        add = new javax.swing.JButton();
+        remove = new javax.swing.JButton();
         nuevoPresupuesto = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -435,6 +515,7 @@ public class Presupuestos extends JPanel{
                 return canEdit [columnIndex];
             }
         });
+        tablaPiezaTratamiento.setEnabled(false);
         jScrollPane2.setViewportView(tablaPiezaTratamiento);
 
         labelTotal.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
@@ -442,6 +523,16 @@ public class Presupuestos extends JPanel{
 
         costoTotal.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         costoTotal.setEnabled(false);
+
+        add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/add_mini.png"))); // NOI18N
+        add.setBorder(null);
+        add.setBorderPainted(false);
+        add.setContentAreaFilled(false);
+
+        remove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/delete_mini.png"))); // NOI18N
+        remove.setBorder(null);
+        remove.setBorderPainted(false);
+        remove.setContentAreaFilled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -462,13 +553,18 @@ public class Presupuestos extends JPanel{
                             .addComponent(fechaUltimaModificacion)
                             .addComponent(estado, 0, 175, Short.MAX_VALUE)
                             .addComponent(profesional, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(labelTotal)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(122, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(labelTotal)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(add)
+                            .addComponent(remove))))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -478,7 +574,13 @@ public class Presupuestos extends JPanel{
                     .addComponent(labelProfesional)
                     .addComponent(profesional, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(add)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(remove)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -519,7 +621,7 @@ public class Presupuestos extends JPanel{
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane1)
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(124, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -629,6 +731,7 @@ public class Presupuestos extends JPanel{
                         this.presupuestoSelected = null;
                         this.eliminar.setEnabled(false);
                         this.guardar.setEnabled(false);
+                        this.tablaPiezaTratamiento.setEnabled(false);
                     } catch (Exception ex) {
                         System.out.println("");
                     }
@@ -644,6 +747,7 @@ public class Presupuestos extends JPanel{
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton add;
     private javax.swing.JTextField costoTotal;
     private javax.swing.JButton eliminar;
     private javax.swing.JComboBox estado;
@@ -663,6 +767,7 @@ public class Presupuestos extends JPanel{
     private javax.swing.JButton nuevoPresupuesto;
     private javax.swing.JPanel panelTitulo;
     private javax.swing.JComboBox profesional;
+    private javax.swing.JButton remove;
     private javax.swing.JTable tablaPiezaTratamiento;
     private javax.swing.JTable tablaPresupuestos;
     // End of variables declaration//GEN-END:variables
