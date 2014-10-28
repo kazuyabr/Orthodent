@@ -16,14 +16,14 @@ import modelo.Pago;
  */
 public class PagoDB {
     
-    public static boolean crearPago(int idPlanTratamiento, String fechaCita, int abono){
+    public static boolean crearPago(int idPlanTratamiento, String fecha, int abono){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
             
             java.sql.Statement st = con.createStatement();
             int aux = st.executeUpdate("INSERT INTO pago (id_plantratamiento, fecha, abono)\n" +
-                                        "VALUES ("+idPlanTratamiento+",'"+fechaCita+"',"+abono+")");
+                                        "VALUES ("+idPlanTratamiento+",'"+fecha+"',"+abono+")");
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
