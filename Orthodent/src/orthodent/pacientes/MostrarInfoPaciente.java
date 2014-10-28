@@ -225,11 +225,11 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         }
     }
     
-    public void cambiarPlanesTratamiento(){
+    public void cambiarPlanesTratamiento() throws Exception{
         if(opActual!=2){
             this.removeAncestor();
             
-            this.planesTratamientoPanel = new PlanesTratamiento(this.paciente);
+            this.planesTratamientoPanel = new PlanesTratamiento(this.paciente, this.actual);
             
             this.contenedor.add(this.planesTratamientoPanel,BorderLayout.CENTER);
             this.updateUI();
@@ -544,7 +544,10 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         if(e.getSource() == this.planesTratamiento){
             this.guardarAntes();
             this.setIconButton(2);
-            this.cambiarPlanesTratamiento();
+            try {
+                this.cambiarPlanesTratamiento();
+            } catch (Exception ex) {
+            }
         }
         if(e.getSource() == this.presupuesto){
             this.guardarAntes();
