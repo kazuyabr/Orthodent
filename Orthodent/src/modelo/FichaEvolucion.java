@@ -10,16 +10,26 @@ package modelo;
  */
 public class FichaEvolucion {
 
+    private int idFichaEvolucion;
     private int idPlanTratamiento;
     private String fechaCita;
     private String descripcion;    
     
-    public FichaEvolucion(int idPlanTratamiento, String fechaCita, String descripcion) {
+    public FichaEvolucion(int idFichaEvolucion, int idPlanTratamiento, String fechaCita, String descripcion) {
+        this.idFichaEvolucion = idFichaEvolucion;
         this.idPlanTratamiento = idPlanTratamiento;
         this.fechaCita = fechaCita;
         this.descripcion = descripcion;
     }
 
+    public int getIdFichaEvolucion() {
+        return idFichaEvolucion;
+    }
+
+    public void setIdFichaEvolucion(int idFichaEvolucion) {
+        this.idFichaEvolucion = idFichaEvolucion;
+    }    
+    
     public int getIdPlanTratamiento() {
         return idPlanTratamiento;
     }
