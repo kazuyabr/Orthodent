@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import modelo.Pago;
 import modelo.TratamientoPiezaPlan;
 
 /**
@@ -105,6 +104,38 @@ public class TratamientoPiezaPlanDB {
             con.close();
             return tratamientosPiezaPlan;
         }
+        catch ( SQLException e) {
+            return null;
+        }
+    }
+    
+    static public TratamientoPiezaPlan getTratamientoPiezaPlan(int idTratamientoPiezaPlan) throws Exception{
+        TratamientoPiezaPlan tratamientoPiezaPlan = null;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * from tratamiento_piezaplan where id_tratamiento_piezaplan=" + idTratamientoPiezaPlan);
+            if (rs.next())
+            {
+                int idPlanTratamiento = rs.getInt("id_plantratamiento");
+                int idTratamiento = rs.getInt("id_tratamiento");
+                int pieza = rs.getInt("pieza");
+                String fechaRealizado = rs.getString("fecha_realizado");
+                boolean estado = rs.getBoolean("estado");
+
+                tratamientoPiezaPlan = new TratamientoPiezaPlan(idTratamientoPiezaPlan, idPlanTratamiento, idTratamiento, pieza, fechaRealizado, estado);
+            }
+            else{
+                tratamientoPiezaPlan = null;
+            }
+            rs.close();
+            con.close();
+            return tratamientoPiezaPlan;
+        }
+
         catch ( SQLException e) {
             return null;
         }
