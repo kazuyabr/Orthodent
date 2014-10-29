@@ -11,6 +11,8 @@ import org.joda.time.LocalTime;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import org.joda.time.Duration;
 
 public class AgendaSchedulerModel extends AbstractScheduleModel
 {
@@ -50,7 +52,9 @@ class AgendaResource implements Resource
 
     public Iterator<Availability> getAvailability(LocalDate localDate)
     {
-        return (new ArrayList<Availability>()).iterator();
+       List<Availability> availabilities = new ArrayList<Availability>();
+       availabilities.add(new Availability(new LocalTime(9,0,0), Duration.standardHours(11)));
+       return availabilities.iterator();
     }
 
     public String getTitle()
