@@ -4,11 +4,11 @@
  */
 package orthodent.agenda;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
+
+import com.thirdnf.ResourceScheduler.Scheduler;
+import org.joda.time.LocalDate;
 
 /**
  *
@@ -21,9 +21,12 @@ public class Agenda extends JPanel{
         this.setBackground(new Color(243,242,243));
         this.setPreferredSize(new Dimension(1073, 561));
         
-        JLabel mensaje = new JLabel("Agenda... No disponible aún");
-        mensaje.setFont(new Font("Georgia", 0, 11));
-        this.add(mensaje);
+        setSize(new Dimension(400, 400));
+
+        Scheduler scheduler = new Scheduler();
+        scheduler.setModel(new AgendaSchedulerModel());
+        scheduler.showDate(new LocalDate());
+        add(scheduler);
     }
     
 }
