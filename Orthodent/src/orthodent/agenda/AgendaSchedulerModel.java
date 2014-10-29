@@ -32,12 +32,12 @@ public class AgendaSchedulerModel extends AbstractScheduleModel
 
     public LocalTime getStartTime(LocalDate localDate)
     {
-        return new LocalTime(8,0,0);
+        return new LocalTime(9,0,0);
     }
 
     public LocalTime getEndTime(LocalDate localDate)
     {
-        return new LocalTime(17,0,0);
+        return new LocalTime(20,0,0);
     }
 }
 

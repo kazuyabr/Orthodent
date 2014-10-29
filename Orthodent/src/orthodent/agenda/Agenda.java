@@ -18,15 +18,17 @@ public class Agenda extends JPanel{
     
     public Agenda(){
         //Introducir código aquí
-        this.setBackground(new Color(243,242,243));
+        this.setBackground(new Color(255,255,255));
         this.setPreferredSize(new Dimension(1073, 561));
         
-        setSize(new Dimension(400, 400));
+        setSize(new Dimension(600, 600));
 
         Scheduler scheduler = new Scheduler();
         scheduler.setModel(new AgendaSchedulerModel());
         scheduler.showDate(new LocalDate());
-        add(scheduler);
+        
+        this.setLayout(new BorderLayout());
+        add(scheduler, BorderLayout.CENTER);
     }
     
 }
