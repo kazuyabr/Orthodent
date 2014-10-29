@@ -42,7 +42,7 @@ public class PagoDB {
             java.sql.Statement st = con.createStatement();
             int aux = st.executeUpdate("UPDATE pago\n" +
                                             "SET id_plantratamiento = "+pago.getIdPlanTratamiento()+"\n" +
-                                            "fecha="+pago.getFecha()+"\n" +
+                                            "fecha='"+pago.getFecha()+"'\n" +
                                             ",abono="+pago.getAbono()+"\n" +
                                             "WHERE id_pago="+pago.getIdPago());
             boolean resultado = (aux == 1)? true : false;

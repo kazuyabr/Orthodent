@@ -60,5 +60,24 @@ public class PlanTratamientoDB {
         }
     }    
     
+    public static boolean eliminarPlanTratamiento(int idPlanTratamiento) throws SQLException{
+        try{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            
+            java.sql.Statement st = con.createStatement();
+            int aux = st.executeUpdate("UPDATE plan_tratamiento\n" +
+                                            "SET activo="+0+"\n" +
+                                            "WHERE id_plantratamiento="+idPlanTratamiento);
+            boolean resultado = (aux == 1)? true : false;
+            st.close();
+            con.close();
+            return resultado;
+        }
+        catch ( SQLException e) {
+            return false;
+        }
+    }     
+    
     
 }
