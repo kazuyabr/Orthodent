@@ -82,7 +82,33 @@ public class TratamientoPiezaPlanDB {
         catch ( SQLException e) {
             return null;
         }
-    }    
+    }   
+    
+    public static ArrayList<TratamientoPiezaPlan> listarTratamientosPiezaPlanPT(int idPlanTratamiento){ // listar tratamiento pieza plan por plan de tratamiento
+        ArrayList<TratamientoPiezaPlan> tratamientosPiezaPlan = null;        
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * FROM tratamiento_piezaplan where id_plantratamiento=" + idPlanTratamiento);
+            tratamientosPiezaPlan = new ArrayList<TratamientoPiezaPlan>();
+            while (rs.next())
+            {
+                TratamientoPiezaPlan t = new TratamientoPiezaPlan(rs.getInt("id_tratamiento_piezaplan"), rs.getInt("id_plantratamiento"), 
+                                                                            rs.getInt("id_tratamiento"), rs.getInt("pieza"),
+                                                                            rs.getString("fecha_realizado"), rs.getBoolean("estado"));
+                tratamientosPiezaPlan.add(t);
+            }
+            rs.close();
+            con.close();
+            return tratamientosPiezaPlan;
+        }
+        catch ( SQLException e) {
+            return null;
+        }
+    }     
     
     
 }
