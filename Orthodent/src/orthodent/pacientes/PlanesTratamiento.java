@@ -8,32 +8,20 @@ import java.awt.Point;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
-import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import modelo.Paciente;
-import modelo.PlanTratamiento;
 import modelo.Presupuesto;
 import modelo.Tratamiento;
-import modelo.TratamientoPiezaPresupuesto;
 import modelo.Usuario;
-import orthodent.ComboBoxItem;
 import orthodent.Item;
-import orthodent.ItemRenderer;
 import orthodent.db.Autenticacion;
-import orthodent.db.PlanTratamientoDB;
 import orthodent.db.PresupuestoDB;
-import orthodent.db.TratamientoDB;
-import orthodent.db.TratamientoPiezaPresupuestoDB;
 
 /**
  *
