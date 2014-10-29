@@ -16,20 +16,23 @@ import modelo.TratamientoPiezaPresupuesto;
  */
 public class TratamientoPiezaPresupuestoDB {
     
-    public static boolean crearTratamientoPiezaPresupuesto(int id_tratamiento, int id_presupuesto, String pieza){
+    public static boolean crearTratamientoPiezaPresupuesto(int id_tratamiento, int id_presupuesto, int pieza){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
             
             java.sql.Statement st = con.createStatement();
+            System.out.println("voyyyyy1!!!");
             int aux = st.executeUpdate("INSERT INTO tratamiento_piezapresupuesto (id_tratamiento, id_presupuesto, pieza)\n" +
-                                        "VALUES ("+id_tratamiento+","+id_presupuesto+",'"+pieza+"')");
+                                        "VALUES ("+id_tratamiento+","+id_presupuesto+","+pieza+")");
+            System.out.println("pase!!!!");
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
             return resultado;
         }
         catch ( SQLException e) {
+            System.out.println("noooooooooooo!!!!!!!!!!!!!! xD");
             return false;
         }
     }  
@@ -55,6 +58,23 @@ public class TratamientoPiezaPresupuestoDB {
         }
         catch ( SQLException e) {
             return null;
+        }
+    }
+    
+    public static boolean eliminarTratamientoPieza(int id_presupuesto) throws SQLException{
+        try{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            
+            java.sql.Statement st = con.createStatement();
+            int aux = st.executeUpdate("DELETE FROM tratamiento_piezapresupuesto\n" +
+                                            "WHERE id_presupuesto="+id_presupuesto);
+            st.close();
+            con.close();
+            return true;
+        }
+        catch ( SQLException e) {
+            return false;
         }
     }
 }

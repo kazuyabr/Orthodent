@@ -8,7 +8,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import modelo.Presupuesto;
 
@@ -18,15 +21,16 @@ import modelo.Presupuesto;
  */
 public class PresupuestoDB {
     
-    public static boolean crearPresupuesto(int idPaciente, int idProfesional, boolean estado, int costoTotal, int cantidadTratamiento, boolean activo){
+    public static boolean crearPresupuesto(int idPaciente, int idProfesional, boolean estado, int costoTotal, int cantidadTratamiento, boolean activo, String created_at, String update_at){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
             
             java.sql.Statement st = con.createStatement();
-            int aux = st.executeUpdate("INSERT INTO presupuesto (id_paciente, id_profesional, estado, costo_total, cantidad_tratamiento, activo)\n" +
+            int aux = st.executeUpdate("INSERT INTO presupuesto (id_paciente, id_profesional, estado, costo_total, cantidad_tratamiento, activo, created_at, update_at)\n" +
                                         "VALUES ("+idPaciente+","+idProfesional+","+estado+","+costoTotal+","+
-                                                    cantidadTratamiento+","+activo+")");
+                                                    cantidadTratamiento+","+activo+","+
+                                                    getTimestamp(created_at)+","+getTimestamp(update_at)+")");
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
@@ -47,8 +51,9 @@ public class PresupuestoDB {
                                             "SET estado="+presupuesto.getEstado()+"\n" +
                                             ",costo_total="+presupuesto.getCostoTotal()+"\n" +
                                             ",cantidad_tratamiento="+presupuesto.getCantidadTratamiento()+"\n" +
-                                            ",update_at='"+presupuesto.getFechaModificacion()+"'\n" +
-                                            "WHERE id_presupueto="+presupuesto.getIdPresupuesto());
+                                            ",update_at='"+getTimestamp(presupuesto.getFechaModificacion())+"'\n" +
+                                            ",id_profesional="+presupuesto.getIdProfesional()+"\n"+
+                                            "WHERE id_presupuesto="+presupuesto.getIdPresupuesto());
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
@@ -57,6 +62,30 @@ public class PresupuestoDB {
         catch ( SQLException e) {
             return false;
         }
+    }
+    
+    public static Timestamp getTimestamp(String fecha){
+        
+        int dia = Integer.parseInt(fecha.substring(0, fecha.indexOf("-")));
+        fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
+        
+        int mes = Integer.parseInt(fecha.substring(0,fecha.indexOf("-")))-1;
+        fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
+        
+        int año = Integer.parseInt(fecha.substring(0, fecha.indexOf(" ")))-1900;
+        fecha = fecha.substring(fecha.indexOf(" ")+1, fecha.length());
+        
+        int hora = Integer.parseInt(fecha.substring(0, fecha.indexOf(":")));
+        fecha = fecha.substring(fecha.indexOf(":")+1, fecha.length());
+        
+        int minuto = Integer.parseInt(fecha.substring(0, fecha.indexOf(":")));
+        fecha = fecha.substring(fecha.indexOf(":")+1, fecha.length());
+        
+        int segundo = Integer.parseInt(fecha);
+        
+        Timestamp date = new Timestamp(año, mes, dia, hora, minuto, segundo, 0);
+        
+        return date;
     }
     
     public static boolean eliminarPresupuesto(int idPresupuesto) throws SQLException{
@@ -252,6 +281,5 @@ public class PresupuestoDB {
         catch ( SQLException e) {
             return null;
         }
-    }    
-    
+    }
 }

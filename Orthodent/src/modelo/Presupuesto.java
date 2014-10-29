@@ -10,7 +10,6 @@ package modelo;
  */
 public class Presupuesto {
     
-
     private int idPresupuesto;
     private int idPaciente;
     private int idProfesional;
