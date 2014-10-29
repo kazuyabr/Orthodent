@@ -27,12 +27,14 @@ public class PresupuestoDB {
                                         "VALUES ("+idPaciente+","+idProfesional+","+estado+","+costoTotal+","+
                                                     cantidadTratamiento+","+activo+","+
                                                     getTimestamp(created_at)+","+getTimestamp(update_at)+")");
+            System.out.println("aux: "+aux);
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
             return resultado;
         }
         catch ( SQLException e) {
+            System.out.println("que xaxu??");
             return false;
         }
     }
