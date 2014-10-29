@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import modelo.Paciente;
+import modelo.PlanTratamiento;
 import modelo.Presupuesto;
 import modelo.Tratamiento;
 import modelo.TratamientoPiezaPresupuesto;
@@ -29,6 +30,7 @@ import orthodent.ComboBoxItem;
 import orthodent.Item;
 import orthodent.ItemRenderer;
 import orthodent.db.Autenticacion;
+import orthodent.db.PlanTratamientoDB;
 import orthodent.db.PresupuestoDB;
 import orthodent.db.TratamientoDB;
 import orthodent.db.TratamientoPiezaPresupuestoDB;
@@ -50,6 +52,7 @@ public class PlanesTratamiento extends JPanel{
     private DefaultTableModel modeloPiezaTratamiento;
     private String profesionalSelected;
     private String estadoSelected;
+    private Paciente pacienteSelected;
     private Presupuesto presupuestoSelected;
     private ArrayList<Tratamiento> auxiliar;
     private int rowSelected;
@@ -63,7 +66,7 @@ public class PlanesTratamiento extends JPanel{
         
         this.addInfo();
         this.guardar.setEnabled(false);
-        this.tablaPresupuestos.getTableHeader().setReorderingAllowed(false);
+        this.tablaTratamiento.getTableHeader().setReorderingAllowed(false);
         this.tablaPiezaTratamiento.getTableHeader().setReorderingAllowed(false);
     }
     
@@ -81,7 +84,7 @@ public class PlanesTratamiento extends JPanel{
     
     public void iniciarTablaPiezaTratamiento() throws Exception{
         this.columnasNombrePiezaTratamiento = new String [] {"Pieza", "Tratamiento", "Valor Colegio O.", "Valor Orthodent"};
-        this.updateTablaPiezaTratamiento();
+      //  this.updateTablaPiezaTratamiento();
         this.tablaPiezaTratamiento.getTableHeader().setReorderingAllowed(false);
         
         this.tablaPiezaTratamiento.addMouseListener(new MouseAdapter() {
@@ -102,9 +105,10 @@ public class PlanesTratamiento extends JPanel{
         });
     }
     
-    public void updateTablaPiezaTratamiento() throws Exception{
+    /*public void updateTablaPiezaTratamiento() throws Exception{
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
-        ArrayList<TratamientoPiezaPresupuesto> piezasPresupuesto = TratamientoPiezaPresupuestoDB.listarTratamientosPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto());
+        //ArrayList<TratamientoPiezaPresupuesto> piezasPresupuesto = TratamientoPiezaPresupuestoDB.listarTratamientosPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto());
+        ArrayList<PlanTratamiento> planesTratamiento = PlanTratamientoDB.listarPlanesTratamientoPaciente(this.pacienteSelected.getId_paciente());
         
         int m = this.columnasNombrePiezaTratamiento.length;
         
@@ -162,7 +166,7 @@ public class PlanesTratamiento extends JPanel{
                             total = total + precio;
                         }
                         
-                        costoTotal.setText("$"+total);
+                       
                         habilitarBoton();
                     }
                 }
@@ -176,28 +180,25 @@ public class PlanesTratamiento extends JPanel{
             }
         }
         tratamientos.setCellEditor(new DefaultCellEditor(comboBox));
-    }
-    
+    }*/
+    //la de arriba 
     public void iniciarTablaPresupuestos() throws Exception{
         
         this.columnasNombrePresupuestos = new String [] {"Profesional", "Cantidad de Tratamientos", "Costo Total", "Estado", "Fecha de Creación"};
         this.updateTablaPresupuestos();
-        this.tablaPresupuestos.getTableHeader().setReorderingAllowed(false);
+        this.tablaTratamiento.getTableHeader().setReorderingAllowed(false);//paque no se menee papi! la columna
         
-        this.tablaPresupuestos.addMouseListener(new MouseAdapter() {
+        this.tablaTratamiento.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
                 JTable table =(JTable) me.getSource();
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
-                if (me.getClickCount() == 1) {
+                if (me.getClickCount() == 1) { // cuando te toco suave!! 
                     Object [] fila = getRowAt(row);
                     try {
                         presupuestoSelected = PresupuestoDB.getPresupuesto((String)fila[4], paciente.getId_paciente());
-                        
+                       
                         if(presupuestoSelected!=null){
-                            eliminar.setEnabled(true);
-                            aprobar.setEnabled(true);
-                            
                             if(actual.getId_rol()==3){
                                 //Profesional
                                 String nombre = actual.getNombre();
@@ -205,14 +206,12 @@ public class PlanesTratamiento extends JPanel{
                                 if(nombre.contains(" ")){
                                     nombre = nombre.substring(0,nombre.indexOf(" "));
                                 }
-                                
+                               
                                 Vector model = new Vector();
                                 Item item = new Item(nombre+" "+actual.getApellido_pat(), actual.getId_usuario());
-                                model.addElement(item);
-                                
-                                profesional.setModel(new DefaultComboBoxModel(model));
+                                model.addElement(item);                                
                                 profesionalSelected = nombre+" "+actual.getApellido_pat();
-                                profesional.setSelectedItem(item);
+                                profesional.setText(nombre+" "+actual.getApellido_pat());
                             }
                             else{
                                 profesional.setEnabled(true);
@@ -249,12 +248,11 @@ public class PlanesTratamiento extends JPanel{
                                         }
                                         i++;
                                     }
-                                    profesional.setModel(new DefaultComboBoxModel(model));
-                                    profesional.setSelectedItem(item);
+                                   
                                 }
                             }
                             
-                            costoTotal.setText("$"+presupuestoSelected.getCostoTotal());
+                            
                             
                             estado.setModel(new DefaultComboBoxModel(new String [] {"Activo","Cancelado"}));
                             estado.setEnabled(true);
@@ -286,7 +284,7 @@ public class PlanesTratamiento extends JPanel{
         Object[] result = new String[this.columnasNombrePresupuestos.length];
         
         for (int i = 0; i < this.columnasNombrePresupuestos.length; i++) {
-            result[i] = this.tablaPresupuestos.getModel().getValueAt(row, i);
+            result[i] = this.tablaTratamiento.getModel().getValueAt(row, i);
         }
         
         return result;
@@ -362,7 +360,7 @@ public class PlanesTratamiento extends JPanel{
             }
         };
         
-        this.tablaPresupuestos.setModel(modeloPresupuesto);
+        this.tablaTratamiento.setModel(modeloPresupuesto);
     }
     
     private String getMoneda(int costo){
@@ -401,11 +399,9 @@ public class PlanesTratamiento extends JPanel{
         labelTitulo = new javax.swing.JLabel();
         guardar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tablaPresupuestos = new javax.swing.JTable();
-        eliminar = new javax.swing.JButton();
+        tablaTratamiento = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         labelProfesional = new javax.swing.JLabel();
-        profesional = new javax.swing.JComboBox();
         labelEstado = new javax.swing.JLabel();
         estado = new javax.swing.JComboBox();
         labelFechaCreacion = new javax.swing.JLabel();
@@ -414,12 +410,7 @@ public class PlanesTratamiento extends JPanel{
         fechaUltimaModificacion = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaPiezaTratamiento = new javax.swing.JTable();
-        labelTotal = new javax.swing.JLabel();
-        costoTotal = new javax.swing.JTextField();
-        add = new javax.swing.JButton();
-        remove = new javax.swing.JButton();
-        nuevoPresupuesto = new javax.swing.JButton();
-        aprobar = new javax.swing.JButton();
+        profesional = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(850, 551));
@@ -433,7 +424,7 @@ public class PlanesTratamiento extends JPanel{
 
         labelTitulo.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
         labelTitulo.setForeground(new java.awt.Color(163, 159, 164));
-        labelTitulo.setText("Presupuestos");
+        labelTitulo.setText("Plan de Tratamiento");
 
         javax.swing.GroupLayout panelTituloLayout = new javax.swing.GroupLayout(panelTitulo);
         panelTitulo.setLayout(panelTituloLayout);
@@ -461,8 +452,8 @@ public class PlanesTratamiento extends JPanel{
             }
         });
 
-        tablaPresupuestos.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
-        tablaPresupuestos.setModel(new javax.swing.table.DefaultTableModel(
+        tablaTratamiento.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        tablaTratamiento.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -485,40 +476,13 @@ public class PlanesTratamiento extends JPanel{
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tablaPresupuestos);
-
-        eliminar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        eliminar.setText("Eliminar");
-        eliminar.setEnabled(false);
-        eliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                eliminarActionPerformed(evt);
-            }
-        });
+        jScrollPane1.setViewportView(tablaTratamiento);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         labelProfesional.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
         labelProfesional.setText("Profesional");
-
-        profesional.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        profesional.setEnabled(false);
-        profesional.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                profesionalItemStateChanged(evt);
-            }
-        });
-        profesional.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                profesionalFocusGained(evt);
-            }
-        });
-        profesional.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                profesionalPropertyChange(evt);
-            }
-        });
 
         labelEstado.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
         labelEstado.setText("Estado");
@@ -550,14 +514,14 @@ public class PlanesTratamiento extends JPanel{
 
             },
             new String [] {
-                "Pieza", "Tratamiento", "Valor Colegio O.", "Valor Orthodent"
+                "Pieza", "Tratamiento", "Valor", "Fecha", "Estado"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                true, true, false, false
+                false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -571,31 +535,8 @@ public class PlanesTratamiento extends JPanel{
         tablaPiezaTratamiento.setEnabled(false);
         jScrollPane2.setViewportView(tablaPiezaTratamiento);
 
-        labelTotal.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
-        labelTotal.setText("Total");
-
-        costoTotal.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        costoTotal.setEnabled(false);
-
-        add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/add_mini.png"))); // NOI18N
-        add.setBorder(null);
-        add.setBorderPainted(false);
-        add.setContentAreaFilled(false);
-        add.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addActionPerformed(evt);
-            }
-        });
-
-        remove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/delete_mini.png"))); // NOI18N
-        remove.setBorder(null);
-        remove.setBorderPainted(false);
-        remove.setContentAreaFilled(false);
-        remove.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                removeActionPerformed(evt);
-            }
-        });
+        profesional.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        profesional.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -610,24 +551,18 @@ public class PlanesTratamiento extends JPanel{
                             .addComponent(labelEstado)
                             .addComponent(labelFechaUltimaModificacion)
                             .addComponent(labelFechaCreacion))
-                        .addGap(44, 44, 44)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(fechaCreacion)
-                            .addComponent(fechaUltimaModificacion)
-                            .addComponent(estado, 0, 175, Short.MAX_VALUE)
-                            .addComponent(profesional, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(labelTotal)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(add)
-                            .addComponent(remove))))
-                .addContainerGap(43, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(44, 44, 44)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(fechaCreacion)
+                                    .addComponent(fechaUltimaModificacion)
+                                    .addComponent(estado, 0, 175, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(profesional, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -637,18 +572,8 @@ public class PlanesTratamiento extends JPanel{
                     .addComponent(labelProfesional)
                     .addComponent(profesional, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(add)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(remove)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelTotal))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(estado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelEstado))
@@ -663,18 +588,6 @@ public class PlanesTratamiento extends JPanel{
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        nuevoPresupuesto.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        nuevoPresupuesto.setText("Nuevo Presupuesto");
-
-        aprobar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        aprobar.setText("Aprobar");
-        aprobar.setEnabled(false);
-        aprobar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aprobarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -685,13 +598,7 @@ public class PlanesTratamiento extends JPanel{
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(54, 54, 54)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(nuevoPresupuesto)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(eliminar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(aprobar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(guardar))
+                    .addComponent(guardar)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane1)
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -703,17 +610,11 @@ public class PlanesTratamiento extends JPanel{
                 .addComponent(panelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nuevoPresupuesto)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(eliminar)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(guardar)
-                        .addComponent(aprobar)))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addComponent(guardar)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -740,10 +641,10 @@ public class PlanesTratamiento extends JPanel{
     
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
         
-        Item selecProfesional = (Item)this.profesional.getSelectedItem();
+      /* Item selecProfesional = (Item)this.profesional.getSelectedItem();
         
         System.out.println("id"+selecProfesional.getId());
-        System.out.println("nombre: "+selecProfesional.getValue());
+        System.out.println("nombre: "+selecProfesional.getValue());*/
         
         /*String nombre = this.nombres.getText();
         String apellidoPat = this.apellidoPat.getText();
@@ -810,26 +711,6 @@ public class PlanesTratamiento extends JPanel{
         }*/
     }//GEN-LAST:event_guardarActionPerformed
 
-    private void profesionalPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_profesionalPropertyChange
-        
-    }//GEN-LAST:event_profesionalPropertyChange
-
-    private void profesionalFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_profesionalFocusGained
-        
-    }//GEN-LAST:event_profesionalFocusGained
-
-    private void profesionalItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_profesionalItemStateChanged
-        if (evt.getStateChange() == ItemEvent.SELECTED) {
-            Item item = (Item)evt.getItem();
-            
-            if(this.profesionalSelected!=null){
-                if(!this.profesionalSelected.equals(item.getValue())){
-                    this.habilitarBoton();
-                }
-            }
-       }
-    }//GEN-LAST:event_profesionalItemStateChanged
-
     private void estadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_estadoItemStateChanged
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             Object item = evt.getItem();
@@ -841,65 +722,6 @@ public class PlanesTratamiento extends JPanel{
             }
        }
     }//GEN-LAST:event_estadoItemStateChanged
-
-    private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
-        Object[] options = {"Sí","No"};
-        
-        int n = JOptionPane.showOptionDialog(this,
-                    "¿Esta seguro que desea eliminar el presupuesto?",
-                    "Orthodent",
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    options,
-                    options[1]);
-        
-        if(n==0){
-            try {
-                boolean resul = PresupuestoDB.eliminarPresupuesto(this.presupuestoSelected.getIdPresupuesto());
-                if(resul){
-                    try {
-                        this.updateTablaPresupuestos();
-                        this.profesional.setEnabled(false);
-                        this.profesionalSelected = null;
-                        this.profesional.setModel(new DefaultComboBoxModel(new String [] {""}));
-                        this.profesional.setSelectedItem("");
-                        this.costoTotal.setEnabled(false);
-                        this.costoTotal.setText("");
-                        this.estadoSelected = null;
-                        this.estado.setModel(new DefaultComboBoxModel(new String [] {""}));
-                        this.estado.setSelectedItem("");
-                        this.estado.setEnabled(false);
-                        this.fechaCreacion.setText("");
-                        this.fechaUltimaModificacion.setText("");
-                        this.presupuestoSelected = null;
-                        this.eliminar.setEnabled(false);
-                        this.aprobar.setEnabled(false);
-                        this.guardar.setEnabled(false);
-                        this.tablaPiezaTratamiento.setEnabled(false);
-                    } catch (Exception ex) {
-                        System.out.println("");
-                    }
-                }
-            } catch (SQLException ex) {
-            }
-        }
-    }//GEN-LAST:event_eliminarActionPerformed
-
-    private void aprobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aprobarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_aprobarActionPerformed
-
-    private void removeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeActionPerformed
-        int SelectedRow = this.tablaPiezaTratamiento.getSelectedRow();
-        this.modeloPiezaTratamiento.removeRow(this.tablaPiezaTratamiento.convertRowIndexToModel(SelectedRow));
-        this.habilitarBoton();
-    }//GEN-LAST:event_removeActionPerformed
-
-    private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
-        this.modeloPiezaTratamiento.addRow(new Object []{"","","",""});
-        this.habilitarBoton();
-    }//GEN-LAST:event_addActionPerformed
     
     private void habilitarBoton(){
         this.cambios = true;
@@ -907,10 +729,6 @@ public class PlanesTratamiento extends JPanel{
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton add;
-    private javax.swing.JButton aprobar;
-    private javax.swing.JTextField costoTotal;
-    private javax.swing.JButton eliminar;
     private javax.swing.JComboBox estado;
     private javax.swing.JTextField fechaCreacion;
     private javax.swing.JTextField fechaUltimaModificacion;
@@ -924,12 +742,9 @@ public class PlanesTratamiento extends JPanel{
     private javax.swing.JLabel labelFechaUltimaModificacion;
     private javax.swing.JLabel labelProfesional;
     private javax.swing.JLabel labelTitulo;
-    private javax.swing.JLabel labelTotal;
-    private javax.swing.JButton nuevoPresupuesto;
     private javax.swing.JPanel panelTitulo;
-    private javax.swing.JComboBox profesional;
-    private javax.swing.JButton remove;
+    private javax.swing.JTextField profesional;
     private javax.swing.JTable tablaPiezaTratamiento;
-    private javax.swing.JTable tablaPresupuestos;
+    private javax.swing.JTable tablaTratamiento;
     // End of variables declaration//GEN-END:variables
 }

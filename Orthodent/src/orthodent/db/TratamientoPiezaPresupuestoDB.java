@@ -16,14 +16,14 @@ import modelo.TratamientoPiezaPresupuesto;
  */
 public class TratamientoPiezaPresupuestoDB {
     
-    public static boolean crearTratamientoPiezaPresupuesto(int id_tratamiento, int id_presupuesto, String pieza){
+    public static boolean crearTratamientoPiezaPresupuesto(int id_tratamiento, int id_presupuesto, int pieza){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
             
             java.sql.Statement st = con.createStatement();
             int aux = st.executeUpdate("INSERT INTO tratamiento_piezapresupuesto (id_tratamiento, id_presupuesto, pieza)\n" +
-                                        "VALUES ("+id_tratamiento+","+id_presupuesto+",'"+pieza+"')");
+                                        "VALUES ("+id_tratamiento+","+id_presupuesto+","+pieza+")");
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
