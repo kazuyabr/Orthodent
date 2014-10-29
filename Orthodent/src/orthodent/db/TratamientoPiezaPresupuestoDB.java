@@ -22,17 +22,14 @@ public class TratamientoPiezaPresupuestoDB {
             Connection con = db.connection;
             
             java.sql.Statement st = con.createStatement();
-            System.out.println("voyyyyy1!!!");
             int aux = st.executeUpdate("INSERT INTO tratamiento_piezapresupuesto (id_tratamiento, id_presupuesto, pieza)\n" +
                                         "VALUES ("+id_tratamiento+","+id_presupuesto+","+pieza+")");
-            System.out.println("pase!!!!");
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
             return resultado;
         }
         catch ( SQLException e) {
-            System.out.println("noooooooooooo!!!!!!!!!!!!!! xD");
             return false;
         }
     }  

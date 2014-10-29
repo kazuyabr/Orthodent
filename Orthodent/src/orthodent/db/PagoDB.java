@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import modelo.Pago;
-import modelo.Presupuesto;
 
 /**
  *
@@ -17,14 +16,14 @@ import modelo.Presupuesto;
  */
 public class PagoDB {
     
-    public static boolean crearPago(int idPlanTratamiento, String fechaCita, int abono){
+    public static boolean crearPago(int idPlanTratamiento, String fecha, int abono){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
             
             java.sql.Statement st = con.createStatement();
             int aux = st.executeUpdate("INSERT INTO pago (id_plantratamiento, fecha, abono)\n" +
-                                        "VALUES ("+idPlanTratamiento+",'"+fechaCita+"',"+abono+")");
+                                        "VALUES ("+idPlanTratamiento+",'"+fecha+"',"+abono+")");
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
@@ -43,7 +42,7 @@ public class PagoDB {
             java.sql.Statement st = con.createStatement();
             int aux = st.executeUpdate("UPDATE pago\n" +
                                             "SET id_plantratamiento = "+pago.getIdPlanTratamiento()+"\n" +
-                                            "fecha="+pago.getFecha()+"\n" +
+                                            "fecha='"+pago.getFecha()+"'\n" +
                                             ",abono="+pago.getAbono()+"\n" +
                                             "WHERE id_pago="+pago.getIdPago());
             boolean resultado = (aux == 1)? true : false;
