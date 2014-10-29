@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import modelo.PlanTratamiento;
-import modelo.Presupuesto;
 
 /**
  *
@@ -159,7 +158,43 @@ public static ArrayList<PlanTratamiento> listarPlanesTratamientoPaciente(int id_
         catch ( SQLException e) {
             return null;
         }
-    }          
+    }
+
+static public PlanTratamiento getPlanTratamiento(int idPaciente) throws Exception{
+        PlanTratamiento planTratamiento = null;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * from plan_tratamiento where id_paciente="+idPaciente);
+            if (rs.next())
+            {
+                int idPlantratamiento = rs.getInt("id_plantratamiento");
+                int idProfesional = rs.getInt("id_profesional");
+                String fechaCreacionPresupuesto = rs.getString("fecha_creacion_presupuesto");
+                String fechaModificacionPresupuesto = rs.getString("fecha_modificacion_presupuesto");
+                int costoTotal = rs.getInt("costo_total");
+                int totalAbonos = rs.getInt("total_abonos"); 
+                int avance = rs.getInt("avance");   
+                boolean activo = rs.getBoolean("activo");                        
+
+                planTratamiento = new PlanTratamiento(idPlantratamiento, idPaciente, idProfesional, fechaCreacionPresupuesto, fechaModificacionPresupuesto,
+                                                  costoTotal, totalAbonos, avance, activo);
+            }
+            else{
+                planTratamiento = null;
+            }
+            rs.close();
+            con.close();
+            return planTratamiento;
+        }
+
+        catch ( SQLException e) {
+            return null;
+        }
+    }    
     
     
 }
