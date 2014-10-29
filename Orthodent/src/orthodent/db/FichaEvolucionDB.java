@@ -77,6 +77,36 @@ public class FichaEvolucionDB {
         catch ( SQLException e) {
             return null;
         }
+    }
+    
+    static public FichaEvolucion getFichaEvolucion(int idFichaevolucion) throws Exception{
+        FichaEvolucion fichaEvolucion = null;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * from ficha_evolucion where id_fichaevolucion=" + idFichaevolucion);
+            if (rs.next())
+            {
+                int idPlanTratamiento = rs.getInt("id_plantratamiento");
+                String fechaCita = rs.getString("fecha_cita");
+                String descripcion = rs.getString("descripcion");
+
+                fichaEvolucion = new FichaEvolucion(idFichaevolucion, idPlanTratamiento, fechaCita, descripcion);
+            }
+            else{
+                fichaEvolucion = null;
+            }
+            rs.close();
+            con.close();
+            return fichaEvolucion;
+        }
+
+        catch ( SQLException e) {
+            return null;
+        }
     }     
     
 }
