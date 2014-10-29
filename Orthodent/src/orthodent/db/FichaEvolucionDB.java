@@ -42,8 +42,8 @@ public class FichaEvolucionDB {
             java.sql.Statement st = con.createStatement();
             int aux = st.executeUpdate("UPDATE ficha_evolucion\n" +
                                             "SET id_plantratamiento = "+fichaEvolucion.getIdPlanTratamiento()+"\n" +
-                                            "fecha_cita="+fichaEvolucion.getFechaCita()+"\n" +
-                                            ",descripcion="+fichaEvolucion.getDescripcion()+"\n" +
+                                            "fecha_cita='"+fichaEvolucion.getFechaCita()+"'\n" +
+                                            ",descripcion='"+fichaEvolucion.getDescripcion()+"'\n" +
                                             "WHERE id_fichaevolucion="+fichaEvolucion.getIdFichaEvolucion());
             boolean resultado = (aux == 1)? true : false;
             st.close();
