@@ -53,6 +53,4 @@ public class Tratamiento {
     public void setValorClinica(int valorClinica) {
         this.valorClinica = valorClinica;
     }
-
-    
 }

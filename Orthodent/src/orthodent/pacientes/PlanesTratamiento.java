@@ -261,7 +261,6 @@ public class PlanesTratamiento extends JPanel{
                             guardar.setEnabled(false);
                         }
                     } catch (Exception ex) {
-                        System.out.println("");
                     }
                 }
             }

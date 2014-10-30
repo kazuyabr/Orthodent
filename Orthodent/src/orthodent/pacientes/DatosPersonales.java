@@ -525,7 +525,6 @@ public class DatosPersonales extends JPanel{
 
                         ((MostrarInfoPaciente)contenedor.getParent()).volver();
                     } catch (Exception ex) {
-                        System.out.println("");
                     }
                 }
             } catch (SQLException ex) {
@@ -593,7 +592,6 @@ public class DatosPersonales extends JPanel{
                     this.guardar.setEnabled(false);
                 }
             } catch (Exception ex) {
-                System.out.println("");
             }
         }
         else{

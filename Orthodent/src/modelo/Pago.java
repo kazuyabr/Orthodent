@@ -54,7 +54,4 @@ public class Pago {
     public void setAbono(int abono) {
         this.abono = abono;
     }
-    
-
-    
 }

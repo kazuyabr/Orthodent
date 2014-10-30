@@ -103,7 +103,4 @@ public class PlanTratamiento {
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
-    
-
-    
 }

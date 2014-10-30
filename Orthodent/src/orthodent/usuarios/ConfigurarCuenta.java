@@ -327,15 +327,10 @@ public class ConfigurarCuenta extends JPanel{
                 boolean respuesta = Autenticacion.editarUsuario(usuario);
 
                 if(respuesta){
-                    System.out.println("Agregado :)");
                     this.cambios = false;
                     this.guardar.setEnabled(false);
                 }
-                else{
-                    System.out.println("Algo ocurrio mal =/");
-                }
             } catch (Exception ex) {
-                System.out.println("");
             }
         }
         else{

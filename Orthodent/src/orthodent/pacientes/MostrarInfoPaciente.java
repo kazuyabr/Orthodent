@@ -529,7 +529,6 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         try {
             ((Pacientes)this.getParent()).volverPacientes();
         } catch (Exception ex) {
-            System.out.println("");
         }
     }
 

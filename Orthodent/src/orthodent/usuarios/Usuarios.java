@@ -126,7 +126,6 @@ public class Usuarios extends JPanel implements ActionListener{
                             updateUI();
                         }
                     } catch (Exception ex) {
-                        System.out.println("");
                     }
                 }
             }
@@ -298,7 +297,6 @@ public class Usuarios extends JPanel implements ActionListener{
     
     private void buscar(){
         String value = this.buscador.getText();
-        System.out.println("asdasdads");
         
         ArrayList<Usuario> usuarios = Autenticacion.listarUsuarios();
         

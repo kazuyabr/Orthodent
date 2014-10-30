@@ -590,7 +590,6 @@ public class HorarioPanel extends JPanel{
         try {
             boolean aux = HorarioDB.eliminarHorario(this.usuario.getId_usuario());
         } catch (SQLException ex) {
-            System.out.println("");
         }
         
         if(this.lunes.isSelected()){

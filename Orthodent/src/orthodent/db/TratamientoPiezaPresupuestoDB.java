@@ -39,7 +39,6 @@ public class TratamientoPiezaPresupuestoDB {
         try {
             DbConnection db = new DbConnection();
             Connection con = db.getConnection();
-            
             java.sql.Statement st = con.createStatement();
             
             ResultSet rs = st.executeQuery("SELECT * FROM tratamiento_piezapresupuesto WHERE id_presupuesto="+id_presupuesto);

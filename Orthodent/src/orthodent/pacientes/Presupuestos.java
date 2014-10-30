@@ -110,23 +110,22 @@ public class Presupuestos extends JPanel{
     
     public void updateTablaPiezaTratamiento() throws Exception{
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
-        ArrayList<TratamientoPiezaPresupuesto> piezasPresupuesto = TratamientoPiezaPresupuestoDB.listarTratamientosPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto());
-        
+        ArrayList<TratamientoPiezaPresupuesto> piezasPresupuesto = new ArrayList<TratamientoPiezaPresupuesto>();
+        if(!this.nuevoPresupuestoSel){
+             piezasPresupuesto = TratamientoPiezaPresupuestoDB.listarTratamientosPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto());
+        }
         int m = this.columnasNombrePiezaTratamiento.length;
         
         ArrayList<Object []> objetos = new ArrayList<Object []>();
         
         for(TratamientoPiezaPresupuesto piezaPresupuesto : piezasPresupuesto){
             String pieza = piezaPresupuesto.getPieza()+"";
-            
             Tratamiento tratamiento = TratamientoDB.getTratamiento(piezaPresupuesto.getId_tratamiento());
-            
             Object [] fila = new Object [] {pieza, 
                 new Item(tratamiento.getNombre(),tratamiento.getIdTratamiento()), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
 
             objetos.add(fila);
         }
-        
         this.filasPiezaTratamiento = new Object [objetos.size()][m];
         int i = 0;
         for(Object [] o : objetos){
@@ -308,7 +307,6 @@ public class Presupuestos extends JPanel{
                             guardar.setEnabled(false);
                         }
                     } catch (Exception ex) {
-                        System.out.println("");
                     }
                 }
             }
@@ -820,7 +818,6 @@ public class Presupuestos extends JPanel{
         
         if(this.presupuestoSelected!=null){
             int  id_profesional = ((Item)this.profesional.getSelectedItem()).getId();
-            System.out.println(""+((Item)this.profesional.getSelectedItem()).getValue());
             
             boolean estado = false;
             if(((String)this.estado.getSelectedItem()).equals("Activo")){
@@ -906,7 +903,6 @@ public class Presupuestos extends JPanel{
         else{
             //Nuevo Presupuesto
             int  id_profesional = ((Item)this.profesional.getSelectedItem()).getId();
-            System.out.println(""+((Item)this.profesional.getSelectedItem()).getValue());
             
             boolean estado = false;
             if(((String)this.estado.getSelectedItem()).equals("Activo")){
@@ -964,18 +960,23 @@ public class Presupuestos extends JPanel{
                 }
                 
                 if(!error){
-                    for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
-                        int pieza = Integer.parseInt((String)this.tablaPiezaTratamiento.getValueAt(i, 0));
-                        int id_tratamiento = ((Item)this.tablaPiezaTratamiento.getValueAt(i, 1)).getId();
-                        TratamientoPiezaPresupuestoDB.crearTratamientoPiezaPresupuesto(id_tratamiento, this.presupuestoSelected.getIdPresupuesto(), pieza);
-                    }
                     try {
-                        this.updateTablaPresupuestos();
+                        Presupuesto pre = PresupuestoDB.getPresupuesto(fechaModificacion, this.paciente.getId_paciente());
+                        
+                        for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
+                            int pieza = Integer.parseInt((String)this.tablaPiezaTratamiento.getValueAt(i, 0));
+                            int id_tratamiento = ((Item)this.tablaPiezaTratamiento.getValueAt(i, 1)).getId();
+                            TratamientoPiezaPresupuestoDB.crearTratamientoPiezaPresupuesto(id_tratamiento, pre.getIdPresupuesto(), pieza);
+                        }
+                        try {
+                            this.updateTablaPresupuestos();
+                        } catch (Exception ex) {
+                        }
+                        this.cambios = false;
+                        this.nuevoPresupuestoSel = false;
+                        this.guardar.setEnabled(false);
                     } catch (Exception ex) {
                     }
-                    this.cambios = false;
-                    this.nuevoPresupuestoSel = false;
-                    this.guardar.setEnabled(false);
                 }
             }
         }
@@ -1051,7 +1052,6 @@ public class Presupuestos extends JPanel{
                         this.remove.setEnabled(false);
                         this.add.setEnabled(false);
                     } catch (Exception ex) {
-                        System.out.println("");
                     }
                 }
             } catch (SQLException ex) {
@@ -1138,6 +1138,11 @@ public class Presupuestos extends JPanel{
         
         estado.setModel(new DefaultComboBoxModel(new String [] {"Activo","Cancelado"}));
         estado.setSelectedIndex(0);
+        
+        try {
+            this.iniciarTablaPiezaTratamiento();
+        } catch (Exception ex) {
+        }
         
     }//GEN-LAST:event_nuevoPresupuestoActionPerformed
     
