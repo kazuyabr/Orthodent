@@ -15,8 +15,7 @@ public class TratamientoPiezaPlan {
     private int idTratamiento;
     private int pieza;
     private String fechaRealizado;
-    private boolean estado;    
-    
+    private boolean estado;
     
     public TratamientoPiezaPlan(int idTratamientoPiezaPlan, int IdPlanTratamiento, int idTratamiento, int pieza, String fechaRealizado, boolean estado) {
         this.idTratamientoPiezaPlan = idTratamientoPiezaPlan;
@@ -74,7 +73,4 @@ public class TratamientoPiezaPlan {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
-    
-
-    
 }

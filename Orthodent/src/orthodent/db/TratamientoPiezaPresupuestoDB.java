@@ -39,7 +39,6 @@ public class TratamientoPiezaPresupuestoDB {
         try {
             DbConnection db = new DbConnection();
             Connection con = db.getConnection();
-            
             java.sql.Statement st = con.createStatement();
             
             ResultSet rs = st.executeQuery("SELECT * FROM tratamiento_piezapresupuesto WHERE id_presupuesto="+id_presupuesto);
@@ -55,6 +54,23 @@ public class TratamientoPiezaPresupuestoDB {
         }
         catch ( SQLException e) {
             return null;
+        }
+    }
+    
+    public static boolean eliminarTratamientoPieza(int id_presupuesto) throws SQLException{
+        try{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            
+            java.sql.Statement st = con.createStatement();
+            int aux = st.executeUpdate("DELETE FROM tratamiento_piezapresupuesto\n" +
+                                            "WHERE id_presupuesto="+id_presupuesto);
+            st.close();
+            con.close();
+            return true;
+        }
+        catch ( SQLException e) {
+            return false;
         }
     }
 }

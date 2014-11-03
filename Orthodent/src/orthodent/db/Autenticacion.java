@@ -242,7 +242,6 @@ public class Autenticacion {
             return resultado;
         }
         catch ( SQLException e) {
-            System.out.println(e);
             return false;
         }
     }
@@ -268,7 +267,6 @@ public class Autenticacion {
             return resultado;
         }
         catch ( SQLException e) {
-            System.out.println(e);
             return false;
         }
     }
@@ -299,7 +297,6 @@ public class Autenticacion {
             return resultado;
         }
         catch ( SQLException e) {
-            System.out.println(e);
             return false;
         }
     }

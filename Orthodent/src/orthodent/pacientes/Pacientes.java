@@ -122,7 +122,6 @@ public class Pacientes extends JPanel implements ActionListener{
                             updateUI();
                         }
                     } catch (Exception ex) {
-                        System.out.println("");
                     }
                 }
             }

@@ -33,16 +33,13 @@ public class DbConnection {
          //obtenemos la conexión
          connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/clinica","root", "root");
          
-         if (connection!=null){
+         /*if (connection!=null){
             System.out.println("Conexión a base de datos " + bd + " OK\n");
-         }
+         }*/
       }
       catch(SQLException e){
-         System.out.println(e);
       }catch(ClassNotFoundException e){
-         System.out.println(e);
       }catch(Exception e){
-         System.out.println(e);
       }
    }
    

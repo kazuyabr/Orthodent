@@ -414,14 +414,13 @@ public class NuevoUsuario extends javax.swing.JDialog {
                     boolean respuesta = Autenticacion.crearUsuario(idRol, nombre, apellidoPat, apellidoMat, 
                                                             nombreUsuario, contraseña1, email, telefono);
                     
-                    if(respuesta){
+                    /*if(respuesta){
                         System.out.println("Agregado :)");
                     }
                     else{
                         System.out.println("Algo ocurrio mal =/");
-                    }
+                    }*/
                 } catch (Exception ex) {
-                    System.out.println("");
                 }
                 
                 ((JVentana)this.getParent()).getUsuarios().updateModelo();

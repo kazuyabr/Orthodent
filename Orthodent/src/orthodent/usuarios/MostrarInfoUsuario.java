@@ -421,7 +421,6 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
             try {
                 ((Usuarios)this.getParent()).volverUsuarios();
             } catch (Exception ex) {
-                System.out.println("");
             }
         }
         else{

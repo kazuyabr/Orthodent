@@ -480,14 +480,13 @@ public class NuevoPaciente extends javax.swing.JDialog {
                             boolean respuesta = PacienteDB.crearPaciente(nombre,apellidoPat,apellidoMat,rut,email,fechaNacimiento,edad,
                                                                         sexo,"",telefono,ciudad,comuna,direccion);
 
-                            if(respuesta){
+                            /*if(respuesta){
                                 System.out.println("Agregado :)");
                             }
                             else{
                                 System.out.println("Algo ocurrio mal =/");
-                            }
+                            }*/
                         } catch (Exception ex) {
-                            System.out.println("");
                         }
 
                         ((JVentana)this.getParent()).getPacientes().updateModelo();
@@ -540,9 +539,6 @@ public class NuevoPaciente extends javax.swing.JDialog {
     }
     
     private String calcularDigitoVerificador(String rut){
-        
-        System.out.println(""+rut);
-        
         int i = rut.length()-1;
         int j = 7;
         int suma = 0;

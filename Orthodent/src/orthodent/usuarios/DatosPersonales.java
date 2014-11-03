@@ -335,7 +335,6 @@ public class DatosPersonales extends JPanel{
                     
                     ((MostrarInfoUsuario)contenedor.getParent()).volver();
                 } catch (Exception ex) {
-                    System.out.println("");
                 }
             }
         }
@@ -377,7 +376,6 @@ public class DatosPersonales extends JPanel{
                     this.guardar.setEnabled(false);
                 }
             } catch (Exception ex) {
-                System.out.println("");
             }
         }
         else{

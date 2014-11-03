@@ -43,5 +43,4 @@ public class TratamientoPiezaPresupuesto {
     public void setPieza(int pieza) {
         this.pieza = pieza;
     }
-    
 }
