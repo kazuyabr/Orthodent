@@ -4,10 +4,15 @@
  */
 package orthodent.agenda;
 
+import com.thirdnf.ResourceScheduler.Resource;
+import com.thirdnf.ResourceScheduler.ScheduleListener;
 import javax.swing.*;
 import java.awt.*;
 
 import com.thirdnf.ResourceScheduler.Scheduler;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 /**
@@ -26,9 +31,20 @@ public class Agenda extends JPanel{
         Scheduler scheduler = new Scheduler();
         scheduler.setModel(new AgendaSchedulerModel());
         scheduler.showDate(new LocalDate());
-        
+
+        scheduler.addScheduleListener(new ScheduleListener()
+        {
+            @Override
+            public void actionPerformed(@NotNull Resource resource, @NotNull DateTime time)
+            {
+                handleAddAppointment(resource, time);
+            }
+        });
         this.setLayout(new BorderLayout());
         add(scheduler, BorderLayout.CENTER);
     }
     
+    private void handleAddAppointment(@Nullable Resource resource, @NotNull DateTime dateTime) {
+        System.out.println(dateTime);
+    }
 }
