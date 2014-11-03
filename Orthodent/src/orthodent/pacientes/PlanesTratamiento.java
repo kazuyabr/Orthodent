@@ -68,6 +68,7 @@ public class PlanesTratamiento extends JPanel{
     
     private void addInfo() throws Exception{
         this.iniciarTablaPresupuestos();
+        
     }
     
     public void iniciarTablaPiezaTratamiento() throws Exception{
