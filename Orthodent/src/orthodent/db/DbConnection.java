@@ -31,7 +31,7 @@ public class DbConnection {
          //obtenemos el driver de para mysql
          Class.forName("com.mysql.jdbc.Driver");
          //obtenemos la conexión
-         connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/clinica","root", "");
+         connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/clinica","root", "root");
          
          if (connection!=null){
             System.out.println("Conexión a base de datos " + bd + " OK\n");
