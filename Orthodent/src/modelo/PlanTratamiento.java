@@ -18,9 +18,11 @@ public class PlanTratamiento {
     private int costoTotal;
     private int totalAbonos;
     private int avance;
-    private boolean activo;    
+    private boolean activo;  
+    private String fechaCreacion;
+    private String fechaModificacion;
     
-    public PlanTratamiento(int idPlanTratamiento, int idPaciente, int idProfesional, String fechaCreacionPresupuesto, String fechaModificacionPresupuesto, int costoTotal, int totalAbonos, int avance, boolean activo) {
+    public PlanTratamiento(int idPlanTratamiento, int idPaciente, int idProfesional, String fechaCreacionPresupuesto, String fechaModificacionPresupuesto, int costoTotal, int totalAbonos, int avance, boolean activo, String fechaCreacion, String fechaModificacion) {
         this.idPlanTratamiento = idPlanTratamiento;
         this.idPaciente = idPaciente;
         this.idProfesional = idProfesional;
@@ -30,6 +32,8 @@ public class PlanTratamiento {
         this.totalAbonos = totalAbonos;
         this.avance = avance;
         this.activo = activo;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaModificacion = fechaModificacion;
     }
 
     public int getIdPlanTratamiento() {
@@ -102,5 +106,21 @@ public class PlanTratamiento {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
+    }
+
+    public String getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(String fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public String getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(String fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
     }
 }

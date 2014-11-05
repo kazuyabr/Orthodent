@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -1060,6 +1058,10 @@ public class Presupuestos extends JPanel{
     }//GEN-LAST:event_eliminarActionPerformed
 
     private void aprobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aprobarActionPerformed
+        
+        
+        //crear plan de tratamiento
+        //eliminar presupuesto
         
     }//GEN-LAST:event_aprobarActionPerformed
 
