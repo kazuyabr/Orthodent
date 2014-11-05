@@ -43,6 +43,14 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
         this.initComponents();
         this.opActual = 1;
         this.addComponents();
+        
+        this.setCursor();
+    }
+    
+    private void setCursor(){
+        this.datosPersonales.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.datosProfesionales.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.horario.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
     public int getOpActual() {

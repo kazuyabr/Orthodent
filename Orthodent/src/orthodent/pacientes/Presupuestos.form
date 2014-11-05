@@ -474,6 +474,8 @@
             <Property name="text" type="java.lang.String" value="Nuevo Presupuesto"/>
           </Properties>
           <Events>
+            <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="nuevoPresupuestoMouseDragged"/>
+            <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="nuevoPresupuestoMouseMoved"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nuevoPresupuestoActionPerformed"/>
           </Events>
         </Component>

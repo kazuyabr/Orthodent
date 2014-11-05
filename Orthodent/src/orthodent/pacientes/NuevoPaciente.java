@@ -4,6 +4,7 @@
  */
 package orthodent.pacientes;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -28,6 +29,9 @@ public class NuevoPaciente extends javax.swing.JDialog {
     public NuevoPaciente(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        this.aceptar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.cancelar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation((screenSize.width - this.getSize().width) / 2 ,

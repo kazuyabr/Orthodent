@@ -4,6 +4,7 @@
  */
 package orthodent.usuarios;
 
+import java.awt.Cursor;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -29,6 +30,7 @@ public class ConfigurarCuenta extends JPanel{
         
         this.addInfo();
         this.guardar.setEnabled(false);
+        this.guardar.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
     public boolean getCambios(){

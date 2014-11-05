@@ -4,6 +4,7 @@
  */
 package orthodent.pacientes;
 
+import java.awt.Cursor;
 import javax.swing.JPanel;
 import modelo.Paciente;
 
@@ -24,6 +25,7 @@ public class PagosRecibidos extends JPanel{
         
         this.addInfo();
         this.guardar.setEnabled(false);
+        this.guardar.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
     public boolean getCambios(){

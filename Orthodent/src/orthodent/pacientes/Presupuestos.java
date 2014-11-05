@@ -4,6 +4,7 @@
  */
 package orthodent.pacientes;
 
+import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
@@ -62,6 +63,7 @@ public class Presupuestos extends JPanel{
     
     public Presupuestos(Paciente paciente, Usuario actual) throws Exception {
         initComponents();
+        this.setCursor();
         
         this.paciente = paciente;
         this.actual = actual;
@@ -72,6 +74,15 @@ public class Presupuestos extends JPanel{
         this.guardar.setEnabled(false);
         this.tablaPresupuestos.getTableHeader().setReorderingAllowed(false);
         this.tablaPiezaTratamiento.getTableHeader().setReorderingAllowed(false);
+    }
+    
+    private void setCursor(){
+        this.nuevoPresupuesto.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.eliminar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.aprobar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.guardar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.add.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.remove.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
     public boolean getCambios(){
@@ -707,6 +718,14 @@ public class Presupuestos extends JPanel{
 
         nuevoPresupuesto.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         nuevoPresupuesto.setText("Nuevo Presupuesto");
+        nuevoPresupuesto.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                nuevoPresupuestoMouseDragged(evt);
+            }
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                nuevoPresupuestoMouseMoved(evt);
+            }
+        });
         nuevoPresupuesto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nuevoPresupuestoActionPerformed(evt);
@@ -1014,11 +1033,9 @@ public class Presupuestos extends JPanel{
             Object item = evt.getItem();
             
             if(((String)item).equals("Cancelado")){
-                System.out.println("asd");
                 this.aprobar.setEnabled(false);
             }
             else{
-                System.out.println(":)");
                 this.aprobar.setEnabled(true);
             }
             
@@ -1277,6 +1294,14 @@ public class Presupuestos extends JPanel{
     private void estadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_estadoActionPerformed
+
+    private void nuevoPresupuestoMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nuevoPresupuestoMouseMoved
+        
+    }//GEN-LAST:event_nuevoPresupuestoMouseMoved
+
+    private void nuevoPresupuestoMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nuevoPresupuestoMouseDragged
+        
+    }//GEN-LAST:event_nuevoPresupuestoMouseDragged
     
     private void habilitarBoton(){
         this.cambios = true;

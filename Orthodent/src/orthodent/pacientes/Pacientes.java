@@ -44,6 +44,8 @@ public class Pacientes extends JPanel implements ActionListener{
         this.isListarPacientes = true;
         this.initComponents();
         this.addComponents();
+        this.botonBuscar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.nuevoPaciente.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
     public boolean isIsListarPacientes() {

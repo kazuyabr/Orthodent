@@ -4,6 +4,7 @@
  */
 package orthodent.pacientes;
 
+import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
@@ -47,6 +48,7 @@ public class PlanesTratamiento extends JPanel{
     
     public PlanesTratamiento(Paciente paciente, Usuario actual) throws Exception {
         initComponents();
+        this.setCursor();
         
         this.paciente = paciente;
         this.actual = actual;
@@ -56,6 +58,10 @@ public class PlanesTratamiento extends JPanel{
         this.guardar.setEnabled(false);
         this.tablaTratamiento.getTableHeader().setReorderingAllowed(false);
         this.tablaPiezaTratamiento.getTableHeader().setReorderingAllowed(false);
+    }
+    
+    private void setCursor(){
+        this.guardar.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
     public boolean getCambios(){

@@ -4,6 +4,7 @@
  */
 package orthodent.usuarios;
 
+import java.awt.Cursor;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JPanel;
@@ -28,6 +29,7 @@ public class HorarioPanel extends JPanel{
         
         this.addInfo();
         this.guardar.setEnabled(false);
+        this.guardar.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
     private void addInfo(){

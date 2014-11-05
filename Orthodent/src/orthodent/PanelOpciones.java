@@ -5,6 +5,7 @@
 package orthodent;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -56,7 +57,21 @@ public class PanelOpciones extends JPanel implements ActionListener{
             this.initOpciones();
             this.addListeners();
             this.addOpcionesPanel();
+            this.setCursor();
         }
+    }
+    
+    private void setCursor(){
+        this.agenda.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.pacientes.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.pagos.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.historial.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.usuarios.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.miniUsuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.menuUsuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.configurarCuenta.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.cerrarSesion.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.salir.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
     private void initOpciones(){

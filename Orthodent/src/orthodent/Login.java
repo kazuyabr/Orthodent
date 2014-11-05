@@ -25,11 +25,18 @@ public class Login extends javax.swing.JDialog implements WindowListener{
         super(parent, modal);
         this.dialog2 = false;
         initComponents();
+        this.setCursor();
         
         this.setBackground(Color.white);
         this.addWindowListener(this);
         
         this.centrarVentana();
+    }
+    
+    private void setCursor(){
+        this.botonAceptar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.botonCancelar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.botonOlvidoContraseña.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
     private void centrarVentana(){

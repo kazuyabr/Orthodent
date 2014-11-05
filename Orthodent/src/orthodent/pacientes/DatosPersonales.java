@@ -4,6 +4,7 @@
  */
 package orthodent.pacientes;
 
+import java.awt.Cursor;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -31,6 +32,8 @@ public class DatosPersonales extends JPanel{
         
         this.addInfo();
         this.guardar.setEnabled(false);
+        this.guardar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.eliminar.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
     public boolean getCambios(){

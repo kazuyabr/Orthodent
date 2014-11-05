@@ -43,6 +43,8 @@ public class Usuarios extends JPanel implements ActionListener{
         this.isListarUsuarios = true;
         this.initComponents();
         this.addComponents();
+        this.botonBuscar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.nuevoUsuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
     public boolean isIsListarUsuarios() {

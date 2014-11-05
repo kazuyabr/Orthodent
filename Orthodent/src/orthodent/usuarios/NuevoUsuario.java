@@ -4,6 +4,7 @@
  */
 package orthodent.usuarios;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -23,11 +24,17 @@ public class NuevoUsuario extends javax.swing.JDialog {
     public NuevoUsuario(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setCursor();
         
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation((screenSize.width - this.getSize().width) / 2 ,
                 (screenSize.height - this.getSize().height) / 2);
         
+    }
+    
+    private void setCursor(){
+        this.aceptar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.cancelar.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
     /**

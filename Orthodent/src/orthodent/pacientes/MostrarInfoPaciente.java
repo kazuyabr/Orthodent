@@ -51,6 +51,16 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         this.initComponents();
         this.opActual = 1;
         this.addComponents();
+        this.setCursor();
+    }
+    
+    private void setCursor(){
+        this.datosPersonales.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.planesTratamiento.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.presupuesto.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.fichasClinicas.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.recaudacion.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.pagosRecibidos.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
     private void initComponents(){
