@@ -25,14 +25,17 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import modelo.Paciente;
+import modelo.PlanTratamiento;
 import modelo.Presupuesto;
 import modelo.Tratamiento;
 import modelo.TratamientoPiezaPresupuesto;
 import modelo.Usuario;
 import orthodent.Item;
 import orthodent.db.Autenticacion;
+import orthodent.db.PlanTratamientoDB;
 import orthodent.db.PresupuestoDB;
 import orthodent.db.TratamientoDB;
+import orthodent.db.TratamientoPiezaPlanDB;
 import orthodent.db.TratamientoPiezaPresupuestoDB;
 
 /**
@@ -224,7 +227,6 @@ public class Presupuestos extends JPanel{
                         
                         if(presupuestoSelected!=null){
                             eliminar.setEnabled(true);
-                            aprobar.setEnabled(true);
                             remove.setEnabled(true);
                             add.setEnabled(true);
                             
@@ -291,10 +293,12 @@ public class Presupuestos extends JPanel{
                             if(presupuestoSelected.getEstado()){
                                 estadoSelected = "Activo";
                                 estado.setSelectedItem("Activo");
+                                aprobar.setEnabled(true);
                             }
                             else{
                                 estadoSelected = "Cancelado";
                                 estado.setSelectedItem("Cancelado");
+                                aprobar.setEnabled(false);
                             }
                             
                             fechaCreacion.setText(presupuestoSelected.getFechaCreacion());
@@ -560,6 +564,11 @@ public class Presupuestos extends JPanel{
         estado.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 estadoItemStateChanged(evt);
+            }
+        });
+        estado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                estadoActionPerformed(evt);
             }
         });
 
@@ -1004,6 +1013,15 @@ public class Presupuestos extends JPanel{
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             Object item = evt.getItem();
             
+            if(((String)item).equals("Cancelado")){
+                System.out.println("asd");
+                this.aprobar.setEnabled(false);
+            }
+            else{
+                System.out.println(":)");
+                this.aprobar.setEnabled(true);
+            }
+            
             if(this.estadoSelected!=null){
                 if(!this.estadoSelected.equals((String)item)){
                     this.habilitarBoton();
@@ -1059,9 +1077,117 @@ public class Presupuestos extends JPanel{
 
     private void aprobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aprobarActionPerformed
         
+        //asd
         
-        //crear plan de tratamiento
-        //eliminar presupuesto
+        if(!this.nuevoPresupuestoSel){
+            int  id_profesional = ((Item)this.profesional.getSelectedItem()).getId();
+            
+            boolean estado = false;
+            if(((String)this.estado.getSelectedItem()).equals("Activo")){
+                estado = true;
+            }
+            else{
+                estado = false;
+            }
+
+            int costoTotal = 0;
+            if(!this.costoTotal.getText().equals("$")){
+                costoTotal = Integer.parseInt(this.costoTotal.getText().substring(this.costoTotal.getText().indexOf("$")+1, this.costoTotal.getText().length()));
+            }
+
+            int cantidadTratamientos = this.tablaPiezaTratamiento.getRowCount();
+
+            String fechaModificacion = this.getCurrentDateTime();
+
+            this.presupuestoSelected.setIdProfesional(id_profesional);
+            this.presupuestoSelected.setEstado(estado);
+            this.presupuestoSelected.setCostoTotal(costoTotal);
+            this.presupuestoSelected.setCantidadTratamiento(cantidadTratamientos);
+            this.presupuestoSelected.setFechaModificacion(fechaModificacion);
+            
+            boolean respuesta = PlanTratamientoDB.crearPlanTratamiento(this.paciente.getId_paciente(), id_profesional, this.presupuestoSelected.getFechaCreacion(),
+                    fechaModificacion, costoTotal, 0, 0, true, fechaModificacion, fechaModificacion);
+            
+            if(respuesta){
+                
+                boolean error = false;
+                for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
+                    try {
+                        int pieza = Integer.parseInt((String) this.tablaPiezaTratamiento.getValueAt(i, 0));
+                        
+                        if(this.tablaPiezaTratamiento.getValueAt(i, 1)==null){
+                            JOptionPane.showMessageDialog(this,
+                                "Hay cambios en la tabla sin completar!",
+                                "Orthodent",
+                                JOptionPane.INFORMATION_MESSAGE);
+                            error = true;
+                            break;
+                        }
+                        else{
+                            if(!(this.tablaPiezaTratamiento.getValueAt(i, 1) instanceof Item)){
+                                JOptionPane.showMessageDialog(this,
+                                    "Hay cambios en la tabla sin completar!",
+                                    "Orthodent",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                                error = true;
+                                break;
+                            }
+                        }
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(this,
+                            "Hay cambios en la tabla sin completar!",
+                            "Orthodent",
+                            JOptionPane.INFORMATION_MESSAGE);
+                        error = true;
+                        break;
+                    }
+                }
+                
+                if(!error){
+                    try {
+                        PlanTratamiento plan = PlanTratamientoDB.getPlanTratamiento(fechaModificacion, this.paciente.getId_paciente());
+                        
+                        for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
+                            int pieza = Integer.parseInt((String)this.tablaPiezaTratamiento.getValueAt(i, 0));
+                            int id_tratamiento = ((Item)this.tablaPiezaTratamiento.getValueAt(i, 1)).getId();
+                            
+                            TratamientoPiezaPlanDB.crearTratamientoPiezaPlan(plan.getIdPlanTratamiento(), id_tratamiento, pieza, false);
+                        }
+                        
+                        TratamientoPiezaPresupuestoDB.eliminarTratamientoPieza(this.presupuestoSelected.getIdPresupuesto());
+                        
+                        PresupuestoDB.purgarPresupuesto(this.presupuestoSelected.getIdPresupuesto());
+                        
+                        try {
+                            this.updateTablaPresupuestos();
+                            this.profesional.setEnabled(false);
+                            this.profesionalSelected = null;
+                            this.profesional.setModel(new DefaultComboBoxModel(new String [] {""}));
+                            this.profesional.setSelectedItem("");
+                            this.costoTotal.setEnabled(false);
+                            this.costoTotal.setText("");
+                            this.estadoSelected = null;
+                            this.estado.setModel(new DefaultComboBoxModel(new String [] {""}));
+                            this.estado.setSelectedItem("");
+                            this.estado.setEnabled(false);
+                            this.fechaCreacion.setText("");
+                            this.fechaUltimaModificacion.setText("");
+                            this.presupuestoSelected = null;
+                            this.eliminar.setEnabled(false);
+                            this.aprobar.setEnabled(false);
+                            this.guardar.setEnabled(false);
+                            this.tablaPiezaTratamiento.setEnabled(false);
+                            this.remove.setEnabled(false);
+                            this.add.setEnabled(false);
+                        } catch (Exception ex) {
+                        }
+                    } catch (Exception ex) {
+                    }
+                }
+            }
+        }
+        
+        
         
     }//GEN-LAST:event_aprobarActionPerformed
 
@@ -1147,6 +1273,10 @@ public class Presupuestos extends JPanel{
         }
         
     }//GEN-LAST:event_nuevoPresupuestoActionPerformed
+
+    private void estadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_estadoActionPerformed
     
     private void habilitarBoton(){
         this.cambios = true;

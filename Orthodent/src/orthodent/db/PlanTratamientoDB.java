@@ -202,7 +202,7 @@ public class PlanTratamientoDB {
         }
     }    
     
-public static ArrayList<PlanTratamiento> listarPlanesTratamientoPaciente(int id_paciente){
+    public static ArrayList<PlanTratamiento> listarPlanesTratamientoPaciente(int id_paciente){
         ArrayList<PlanTratamiento> planesTratamiento = null;        
         try {
             DbConnection db = new DbConnection();
@@ -229,7 +229,7 @@ public static ArrayList<PlanTratamiento> listarPlanesTratamientoPaciente(int id_
         }
     }
 
-static public PlanTratamiento getPlanTratamiento(int idPaciente) throws Exception{
+    static public PlanTratamiento getPlanTratamiento(int idPaciente) throws Exception{
         PlanTratamiento planTratamiento = null;
         try {
             DbConnection db = new DbConnection();
@@ -261,6 +261,61 @@ static public PlanTratamiento getPlanTratamiento(int idPaciente) throws Exceptio
             con.close();
             return planTratamiento;
         }
+        catch ( SQLException e) {
+            return null;
+        }
+    }
+    
+    public static String girarFecha(String fecha){
+        
+        if(fecha!=null){
+            String dia = fecha.substring(0, fecha.indexOf("-"));
+            fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
+            
+            String mes = fecha.substring(0, fecha.indexOf("-"));
+            fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
+            
+            String año = fecha.substring(0, fecha.indexOf(" "));
+            fecha = fecha.substring(fecha.indexOf(" ")+1, fecha.length());
+
+            return (año+"-"+mes+"-"+dia+" "+fecha);
+        }
+        return "";
+    }
+    
+    static public PlanTratamiento getPlanTratamiento(String fechaCreacion, int id_paciente) throws Exception{
+        PlanTratamiento planTratamiento = null;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * from plan_tratamiento where created_at='" + girarFecha(fechaCreacion) + "' AND id_paciente="+id_paciente);
+            if (rs.next())
+            {
+                int idPlantratamiento = rs.getInt("id_plantratamiento");
+                int idProfesional = rs.getInt("id_profesional");
+                String fechaCreacionPresupuesto = convertTimestampToString(rs.getTimestamp("fecha_creacion_presupuesto"));
+                String fechaModificacionPresupuesto = convertTimestampToString(rs.getTimestamp("fecha_modificacion_presupuesto"));
+                int costoTotal = rs.getInt("costo_total");
+                int totalAbonos = rs.getInt("total_abonos");
+                int avance = rs.getInt("avance");
+                boolean activo = rs.getBoolean("activo");
+                String created_at = convertTimestampToString(rs.getTimestamp("created_at"));
+                String update_at = convertTimestampToString(rs.getTimestamp("update_at"));
+
+                planTratamiento = new PlanTratamiento(idPlantratamiento, id_paciente, idProfesional, fechaCreacionPresupuesto, fechaModificacionPresupuesto,
+                                                  costoTotal, totalAbonos, avance, activo, created_at, update_at);
+            }
+            else{
+                planTratamiento = null;
+            }
+            rs.close();
+            con.close();
+            return planTratamiento;
+        }
+
         catch ( SQLException e) {
             return null;
         }

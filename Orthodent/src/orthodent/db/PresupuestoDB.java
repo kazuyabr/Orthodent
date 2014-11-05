@@ -101,7 +101,24 @@ public class PresupuestoDB {
         catch ( SQLException e) {
             return false;
         }
-    }    
+    }
+    
+    public static boolean purgarPresupuesto(int id_presupuesto) throws SQLException{
+        try{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            
+            java.sql.Statement st = con.createStatement();
+            int aux = st.executeUpdate("DELETE FROM presupuesto\n" +
+                                            "WHERE id_presupuesto="+id_presupuesto);
+            st.close();
+            con.close();
+            return true;
+        }
+        catch ( SQLException e) {
+            return false;
+        }
+    }
     
     public static ArrayList<Presupuesto> listarPresupuestos(){
         ArrayList<Presupuesto> presupuestos = null;        
