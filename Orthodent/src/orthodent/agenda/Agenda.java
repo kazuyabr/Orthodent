@@ -21,6 +21,8 @@ import org.joda.time.LocalDate;
  */
 public class Agenda extends JPanel{
     
+    private BarraAcciones barraAcciones;
+    
     public Agenda(){
         //Introducir código aquí
         this.setBackground(new Color(255,255,255));
@@ -42,6 +44,11 @@ public class Agenda extends JPanel{
         });
         this.setLayout(new BorderLayout());
         add(scheduler, BorderLayout.CENTER);
+        
+        this.barraAcciones = new BarraAcciones();
+        
+        this.add(barraAcciones, BorderLayout.NORTH);
+        
     }
     
     private void handleAddAppointment(@Nullable Resource resource, @NotNull DateTime dateTime) {
