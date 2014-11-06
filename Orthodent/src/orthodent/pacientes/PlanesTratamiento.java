@@ -179,7 +179,7 @@ public class PlanesTratamiento extends JPanel{
     //la de arriba 
     public void iniciarTablaPlanesTratamientos() throws Exception{
         
-        this.columnasPlanesTratamiento = new String [] {"Profesional",  "Costo Total", "Total abonos", "Avance"};
+        this.columnasPlanesTratamiento = new String [] {"Profesional",  "Costo Total", "Total Abonos", "Avance"};
         this.updateTablaPlanesTratamientos();
         this.tablaTratamiento.getTableHeader().setReorderingAllowed(false);//paque no se menee papi! la columna
         
@@ -192,7 +192,7 @@ public class PlanesTratamiento extends JPanel{
                     Object [] fila = getRowAt(row);
                     try {
                         tratamientotoSelected = PlanTratamientoDB.getPlanTratamiento(((Item)fila[1]).getId());
-                       
+                                               
                         if(tratamientotoSelected!=null){
                             Usuario profesionalNombre = Autenticacion.getUsuario(tratamientotoSelected.getIdProfesional());
                             profesional.setText(profesionalNombre.getNombre()+" "+profesionalNombre.getApellido_pat());
@@ -253,15 +253,15 @@ public class PlanesTratamiento extends JPanel{
         for(PlanTratamiento tratamiento : tratamientos){
             if(tratamiento.isActivo()){
                 
-                Usuario profesional = Autenticacion.getUsuario(tratamiento.getIdProfesional());
+                Usuario profesional1 = Autenticacion.getUsuario(tratamiento.getIdProfesional());
                 
-                String nombre = profesional.getNombre();
+                String nombre = profesional1.getNombre();
         
                 if(nombre.contains(" ")){
                     nombre = nombre.substring(0,nombre.indexOf(" "));
                 }
                 
-                nombre = nombre + " " + profesional.getApellido_pat();
+                nombre = nombre + " " + profesional1.getApellido_pat();
                 
                 String estado = "";
                 
@@ -269,7 +269,7 @@ public class PlanesTratamiento extends JPanel{
                 
                
                 
-                Object [] fila = new Object [] {new Item(nombre, profesional.getId_usuario()), new Item(tratamiento.getCostoTotal()+"",tratamiento.getIdPlanTratamiento()), tratamiento.getTotalAbonos(), tratamiento.getAvance()};
+                Object [] fila = new Object [] {new Item(nombre, profesional1.getId_usuario()), new Item(tratamiento.getCostoTotal()+"",tratamiento.getIdPlanTratamiento()), tratamiento.getTotalAbonos(), tratamiento.getAvance()};
                 
                 objetos.add(fila);
             }
@@ -397,14 +397,14 @@ public class PlanesTratamiento extends JPanel{
 
             },
             new String [] {
-                "Profesional", "Cantidad de Tratamientos", "Costo Total", "Estado", "Fecha Creación"
+                "Profesional", "Costo Total", "Total Abonos", "Avance"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
