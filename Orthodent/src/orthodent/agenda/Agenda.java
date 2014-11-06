@@ -25,6 +25,10 @@ public class Agenda extends JPanel{
     public Agenda(Usuario actual){
         this.actual = actual;
         
+    
+    private BarraAcciones barraAcciones;
+    
+    public Agenda(){
         //Introducir código aquí
         this.setBackground(new Color(255,255,255));
         this.setPreferredSize(new Dimension(1073, 561));
@@ -45,6 +49,11 @@ public class Agenda extends JPanel{
         });
         this.setLayout(new BorderLayout());
         add(scheduler, BorderLayout.CENTER);
+        
+        this.barraAcciones = new BarraAcciones();
+        
+        this.add(barraAcciones, BorderLayout.NORTH);
+        
     }
     
     private void handleAddAppointment(@Nullable Resource resource, @NotNull DateTime dateTime) {

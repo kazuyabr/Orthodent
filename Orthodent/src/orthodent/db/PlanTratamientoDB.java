@@ -229,7 +229,7 @@ public class PlanTratamientoDB {
         }
     }
 
-    static public PlanTratamiento getPlanTratamiento(int idPaciente) throws Exception{
+    static public PlanTratamiento getPlanTratamiento(int idPlanTratamiento) throws Exception{
         PlanTratamiento planTratamiento = null;
         try {
             DbConnection db = new DbConnection();
@@ -237,10 +237,11 @@ public class PlanTratamientoDB {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * from plan_tratamiento where id_paciente="+idPaciente);
+            ResultSet rs = st.executeQuery("SELECT * from plan_tratamiento where id_plantratamiento="+idPlanTratamiento);
             if (rs.next())
             {
                 int idPlantratamiento = rs.getInt("id_plantratamiento");
+                int idPaciente = rs.getInt("id_paciente");
                 int idProfesional = rs.getInt("id_profesional");
                 String fechaCreacionPresupuesto = convertTimestampToString(rs.getTimestamp("fecha_creacion_presupuesto"));
                 String fechaModificacionPresupuesto = convertTimestampToString(rs.getTimestamp("fecha_modificacion_presupuesto"));

@@ -17,11 +17,13 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import modelo.Paciente;
+import modelo.PlanTratamiento;
 import modelo.Presupuesto;
 import modelo.Tratamiento;
 import modelo.Usuario;
 import orthodent.Item;
 import orthodent.db.Autenticacion;
+import orthodent.db.PlanTratamientoDB;
 import orthodent.db.PresupuestoDB;
 
 /**
@@ -33,27 +35,25 @@ public class PlanesTratamiento extends JPanel{
     private Usuario actual;
     private Paciente paciente;
     private boolean cambios;
-    private String [] columnasNombrePresupuestos;
-    private Object [][] filasPresupuesto;
-    private TableModel modeloPresupuesto;
+    private String [] columnasPlanesTratamiento;
+    private Object [][] filasPlanesTratamiento;
+    private TableModel modeloPlanesTratamiento;
     private String [] columnasNombrePiezaTratamiento;
     private Object [][] filasPiezaTratamiento;
     private DefaultTableModel modeloPiezaTratamiento;
     private String profesionalSelected;
     private String estadoSelected;
     private Paciente pacienteSelected;
-    private Presupuesto presupuestoSelected;
+    private PlanTratamiento tratamientotoSelected;
     private ArrayList<Tratamiento> auxiliar;
     private int rowSelected;
     
     public PlanesTratamiento(Paciente paciente, Usuario actual) throws Exception {
         initComponents();
         this.setCursor();
-        
         this.paciente = paciente;
         this.actual = actual;
-        this.cambios = false;
-        
+        this.cambios = false;        
         this.addInfo();
         this.guardar.setEnabled(false);
         this.tablaTratamiento.getTableHeader().setReorderingAllowed(false);
@@ -73,7 +73,7 @@ public class PlanesTratamiento extends JPanel{
     }
     
     private void addInfo() throws Exception{
-        this.iniciarTablaPresupuestos();
+        this.iniciarTablaPlanesTratamientos();
         
     }
     
@@ -177,10 +177,10 @@ public class PlanesTratamiento extends JPanel{
         tratamientos.setCellEditor(new DefaultCellEditor(comboBox));
     }*/
     //la de arriba 
-    public void iniciarTablaPresupuestos() throws Exception{
+    public void iniciarTablaPlanesTratamientos() throws Exception{
         
-        this.columnasNombrePresupuestos = new String [] {"Profesional", "Cantidad de Tratamientos", "Costo Total", "Estado", "Fecha de Creación"};
-        this.updateTablaPresupuestos();
+        this.columnasPlanesTratamiento = new String [] {"Profesional",  "Costo Total", "Total Abonos", "Avance"};
+        this.updateTablaPlanesTratamientos();
         this.tablaTratamiento.getTableHeader().setReorderingAllowed(false);//paque no se menee papi! la columna
         
         this.tablaTratamiento.addMouseListener(new MouseAdapter() {
@@ -191,64 +191,22 @@ public class PlanesTratamiento extends JPanel{
                 if (me.getClickCount() == 1) { // cuando te toco suave!! 
                     Object [] fila = getRowAt(row);
                     try {
-                        presupuestoSelected = PresupuestoDB.getPresupuesto((String)fila[4], paciente.getId_paciente());
-                       
-                        if(presupuestoSelected!=null){
-                            if(actual.getId_rol()==3){
-                                //Profesional
-                                String nombre = actual.getNombre();
-        
-                                if(nombre.contains(" ")){
-                                    nombre = nombre.substring(0,nombre.indexOf(" "));
-                                }
-                               
-                                Vector model = new Vector();
-                                Item item = new Item(nombre+" "+actual.getApellido_pat(), actual.getId_usuario());
-                                model.addElement(item);                                
-                                profesionalSelected = nombre+" "+actual.getApellido_pat();
-                                profesional.setText(nombre+" "+actual.getApellido_pat());
-                            }
-                            else{
-                                profesional.setEnabled(true);
-                                
-                                ArrayList<Usuario> usuarios = Autenticacion.listarProfesionales();
-                                
-                                if(usuarios!=null && usuarios.size()>0){
-                                    Usuario profesional1 = Autenticacion.getUsuario(presupuestoSelected.getIdProfesional());
-
-                                    String nombre = profesional1.getNombre();
-
-                                    if(nombre.contains(" ")){
-                                        nombre = nombre.substring(0,nombre.indexOf(" "));
-                                    }
-                                    profesionalSelected = nombre+" "+profesional1.getApellido_pat();
-                                    
-                                    Vector model = new Vector();
-                                    Item item = null;
-                                    int i = 0;
-                                    for(Usuario user : usuarios){
-                                        String name = user.getNombre();
-
-                                        if(name.contains(" ")){
-                                            name = name.substring(0,name.indexOf(" "));
-                                        }
-                                        name = name + " " + user.getApellido_pat();
-                                        
-                                        if(profesionalSelected.equals(name)){
-                                            item = new Item(name,user.getId_usuario());
-                                            model.addElement(item);
-                                        }
-                                        else{
-                                            model.addElement(new Item(name,user.getId_usuario()));
-                                        }
-                                        i++;
-                                    }
-                                   
-                                }
+                        System.out.println(((Item)fila[1]));
+                        
+                        tratamientotoSelected = PlanTratamientoDB.getPlanTratamiento(((Item)fila[1]).getId());
+                                               
+                        if(tratamientotoSelected!=null){
+                            Usuario profesionalNombre = Autenticacion.getUsuario(tratamientotoSelected.getIdProfesional());
+                            
+                            String nombre = profesionalNombre.getNombre();
+                            if(nombre.contains(" ")){
+                                nombre = nombre.substring(0,nombre.indexOf(" "));
                             }
                             
-                            
-                            
+                            profesional.setText(nombre+" "+profesionalNombre.getApellido_pat());
+                            profesional.setEditable(false);
+          
+                            /*
                             estado.setModel(new DefaultComboBoxModel(new String [] {"Activo","Cancelado"}));
                             estado.setEnabled(true);
                             if(presupuestoSelected.getEstado()){
@@ -265,7 +223,7 @@ public class PlanesTratamiento extends JPanel{
                             
                             tablaPiezaTratamiento.setEnabled(true);
                             iniciarTablaPiezaTratamiento();
-                            guardar.setEnabled(false);
+                            guardar.setEnabled(false);*/
                         }
                     } catch (Exception ex) {
                     }
@@ -275,74 +233,67 @@ public class PlanesTratamiento extends JPanel{
     }
     
     private Object[] getRowAt(int row) {
-        Object[] result = new String[this.columnasNombrePresupuestos.length];
+        Object[] result = new Object[this.columnasPlanesTratamiento.length];
         
-        for (int i = 0; i < this.columnasNombrePresupuestos.length; i++) {
+        for (int i = 0; i < this.columnasPlanesTratamiento.length; i++) {
             result[i] = this.tablaTratamiento.getModel().getValueAt(row, i);
         }
         
         return result;
     }
     
-    public void updateTablaPresupuestos() throws Exception{
+    public void updateTablaPlanesTratamientos() throws Exception{
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
-        ArrayList<Presupuesto> presupuestos = null;
+        ArrayList<PlanTratamiento> tratamientos = null;
         
         if(this.actual.getId_rol()==3){
             //Profesional
-            presupuestos = PresupuestoDB.listarPresupuestosDePaciente(paciente.getId_paciente(),actual.getId_usuario());
+            tratamientos = PlanTratamientoDB.listarPlanesTratamientoPaciente(paciente.getId_paciente(),actual.getId_usuario());
         }
         else{
-            presupuestos = PresupuestoDB.listarPresupuestosDePaciente(paciente.getId_paciente());
+            tratamientos = PlanTratamientoDB.listarPlanesTratamientoPaciente(paciente.getId_paciente());
         }
         
-        int m = this.columnasNombrePresupuestos.length;
+        int m = this.columnasPlanesTratamiento.length;
         
         ArrayList<Object []> objetos = new ArrayList<Object []>();
         
-        for(Presupuesto presupuesto : presupuestos){
-            if(presupuesto.isActivo()){
+        for(PlanTratamiento tratamiento : tratamientos){
+            if(tratamiento.isActivo()){
                 
-                Usuario profesional = Autenticacion.getUsuario(presupuesto.getIdProfesional());
+                Usuario profesional1 = Autenticacion.getUsuario(tratamiento.getIdProfesional());
                 
-                String nombre = profesional.getNombre();
+                String nombre = profesional1.getNombre();
         
                 if(nombre.contains(" ")){
                     nombre = nombre.substring(0,nombre.indexOf(" "));
                 }
                 
-                nombre = nombre + " " + profesional.getApellido_pat();
+                nombre = nombre + " " + profesional1.getApellido_pat();
                 
-                String estado = "";
+                String costoTotal = this.getMoneda(tratamiento.getCostoTotal());
+                String abonos = this.getMoneda(tratamiento.getTotalAbonos());
+                String avance = tratamiento.getAvance()+"%";
                 
-                String costoTotal = this.getMoneda(presupuesto.getCostoTotal());
-                
-                if(presupuesto.getEstado()){
-                    estado = "Activo";
-                }
-                else{
-                    estado = "Cancelado";
-                }
-                
-                Object [] fila = new Object [] {nombre, presupuesto.getCantidadTratamiento()+"", costoTotal, estado, presupuesto.getFechaCreacion()};
+                Object [] fila = new Object [] {new Item(nombre, profesional1.getId_usuario()), new Item(costoTotal+"",tratamiento.getIdPlanTratamiento()), abonos, avance};
                 
                 objetos.add(fila);
             }
         }
         
-        this.filasPresupuesto = new Object [objetos.size()][m];
+        this.filasPlanesTratamiento = new Object [objetos.size()][m];
         int i = 0;
         for(Object [] o : objetos){
-            this.filasPresupuesto[i] = o;
+            this.filasPlanesTratamiento[i] = o;
             i++;
         }
         
-        this.modeloPresupuesto = new DefaultTableModel(this.filasPresupuesto, this.columnasNombrePresupuestos) {
+        this.modeloPlanesTratamiento = new DefaultTableModel(this.filasPlanesTratamiento, this.columnasPlanesTratamiento) {
             Class[] types = new Class [] {
-                String.class, String.class, String.class, String.class, String.class
+                Item.class, Item.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -354,7 +305,7 @@ public class PlanesTratamiento extends JPanel{
             }
         };
         
-        this.tablaTratamiento.setModel(modeloPresupuesto);
+        this.tablaTratamiento.setModel(modeloPlanesTratamiento);
     }
     
     private String getMoneda(int costo){
@@ -452,14 +403,14 @@ public class PlanesTratamiento extends JPanel{
 
             },
             new String [] {
-                "Profesional", "Cantidad de Tratamientos", "Costo Total", "Estado", "Fecha Creación"
+                "Profesional", "Costo Total", "Total Abonos", "Avance"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
