@@ -259,11 +259,11 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         }
     }
     
-    public void cambiarFichasClinicas(){
+    public void cambiarFichasClinicas() throws Exception{
         if(opActual!=4){
             this.removeAncestor();
             
-            this.fichasClinicasPanel = new FichasClinicas(this.paciente);
+            this.fichasClinicasPanel = new FichasClinicas(this.paciente, this.actual);
             
             this.contenedor.add(this.fichasClinicasPanel,BorderLayout.CENTER);
             this.updateUI();
@@ -569,7 +569,11 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         if(e.getSource() == this.fichasClinicas){
             this.guardarAntes();
             this.setIconButton(4);
-            this.cambiarFichasClinicas();
+            try {
+                this.cambiarFichasClinicas();
+            } catch (Exception ex) {
+                Logger.getLogger(MostrarInfoPaciente.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         if(e.getSource() == this.recaudacion){
             this.guardarAntes();
