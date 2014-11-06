@@ -197,10 +197,16 @@ public class PlanesTratamiento extends JPanel{
                                                
                         if(tratamientotoSelected!=null){
                             Usuario profesionalNombre = Autenticacion.getUsuario(tratamientotoSelected.getIdProfesional());
-                            profesional.setText(profesionalNombre.getNombre()+" "+profesionalNombre.getApellido_pat());
+                            
+                            String nombre = profesionalNombre.getNombre();
+                            if(nombre.contains(" ")){
+                                nombre = nombre.substring(0,nombre.indexOf(" "));
+                            }
+                            
+                            profesional.setText(nombre+" "+profesionalNombre.getApellido_pat());
                             profesional.setEditable(false);
           
-            /*
+                            /*
                             estado.setModel(new DefaultComboBoxModel(new String [] {"Activo","Cancelado"}));
                             estado.setEnabled(true);
                             if(presupuestoSelected.getEstado()){
@@ -265,13 +271,11 @@ public class PlanesTratamiento extends JPanel{
                 
                 nombre = nombre + " " + profesional1.getApellido_pat();
                 
-                String estado = "";
-                
                 String costoTotal = this.getMoneda(tratamiento.getCostoTotal());
+                String abonos = this.getMoneda(tratamiento.getTotalAbonos());
+                String avance = tratamiento.getAvance()+"%";
                 
-               
-                
-                Object [] fila = new Object [] {new Item(nombre, profesional1.getId_usuario()), new Item(tratamiento.getCostoTotal()+"",tratamiento.getIdPlanTratamiento()), tratamiento.getTotalAbonos(), tratamiento.getAvance()};
+                Object [] fila = new Object [] {new Item(nombre, profesional1.getId_usuario()), new Item(costoTotal+"",tratamiento.getIdPlanTratamiento()), abonos, avance};
                 
                 objetos.add(fila);
             }
