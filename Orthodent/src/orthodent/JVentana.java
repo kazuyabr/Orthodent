@@ -95,7 +95,7 @@ public class JVentana extends JFrame{
     
     private void crearAgenda(){
         this.contenedorAgenda.setLayout(new BorderLayout());
-        this.agenda = new Agenda();
+        this.agenda = new Agenda(this.usuario);
         
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());

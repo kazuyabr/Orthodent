@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 
 import com.thirdnf.ResourceScheduler.Scheduler;
+import modelo.Usuario;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joda.time.DateTime;
@@ -20,8 +21,10 @@ import org.joda.time.LocalDate;
  * @author Mary
  */
 public class Agenda extends JPanel{
-    
-    public Agenda(){
+    private Usuario actual;
+    public Agenda(Usuario actual){
+        this.actual = actual;
+        
         //Introducir código aquí
         this.setBackground(new Color(255,255,255));
         this.setPreferredSize(new Dimension(1073, 561));
@@ -46,5 +49,6 @@ public class Agenda extends JPanel{
     
     private void handleAddAppointment(@Nullable Resource resource, @NotNull DateTime dateTime) {
         System.out.println(dateTime);
+        new NuevaCita(((JFrame)this.getTopLevelAncestor()), true, dateTime).setVisible(true);
     }
 }
