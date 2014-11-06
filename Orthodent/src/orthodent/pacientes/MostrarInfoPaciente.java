@@ -271,11 +271,11 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         }
     }
     
-    public void cambiarRecaudacion(){
+    public void cambiarRecaudacion() throws Exception{
         if(opActual!=5){
             this.removeAncestor();
             
-            this.recaudacionPanel = new Recaudacion(this.paciente);
+            this.recaudacionPanel = new Recaudacion(this.paciente, this.actual);
             
             this.contenedor.add(this.recaudacionPanel,BorderLayout.CENTER);
             this.updateUI();
@@ -578,7 +578,11 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         if(e.getSource() == this.recaudacion){
             this.guardarAntes();
             this.setIconButton(5);
-            this.cambiarRecaudacion();
+            try {
+                this.cambiarRecaudacion();
+            } catch (Exception ex) {
+                Logger.getLogger(MostrarInfoPaciente.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         if(e.getSource() == this.pagosRecibidos){
             this.guardarAntes();
