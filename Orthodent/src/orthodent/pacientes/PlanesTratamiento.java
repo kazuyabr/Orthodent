@@ -191,6 +191,8 @@ public class PlanesTratamiento extends JPanel{
                 if (me.getClickCount() == 1) { // cuando te toco suave!! 
                     Object [] fila = getRowAt(row);
                     try {
+                        System.out.println(((Item)fila[1]));
+                        
                         tratamientotoSelected = PlanTratamientoDB.getPlanTratamiento(((Item)fila[1]).getId());
                                                
                         if(tratamientotoSelected!=null){
@@ -225,7 +227,7 @@ public class PlanesTratamiento extends JPanel{
     }
     
     private Object[] getRowAt(int row) {
-        Object[] result = new String[this.columnasPlanesTratamiento.length];
+        Object[] result = new Object[this.columnasPlanesTratamiento.length];
         
         for (int i = 0; i < this.columnasPlanesTratamiento.length; i++) {
             result[i] = this.tablaTratamiento.getModel().getValueAt(row, i);
