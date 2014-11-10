@@ -79,6 +79,30 @@ public class FichaEvolucionDB {
         }
     }
     
+    public static ArrayList<FichaEvolucion> listarFichasEvolucionPlanTratamiento(int idPlanTratamiento){
+        ArrayList<FichaEvolucion> fichasEvolucion = null;        
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * FROM ficha_evolucion WHERE id_plantratamiento="+idPlanTratamiento);
+            fichasEvolucion = new ArrayList<FichaEvolucion>();
+            while (rs.next())
+            {
+                FichaEvolucion f = new FichaEvolucion(rs.getInt("id_fichaevolucion"), rs.getInt("id_plantratamiento"), rs.getString("fecha_cita"), rs.getString("descripcion"));
+                fichasEvolucion.add(f);
+            }
+            rs.close();
+            con.close();
+            return fichasEvolucion;
+        }
+        catch ( SQLException e) {
+            return null;
+        }
+    }      
+    
     static public FichaEvolucion getFichaEvolucion(int idFichaevolucion) throws Exception{
         FichaEvolucion fichaEvolucion = null;
         try {
