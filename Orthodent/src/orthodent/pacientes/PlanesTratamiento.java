@@ -193,6 +193,7 @@ public class PlanesTratamiento extends JPanel{
                     try {
                         System.out.println(((Item)fila[1]));
                         
+                        
                         tratamientotoSelected = PlanTratamientoDB.getPlanTratamiento(((Item)fila[1]).getId());
                                                
                         if(tratamientotoSelected!=null){
