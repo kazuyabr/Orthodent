@@ -8,22 +8,30 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.Date;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import orthodent.JVentana;
+import orthodent.db.FichaEvolucionDB;
 
 /**
  *
- * @author Mary
+ * @author Msanhuezal
  */
 public class NuevaFichaEvaluacion extends javax.swing.JDialog {
 
     /**
      * Creates new form NuevoUsuario
      */
-    public NuevaFichaEvaluacion(java.awt.Frame parent, boolean modal) {
+    public static int idPlanTratamiento;
+    public static FichasClinicas fichaClinicaPadre;
+    
+    public NuevaFichaEvaluacion(java.awt.Frame parent, boolean modal, int idPlanTratamiento, FichasClinicas fc) {
         super(parent, modal);
         initComponents();
+        fichaClinicaPadre = fc;
         this.aceptar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.cancelar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
+        this.idPlanTratamiento = idPlanTratamiento;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation((screenSize.width - this.getSize().width) / 2 ,
                 (screenSize.height - this.getSize().height) / 2);
@@ -206,7 +214,22 @@ public class NuevaFichaEvaluacion extends javax.swing.JDialog {
 
     
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
-        
+        Date date = this.calendarioFecha.getDate();
+        String fechaCita = getFechaString(date);
+        String descripcion = this.textDescripcion.getText();
+        if(validarCampos()){
+            boolean respuesta = FichaEvolucionDB.crearFichaEvolucion(this.idPlanTratamiento, fechaCita, descripcion);            
+            this.fichaClinicaPadre.updateModeloFichaEvolucion();
+            this.fichaClinicaPadre.updateUI();
+            
+            this.dispose();
+        }
+        else{
+                        JOptionPane.showMessageDialog(this,
+                    "Faltan campos por completar",
+                    "Orthodent",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
        
     }//GEN-LAST:event_aceptarActionPerformed
 
@@ -214,6 +237,15 @@ public class NuevaFichaEvaluacion extends javax.swing.JDialog {
 
     }//GEN-LAST:event_textDescripcionKeyTyped
 
+    
+    public boolean validarCampos(){
+        String fechaCita = this.calendarioFecha.getDateFormatString();
+        String descripcion = this.textDescripcion.getText();        
+        if(!fechaCita.equals("") && !descripcion.equals("")){
+            return true;
+        }
+        return false;
+    }
     
         
    

@@ -103,6 +103,24 @@ public class FichaEvolucionDB {
         }
     }      
     
+    public static boolean eliminarFichaEvolucion(int idFichaEvolucion) throws SQLException{
+        try{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            
+            java.sql.Statement st = con.createStatement();
+            int aux = st.executeUpdate("DELETE FROM ficha_evolucion\n" +
+                                            "WHERE id_fichaevolucion="+idFichaEvolucion);
+            boolean resultado = (aux == 1)? true : false;
+            st.close();
+            con.close();
+            return resultado;
+        }
+        catch ( SQLException e) {
+            return false;
+        }
+    }    
+    
     static public FichaEvolucion getFichaEvolucion(int idFichaevolucion) throws Exception{
         FichaEvolucion fichaEvolucion = null;
         try {

@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -25,23 +27,23 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
+import modelo.FichaEvolucion;
 import modelo.Paciente;
 import modelo.PlanTratamiento;
-import modelo.Presupuesto;
+import modelo.Rol;
 import modelo.Tratamiento;
-import modelo.TratamientoPiezaPresupuesto;
 import modelo.Usuario;
 import orthodent.Item;
+import orthodent.JVentana;
 import orthodent.db.Autenticacion;
+import orthodent.db.FichaEvolucionDB;
 import orthodent.db.PlanTratamientoDB;
-import orthodent.db.PresupuestoDB;
+import orthodent.db.RolDB;
 import orthodent.db.TratamientoDB;
-import orthodent.db.TratamientoPiezaPlanDB;
-import orthodent.db.TratamientoPiezaPresupuestoDB;
 
 /**
  *
- * @author Mary
+ * @author Msanhuezal
  */
 public class FichasClinicas extends JPanel{
 
@@ -51,13 +53,14 @@ public class FichasClinicas extends JPanel{
     private String [] columnasPlanesTratamiento;
     private Object [][] filasPlanesTratamiento;
     private TableModel modeloPlanesTratamiento;
-    private String [] columnasNombrePiezaTratamiento;
-    private Object [][] filasPiezaTratamiento;
-    private DefaultTableModel modeloPiezaTratamiento;
+    private String [] columnasNombreFichaEvolucion;
+    private Object [][] filasFichaEvolucion;
+    private DefaultTableModel modeloFichaEvolucion;
     private String profesionalSelected;
     private String estadoSelected;
     private Paciente pacienteSelected;
     private PlanTratamiento tratamientotoSelected;
+    private FichaEvolucion fichaEvolucionSelected;
     private ArrayList<Tratamiento> auxiliar;
     private int rowSelected;
     private boolean nuevoPresupuestoSel;
@@ -72,16 +75,11 @@ public class FichasClinicas extends JPanel{
         this.nuevoPresupuestoSel = false;
         
         this.addInfo();
-        this.guardar.setEnabled(false);
         this.tablaTratamiento.getTableHeader().setReorderingAllowed(false);
         this.tablaFichaEvolucion.getTableHeader().setReorderingAllowed(false);
     }
     
     private void setCursor(){
-        //this.nuevoPresupuesto.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        this.eliminar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        this.aprobar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        this.guardar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.add.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.remove.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
@@ -98,8 +96,8 @@ public class FichasClinicas extends JPanel{
         this.iniciarTablaPlanesTratamientos();
     }
     
-    public void iniciarTablaPiezaTratamiento() throws Exception{
-        this.columnasNombrePiezaTratamiento = new String [] {"Pieza", "Tratamiento", "Valor Colegio O.", "Valor Orthodent"};
+    public void iniciarTablaFichaEvolucion() throws Exception{
+        this.columnasNombreFichaEvolucion = new String [] {"Fecha", "Descripción"};
         //this.updateTablaPiezaTratamiento();
         this.tablaFichaEvolucion.getTableHeader().setReorderingAllowed(false);
         
@@ -108,57 +106,52 @@ public class FichasClinicas extends JPanel{
                 JTable table =(JTable) me.getSource();
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
-                if (me.getClickCount() == 1) {
-                    int col = table.columnAtPoint(p);
-                    if(col==1){
-                        rowSelected = row;
+                if (me.getClickCount() == 1) { 
+                    Object [] fila = getRowAt2(row);
+                    try {
+                        fichaEvolucionSelected = FichaEvolucionDB.getFichaEvolucion(((Item)fila[1]).getId());
+                        if(fichaEvolucionSelected != null){
+                            habilitarBtnRemove();
+                        }
+
+                    } catch (Exception ex) {
                     }
-                }
-                if (me.getClickCount() == 2) {
-                    habilitarBoton();
                 }
             }
         });
     }
     
-    public void updateTablaPiezaTratamiento() throws Exception{
-        //Podria ser ordenado!! -> una opcion es que la consulta ordene
-        TratamientoPiezaPresupuesto t1 = new TratamientoPiezaPresupuesto(1, 2, 3);
-        TratamientoPiezaPresupuesto t2 = new TratamientoPiezaPresupuesto(1, 2, 3);
-        TratamientoPiezaPresupuesto t3 = new TratamientoPiezaPresupuesto(1, 2, 3);
-        ArrayList<TratamientoPiezaPresupuesto> piezasPresupuesto = new ArrayList<TratamientoPiezaPresupuesto>();
-        piezasPresupuesto.add(t1);
-        piezasPresupuesto.add(t2);
-        piezasPresupuesto.add(t3);
-        if(!this.nuevoPresupuestoSel){
-             //piezasPresupuesto = TratamientoPiezaPresupuestoDB.listarTratamientosPiezaPresupuesto(this.tratamientotoSelected.getIdPresupuesto());
-            //piezasPresupuesto = null;
-        }
-        int m = this.columnasNombrePiezaTratamiento.length;
+    public void updateTablaFichaEvolucion() throws Exception{
+
+        ArrayList<FichaEvolucion> fichasEvolucion = new ArrayList<FichaEvolucion>();
+
+        fichasEvolucion = FichaEvolucionDB.listarFichasEvolucionPlanTratamiento(tratamientotoSelected.getIdPlanTratamiento());
+
+        int m = this.columnasNombreFichaEvolucion.length;
         
         ArrayList<Object []> objetos = new ArrayList<Object []>();
         
-        for(TratamientoPiezaPresupuesto piezaPresupuesto : piezasPresupuesto){
-            String pieza = piezaPresupuesto.getPieza()+"";
-            Tratamiento tratamiento = TratamientoDB.getTratamiento(piezaPresupuesto.getId_tratamiento());
-            Object [] fila = new Object [] {pieza, 
-                new Item(tratamiento.getNombre(),tratamiento.getIdTratamiento()), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
+        for(FichaEvolucion fichaEvolucion : fichasEvolucion){
+            String fecha = girarFecha(fichaEvolucion.getFechaCita());
+            String descripcion = fichaEvolucion.getDescripcion();
+            Object [] fila = new Object [] {fecha, 
+                new Item(fichaEvolucion.getDescripcion(),fichaEvolucion.getIdFichaEvolucion()), "hora", "fecha"};
 
             objetos.add(fila);
         }
-        this.filasPiezaTratamiento = new Object [objetos.size()][m];
+        this.filasFichaEvolucion = new Object [objetos.size()][m];
         int i = 0;
         for(Object [] o : objetos){
-            this.filasPiezaTratamiento[i] = o;
+            this.filasFichaEvolucion[i] = o;
             i++;
         }
         
-        this.modeloPiezaTratamiento = new DefaultTableModel(this.filasPiezaTratamiento, this.columnasNombrePiezaTratamiento) {
+        this.modeloFichaEvolucion = new DefaultTableModel(this.filasFichaEvolucion, this.columnasNombreFichaEvolucion) {
             Class[] types = new Class [] {
                 String.class, Item.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, true, false, false, false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -170,45 +163,21 @@ public class FichasClinicas extends JPanel{
             }
         };
         
-        this.tablaFichaEvolucion.setModel(modeloPiezaTratamiento);
+        this.tablaFichaEvolucion.setModel(modeloFichaEvolucion);
         
-        TableColumn tratamientos = tablaFichaEvolucion.getColumnModel().getColumn(1);
-        JComboBox comboBox = new JComboBox(){
-            public void fireItemStateChanged(ItemEvent evt){
-                for(Tratamiento trat : auxiliar){
-                    if(trat.getNombre().equals(((Item)evt.getItem()).getValue())){
-                        modeloPiezaTratamiento.setValueAt("$"+trat.getValorColegio(), rowSelected, 2);
-                        modeloPiezaTratamiento.setValueAt("$"+trat.getValorClinica(), rowSelected, 3);
-                        
-                        int total = 0;
-                        for(int i=0; i<modeloPiezaTratamiento.getRowCount(); i++){
-                            String valor = (String) modeloPiezaTratamiento.getValueAt(i, 3);
-                            valor = valor.substring(valor.indexOf("$")+1, valor.length());
-                            int precio = Integer.parseInt(valor);
-                            total = total + precio;
-                        }
-                        
-                        //costoTotal.setText("$"+total);
-                        habilitarBoton();
-                    }
-                }
-            }
-        };
-        
-        Vector model = new Vector();
-        this.auxiliar = TratamientoDB.listarTratamientos();
-        if(auxiliar!=null && auxiliar.size()>0){
-            for(Tratamiento trat : auxiliar){
-                model.addElement(new Item(trat.getNombre(), trat.getIdTratamiento()));
-            }
-        }
-        comboBox.setModel(new DefaultComboBoxModel(model));
-        tratamientos.setCellEditor(new DefaultCellEditor(comboBox));
     }
     
-    public void habilitarBtnAddRemove(){
+    public void habilitarBtnAdd(){
         this.add.setEnabled(true);
+        //this.remove.setEnabled(true);
+    }
+    
+    public void habilitarBtnRemove(){
         this.remove.setEnabled(true);
+    }  
+    
+    public void deshabilitarBtnRemove(){
+        this.remove.setEnabled(false);
     }
     
      public void iniciarTablaPlanesTratamientos() throws Exception{
@@ -222,48 +191,18 @@ public class FichasClinicas extends JPanel{
                 JTable table =(JTable) me.getSource();
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
-                if (me.getClickCount() == 1) { // cuando te toco suave!! 
+                if (me.getClickCount() == 1) { 
                     Object [] fila = getRowAt(row);
                     try {
-                        System.out.println(((Item)fila[1]));
-                        habilitarBtnAddRemove();
-                                
+                        habilitarBtnAdd();
+                        deshabilitarBtnRemove();
                         
-                        //tratamientotoSelected = PlanTratamientoDB.getPlanTratamiento(((Item)fila[1]).getId());
+                        tratamientotoSelected = PlanTratamientoDB.getPlanTratamiento(((Item)fila[1]).getId());
                                                
                         if(tratamientotoSelected!=null){
-                            
                             tablaFichaEvolucion.setEnabled(true);
-                            iniciarTablaPiezaTratamiento();
-                            guardar.setEnabled(false);
-//                            Usuario profesionalNombre = Autenticacion.getUsuario(tratamientotoSelected.getIdProfesional());
-//                            
-//                            String nombre = profesionalNombre.getNombre();
-//                            if(nombre.contains(" ")){
-//                                nombre = nombre.substring(0,nombre.indexOf(" "));
-//                            }
-                            
-//                            profesional.setText(nombre+" "+profesionalNombre.getApellido_pat());
-//                            profesional.setEditable(false);
-          
-                            /*
-                            estado.setModel(new DefaultComboBoxModel(new String [] {"Activo","Cancelado"}));
-                            estado.setEnabled(true);
-                            if(presupuestoSelected.getEstado()){
-                                estadoSelected = "Activo";
-                                estado.setSelectedItem("Activo");
-                            }
-                            else{
-                                estadoSelected = "Cancelado";
-                                estado.setSelectedItem("Cancelado");
-                            }
-                            
-                            fechaCreacion.setText(presupuestoSelected.getFechaCreacion());
-                            fechaUltimaModificacion.setText(presupuestoSelected.getFechaModificacion());
-                            
-                            tablaPiezaTratamiento.setEnabled(true);
-                            iniciarTablaPiezaTratamiento();
-                            guardar.setEnabled(false);*/
+                            iniciarTablaFichaEvolucion();
+                            updateTablaFichaEvolucion();
                         }
                     } catch (Exception ex) {
                     }
@@ -282,6 +221,17 @@ public class FichasClinicas extends JPanel{
         
         return result;
     }
+    
+    private Object[] getRowAt2(int row) {
+        Object[] result = new Object[this.columnasNombreFichaEvolucion.length];
+        
+        for (int i = 0; i < this.columnasNombreFichaEvolucion.length; i++) {
+            result[i] = this.tablaFichaEvolucion.getModel().getValueAt(row, i);
+            
+        }   
+        
+        return result;
+    }    
     
     public void updateTablaPlanesTratamientos() throws Exception{
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
@@ -383,10 +333,8 @@ public class FichasClinicas extends JPanel{
         jPanel2 = new javax.swing.JPanel();
         panelTitulo = new javax.swing.JPanel();
         labelTitulo = new javax.swing.JLabel();
-        guardar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaTratamiento = new javax.swing.JTable();
-        eliminar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         labelProfesional = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -394,7 +342,6 @@ public class FichasClinicas extends JPanel{
         add = new javax.swing.JButton();
         remove = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        aprobar = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(850, 551));
@@ -427,15 +374,6 @@ public class FichasClinicas extends JPanel{
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        guardar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        guardar.setText("Guardar Cambios");
-        guardar.setEnabled(false);
-        guardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                guardarActionPerformed(evt);
-            }
-        });
-
         tablaTratamiento.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         tablaTratamiento.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -461,15 +399,6 @@ public class FichasClinicas extends JPanel{
             }
         });
         jScrollPane1.setViewportView(tablaTratamiento);
-
-        eliminar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        eliminar.setText("Eliminar");
-        eliminar.setEnabled(false);
-        eliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                eliminarActionPerformed(evt);
-            }
-        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -557,15 +486,6 @@ public class FichasClinicas extends JPanel{
                 .addContainerGap(107, Short.MAX_VALUE))
         );
 
-        aprobar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        aprobar.setText("Aprobar");
-        aprobar.setEnabled(false);
-        aprobar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aprobarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -575,16 +495,9 @@ public class FichasClinicas extends JPanel{
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(54, 54, 54)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(eliminar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(aprobar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(guardar))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane1)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(157, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -595,13 +508,7 @@ public class FichasClinicas extends JPanel{
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(eliminar)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(guardar)
-                        .addComponent(aprobar)))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -621,10 +528,6 @@ public class FichasClinicas extends JPanel{
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    public void guardar(){
-        this.guardarActionPerformed(null);
-    }
     
     private String getCurrentDateTime(){
         DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
@@ -662,366 +565,80 @@ public class FichasClinicas extends JPanel{
         return fecha;
     }
     
-    private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
-        
-//        if(this.tratamientotoSelected!=null){
-//            int  id_profesional = ((Item)this.profesional.getSelectedItem()).getId();
-//            
-//            boolean estado = false;
-//            if(((String)this.estado.getSelectedItem()).equals("Activo")){
-//                estado = true;
-//            }
-//            else{
-//                estado = false;
-//            }
-//            
-//            int costoTotal = 0;
-//            if(!this.costoTotal.getText().equals("$")){
-//                costoTotal = Integer.parseInt(this.costoTotal.getText().substring(this.costoTotal.getText().indexOf("$")+1, this.costoTotal.getText().length()));
-//            }
-//            
-//            int cantidadTratamientos = this.tablaPiezaTratamiento.getRowCount();
-//            
-//            String fechaModificacion = this.getCurrentDateTime();
-//            
-//            this.tratamientotoSelected.setIdProfesional(id_profesional);
-//            this.tratamientotoSelected.setEstado(estado);
-//            this.tratamientotoSelected.setCostoTotal(costoTotal);
-//            this.tratamientotoSelected.setCantidadTratamiento(cantidadTratamientos);
-//            this.tratamientotoSelected.setFechaModificacion(fechaModificacion);
-//            
-//            boolean respuesta = PresupuestoDB.editarPresupuesto(tratamientotoSelected);
-//            if(respuesta){
-//                
-//                boolean error = false;
-//                for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
-//                    try {
-//                        int pieza = Integer.parseInt((String) this.tablaPiezaTratamiento.getValueAt(i, 0));
-//                        
-//                        if(this.tablaPiezaTratamiento.getValueAt(i, 1)==null){
-//                            JOptionPane.showMessageDialog(this,
-//                                "Hay cambios en la tabla sin completar!",
-//                                "Orthodent",
-//                                JOptionPane.INFORMATION_MESSAGE);
-//                            error = true;
-//                            break;
-//                        }
-//                        else{
-//                            if(!(this.tablaPiezaTratamiento.getValueAt(i, 1) instanceof Item)){
-//                                JOptionPane.showMessageDialog(this,
-//                                    "Hay cambios en la tabla sin completar!",
-//                                    "Orthodent",
-//                                    JOptionPane.INFORMATION_MESSAGE);
-//                                error = true;
-//                                break;
-//                            }
-//                        }
-//                    } catch (Exception e) {
-//                        JOptionPane.showMessageDialog(this,
-//                            "Hay cambios en la tabla sin completar!",
-//                            "Orthodent",
-//                            JOptionPane.INFORMATION_MESSAGE);
-//                        error = true;
-//                        break;
-//                    }
-//                }
-//                
-//                if(!error){
-//                    try {
-//                        boolean resp = TratamientoPiezaPresupuestoDB.eliminarTratamientoPieza(tratamientotoSelected.getIdPresupuesto());
-//
-//                        if(resp){
-//                            for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
-//                                int pieza = Integer.parseInt((String)this.tablaPiezaTratamiento.getValueAt(i, 0));
-//                                int id_tratamiento = ((Item)this.tablaPiezaTratamiento.getValueAt(i, 1)).getId();
-//                                TratamientoPiezaPresupuestoDB.crearTratamientoPiezaPresupuesto(id_tratamiento, this.tratamientotoSelected.getIdPresupuesto(), pieza);
-//                            }
-//                            try {
-//                                this.updateTablaPresupuestos();
-//                            } catch (Exception ex) {
-//                            }
-//                            this.cambios = false;
-//                            this.guardar.setEnabled(false);
-//                        }
-//                    } catch (SQLException ex) {
-//                    }
-//                }
-//            }
-//        }
-//        else{
-//            //Nuevo Presupuesto
-//            int  id_profesional = ((Item)this.profesional.getSelectedItem()).getId();
-//            
-//            boolean estado = false;
-//            if(((String)this.estado.getSelectedItem()).equals("Activo")){
-//                estado = true;
-//            }
-//            else{
-//                estado = false;
-//            }
-//            
-//            int costoTotal = 0;
-//            if(!this.costoTotal.getText().equals("$")){
-//                costoTotal = Integer.parseInt(this.costoTotal.getText().substring(this.costoTotal.getText().indexOf("$")+1, this.costoTotal.getText().length()));
-//            }
-//            
-//            int cantidadTratamientos = this.tablaPiezaTratamiento.getRowCount();
-//            
-//            String fechaModificacion = this.getCurrentDateTime();
-//            
-//            boolean respuesta = PresupuestoDB.crearPresupuesto(this.paciente.getId_paciente(), id_profesional, estado,
-//                    costoTotal, cantidadTratamientos, true, fechaModificacion, fechaModificacion);
-//            
-//            if(respuesta){
-//                
-//                boolean error = false;
-//                for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
-//                    try {
-//                        int pieza = Integer.parseInt((String) this.tablaPiezaTratamiento.getValueAt(i, 0));
-//                        
-//                        if(this.tablaPiezaTratamiento.getValueAt(i, 1)==null){
-//                            JOptionPane.showMessageDialog(this,
-//                                "Hay cambios en la tabla sin completar!",
-//                                "Orthodent",
-//                                JOptionPane.INFORMATION_MESSAGE);
-//                            error = true;
-//                            break;
-//                        }
-//                        else{
-//                            if(!(this.tablaPiezaTratamiento.getValueAt(i, 1) instanceof Item)){
-//                                JOptionPane.showMessageDialog(this,
-//                                    "Hay cambios en la tabla sin completar!",
-//                                    "Orthodent",
-//                                    JOptionPane.INFORMATION_MESSAGE);
-//                                error = true;
-//                                break;
-//                            }
-//                        }
-//                    } catch (Exception e) {
-//                        JOptionPane.showMessageDialog(this,
-//                            "Hay cambios en la tabla sin completar!",
-//                            "Orthodent",
-//                            JOptionPane.INFORMATION_MESSAGE);
-//                        error = true;
-//                        break;
-//                    }
-//                }
-//                
-//                if(!error){
-//                    try {
-//                        Presupuesto pre = PresupuestoDB.getPresupuesto(fechaModificacion, this.paciente.getId_paciente());
-//                        
-//                        for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
-//                            int pieza = Integer.parseInt((String)this.tablaPiezaTratamiento.getValueAt(i, 0));
-//                            int id_tratamiento = ((Item)this.tablaPiezaTratamiento.getValueAt(i, 1)).getId();
-//                            TratamientoPiezaPresupuestoDB.crearTratamientoPiezaPresupuesto(id_tratamiento, pre.getIdPresupuesto(), pieza);
-//                        }
-//                        try {
-//                            this.updateTablaPresupuestos();
-//                        } catch (Exception ex) {
-//                        }
-//                        this.cambios = false;
-//                        this.nuevoPresupuestoSel = false;
-//                        this.guardar.setEnabled(false);
-//                    } catch (Exception ex) {
-//                    }
-//                }
-//            }
-//        }
-    }//GEN-LAST:event_guardarActionPerformed
-
-    private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
-//        Object[] options = {"Sí","No"};
-//        
-//        int n = JOptionPane.showOptionDialog(this,
-//                    "¿Esta seguro que desea eliminar el presupuesto?",
-//                    "Orthodent",
-//                    JOptionPane.YES_NO_CANCEL_OPTION,
-//                    JOptionPane.QUESTION_MESSAGE,
-//                    null,
-//                    options,
-//                    options[1]);
-//        
-//        if(n==0){
-//            try {
-//                boolean resul = PresupuestoDB.eliminarPresupuesto(this.tratamientotoSelected.getIdPresupuesto());
-//                if(resul){
-//                    try {
-//                        this.updateTablaPresupuestos();
-//                        this.profesional.setEnabled(false);
-//                        this.profesionalSelected = null;
-//                        this.profesional.setModel(new DefaultComboBoxModel(new String [] {""}));
-//                        this.profesional.setSelectedItem("");
-//                        this.costoTotal.setEnabled(false);
-//                        this.costoTotal.setText("");
-//                        this.estadoSelected = null;
-//                        this.estado.setModel(new DefaultComboBoxModel(new String [] {""}));
-//                        this.estado.setSelectedItem("");
-//                        this.estado.setEnabled(false);
-//                        this.fechaCreacion.setText("");
-//                        this.fechaUltimaModificacion.setText("");
-//                        this.tratamientotoSelected = null;
-//                        this.eliminar.setEnabled(false);
-//                        this.aprobar.setEnabled(false);
-//                        this.guardar.setEnabled(false);
-//                        this.tablaPiezaTratamiento.setEnabled(false);
-//                        this.remove.setEnabled(false);
-//                        this.add.setEnabled(false);
-//                    } catch (Exception ex) {
-//                    }
-//                }
-//            } catch (SQLException ex) {
-//            }
-//        }
-    }//GEN-LAST:event_eliminarActionPerformed
-
-    private void aprobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aprobarActionPerformed
-        
-//        //asd
-//        
-//        if(!this.nuevoPresupuestoSel){
-//            int  id_profesional = ((Item)this.profesional.getSelectedItem()).getId();
-//            
-//            boolean estado = false;
-//            if(((String)this.estado.getSelectedItem()).equals("Activo")){
-//                estado = true;
-//            }
-//            else{
-//                estado = false;
-//            }
-//
-//            int costoTotal = 0;
-//            if(!this.costoTotal.getText().equals("$")){
-//                costoTotal = Integer.parseInt(this.costoTotal.getText().substring(this.costoTotal.getText().indexOf("$")+1, this.costoTotal.getText().length()));
-//            }
-//
-//            int cantidadTratamientos = this.tablaPiezaTratamiento.getRowCount();
-//
-//            String fechaModificacion = this.getCurrentDateTime();
-//
-//            this.tratamientotoSelected.setIdProfesional(id_profesional);
-//            this.tratamientotoSelected.setEstado(estado);
-//            this.tratamientotoSelected.setCostoTotal(costoTotal);
-//            this.tratamientotoSelected.setCantidadTratamiento(cantidadTratamientos);
-//            this.tratamientotoSelected.setFechaModificacion(fechaModificacion);
-//            
-//            boolean respuesta = PlanTratamientoDB.crearPlanTratamiento(this.paciente.getId_paciente(), id_profesional, this.tratamientotoSelected.getFechaCreacion(),
-//                    fechaModificacion, costoTotal, 0, 0, true, fechaModificacion, fechaModificacion);
-//            
-//            if(respuesta){
-//                
-//                boolean error = false;
-//                for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
-//                    try {
-//                        int pieza = Integer.parseInt((String) this.tablaPiezaTratamiento.getValueAt(i, 0));
-//                        
-//                        if(this.tablaPiezaTratamiento.getValueAt(i, 1)==null){
-//                            JOptionPane.showMessageDialog(this,
-//                                "Hay cambios en la tabla sin completar!",
-//                                "Orthodent",
-//                                JOptionPane.INFORMATION_MESSAGE);
-//                            error = true;
-//                            break;
-//                        }
-//                        else{
-//                            if(!(this.tablaPiezaTratamiento.getValueAt(i, 1) instanceof Item)){
-//                                JOptionPane.showMessageDialog(this,
-//                                    "Hay cambios en la tabla sin completar!",
-//                                    "Orthodent",
-//                                    JOptionPane.INFORMATION_MESSAGE);
-//                                error = true;
-//                                break;
-//                            }
-//                        }
-//                    } catch (Exception e) {
-//                        JOptionPane.showMessageDialog(this,
-//                            "Hay cambios en la tabla sin completar!",
-//                            "Orthodent",
-//                            JOptionPane.INFORMATION_MESSAGE);
-//                        error = true;
-//                        break;
-//                    }
-//                }
-//                
-//                if(!error){
-//                    try {
-//                        PlanTratamiento plan = PlanTratamientoDB.getPlanTratamiento(fechaModificacion, this.paciente.getId_paciente());
-//                        
-//                        for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
-//                            int pieza = Integer.parseInt((String)this.tablaPiezaTratamiento.getValueAt(i, 0));
-//                            int id_tratamiento = ((Item)this.tablaPiezaTratamiento.getValueAt(i, 1)).getId();
-//                            
-//                            TratamientoPiezaPlanDB.crearTratamientoPiezaPlan(plan.getIdPlanTratamiento(), id_tratamiento, pieza, false);
-//                        }
-//                        
-//                        TratamientoPiezaPresupuestoDB.eliminarTratamientoPieza(this.tratamientotoSelected.getIdPresupuesto());
-//                        
-//                        PresupuestoDB.purgarPresupuesto(this.tratamientotoSelected.getIdPresupuesto());
-//                        
-//                        try {
-//                            this.updateTablaPresupuestos();
-//                            this.profesional.setEnabled(false);
-//                            this.profesionalSelected = null;
-//                            this.profesional.setModel(new DefaultComboBoxModel(new String [] {""}));
-//                            this.profesional.setSelectedItem("");
-//                            this.costoTotal.setEnabled(false);
-//                            this.costoTotal.setText("");
-//                            this.estadoSelected = null;
-//                            this.estado.setModel(new DefaultComboBoxModel(new String [] {""}));
-//                            this.estado.setSelectedItem("");
-//                            this.estado.setEnabled(false);
-//                            this.fechaCreacion.setText("");
-//                            this.fechaUltimaModificacion.setText("");
-//                            this.tratamientotoSelected = null;
-//                            this.eliminar.setEnabled(false);
-//                            this.aprobar.setEnabled(false);
-//                            this.guardar.setEnabled(false);
-//                            this.tablaPiezaTratamiento.setEnabled(false);
-//                            this.remove.setEnabled(false);
-//                            this.add.setEnabled(false);
-//                        } catch (Exception ex) {
-//                        }
-//                    } catch (Exception ex) {
-//                    }
-//                }
-//            }
-//        }
-//        
-//        
-        
-    }//GEN-LAST:event_aprobarActionPerformed
-
     private void removeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeActionPerformed
-//        int SelectedRow = this.tablaFichaEvolucion.getSelectedRow();
-//        this.modeloPiezaTratamiento.removeRow(this.tablaFichaEvolucion.convertRowIndexToModel(SelectedRow));
-//        
-//        int total = 0;
-//        for(int i=0; i<modeloPiezaTratamiento.getRowCount(); i++){
-//            String valor = (String) modeloPiezaTratamiento.getValueAt(i, 3);
-//            valor = valor.substring(valor.indexOf("$")+1, valor.length());
-//            int precio = Integer.parseInt(valor);
-//            total = total + precio;
-//        }
-//
-//        //costoTotal.setText("$"+total);
-//        habilitarBoton();
+        if(fichaEvolucionSelected != null){
+            Object[] options = {"Sí","No"};
+
+                    int n = JOptionPane.showOptionDialog(this,
+                                "¿Esta seguro que desea eliminar la ficha clínica?",
+                                "Orthodent",
+                                JOptionPane.YES_NO_CANCEL_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                options,
+                                options[1]);
+            if(n==0){
+                try {
+                    boolean respuesta = FichaEvolucionDB.eliminarFichaEvolucion(fichaEvolucionSelected.getIdFichaEvolucion());
+                    updateModeloFichaEvolucion();
+                    this.jPanel1.updateUI();
+                } catch (SQLException ex) {
+                    Logger.getLogger(FichasClinicas.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }//GEN-LAST:event_removeActionPerformed
 
+        public void updateModeloFichaEvolucion(){
+        //Podria ser ordenado!! -> una opcion es que la consulta ordene
+        ArrayList<FichaEvolucion> fichasEvolucion = FichaEvolucionDB.listarFichasEvolucionPlanTratamiento(fichaEvolucionSelected.getIdPlanTratamiento());
+        
+        int m = this.columnasNombreFichaEvolucion.length;
+        
+        ArrayList<Object []> objetos = new ArrayList<Object []>();
+        
+        for(FichaEvolucion fichaEvolucion : fichasEvolucion){
+            String fecha = girarFecha(fichaEvolucion.getFechaCita());
+            String descripcion = fichaEvolucion.getDescripcion();
+            Object [] fila = new Object [] {fecha, 
+                new Item(fichaEvolucion.getDescripcion(),fichaEvolucion.getIdFichaEvolucion()), "hora", "fecha"};
+
+            objetos.add(fila);
+        }
+        this.filasFichaEvolucion = new Object [objetos.size()][m];
+        int i = 0;
+        for(Object [] o : objetos){
+            this.filasFichaEvolucion[i] = o;
+            i++;
+        }
+        
+        this.modeloFichaEvolucion = new DefaultTableModel(this.filasFichaEvolucion, this.columnasNombreFichaEvolucion) {
+            Class[] types = new Class [] {
+                String.class, Item.class, String.class, String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
+        
+        this.tablaFichaEvolucion.setModel(modeloFichaEvolucion);
+    }
+    
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
-        NuevaFichaEvaluacion nf = new NuevaFichaEvaluacion(null, cambios);
-        nf.setVisible(true);
+        new NuevaFichaEvaluacion(((JVentana)this.getTopLevelAncestor()),true, tratamientotoSelected.getIdPlanTratamiento(), this).setVisible(true);
     }//GEN-LAST:event_addActionPerformed
     
-    private void habilitarBoton(){
-        this.cambios = true;
-        this.guardar.setEnabled(true);
-    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add;
-    private javax.swing.JButton aprobar;
-    private javax.swing.JButton eliminar;
-    private javax.swing.JButton guardar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
