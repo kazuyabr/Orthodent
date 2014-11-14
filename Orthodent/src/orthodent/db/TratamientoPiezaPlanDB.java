@@ -44,7 +44,7 @@ public class TratamientoPiezaPlanDB {
                                             "SET id_plantratamiento = "+tratamientoPiezaPlan.getIdPlanTratamiento()+"\n" +
                                             ",id_tratamiento="+tratamientoPiezaPlan.getIdTratamiento()+"\n" +
                                             ",pieza="+tratamientoPiezaPlan.getPieza()+"\n" +
-                                            "fecha_realizado='"+tratamientoPiezaPlan.getFechaRealizado()+"'\n" +
+                                            ",fecha_realizado='"+tratamientoPiezaPlan.getFechaRealizado()+"'\n" +
                                             ",estado="+tratamientoPiezaPlan.isEstado()+"\n" +
                                             "WHERE id_tratamiento_piezaplan="+tratamientoPiezaPlan.getIdTratamientoPiezaPlan());
             boolean resultado = (aux == 1)? true : false;

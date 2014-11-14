@@ -473,24 +473,24 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
             }
         }
         else if(this.opActual==4){
-            //Fichas Clinicas
-            if(this.fichasClinicasPanel.getCambios()){
-                Object[] options = {"Sí","No"};
-        
-                int n = JOptionPane.showOptionDialog(this,
-                            "Hay cambios que no se han guardardo\n\n"+
-                            "¿Desea guardar?",
-                            "Orthodent",
-                            JOptionPane.YES_NO_CANCEL_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null,
-                            options,
-                            options[0]);
-
-                if(n==0){
-                    this.fichasClinicasPanel.guardar();
-                }
-            }
+//            //Fichas Clinicas
+//            if(this.fichasClinicasPanel.getCambios()){
+//                Object[] options = {"Sí","No"};
+//        
+//                int n = JOptionPane.showOptionDialog(this,
+//                            "Hay cambios que no se han guardardo\n\n"+
+//                            "¿Desea guardar?",
+//                            "Orthodent",
+//                            JOptionPane.YES_NO_CANCEL_OPTION,
+//                            JOptionPane.QUESTION_MESSAGE,
+//                            null,
+//                            options,
+//                            options[0]);
+//
+//                if(n==0){
+//                    this.fichasClinicasPanel.guardar();
+//                }
+//            }
         }
         else if(this.opActual==5){
             //Recaudacion

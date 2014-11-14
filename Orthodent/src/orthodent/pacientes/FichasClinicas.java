@@ -106,8 +106,8 @@ public class FichasClinicas extends JPanel{
                 JTable table =(JTable) me.getSource();
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
+                Object [] fila = getRowAt2(row);
                 if (me.getClickCount() == 1) { 
-                    Object [] fila = getRowAt2(row);
                     try {
                         fichaEvolucionSelected = FichaEvolucionDB.getFichaEvolucion(((Item)fila[1]).getId());
                         if(fichaEvolucionSelected != null){
@@ -117,8 +117,23 @@ public class FichasClinicas extends JPanel{
                     } catch (Exception ex) {
                     }
                 }
+                else if(me.getClickCount() == 2){
+                    try {
+                        fichaEvolucionSelected = FichaEvolucionDB.getFichaEvolucion(((Item)fila[1]).getId());
+                        if(fichaEvolucionSelected != null){
+                            habilitarBtnRemove();
+                            editarFichaEvolucion();
+                        }                        
+                    } catch (Exception ex) {
+                        Logger.getLogger(FichasClinicas.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }
         });
+    }
+    
+    public void editarFichaEvolucion(){
+        new VentanaFichaEvaluacion(((JVentana)this.getTopLevelAncestor()),true, tratamientotoSelected.getIdPlanTratamiento(), this, false, fichaEvolucionSelected).setVisible(true);
     }
     
     public void updateTablaFichaEvolucion() throws Exception{
@@ -341,7 +356,6 @@ public class FichasClinicas extends JPanel{
         tablaFichaEvolucion = new javax.swing.JTable();
         add = new javax.swing.JButton();
         remove = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(850, 551));
@@ -404,7 +418,7 @@ public class FichasClinicas extends JPanel{
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         labelProfesional.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
-        labelProfesional.setText("Ficha Clinica");
+        labelProfesional.setText("Evolución");
 
         tablaFichaEvolucion.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         tablaFichaEvolucion.setModel(new javax.swing.table.DefaultTableModel(
@@ -426,7 +440,9 @@ public class FichasClinicas extends JPanel{
         tablaFichaEvolucion.setEnabled(false);
         jScrollPane2.setViewportView(tablaFichaEvolucion);
 
+        add.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/add_mini.png"))); // NOI18N
+        add.setText("Nueva Ficha Clínica");
         add.setBorder(null);
         add.setBorderPainted(false);
         add.setContentAreaFilled(false);
@@ -448,8 +464,6 @@ public class FichasClinicas extends JPanel{
             }
         });
 
-        jLabel1.setText("Agregar Ficha Clínica");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -460,26 +474,20 @@ public class FichasClinicas extends JPanel{
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(labelProfesional)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(add))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(remove)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(remove)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelProfesional)
-                    .addComponent(add)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(add))
+                .addGap(13, 13, 13)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(remove))
@@ -508,7 +516,7 @@ public class FichasClinicas extends JPanel{
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -633,13 +641,12 @@ public class FichasClinicas extends JPanel{
     }
     
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
-        new NuevaFichaEvaluacion(((JVentana)this.getTopLevelAncestor()),true, tratamientotoSelected.getIdPlanTratamiento(), this).setVisible(true);
+        new VentanaFichaEvaluacion(((JVentana)this.getTopLevelAncestor()),true, tratamientotoSelected.getIdPlanTratamiento(), this, true, fichaEvolucionSelected).setVisible(true);
     }//GEN-LAST:event_addActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
