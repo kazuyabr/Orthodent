@@ -283,11 +283,11 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         }
     }
     
-    public void cambiarPagosRecibidos(){
+    public void cambiarPagosRecibidos() throws Exception{
         if(opActual!=6){
             this.removeAncestor();
             
-            this.pagosRecibidosPanel = new PagosRecibidos(this.paciente);
+            this.pagosRecibidosPanel = new PagosRecibidos(this.paciente, this.actual);
             
             this.contenedor.add(this.pagosRecibidosPanel,BorderLayout.CENTER);
             this.updateUI();
@@ -453,7 +453,7 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
             }
         }
         else if(this.opActual==3){
-            //Sesiones
+            //Presupuestos
             if(this.presupuestoPanel.getCambios()){
                 Object[] options = {"Sí","No"};
         
@@ -512,26 +512,6 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
                 }
             }
         }
-        else{
-            //Pagos Recibidos
-            if(this.pagosRecibidosPanel.getCambios()){
-                Object[] options = {"Sí","No"};
-        
-                int n = JOptionPane.showOptionDialog(this,
-                            "Hay cambios que no se han guardardo\n\n"+
-                            "¿Desea guardar?",
-                            "Orthodent",
-                            JOptionPane.YES_NO_CANCEL_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null,
-                            options,
-                            options[0]);
-
-                if(n==0){
-                    this.pagosRecibidosPanel.guardar();
-                }
-            }
-        }
     }
     
     public void volver(){
@@ -587,7 +567,10 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         if(e.getSource() == this.pagosRecibidos){
             this.guardarAntes();
             this.setIconButton(6);
-            this.cambiarPagosRecibidos();
+            try {
+                this.cambiarPagosRecibidos();
+            } catch (Exception ex) {
+            }
         }
     }
 }
