@@ -82,12 +82,8 @@ public class TratamientoDB {
             con.close();
             return tratamiento;
         }
-
         catch ( SQLException e) {
             return null;
         }
-    }     
-    
-    
-    
+    }
 }

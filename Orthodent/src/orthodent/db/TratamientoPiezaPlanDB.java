@@ -45,8 +45,9 @@ public class TratamientoPiezaPlanDB {
                                             ",id_tratamiento="+tratamientoPiezaPlan.getIdTratamiento()+"\n" +
                                             ",pieza="+tratamientoPiezaPlan.getPieza()+"\n" +
                                             ",fecha_realizado='"+tratamientoPiezaPlan.getFechaRealizado()+"'\n" +
-                                            ",estado="+tratamientoPiezaPlan.isEstado()+"\n" +
+                                            ",estado="+tratamientoPiezaPlan.getEstado()+"\n" +
                                             "WHERE id_tratamiento_piezaplan="+tratamientoPiezaPlan.getIdTratamientoPiezaPlan());
+            
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
@@ -83,7 +84,7 @@ public class TratamientoPiezaPlanDB {
         }
     }   
     
-    public static ArrayList<TratamientoPiezaPlan> listarTratamientosPiezaPlanPT(int idPlanTratamiento){ // listar tratamiento pieza plan por plan de tratamiento
+    public static ArrayList<TratamientoPiezaPlan> listarTratamientosPiezaPlan(int idPlanTratamiento){ // listar tratamiento pieza plan por plan de tratamiento
         ArrayList<TratamientoPiezaPlan> tratamientosPiezaPlan = null;        
         try {
             DbConnection db = new DbConnection();

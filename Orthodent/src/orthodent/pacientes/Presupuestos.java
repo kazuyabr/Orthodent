@@ -133,8 +133,7 @@ public class Presupuestos extends JPanel{
         for(TratamientoPiezaPresupuesto piezaPresupuesto : piezasPresupuesto){
             String pieza = piezaPresupuesto.getPieza()+"";
             Tratamiento tratamiento = TratamientoDB.getTratamiento(piezaPresupuesto.getId_tratamiento());
-            Object [] fila = new Object [] {pieza, 
-                new Item(tratamiento.getNombre(),tratamiento.getIdTratamiento()), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
+            Object [] fila = new Object [] {pieza, new Item(tratamiento.getNombre(),tratamiento.getIdTratamiento()), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
 
             objetos.add(fila);
         }
