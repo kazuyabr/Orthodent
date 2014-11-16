@@ -22,14 +22,12 @@ import org.joda.time.LocalDate;
  */
 public class Agenda extends JPanel{
     private Usuario actual;
-    public Agenda(Usuario actual){
-        this.actual = actual;
-    }
         
     
     private BarraAcciones barraAcciones;
     
-    public Agenda(){
+    public Agenda(Usuario actual){
+        this.actual = actual;
         //Introducir código aquí
         this.setBackground(new Color(255,255,255));
         this.setPreferredSize(new Dimension(1073, 561));
