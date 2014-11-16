@@ -102,7 +102,7 @@ public class Recaudacion extends JPanel{
     }
     
     public void iniciarTablaPiezaTratamiento() throws Exception{
-        this.columnasFichaClinica = new String [] {"Ultima Fecha abonada", "Cantidad"};
+        this.columnasFichaClinica = new String [] {"Fecha", "Cantidad"};
         
         this.updateTablaPiezaTratamiento();
         this.tablaFichaClinica.getTableHeader().setReorderingAllowed(false);
@@ -129,13 +129,13 @@ public class Recaudacion extends JPanel{
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
         //ArrayList<TratamientoPiezaPresupuesto> piezasPresupuesto = new ArrayList<TratamientoPiezaPresupuesto>();
         
-System.out.println("esta updateTablaPiezaTratamiento");         
+
         ArrayList<Pago> pagos = new ArrayList<Pago>();
         if(!this.nuevoPlanTratamientoSelected){
-System.out.println("esta selected");            
+
              //piezasPresupuesto = TratamientoPiezaPresupuestoDB.listarTratamientosPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto());
              pagos = PagoDB.listarPagosDePlanTratamiento(this.planTratamiento.getIdPlanTratamiento());
-System.out.println("->"+pagos);             
+
              
         }
         int m = this.columnasFichaClinica.length;
@@ -153,8 +153,11 @@ System.out.println("->"+pagos);
         for(Pago pg: pagos){
             String fecha = pg.getFecha()+"";
             Pago nPago = PagoDB.getPago(pg.getIdPago());
-            Object [] fila = new Object [] {new Item(nPago.getFecha(),nPago.getIdPago()),
+            Object [] fila = new Object [] {
+                fecha,
+                //new Item(nPago.getFecha(),nPago.getIdPago()),
                 "$"+nPago.getAbono()};
+                //new Item(nPago.getFecha(),nPago.getIdPago()),};
             objetos.add(fila);
         }
         
@@ -166,9 +169,9 @@ System.out.println("->"+pagos);
         }
         
         this.modeloPiezaTratamiento = new DefaultTableModel(this.filasPiezaTratamiento, this.columnasFichaClinica) {
-            Class[] types = new Class [] {Item.class, String.class};
+            Class[] types = new Class [] {String.class, String.class};
             boolean[] canEdit = new boolean [] {
-                false, true};
+                true, true};
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
@@ -181,37 +184,37 @@ System.out.println("->"+pagos);
         
         this.tablaFichaClinica.setModel(modeloPiezaTratamiento);
         
-        TableColumn tratamientos = tablaFichaClinica.getColumnModel().getColumn(1);
-        JComboBox comboBox = new JComboBox(){
-            public void fireItemStateChanged(ItemEvent evt){
-                for(Pago trat : auxiliar){
-                    if(trat.getFecha().equals(((Item)evt.getItem()).getValue())){
-                        modeloPiezaTratamiento.setValueAt("$"+trat.getAbono(), rowSelected, 2);
-                        
-                        int total = 0;
-                        for(int i=0; i<modeloPiezaTratamiento.getRowCount(); i++){
-                            String valor = (String) modeloPiezaTratamiento.getValueAt(i, 2);
-                            valor = valor.substring(valor.indexOf("$")+1, valor.length());
-                            int precio = Integer.parseInt(valor);
-                            total = total + precio;
-                        }
-                        
-                        costoTotal.setText("$"+total);
-                        habilitarBoton();
-                    }
-                }
-            }
-        };
-        
-        Vector model = new Vector();
-        this.auxiliar = PagoDB.listarPagos();
-        if(auxiliar!=null && auxiliar.size()>0){
-            for(Pago trat : auxiliar){
-                model.addElement(new Item(trat.getFecha(), trat.getIdPago()));
-            }
-        }
-        comboBox.setModel(new DefaultComboBoxModel(model));
-        tratamientos.setCellEditor(new DefaultCellEditor(comboBox));
+//        TableColumn tratamientos = tablaFichaClinica.getColumnModel().getColumn(1);
+//        JComboBox comboBox = new JComboBox(){
+//            public void fireItemStateChanged(ItemEvent evt){
+//                for(Pago trat : auxiliar){
+//                    if(trat.getFecha().equals(((Item)evt.getItem()).getValue())){
+//                        modeloPiezaTratamiento.setValueAt("$"+trat.getAbono(), rowSelected, 2);
+//                        
+//                        int total = 0;
+//                        for(int i=0; i<modeloPiezaTratamiento.getRowCount(); i++){
+//                            String valor = (String) modeloPiezaTratamiento.getValueAt(i, 2);
+//                            valor = valor.substring(valor.indexOf("$")+1, valor.length());
+//                            int precio = Integer.parseInt(valor);
+//                            total = total + precio;
+//                        }
+//                        
+//                        costoTotal.setText("$"+total);
+//                        habilitarBoton();
+//                    }
+//                }
+//            }
+//        };
+//        
+//        Vector model = new Vector();
+//        this.auxiliar = PagoDB.listarPagos();
+//        if(auxiliar!=null && auxiliar.size()>0){
+//            for(Pago trat : auxiliar){
+//                model.addElement(new Item(trat.getFecha(), trat.getIdPago()));
+//            }
+//        }
+//        comboBox.setModel(new DefaultComboBoxModel(model));
+//        tratamientos.setCellEditor(new DefaultCellEditor(comboBox));
     }
     
     public void iniciarTablaPlanTratamiento() throws Exception{
@@ -251,15 +254,15 @@ System.out.println("->"+pagos);
                     Object [] fila = getRowAt(row);
                     try {
                         //Aca creo que tengo que buscar el pago por medio de la id del planTratamiento
-                        System.out.println("click");
+                        
                         //presupuestoSelected = PresupuestoDB.getPresupuesto((String)fila[4], paciente.getId_paciente());
                         int idPlanTra = Integer.parseInt(fila[4].toString());
-                        System.out.println(fila[4].toString()+" "+idPlanTra);
+                        
                         planTratamiento = PlanTratamientoDB.getPlanTratamiento(idPlanTra);
                         
-                        System.out.println("csm");
+                        
                         if(planTratamiento!=null){
-                            System.out.println("csm0");
+                        
                             eliminar.setEnabled(true);
                             remove.setEnabled(true);
                             add.setEnabled(true);
