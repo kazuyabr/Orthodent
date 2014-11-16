@@ -124,6 +124,7 @@ public class Presupuestos extends JPanel{
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
         ArrayList<TratamientoPiezaPresupuesto> piezasPresupuesto = new ArrayList<TratamientoPiezaPresupuesto>();
         if(!this.nuevoPresupuestoSel){
+            System.out.println("esta selected");
              piezasPresupuesto = TratamientoPiezaPresupuestoDB.listarTratamientosPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto());
         }
         int m = this.columnasNombrePiezaTratamiento.length;
@@ -230,11 +231,12 @@ public class Presupuestos extends JPanel{
                 JTable table =(JTable) me.getSource();
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
+                
                 if (me.getClickCount() == 1) {
                     Object [] fila = getRowAt(row);
                     try {
                         presupuestoSelected = PresupuestoDB.getPresupuesto((String)fila[4], paciente.getId_paciente());
-                        
+                        System.out.println((String)fila[4]);
                         if(presupuestoSelected!=null){
                             eliminar.setEnabled(true);
                             remove.setEnabled(true);
