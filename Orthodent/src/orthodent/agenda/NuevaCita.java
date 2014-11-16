@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import modelo.Paciente;
-import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+//import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.joda.time.DateTime;
 import orthodent.Item;
 import orthodent.db.PacienteDB;
@@ -286,6 +286,6 @@ public class NuevaCita extends javax.swing.JDialog {
         }
         this.pacientes.setModel(new DefaultComboBoxModel(model));
         this.pacientes.setSelectedIndex(0);
-        AutoCompleteDecorator.decorate(this.pacientes);
+        //AutoCompleteDecorator.decorate(this.pacientes);
     }
 }

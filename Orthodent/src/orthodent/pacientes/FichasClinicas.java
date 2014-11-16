@@ -133,6 +133,7 @@ public class FichasClinicas extends JPanel{
     }
     
     public void editarFichaEvolucion(){
+        //System.out.println("problem");
         new VentanaFichaEvaluacion(((JVentana)this.getTopLevelAncestor()),true, tratamientotoSelected.getIdPlanTratamiento(), this, false, fichaEvolucionSelected).setVisible(true);
     }
     
@@ -599,7 +600,7 @@ public class FichasClinicas extends JPanel{
 
         public void updateModeloFichaEvolucion(){
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
-        ArrayList<FichaEvolucion> fichasEvolucion = FichaEvolucionDB.listarFichasEvolucionPlanTratamiento(fichaEvolucionSelected.getIdPlanTratamiento());
+        ArrayList<FichaEvolucion> fichasEvolucion = FichaEvolucionDB.listarFichasEvolucionPlanTratamiento(tratamientotoSelected.getIdPlanTratamiento());
         
         int m = this.columnasNombreFichaEvolucion.length;
         

@@ -254,19 +254,19 @@ public class VentanaFichaEvaluacion extends javax.swing.JDialog {
                 boolean respuesta = FichaEvolucionDB.crearFichaEvolucion(this.idPlanTratamiento, fechaCita, descripcion);            
                 this.fichaClinicaPadre.updateModeloFichaEvolucion();
                 this.fichaClinicaPadre.updateUI();
-                this.dispose();
+                //this.dispose();
             }
             else{ //editar
                 if(verificarCambios()){
                     fichaEvolucion.setFechaCita(fechaCita);
                     fichaEvolucion.setDescripcion(descripcion);
                     boolean respuesta = FichaEvolucionDB.editarFichaEvolucion(fichaEvolucion);   
-                    System.out.println(respuesta+"asd");
                     this.fichaClinicaPadre.updateModeloFichaEvolucion();
                     this.fichaClinicaPadre.updateUI();                    
                 }
-                this.dispose();                
+                                
             }
+            this.dispose();
         }
         else{
                         JOptionPane.showMessageDialog(this,
