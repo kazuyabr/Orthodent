@@ -22,8 +22,10 @@ public class BarraAcciones extends javax.swing.JPanel {
      * Creates new form BarraAcciones
      */
     private Usuario usuarioActual;
-    public BarraAcciones(Usuario usuario) {
+    private Agenda contenedor;
+    public BarraAcciones(Usuario usuario, Agenda cont) {
         this.usuarioActual = usuario;
+        this.contenedor = cont;
         initComponents();
         initProfesionales();
     }
@@ -39,7 +41,7 @@ public class BarraAcciones extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         profesionales = new javax.swing.JComboBox();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        fechaAgenda = new com.toedter.calendar.JDateChooser();
         jLabel2 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -47,6 +49,12 @@ public class BarraAcciones extends javax.swing.JPanel {
         jLabel1.setText("Profesional");
 
         profesionales.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        fechaAgenda.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                fechaAgendaPropertyChange(evt);
+            }
+        });
 
         jLabel2.setText("Fecha");
 
@@ -62,7 +70,7 @@ public class BarraAcciones extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(50, 50, 50)
-                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(fechaAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(43, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -70,7 +78,7 @@ public class BarraAcciones extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fechaAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
                         .addComponent(profesionales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -79,9 +87,17 @@ public class BarraAcciones extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void fechaAgendaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_fechaAgendaPropertyChange
+        // TODO add your handling code here:
+        if(this.fechaAgenda.getDate()!=null){
+            System.out.println("ACA TENGO QUE CAMBIAR "+this.contenedor.obtenerSemana(this.fechaAgenda.getDate()));
+            
+        }
+    }//GEN-LAST:event_fechaAgendaPropertyChange
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser fechaAgenda;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JComboBox profesionales;
@@ -110,7 +126,6 @@ private void initProfesionales() {
             else{
                 Vector model = new Vector();
                 //tem item = null;
-                int i = 0;
                 for(Usuario user : usuarios){
                     String name = user.getNombre();
 
@@ -119,7 +134,6 @@ private void initProfesionales() {
                     }
                     name = name + " " + user.getApellido_pat();
                     model.addElement(new Item(name,user.getId_usuario()));
-                    i++;
                 }
                 profesionales.setModel(new DefaultComboBoxModel(model));
                 profesionales.setSelectedIndex(0);

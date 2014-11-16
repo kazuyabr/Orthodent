@@ -10,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 
 import com.thirdnf.ResourceScheduler.Scheduler;
+import java.util.Calendar;
+import java.util.Date;
 import modelo.Usuario;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -49,7 +51,7 @@ public class Agenda extends JPanel{
         this.setLayout(new BorderLayout());
         add(scheduler, BorderLayout.CENTER);
         
-        this.barraAcciones = new BarraAcciones(this.usuarioActual);
+        this.barraAcciones = new BarraAcciones(this.usuarioActual,this);
         
         this.add(barraAcciones, BorderLayout.NORTH);
         
@@ -59,4 +61,19 @@ public class Agenda extends JPanel{
         System.out.println(dateTime);
         new NuevaCita(((JFrame)this.getTopLevelAncestor()), true, dateTime).setVisible(true);
     }
+    
+    private void cambiarSemanaDeAgenda(Date fecha){
+        int semana = this.obtenerSemana(fecha);
+        
+    }
+    
+    public int obtenerSemana(Date fecha){
+        int semana=0;
+        Calendar c = Calendar.getInstance();
+        c.setTime(fecha);
+        semana = c.get(Calendar.WEEK_OF_YEAR);
+        return semana;
+    }
+    
+    
 }
