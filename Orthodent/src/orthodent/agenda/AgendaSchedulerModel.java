@@ -18,6 +18,7 @@ import org.joda.time.Duration;
 public class AgendaSchedulerModel extends AbstractScheduleModel
 {
     private String[] days = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"};
+    private ArrayList<AgendaResource> resources;
     private ArrayList<Cita> citas;
 
     @Override
@@ -34,8 +35,7 @@ public class AgendaSchedulerModel extends AbstractScheduleModel
 
     public void visitResources(ResourceVisitor resourceVisitor, LocalDate localDate)
     {
-        for(String day : days) {
-            Resource r = new AgendaResource(day);
+        for(AgendaResource r : resources) {
             resourceVisitor.visitResource(r);
         }
     }
@@ -59,16 +59,24 @@ public class AgendaSchedulerModel extends AbstractScheduleModel
     public AgendaSchedulerModel() 
     {
         this.citas = new ArrayList<Cita>();
+        this.resources = new ArrayList<AgendaResource>();
+        int i = 0;
+        for(String day : days) {
+            AgendaResource r = new AgendaResource(day, i++);
+            this.resources.add(r);
+        }
     }
 }
 
 class AgendaResource implements Resource
 {
     private final String _title;
+    private int pos;
 
-    public AgendaResource(String title)
+    public AgendaResource(String title, int pos)
     {
         _title = title;
+        this.pos = pos;
     }
 
     public Iterator<Availability> getAvailability(LocalDate localDate)
@@ -82,5 +90,10 @@ class AgendaResource implements Resource
     {
         return _title;
         
+    }
+    
+    public int getPos()
+    {
+        return pos;
     }
 }

@@ -28,12 +28,13 @@ public abstract class NuevaCita extends javax.swing.JDialog {
     DateTime inicio;
     boolean validar_horas = false;
     Resource _resource;
-    public NuevaCita(java.awt.Frame parent, boolean modal, Resource resource, DateTime inicio) {
+    public NuevaCita(java.awt.Frame parent, boolean modal, Resource resource, DateTime agenda_inicio) {
         super(parent, modal);
-        this.inicio = inicio;
+        this.inicio = agenda_inicio.plusDays(((AgendaResource)resource).getPos());
+        
         this._resource = resource;
         initComponents();
-        this.jTextField1.setText(inicio.toString("d/m/y"));
+        this.jTextField1.setText(inicio.toString("d/M/y"));
         this.jComboBox1.setSelectedIndex((inicio.getHourOfDay()-9)*4 + inicio.getMinuteOfHour()/15);
         this.jComboBox2.setSelectedIndex(jComboBox1.getSelectedIndex()+1);
         //this.jComboBox2.setSelectedIndex(jComboBox1.getSelectedIndex()+1);   
