@@ -507,9 +507,9 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
                             options,
                             options[0]);
 
-                if(n==0){
-                    this.recaudacionPanel.guardar();
-                }
+//                if(n==0){
+//                    this.recaudacionPanel.guardar();
+//                }
             }
         }
     }

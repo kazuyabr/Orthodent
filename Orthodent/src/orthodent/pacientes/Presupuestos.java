@@ -628,6 +628,11 @@ public class Presupuestos extends JPanel{
 
         costoTotal.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         costoTotal.setEnabled(false);
+        costoTotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                costoTotalActionPerformed(evt);
+            }
+        });
 
         add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/add_mini.png"))); // NOI18N
         add.setBorder(null);
@@ -1303,6 +1308,10 @@ public class Presupuestos extends JPanel{
     private void nuevoPresupuestoMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nuevoPresupuestoMouseDragged
         
     }//GEN-LAST:event_nuevoPresupuestoMouseDragged
+
+    private void costoTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costoTotalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_costoTotalActionPerformed
     
     private void habilitarBoton(){
         this.cambios = true;
