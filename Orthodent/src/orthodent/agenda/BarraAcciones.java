@@ -21,7 +21,11 @@ public class BarraAcciones extends javax.swing.JPanel {
     /**
      * Creates new form BarraAcciones
      */
-    public BarraAcciones() {
+    private Usuario usuarioActual;
+    private Agenda contenedor;
+    public BarraAcciones(Usuario usuario, Agenda cont) {
+        this.usuarioActual = usuario;
+        this.contenedor = cont;
         initComponents();
         initProfesionales();
     }
@@ -35,65 +39,110 @@ public class BarraAcciones extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
         profesionales = new javax.swing.JComboBox();
+        fechaAgenda = new com.toedter.calendar.JDateChooser();
+        jLabel2 = new javax.swing.JLabel();
 
-        profesionales.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel1.setText("Profesional");
+
         profesionales.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        fechaAgenda.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                fechaAgendaPropertyChange(evt);
+            }
+        });
+
+        jLabel2.setText("Fecha");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(profesionales, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(376, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(50, 50, 50)
+                .addComponent(profesionales, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(50, 50, 50)
+                .addComponent(fechaAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(profesionales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(fechaAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(profesionales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2)))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void fechaAgendaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_fechaAgendaPropertyChange
+        // TODO add your handling code here:
+        if(this.fechaAgenda.getDate()!=null){
+            System.out.println("ACA TENGO QUE CAMBIAR "+this.contenedor.obtenerSemana(this.fechaAgenda.getDate()));
+            
+        }
+    }//GEN-LAST:event_fechaAgendaPropertyChange
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.toedter.calendar.JDateChooser fechaAgenda;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JComboBox profesionales;
     // End of variables declaration//GEN-END:variables
 
-    private void initProfesionales() {
+private void initProfesionales() {
         ArrayList<Usuario> usuarios = Autenticacion.listarProfesionales();
             
         if(usuarios!=null && usuarios.size()>0){
-            /*Usuario profesional1 = Autenticacion.getUsuario(presupuestoSelected.getIdProfesional());
-
-            //String nombre = profesional1.getNombre();
-
-            if(nombre.contains(" ")){
-                nombre = nombre.substring(0,nombre.indexOf(" "));
-            }
-            //profesionalSelected = nombre+" "+profesional1.getApellido_pat();
-            */
-            Vector model = new Vector();
-            Item item = null;
-            int i = 0;
-            for(Usuario user : usuarios){
-                String name = user.getNombre();
+            
+            if(this.usuarioActual.getId_rol()==3){
+                Vector model = new Vector();
+                Item item = null;
+                String name = this.usuarioActual.getNombre();
 
                 if(name.contains(" ")){
                     name = name.substring(0,name.indexOf(" "));
                 }
-                name = name + " " + user.getApellido_pat();
-                model.addElement(new Item(name,user.getId_usuario()));
-                i++;
+                name = name + " " + this.usuarioActual.getApellido_pat();
+                item = new Item(name,usuarioActual.getId_usuario());
+                model.addElement(item);
+                profesionales.setModel(new DefaultComboBoxModel(model));
+                profesionales.setSelectedItem(item);
+                profesionales.setEnabled(false);
             }
-            profesionales.setModel(new DefaultComboBoxModel(model));
-            profesionales.setSelectedItem(item);
+            else{
+                Vector model = new Vector();
+                //tem item = null;
+                for(Usuario user : usuarios){
+                    String name = user.getNombre();
+
+                    if(name.contains(" ")){
+                        name = name.substring(0,name.indexOf(" "));
+                    }
+                    name = name + " " + user.getApellido_pat();
+                    model.addElement(new Item(name,user.getId_usuario()));
+                }
+                profesionales.setModel(new DefaultComboBoxModel(model));
+                profesionales.setSelectedIndex(0);
+                //profesionales.setSelectedItem(item);
+            }
         }
 
         
         
     }
+
 }

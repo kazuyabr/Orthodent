@@ -41,8 +41,8 @@ public class FichaEvolucionDB {
             
             java.sql.Statement st = con.createStatement();
             int aux = st.executeUpdate("UPDATE ficha_evolucion\n" +
-                                            "SET id_plantratamiento = "+fichaEvolucion.getIdPlanTratamiento()+"\n" +
-                                            "fecha_cita='"+fichaEvolucion.getFechaCita()+"'\n" +
+                                            "SET id_plantratamiento="+fichaEvolucion.getIdPlanTratamiento()+"\n" +
+                                            ",fecha_cita='"+fichaEvolucion.getFechaCita()+"'\n" +
                                             ",descripcion='"+fichaEvolucion.getDescripcion()+"'\n" +
                                             "WHERE id_fichaevolucion="+fichaEvolucion.getIdFichaEvolucion());
             boolean resultado = (aux == 1)? true : false;
@@ -102,6 +102,24 @@ public class FichaEvolucionDB {
             return null;
         }
     }      
+    
+    public static boolean eliminarFichaEvolucion(int idFichaEvolucion) throws SQLException{
+        try{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            
+            java.sql.Statement st = con.createStatement();
+            int aux = st.executeUpdate("DELETE FROM ficha_evolucion\n" +
+                                            "WHERE id_fichaevolucion="+idFichaEvolucion);
+            boolean resultado = (aux == 1)? true : false;
+            st.close();
+            con.close();
+            return resultado;
+        }
+        catch ( SQLException e) {
+            return false;
+        }
+    }    
     
     static public FichaEvolucion getFichaEvolucion(int idFichaevolucion) throws Exception{
         FichaEvolucion fichaEvolucion = null;

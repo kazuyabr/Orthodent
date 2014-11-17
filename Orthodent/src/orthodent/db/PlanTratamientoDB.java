@@ -73,8 +73,8 @@ public class PlanTratamientoDB {
             int aux = st.executeUpdate("UPDATE plan_tratamiento\n" +
                                             "SET id_paciente="+planTratamiento.getIdPaciente()+"\n" +
                                             ",id_profesional="+planTratamiento.getIdProfesional()+"\n" +
-                                            ",fecha_creacion_presupuesto='"+planTratamiento.getFechaCreacionPresupuesto()+"'\n" +
-                                            ",fecha_modificacion_presupuesto='"+planTratamiento.getFechaModificacionPresupuesto()+"'\n" +
+                                            ",fecha_creacion_presupuesto='"+getTimestamp(planTratamiento.getFechaCreacionPresupuesto())+"'\n" +
+                                            ",fecha_modificacion_presupuesto='"+getTimestamp(planTratamiento.getFechaModificacionPresupuesto())+"'\n" +
                                             ",costo_total="+planTratamiento.getCostoTotal()+"\n" +
                                             ",total_abonos="+planTratamiento.getTotalAbonos()+"\n" +
                                             ",avance="+planTratamiento.getAvance()+"\n" +

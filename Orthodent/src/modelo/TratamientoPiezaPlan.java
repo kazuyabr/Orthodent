@@ -66,7 +66,7 @@ public class TratamientoPiezaPlan {
         this.fechaRealizado = fechaRealizado;
     }
 
-    public boolean isEstado() {
+    public boolean getEstado() {
         return estado;
     }
 

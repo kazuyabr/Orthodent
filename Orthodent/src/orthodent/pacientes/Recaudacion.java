@@ -4,6 +4,7 @@
  */
 package orthodent.pacientes;
 
+import com.sun.jmx.snmp.BerDecoder;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.ItemEvent;
@@ -31,6 +32,7 @@ import modelo.Presupuesto;
 import modelo.Tratamiento;
 import modelo.TratamientoPiezaPresupuesto;
 import modelo.Usuario;
+import modelo.Pago;
 import orthodent.Item;
 import orthodent.db.Autenticacion;
 import orthodent.db.PlanTratamientoDB;
@@ -38,6 +40,7 @@ import orthodent.db.PresupuestoDB;
 import orthodent.db.TratamientoDB;
 import orthodent.db.TratamientoPiezaPlanDB;
 import orthodent.db.TratamientoPiezaPresupuestoDB;
+import orthodent.db.PagoDB;
 
 /**
  *
@@ -57,7 +60,8 @@ public class Recaudacion extends JPanel{
     private String profesionalSelected;
     private String estadoSelected;
     private Presupuesto presupuestoSelected;
-    private ArrayList<Tratamiento> auxiliar;
+    private PlanTratamiento planTratamiento;
+    private ArrayList<Pago> auxiliar;
     private int rowSelected;
     private boolean nuevoPlanTratamientoSelected;
     
@@ -77,7 +81,7 @@ public class Recaudacion extends JPanel{
     }
     
     private void setCursor(){
-        this.nuevoPresupuesto.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        //this.nuevoPresupuesto.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.eliminar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.aprobar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.guardar.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -98,7 +102,8 @@ public class Recaudacion extends JPanel{
     }
     
     public void iniciarTablaPiezaTratamiento() throws Exception{
-        this.columnasFichaClinica = new String [] {"Fecha", "Descripción"};
+        this.columnasFichaClinica = new String [] {"Fecha", "Cantidad"};
+        
         this.updateTablaPiezaTratamiento();
         this.tablaFichaClinica.getTableHeader().setReorderingAllowed(false);
         
@@ -122,22 +127,40 @@ public class Recaudacion extends JPanel{
     
     public void updateTablaPiezaTratamiento() throws Exception{
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
-        ArrayList<TratamientoPiezaPresupuesto> piezasPresupuesto = new ArrayList<TratamientoPiezaPresupuesto>();
+        //ArrayList<TratamientoPiezaPresupuesto> piezasPresupuesto = new ArrayList<TratamientoPiezaPresupuesto>();
+        
+
+        ArrayList<Pago> pagos = new ArrayList<Pago>();
         if(!this.nuevoPlanTratamientoSelected){
-             piezasPresupuesto = TratamientoPiezaPresupuestoDB.listarTratamientosPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto());
+
+             //piezasPresupuesto = TratamientoPiezaPresupuestoDB.listarTratamientosPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto());
+             pagos = PagoDB.listarPagosDePlanTratamiento(this.planTratamiento.getIdPlanTratamiento());
+
+             
         }
         int m = this.columnasFichaClinica.length;
         
         ArrayList<Object []> objetos = new ArrayList<Object []>();
         
-        for(TratamientoPiezaPresupuesto piezaPresupuesto : piezasPresupuesto){
-            String pieza = piezaPresupuesto.getPieza()+"";
-            Tratamiento tratamiento = TratamientoDB.getTratamiento(piezaPresupuesto.getId_tratamiento());
-            Object [] fila = new Object [] {pieza, 
-                new Item(tratamiento.getNombre(),tratamiento.getIdTratamiento()), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
-
+//        for(TratamientoPiezaPresupuesto piezaPresupuesto : piezasPresupuesto){
+//            String pieza = piezaPresupuesto.getPieza()+"";
+//            Tratamiento tratamiento = TratamientoDB.getTratamiento(piezaPresupuesto.getId_tratamiento());
+//            Object [] fila = new Object [] {pieza, 
+//                new Item(tratamiento.getNombre(),tratamiento.getIdTratamiento()), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
+//
+//            objetos.add(fila);
+//        }
+        for(Pago pg: pagos){
+            String fecha = pg.getFecha()+"";
+            Pago nPago = PagoDB.getPago(pg.getIdPago());
+            Object [] fila = new Object [] {
+                fecha,
+                //new Item(nPago.getFecha(),nPago.getIdPago()),
+                "$"+nPago.getAbono()};
+                //new Item(nPago.getFecha(),nPago.getIdPago()),};
             objetos.add(fila);
         }
+        
         this.filasPiezaTratamiento = new Object [objetos.size()][m];
         int i = 0;
         for(Object [] o : objetos){
@@ -146,12 +169,9 @@ public class Recaudacion extends JPanel{
         }
         
         this.modeloPiezaTratamiento = new DefaultTableModel(this.filasPiezaTratamiento, this.columnasFichaClinica) {
-            Class[] types = new Class [] {
-                String.class, Item.class, String.class, String.class
-            };
+            Class[] types = new Class [] {String.class, String.class};
             boolean[] canEdit = new boolean [] {
-                true, true, false, false, false
-            };
+                true, true};
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
@@ -164,43 +184,42 @@ public class Recaudacion extends JPanel{
         
         this.tablaFichaClinica.setModel(modeloPiezaTratamiento);
         
-        TableColumn tratamientos = tablaFichaClinica.getColumnModel().getColumn(1);
-        JComboBox comboBox = new JComboBox(){
-            public void fireItemStateChanged(ItemEvent evt){
-                for(Tratamiento trat : auxiliar){
-                    if(trat.getNombre().equals(((Item)evt.getItem()).getValue())){
-                        modeloPiezaTratamiento.setValueAt("$"+trat.getValorColegio(), rowSelected, 2);
-                        modeloPiezaTratamiento.setValueAt("$"+trat.getValorClinica(), rowSelected, 3);
-                        
-                        int total = 0;
-                        for(int i=0; i<modeloPiezaTratamiento.getRowCount(); i++){
-                            String valor = (String) modeloPiezaTratamiento.getValueAt(i, 3);
-                            valor = valor.substring(valor.indexOf("$")+1, valor.length());
-                            int precio = Integer.parseInt(valor);
-                            total = total + precio;
-                        }
-                        
-                        costoTotal.setText("$"+total);
-                        habilitarBoton();
-                    }
-                }
-            }
-        };
-        
-        Vector model = new Vector();
-        this.auxiliar = TratamientoDB.listarTratamientos();
-        if(auxiliar!=null && auxiliar.size()>0){
-            for(Tratamiento trat : auxiliar){
-                model.addElement(new Item(trat.getNombre(), trat.getIdTratamiento()));
-            }
-        }
-        comboBox.setModel(new DefaultComboBoxModel(model));
-        tratamientos.setCellEditor(new DefaultCellEditor(comboBox));
+//        TableColumn tratamientos = tablaFichaClinica.getColumnModel().getColumn(1);
+//        JComboBox comboBox = new JComboBox(){
+//            public void fireItemStateChanged(ItemEvent evt){
+//                for(Pago trat : auxiliar){
+//                    if(trat.getFecha().equals(((Item)evt.getItem()).getValue())){
+//                        modeloPiezaTratamiento.setValueAt("$"+trat.getAbono(), rowSelected, 2);
+//                        
+//                        int total = 0;
+//                        for(int i=0; i<modeloPiezaTratamiento.getRowCount(); i++){
+//                            String valor = (String) modeloPiezaTratamiento.getValueAt(i, 2);
+//                            valor = valor.substring(valor.indexOf("$")+1, valor.length());
+//                            int precio = Integer.parseInt(valor);
+//                            total = total + precio;
+//                        }
+//                        
+//                        costoTotal.setText("$"+total);
+//                        habilitarBoton();
+//                    }
+//                }
+//            }
+//        };
+//        
+//        Vector model = new Vector();
+//        this.auxiliar = PagoDB.listarPagos();
+//        if(auxiliar!=null && auxiliar.size()>0){
+//            for(Pago trat : auxiliar){
+//                model.addElement(new Item(trat.getFecha(), trat.getIdPago()));
+//            }
+//        }
+//        comboBox.setModel(new DefaultComboBoxModel(model));
+//        tratamientos.setCellEditor(new DefaultCellEditor(comboBox));
     }
     
     public void iniciarTablaPlanTratamiento() throws Exception{
         
-        this.columnasPlanTratamiento = new String [] {"Profesional", "Costo Total", "Total Abonos", "Avance"};
+        this.columnasPlanTratamiento = new String [] {"Profesional", "Costo Total", "Total Abonos", "Avance", "id_plan invi"};
         this.updateTablaPanTratamiento();
         this.tablaPlanTratamiento.getTableHeader().setReorderingAllowed(false);
         
@@ -234,9 +253,16 @@ public class Recaudacion extends JPanel{
                 if (me.getClickCount() == 1) {
                     Object [] fila = getRowAt(row);
                     try {
-                        presupuestoSelected = PresupuestoDB.getPresupuesto((String)fila[4], paciente.getId_paciente());
+                        //Aca creo que tengo que buscar el pago por medio de la id del planTratamiento
                         
-                        if(presupuestoSelected!=null){
+                        //presupuestoSelected = PresupuestoDB.getPresupuesto((String)fila[4], paciente.getId_paciente());
+                        int idPlanTra = Integer.parseInt(fila[4].toString());
+                        
+                        planTratamiento = PlanTratamientoDB.getPlanTratamiento(idPlanTra);
+                        
+                        
+                        if(planTratamiento!=null){
+                        
                             eliminar.setEnabled(true);
                             remove.setEnabled(true);
                             add.setEnabled(true);
@@ -263,7 +289,7 @@ public class Recaudacion extends JPanel{
                                 ArrayList<Usuario> usuarios = Autenticacion.listarProfesionales();
                                 
                                 if(usuarios!=null && usuarios.size()>0){
-                                    Usuario profesional1 = Autenticacion.getUsuario(presupuestoSelected.getIdProfesional());
+                                    Usuario profesional1 = Autenticacion.getUsuario(planTratamiento.getIdProfesional());
 
                                     String nombre = profesional1.getNombre();
 
@@ -297,23 +323,24 @@ public class Recaudacion extends JPanel{
                                 }
                             }
                             
-                            costoTotal.setText("$"+presupuestoSelected.getCostoTotal());
+                            costoTotal.setText("$"+planTratamiento.getCostoTotal());
                             
-                            estado.setModel(new DefaultComboBoxModel(new String [] {"Activo","Cancelado"}));
-                            estado.setEnabled(true);
-                            if(presupuestoSelected.getEstado()){
-                                estadoSelected = "Activo";
-                                estado.setSelectedItem("Activo");
-                                aprobar.setEnabled(true);
-                            }
-                            else{
-                                estadoSelected = "Cancelado";
-                                estado.setSelectedItem("Cancelado");
-                                aprobar.setEnabled(false);
-                            }
+                            //estado.setModel(new DefaultComboBoxModel(new String [] {"Activo","Cancelado"}));
+                            //estado.setEnabled(true);
+//cambia a planTratamiento porq no tiene getEsado                       
+//                            if(presupuestoSelected.getEstado()){
+//                                estadoSelected = "Activo";
+//                              //  estado.setSelectedItem("Activo");
+//                                aprobar.setEnabled(true);
+//                            }
+//                            else{
+//                                estadoSelected = "Cancelado";
+//                                //estado.setSelectedItem("Cancelado");
+//                                aprobar.setEnabled(false);
+//                            }
                             
-                            fechaCreacion.setText(presupuestoSelected.getFechaCreacion());
-                            fechaUltimaModificacion.setText(presupuestoSelected.getFechaModificacion());
+                            //fechaCreacion.setText(planTratamiento.getFechaCreacion());
+                            //fechaUltimaModificacion.setText(planTratamiento.getFechaModificacion());
                             
                             tablaFichaClinica.setEnabled(true);
                             iniciarTablaPiezaTratamiento();
@@ -370,7 +397,7 @@ public class Recaudacion extends JPanel{
                 
                 
                 Object [] fila = new Object [] {new Item(nombre,profesional.getId_usuario()), 
-                    new Item(planTratamiento.getCostoTotal()+"",planTratamiento.getIdPlanTratamiento()), planTratamiento.getTotalAbonos(), planTratamiento.getAvance()};
+                    new Item(planTratamiento.getCostoTotal()+"",planTratamiento.getIdPlanTratamiento()), planTratamiento.getTotalAbonos(), planTratamiento.getAvance(), planTratamiento.getIdPlanTratamiento()};
                 
                 objetos.add(fila);
             }
@@ -444,19 +471,12 @@ public class Recaudacion extends JPanel{
         jPanel1 = new javax.swing.JPanel();
         labelProfesional = new javax.swing.JLabel();
         profesional = new javax.swing.JComboBox();
-        labelEstado = new javax.swing.JLabel();
-        estado = new javax.swing.JComboBox();
-        labelFechaCreacion = new javax.swing.JLabel();
-        fechaCreacion = new javax.swing.JTextField();
-        labelFechaUltimaModificacion = new javax.swing.JLabel();
-        fechaUltimaModificacion = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaFichaClinica = new javax.swing.JTable();
         labelTotal = new javax.swing.JLabel();
         costoTotal = new javax.swing.JTextField();
         add = new javax.swing.JButton();
         remove = new javax.swing.JButton();
-        nuevoPresupuesto = new javax.swing.JButton();
         aprobar = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -552,40 +572,16 @@ public class Recaudacion extends JPanel{
                 profesionalFocusGained(evt);
             }
         });
+        profesional.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                profesionalActionPerformed(evt);
+            }
+        });
         profesional.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 profesionalPropertyChange(evt);
             }
         });
-
-        labelEstado.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
-        labelEstado.setText("Estado");
-
-        estado.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        estado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Activo", "Cancelado" }));
-        estado.setEnabled(false);
-        estado.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                estadoItemStateChanged(evt);
-            }
-        });
-        estado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                estadoActionPerformed(evt);
-            }
-        });
-
-        labelFechaCreacion.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
-        labelFechaCreacion.setText("Fecha de Creación");
-
-        fechaCreacion.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        fechaCreacion.setEnabled(false);
-
-        labelFechaUltimaModificacion.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
-        labelFechaUltimaModificacion.setText("Fecha Modificación");
-
-        fechaUltimaModificacion.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        fechaUltimaModificacion.setEnabled(false);
 
         tablaFichaClinica.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         tablaFichaClinica.setModel(new javax.swing.table.DefaultTableModel(
@@ -593,7 +589,7 @@ public class Recaudacion extends JPanel{
 
             },
             new String [] {
-                "Fecha", "Descripción"
+                "Fecha", "Cantidad"
             }
         ) {
             Class[] types = new Class [] {
@@ -612,6 +608,11 @@ public class Recaudacion extends JPanel{
 
         costoTotal.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         costoTotal.setEnabled(false);
+        costoTotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                costoTotalActionPerformed(evt);
+            }
+        });
 
         add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/add_mini.png"))); // NOI18N
         add.setBorder(null);
@@ -643,17 +644,9 @@ public class Recaudacion extends JPanel{
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelProfesional)
-                            .addComponent(labelEstado)
-                            .addComponent(labelFechaUltimaModificacion)
-                            .addComponent(labelFechaCreacion))
-                        .addGap(44, 44, 44)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(fechaCreacion)
-                            .addComponent(fechaUltimaModificacion)
-                            .addComponent(estado, 0, 175, Short.MAX_VALUE)
-                            .addComponent(profesional, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(labelProfesional)
+                        .addGap(104, 104, 104)
+                        .addComponent(profesional, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -686,36 +679,8 @@ public class Recaudacion extends JPanel{
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelTotal))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(estado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelEstado))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelFechaCreacion))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelFechaUltimaModificacion)
-                    .addComponent(fechaUltimaModificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
-
-        nuevoPresupuesto.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        nuevoPresupuesto.setText("Nuevo Presupuesto");
-        nuevoPresupuesto.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                nuevoPresupuestoMouseDragged(evt);
-            }
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                nuevoPresupuestoMouseMoved(evt);
-            }
-        });
-        nuevoPresupuesto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nuevoPresupuestoActionPerformed(evt);
-            }
-        });
 
         aprobar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         aprobar.setText("Aprobar");
@@ -736,7 +701,6 @@ public class Recaudacion extends JPanel{
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(54, 54, 54)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(nuevoPresupuesto)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(eliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -754,9 +718,7 @@ public class Recaudacion extends JPanel{
                 .addComponent(panelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nuevoPresupuesto)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(35, 35, 35)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -764,7 +726,7 @@ public class Recaudacion extends JPanel{
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(guardar)
                         .addComponent(aprobar)))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -831,12 +793,12 @@ public class Recaudacion extends JPanel{
             int  id_profesional = ((Item)this.profesional.getSelectedItem()).getId();
             
             boolean estado = false;
-            if(((String)this.estado.getSelectedItem()).equals("Activo")){
-                estado = true;
-            }
-            else{
-                estado = false;
-            }
+//            if(((String)this.estado.getSelectedItem()).equals("Activo")){
+//                estado = true;
+//            }
+//            else{
+//                estado = false;
+//            }
             
             int costoTotal = 0;
             if(!this.costoTotal.getText().equals("$")){
@@ -916,12 +878,12 @@ public class Recaudacion extends JPanel{
             int  id_profesional = ((Item)this.profesional.getSelectedItem()).getId();
             
             boolean estado = false;
-            if(((String)this.estado.getSelectedItem()).equals("Activo")){
-                estado = true;
-            }
-            else{
-                estado = false;
-            }
+//            if(((String)this.estado.getSelectedItem()).equals("Activo")){
+//                estado = true;
+//            }
+//            else{
+//                estado = false;
+//            }
             
             int costoTotal = 0;
             if(!this.costoTotal.getText().equals("$")){
@@ -1013,25 +975,6 @@ public class Recaudacion extends JPanel{
        }
     }//GEN-LAST:event_profesionalItemStateChanged
 
-    private void estadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_estadoItemStateChanged
-        if (evt.getStateChange() == ItemEvent.SELECTED) {
-            Object item = evt.getItem();
-            
-            if(((String)item).equals("Cancelado")){
-                this.aprobar.setEnabled(false);
-            }
-            else{
-                this.aprobar.setEnabled(true);
-            }
-            
-            if(this.estadoSelected!=null){
-                if(!this.estadoSelected.equals((String)item)){
-                    this.habilitarBoton();
-                }
-            }
-       }
-    }//GEN-LAST:event_estadoItemStateChanged
-
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
         Object[] options = {"Sí","No"};
         
@@ -1057,11 +1000,11 @@ public class Recaudacion extends JPanel{
                         this.costoTotal.setEnabled(false);
                         this.costoTotal.setText("");
                         this.estadoSelected = null;
-                        this.estado.setModel(new DefaultComboBoxModel(new String [] {""}));
-                        this.estado.setSelectedItem("");
-                        this.estado.setEnabled(false);
-                        this.fechaCreacion.setText("");
-                        this.fechaUltimaModificacion.setText("");
+//                        this.estado.setModel(new DefaultComboBoxModel(new String [] {""}));
+//                        this.estado.setSelectedItem("");
+//                        this.estado.setEnabled(false);
+//                        this.fechaCreacion.setText("");
+//                        this.fechaUltimaModificacion.setText("");
                         this.presupuestoSelected = null;
                         this.eliminar.setEnabled(false);
                         this.aprobar.setEnabled(false);
@@ -1085,12 +1028,12 @@ public class Recaudacion extends JPanel{
             int  id_profesional = ((Item)this.profesional.getSelectedItem()).getId();
             
             boolean estado = false;
-            if(((String)this.estado.getSelectedItem()).equals("Activo")){
-                estado = true;
-            }
-            else{
-                estado = false;
-            }
+//            if(((String)this.estado.getSelectedItem()).equals("Activo")){
+//                estado = true;
+//            }
+//            else{
+//                estado = false;
+//            }
 
             int costoTotal = 0;
             if(!this.costoTotal.getText().equals("$")){
@@ -1169,11 +1112,11 @@ public class Recaudacion extends JPanel{
                             this.costoTotal.setEnabled(false);
                             this.costoTotal.setText("");
                             this.estadoSelected = null;
-                            this.estado.setModel(new DefaultComboBoxModel(new String [] {""}));
-                            this.estado.setSelectedItem("");
-                            this.estado.setEnabled(false);
-                            this.fechaCreacion.setText("");
-                            this.fechaUltimaModificacion.setText("");
+//                            this.estado.setModel(new DefaultComboBoxModel(new String [] {""}));
+//                            this.estado.setSelectedItem("");
+//                            this.estado.setEnabled(false);
+//                            this.fechaCreacion.setText("");
+//                            this.fechaUltimaModificacion.setText("");
                             this.presupuestoSelected = null;
                             this.eliminar.setEnabled(false);
                             this.aprobar.setEnabled(false);
@@ -1214,79 +1157,13 @@ public class Recaudacion extends JPanel{
         this.habilitarBoton();
     }//GEN-LAST:event_addActionPerformed
 
-    private void nuevoPresupuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoPresupuestoActionPerformed
-        //Habilitar profesional
-        this.nuevoPlanTratamientoSelected = true;
-        this.cambios = true;
-        this.costoTotal.setText("$");
-        this.tablaFichaClinica.setEnabled(true);
-        this.profesional.setEnabled(true);
-        this.remove.setEnabled(true);
-        this.add.setEnabled(true);
-        this.estado.setEnabled(true);
-        this.guardar.setEnabled(true);
-        
-        if(actual.getId_rol()==3){
-            //Profesional
-            String nombre = actual.getNombre();
-
-            if(nombre.contains(" ")){
-                nombre = nombre.substring(0,nombre.indexOf(" "));
-            }
-
-            Vector model = new Vector();
-            Item item = new Item(nombre+" "+actual.getApellido_pat(), actual.getId_usuario());
-            model.addElement(item);
-
-            profesional.setModel(new DefaultComboBoxModel(model));
-            profesionalSelected = nombre+" "+actual.getApellido_pat();
-            profesional.setSelectedItem(item);
-        }
-        else{
-            profesional.setEnabled(true);
-
-            ArrayList<Usuario> usuarios = Autenticacion.listarProfesionales();
-
-            if(usuarios!=null && usuarios.size()>0){
-                Vector model = new Vector();
-                int i = 0;
-                for(Usuario user : usuarios){
-                    String name = user.getNombre();
-
-                    if(name.contains(" ")){
-                        name = name.substring(0,name.indexOf(" "));
-                    }
-                    name = name + " " + user.getApellido_pat();
-                    
-                    model.addElement(new Item(name,user.getId_usuario()));
-                    i++;
-                }
-                profesional.setModel(new DefaultComboBoxModel(model));
-                profesional.setSelectedIndex(0);
-            }
-        }
-        
-        estado.setModel(new DefaultComboBoxModel(new String [] {"Activo","Cancelado"}));
-        estado.setSelectedIndex(0);
-        
-        try {
-            this.iniciarTablaPiezaTratamiento();
-        } catch (Exception ex) {
-        }
-        
-    }//GEN-LAST:event_nuevoPresupuestoActionPerformed
-
-    private void estadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadoActionPerformed
+    private void costoTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costoTotalActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_estadoActionPerformed
+    }//GEN-LAST:event_costoTotalActionPerformed
 
-    private void nuevoPresupuestoMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nuevoPresupuestoMouseMoved
-        
-    }//GEN-LAST:event_nuevoPresupuestoMouseMoved
-
-    private void nuevoPresupuestoMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nuevoPresupuestoMouseDragged
-        
-    }//GEN-LAST:event_nuevoPresupuestoMouseDragged
+    private void profesionalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profesionalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_profesionalActionPerformed
     
     private void habilitarBoton(){
         this.cambios = true;
@@ -1298,21 +1175,14 @@ public class Recaudacion extends JPanel{
     private javax.swing.JButton aprobar;
     private javax.swing.JTextField costoTotal;
     private javax.swing.JButton eliminar;
-    private javax.swing.JComboBox estado;
-    private javax.swing.JTextField fechaCreacion;
-    private javax.swing.JTextField fechaUltimaModificacion;
     private javax.swing.JButton guardar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel labelEstado;
-    private javax.swing.JLabel labelFechaCreacion;
-    private javax.swing.JLabel labelFechaUltimaModificacion;
     private javax.swing.JLabel labelProfesional;
     private javax.swing.JLabel labelTitulo;
     private javax.swing.JLabel labelTotal;
-    private javax.swing.JButton nuevoPresupuesto;
     private javax.swing.JPanel panelTitulo;
     private javax.swing.JComboBox profesional;
     private javax.swing.JButton remove;
