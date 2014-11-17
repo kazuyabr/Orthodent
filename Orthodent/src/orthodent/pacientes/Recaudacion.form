@@ -328,7 +328,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imagenes/add_mini.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Nueva Ficha Cl&#xed;nica"/>
+                <Property name="text" type="java.lang.String" value="Nuevo Abono"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
                 </Property>

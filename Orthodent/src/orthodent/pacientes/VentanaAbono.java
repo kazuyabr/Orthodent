@@ -39,7 +39,6 @@ public class VentanaAbono extends javax.swing.JDialog {
             recaudacionPadre = rc;
             crearNuevo = crear;
             pagoAbono = pgAbono;
-            //this.textDescripcion.setLineWrap(true);
             this.aceptar.setCursor(new Cursor(Cursor.HAND_CURSOR));
             this.cancelar.setCursor(new Cursor(Cursor.HAND_CURSOR));
             this.idPlanTratamiento = idPlanTratamiento;
@@ -57,7 +56,6 @@ public class VentanaAbono extends javax.swing.JDialog {
                 this.setTitle("Editar Ficha Clínica");
                 this.titulo.setText("Editar Ficha Clínica");
                 this.calendarioFecha.setDate(this.getFecha(pagoAbono.getFecha()));
-                //this.textDescripcion.setText(pagoAbono.getAbono()+"");
                 this.jTextField1.setText(pagoAbono.getAbono()+"");
             }
         } catch (Exception ex) {
@@ -247,12 +245,15 @@ public class VentanaAbono extends javax.swing.JDialog {
         String fechaCita = getFechaString(date);
         String descripcion = this.jTextField1.getText();
         int abono=Integer.parseInt(descripcion);
-        //int des = Integer.parseInt(descripcion);
         if(validarCampos()){
             if(abono > 0 || totalTrat < (abono+totalAbono)){
                 if(crearNuevo){ //crear
                     boolean respuesta = PagoDB.crearPago(this.idPlanTratamiento, fechaCita, abono);            
-                    this.recaudacionPadre.updateModeloPagoAbono();
+                    try {
+                        this.recaudacionPadre.updateModeloPagoAbono();
+                    } catch (Exception ex) {
+                        Logger.getLogger(VentanaAbono.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     this.recaudacionPadre.updateUI();
                     //this.dispose();
                 }
@@ -261,7 +262,11 @@ public class VentanaAbono extends javax.swing.JDialog {
                         pagoAbono.setFecha(fechaCita);
                         pagoAbono.setAbono(abono);
                         boolean respuesta = PagoDB.editarPago(pagoAbono);   
-                        this.recaudacionPadre.updateModeloPagoAbono();
+                        try {
+                            this.recaudacionPadre.updateModeloPagoAbono();
+                        } catch (Exception ex) {
+                            Logger.getLogger(VentanaAbono.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         this.recaudacionPadre.updateUI();                    
                     }
 
@@ -269,7 +274,6 @@ public class VentanaAbono extends javax.swing.JDialog {
                 this.dispose();
             }
             else{
-                //el Abono no es valido
                 System.out.println("Ingresar un abono valido");
 
             }

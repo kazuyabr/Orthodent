@@ -195,7 +195,6 @@ public class Recaudacion extends JPanel{
     
     public void habilitarBtnAdd(){
         this.add.setEnabled(true);
-        //this.remove.setEnabled(true);
     }
     
     public void habilitarBtnRemove(){
@@ -261,7 +260,6 @@ public class Recaudacion extends JPanel{
     }    
     
     public void updateTablaPlanesTratamientos() throws Exception{
-        //Podria ser ordenado!! -> una opcion es que la consulta ordene
         ArrayList<PlanTratamiento> tratamientos = null;
         
         if(this.actual.getId_rol()==3){
@@ -458,7 +456,7 @@ public class Recaudacion extends JPanel{
 
         add.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/add_mini.png"))); // NOI18N
-        add.setText("Nueva Ficha Clínica");
+        add.setText("Nuevo Abono");
         add.setBorder(null);
         add.setBorderPainted(false);
         add.setContentAreaFilled(false);

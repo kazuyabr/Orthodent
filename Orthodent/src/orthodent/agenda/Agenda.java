@@ -42,6 +42,7 @@ public class Agenda extends JPanel{
         scheduler.showDate(new LocalDate());
         modelo.agregarCita(new Cita("Test"));
         
+        scheduler.setFont(new Font("Georgia", Font.PLAIN,12));
 
         scheduler.addScheduleListener(new ScheduleListener()
         {
