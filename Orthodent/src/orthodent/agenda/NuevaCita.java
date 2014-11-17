@@ -5,12 +5,14 @@
  */
 package orthodent.agenda;
 
+import com.thirdnf.ResourceScheduler.Resource;
 import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import modelo.Paciente;
 //import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import orthodent.Item;
 import orthodent.db.PacienteDB;
 
@@ -18,16 +20,18 @@ import orthodent.db.PacienteDB;
  *
  * @author felipe
  */
-public class NuevaCita extends javax.swing.JDialog {
+public abstract class NuevaCita extends javax.swing.JDialog {
 
     /**
      * Creates new form NuevaCita
      */
     DateTime inicio;
     boolean validar_horas = false;
-    public NuevaCita(java.awt.Frame parent, boolean modal, DateTime inicio) {
+    Resource _resource;
+    public NuevaCita(java.awt.Frame parent, boolean modal, Resource resource, DateTime inicio) {
         super(parent, modal);
         this.inicio = inicio;
+        this._resource = resource;
         initComponents();
         this.jTextField1.setText(inicio.toString("d/m/y"));
         this.jComboBox1.setSelectedIndex((inicio.getHourOfDay()-9)*4 + inicio.getMinuteOfHour()/15);
@@ -188,9 +192,15 @@ public class NuevaCita extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        Cita c = new Cita("Test");
+        c.setDateTime(new DateTime());
+        c.setDuration(Duration.standardMinutes(15));
+        c.setResource(_resource);
+        agregarCita(c);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    abstract void agregarCita(Cita cita);
+    
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
@@ -257,7 +267,14 @@ public class NuevaCita extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                NuevaCita dialog = new NuevaCita(new javax.swing.JFrame(), true, null);
+                NuevaCita dialog = new NuevaCita(new javax.swing.JFrame(), true, null, null) {
+
+                    @Override
+                    void agregarCita(Cita cita) {
+                        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    }
+                    
+                };
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

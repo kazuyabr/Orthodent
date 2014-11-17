@@ -16,6 +16,7 @@ import modelo.Usuario;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.joda.time.LocalDate;
 
 /**
@@ -40,8 +41,7 @@ public class Agenda extends JPanel{
         Scheduler scheduler = new Scheduler();
         scheduler.setModel(modelo);
         scheduler.showDate(new LocalDate());
-        modelo.agregarCita(new Cita("Test"));
-        
+
         scheduler.setFont(new Font("Georgia", Font.PLAIN,12));
 
         scheduler.addScheduleListener(new ScheduleListener()
@@ -63,7 +63,14 @@ public class Agenda extends JPanel{
     
     private void handleAddAppointment(@Nullable Resource resource, @NotNull DateTime dateTime) {
         System.out.println(dateTime);
-        new NuevaCita(((JFrame)this.getTopLevelAncestor()), true, dateTime).setVisible(true);
+        new NuevaCita(((JFrame)this.getTopLevelAncestor()), true, resource, dateTime) {
+
+            void agregarCita(Cita cita) {
+                modelo.agregarCita(cita);
+                System.out.println("Agrega cita");
+            }
+        
+        }.setVisible(true);
     }
     
     private void cambiarSemanaDeAgenda(Date fecha){

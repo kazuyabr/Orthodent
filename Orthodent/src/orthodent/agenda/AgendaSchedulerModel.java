@@ -12,14 +12,24 @@ import org.joda.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import org.joda.time.Duration;
 
 public class AgendaSchedulerModel extends AbstractScheduleModel
 {
     private String[] days = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"};
+    private ArrayList<Cita> citas;
 
-    public void visitAppointments(AppointmentVisitor appointmentVisitor, LocalDate localDate)
+    @Override
+    public void visitAppointments(AppointmentVisitor visitor, @NotNull LocalDate date)
     {
+        for (Cita cita : citas) {
+            LocalDate appointmentDate = cita.getDateTime().toLocalDate();
+            if (! appointmentDate.equals(date)) {
+                continue;
+            }
+            visitor.visitAppointment(cita);
+        }
     }
 
     public void visitResources(ResourceVisitor resourceVisitor, LocalDate localDate)
@@ -42,7 +52,13 @@ public class AgendaSchedulerModel extends AbstractScheduleModel
     
     public void agregarCita(Cita cita)
     {
+        citas.add(cita);
         this.fireAppointmentAdded(cita);
+    }
+    
+    public AgendaSchedulerModel() 
+    {
+        this.citas = new ArrayList<Cita>();
     }
 }
 

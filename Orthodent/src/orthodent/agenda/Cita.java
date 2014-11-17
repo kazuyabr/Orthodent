@@ -19,7 +19,7 @@ public class Cita implements Appointment
     private String _title;
     private DateTime _dateTime;
     private Duration _duration;
-
+    private Resource _resource;
 
     public Cita(@NotNull String title)
     {
@@ -84,8 +84,12 @@ public class Cita implements Appointment
         return appointment;
     }
 
+    public void setResource(Resource r) {
+       _resource = r;
+    }
+    
     @Override
     public Resource getResource() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return _resource;
     }
 }
