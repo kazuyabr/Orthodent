@@ -26,9 +26,11 @@ public class Agenda extends JPanel{
     private Usuario usuarioActual;
         
     private BarraAcciones barraAcciones;
+    private AgendaSchedulerModel modelo;
     
     public Agenda(Usuario actual){
         this.usuarioActual = actual;
+        this.modelo = new AgendaSchedulerModel();
         //Introducir código aquí
         this.setBackground(new Color(255,255,255));
         this.setPreferredSize(new Dimension(1073, 561));
@@ -36,8 +38,10 @@ public class Agenda extends JPanel{
         setSize(new Dimension(600, 600));
 
         Scheduler scheduler = new Scheduler();
-        scheduler.setModel(new AgendaSchedulerModel());
+        scheduler.setModel(modelo);
         scheduler.showDate(new LocalDate());
+        modelo.agregarCita(new Cita("Test"));
+        
 
         scheduler.addScheduleListener(new ScheduleListener()
         {

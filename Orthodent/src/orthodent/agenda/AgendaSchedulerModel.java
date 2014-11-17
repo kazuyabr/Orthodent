@@ -39,6 +39,11 @@ public class AgendaSchedulerModel extends AbstractScheduleModel
     {
         return new LocalTime(20,0,0);
     }
+    
+    public void agregarCita(Cita cita)
+    {
+        this.fireAppointmentAdded(cita);
+    }
 }
 
 class AgendaResource implements Resource
@@ -60,5 +65,6 @@ class AgendaResource implements Resource
     public String getTitle()
     {
         return _title;
+        
     }
 }
