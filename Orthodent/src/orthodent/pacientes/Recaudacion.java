@@ -195,7 +195,6 @@ public class Recaudacion extends JPanel{
     
     public void habilitarBtnAdd(){
         this.add.setEnabled(true);
-        //this.remove.setEnabled(true);
     }
     
     public void habilitarBtnRemove(){
@@ -261,7 +260,6 @@ public class Recaudacion extends JPanel{
     }    
     
     public void updateTablaPlanesTratamientos() throws Exception{
-        //Podria ser ordenado!! -> una opcion es que la consulta ordene
         ArrayList<PlanTratamiento> tratamientos = null;
         
         if(this.actual.getId_rol()==3){
