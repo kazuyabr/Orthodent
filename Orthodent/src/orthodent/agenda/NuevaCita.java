@@ -35,6 +35,7 @@ public abstract class NuevaCita extends javax.swing.JDialog {
         initComponents();
         this.jTextField1.setText(inicio.toString("d/m/y"));
         this.jComboBox1.setSelectedIndex((inicio.getHourOfDay()-9)*4 + inicio.getMinuteOfHour()/15);
+        this.jComboBox2.setSelectedIndex(jComboBox1.getSelectedIndex()+1);
         //this.jComboBox2.setSelectedIndex(jComboBox1.getSelectedIndex()+1);   
         validar_horas = true;
         initPacientes();
@@ -192,11 +193,13 @@ public abstract class NuevaCita extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Cita c = new Cita("Test");
-        c.setDateTime(new DateTime());
-        c.setDuration(Duration.standardMinutes(15));
+        Cita c = new Cita(pacientes.getSelectedItem().toString());
+     
+        c.setDateTime(inicio);
+        c.setDuration(Duration.standardMinutes((jComboBox2.getSelectedIndex() - jComboBox1.getSelectedIndex())*15));
         c.setResource(_resource);
         agregarCita(c);
+        dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     abstract void agregarCita(Cita cita);

@@ -67,7 +67,6 @@ public class Agenda extends JPanel{
 
             void agregarCita(Cita cita) {
                 modelo.agregarCita(cita);
-                System.out.println("Agrega cita");
             }
         
         }.setVisible(true);
