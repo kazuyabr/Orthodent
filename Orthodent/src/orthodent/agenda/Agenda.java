@@ -38,6 +38,7 @@ public class Agenda extends JPanel{
         Scheduler scheduler = new Scheduler();
         scheduler.setModel(new AgendaSchedulerModel());
         scheduler.showDate(new LocalDate());
+        scheduler.setFont(new Font("Georgia", Font.PLAIN,12));
 
         scheduler.addScheduleListener(new ScheduleListener()
         {
