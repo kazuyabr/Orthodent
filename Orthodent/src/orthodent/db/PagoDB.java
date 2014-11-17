@@ -132,5 +132,23 @@ public class PagoDB {
             return null;
         }
     }     
+
+    public static boolean eliminarPago(int idPago)  throws SQLException{
+                try{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            
+            java.sql.Statement st = con.createStatement();
+            int aux = st.executeUpdate("DELETE FROM pago\n" +
+                                            "WHERE id_pago="+idPago);
+            boolean resultado = (aux == 1)? true : false;
+            st.close();
+            con.close();
+            return resultado;
+        }
+        catch ( SQLException e) {
+            return false;
+        }
+    }
     
 }
