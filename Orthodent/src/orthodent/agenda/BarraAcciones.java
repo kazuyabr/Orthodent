@@ -106,7 +106,7 @@ public class BarraAcciones extends javax.swing.JPanel {
         // TODO add your handling code here:
         if(this.fechaAgenda.getDate()!=null){
             System.out.println("ACA TENGO QUE CAMBIAR "+this.contenedor.obtenerSemana(this.fechaAgenda.getDate()));
-            
+            this.contenedor.cambiarSemanaDeAgenda(this.fechaAgenda.getDate());
         }
     }//GEN-LAST:event_fechaAgendaPropertyChange
 

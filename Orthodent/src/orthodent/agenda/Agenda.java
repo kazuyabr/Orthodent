@@ -28,6 +28,7 @@ public class Agenda extends JPanel{
         
     private BarraAcciones barraAcciones;
     private AgendaSchedulerModel modelo;
+    public Scheduler scheduler;
     
     public Agenda(Usuario actual){
         this.usuarioActual = actual;
@@ -38,11 +39,11 @@ public class Agenda extends JPanel{
         
         setSize(new Dimension(600, 600));
 
-        Scheduler scheduler = new Scheduler();
-        scheduler.setModel(modelo);
-        scheduler.showDate(new LocalDate());
+        this.scheduler = new Scheduler();
+        this.scheduler.setModel(modelo);
+        this.scheduler.showDate(new LocalDate());
 
-        scheduler.setFont(new Font("Georgia", Font.PLAIN,12));
+        this.scheduler.setFont(new Font("Georgia", Font.PLAIN,12));
 
         scheduler.addScheduleListener(new ScheduleListener()
         {
@@ -58,7 +59,6 @@ public class Agenda extends JPanel{
         this.barraAcciones = new BarraAcciones(this.usuarioActual,this);
         
         this.add(barraAcciones, BorderLayout.NORTH);
-        
     }
     
     private void handleAddAppointment(@Nullable Resource resource, @NotNull DateTime dateTime) {
@@ -72,9 +72,10 @@ public class Agenda extends JPanel{
         }.setVisible(true);
     }
     
-    private void cambiarSemanaDeAgenda(Date fecha){
+    public void cambiarSemanaDeAgenda(Date fecha){
         int semana = this.obtenerSemana(fecha);
-        
+        LocalDate ld = new LocalDate(fecha);
+        this.scheduler.showDate(ld);
     }
     
     public int obtenerSemana(Date fecha){
