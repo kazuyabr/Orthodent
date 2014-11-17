@@ -26,7 +26,6 @@ public class Agenda extends JPanel{
         this.actual = actual;
     }
         
-    
     private BarraAcciones barraAcciones;
     
     public Agenda(){
