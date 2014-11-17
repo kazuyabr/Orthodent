@@ -31,7 +31,7 @@ public class NuevaCita extends javax.swing.JDialog {
         initComponents();
         this.jTextField1.setText(inicio.toString("d/m/y"));
         this.jComboBox1.setSelectedIndex((inicio.getHourOfDay()-9)*4 + inicio.getMinuteOfHour()/15);
-        this.jComboBox2.setSelectedIndex(jComboBox1.getSelectedIndex()+1);   
+        //this.jComboBox2.setSelectedIndex(jComboBox1.getSelectedIndex()+1);   
         validar_horas = true;
         initPacientes();
     }
@@ -59,6 +59,7 @@ public class NuevaCita extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        jButton1.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jButton1.setText("Crear cita");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -66,6 +67,7 @@ public class NuevaCita extends javax.swing.JDialog {
             }
         });
 
+        jButton2.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jButton2.setText("Cancelar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -73,14 +75,18 @@ public class NuevaCita extends javax.swing.JDialog {
             }
         });
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Inicio"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Crear Cita", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Georgia", 0, 12))); // NOI18N
 
+        jLabel1.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jLabel1.setText("Fecha");
 
+        jLabel2.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jLabel2.setText("Hora inicio");
 
+        jTextField1.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jTextField1.setToolTipText("");
 
+        jComboBox1.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "9:00", "9:15", "9:30", "9:45", "10:00", "10:15", "10:30", "10:45", "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30", "12:45", "13:00", "13:15", "13:30", "13:45", "14:00", "14:15", "14:30", "14:45", "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45", "17:00", "17:15", "17:30", "17:45", "18:00", "18:15", "18:30", "18:45", "19:00", "19:15", "19:30", "19:45" }));
         jComboBox1.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -93,8 +99,10 @@ public class NuevaCita extends javax.swing.JDialog {
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jLabel3.setText("Hora final");
 
+        jComboBox2.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "9:00", "9:15", "9:30", "9:45", "10:00", "10:15", "10:30", "10:45", "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30", "12:45", "13:00", "13:15", "13:30", "13:45", "14:00", "14:15", "14:30", "14:45", "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45", "17:00", "17:15", "17:30", "17:45", "18:00", "18:15", "18:30", "18:45", "19:00", "19:15", "19:30", "19:45", "20:00" }));
         jComboBox2.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -102,9 +110,11 @@ public class NuevaCita extends javax.swing.JDialog {
             }
         });
 
+        jLabel4.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jLabel4.setText("Paciente");
 
         pacientes.setEditable(true);
+        pacientes.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         pacientes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -121,10 +131,9 @@ public class NuevaCita extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(pacientes, 0, 112, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, 112, Short.MAX_VALUE)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jTextField1)
+                    .addComponent(jComboBox1, 0, 112, Short.MAX_VALUE)
+                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -156,7 +165,7 @@ public class NuevaCita extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(186, Short.MAX_VALUE)
+                        .addContainerGap(164, Short.MAX_VALUE)
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1))
@@ -186,20 +195,6 @@ public class NuevaCita extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
-
-        if(validar_horas) {
-            int fin_idx = this.jComboBox2.getSelectedIndex();
-            int inicio_idx = this.jComboBox1.getSelectedIndex();
-            if (inicio_idx >= fin_idx) {
-                fin_idx = inicio_idx + 1;
-                this.jComboBox2.setSelectedIndex(fin_idx);
-            }
-        }
-        
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ItemStateChanged
-
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
         // TODO add your handling code here:
         if(validar_horas) {
@@ -217,6 +212,20 @@ public class NuevaCita extends javax.swing.JDialog {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
+
+        if(validar_horas) {
+            int fin_idx = this.jComboBox2.getSelectedIndex();
+            int inicio_idx = this.jComboBox1.getSelectedIndex();
+            if (inicio_idx >= fin_idx) {
+                fin_idx = inicio_idx + 1;
+                this.jComboBox2.setSelectedIndex(fin_idx);
+            }
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox2ItemStateChanged
 
     /**
      * @param args the command line arguments
