@@ -74,17 +74,28 @@ public class Agenda extends JPanel{
     
     public void cambiarSemanaDeAgenda(Date fecha){
         int semana = this.obtenerSemana(fecha);
-        LocalDate ld = new LocalDate(fecha);
+        LocalDate ld = new LocalDate(obtenerLunes(fecha));
         this.scheduler.showDate(ld);
     }
     
     public int obtenerSemana(Date fecha){
         int semana=0;
+        Date lunes;
         Calendar c = Calendar.getInstance();
         c.setTime(fecha);
         semana = c.get(Calendar.WEEK_OF_YEAR);
         return semana;
     }
     
+    public Date obtenerLunes(Date fecha){
+        Date lunes;
+        Calendar c = Calendar.getInstance();
+        c.setTime(fecha);
+        int semana = obtenerSemana(fecha);
+        c.set(Calendar.WEEK_OF_YEAR, semana);
+        c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        lunes = c.getTime();
+        return lunes;
+    }
     
 }
