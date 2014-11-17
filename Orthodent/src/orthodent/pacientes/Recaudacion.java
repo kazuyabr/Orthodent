@@ -458,7 +458,7 @@ public class Recaudacion extends JPanel{
 
         add.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/add_mini.png"))); // NOI18N
-        add.setText("Nueva Ficha Clínica");
+        add.setText("Nuevo Abono");
         add.setBorder(null);
         add.setBorderPainted(false);
         add.setContentAreaFilled(false);

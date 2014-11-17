@@ -252,7 +252,11 @@ public class VentanaAbono extends javax.swing.JDialog {
             if(abono > 0 || totalTrat < (abono+totalAbono)){
                 if(crearNuevo){ //crear
                     boolean respuesta = PagoDB.crearPago(this.idPlanTratamiento, fechaCita, abono);            
-                    this.recaudacionPadre.updateModeloPagoAbono();
+                    try {
+                        this.recaudacionPadre.updateModeloPagoAbono();
+                    } catch (Exception ex) {
+                        Logger.getLogger(VentanaAbono.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     this.recaudacionPadre.updateUI();
                     //this.dispose();
                 }
@@ -261,7 +265,11 @@ public class VentanaAbono extends javax.swing.JDialog {
                         pagoAbono.setFecha(fechaCita);
                         pagoAbono.setAbono(abono);
                         boolean respuesta = PagoDB.editarPago(pagoAbono);   
-                        this.recaudacionPadre.updateModeloPagoAbono();
+                        try {
+                            this.recaudacionPadre.updateModeloPagoAbono();
+                        } catch (Exception ex) {
+                            Logger.getLogger(VentanaAbono.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         this.recaudacionPadre.updateUI();                    
                     }
 
