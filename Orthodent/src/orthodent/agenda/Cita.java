@@ -20,6 +20,7 @@ public class Cita implements Appointment
     private DateTime _dateTime;
     private Duration _duration;
     private Resource _resource;
+    private DateTime _realDateTime;
 
     public Cita(@NotNull String title)
     {
@@ -36,7 +37,12 @@ public class Cita implements Appointment
         return _dateTime;
     }
 
+    public DateTime getRealDateTime()
+    {
+        return _realDateTime;
+    }
 
+    
     @NotNull
     public Duration getDuration()
     {
@@ -73,12 +79,17 @@ public class Cita implements Appointment
         _dateTime = time;
     }
 
-
+    public void setRealDateTime(@NotNull DateTime time)
+    {
+        _realDateTime = time;
+    }
+    
     public static Cita create(@NotNull String title,
                                             @NotNull DateTime date, int minutes)
     {
         Cita appointment = new Cita(title);
         appointment.setDateTime(date);
+        
         appointment.setDuration(Duration.standardMinutes(minutes));
 
         return appointment;

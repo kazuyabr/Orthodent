@@ -66,6 +66,7 @@ public class Agenda extends JPanel{
         new NuevaCita(((JFrame)this.getTopLevelAncestor()), true, resource, dateTime) {
 
             void agregarCita(Cita cita) {
+                
                 modelo.agregarCita(cita);
             }
         

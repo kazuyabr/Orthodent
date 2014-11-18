@@ -26,16 +26,18 @@ public abstract class NuevaCita extends javax.swing.JDialog {
      * Creates new form NuevaCita
      */
     DateTime inicio;
+    DateTime inicioReal;
     boolean validar_horas = false;
     Resource _resource;
     public NuevaCita(java.awt.Frame parent, boolean modal, Resource resource, DateTime agenda_inicio) {
         super(parent, modal);
-        this.inicio = agenda_inicio.plusDays(((AgendaResource)resource).getPos());
+        this.inicio = agenda_inicio;
+        this.inicioReal = agenda_inicio.plusDays(((AgendaResource)resource).getPos());
         
         this._resource = resource;
         initComponents();
-        this.jTextField1.setText(inicio.toString("d/M/y"));
-        this.jComboBox1.setSelectedIndex((inicio.getHourOfDay()-9)*4 + inicio.getMinuteOfHour()/15);
+        this.jTextField1.setText(inicioReal.toString("d/M/y"));
+        this.jComboBox1.setSelectedIndex((inicioReal.getHourOfDay()-9)*4 + inicioReal.getMinuteOfHour()/15);
         this.jComboBox2.setSelectedIndex(jComboBox1.getSelectedIndex()+1);
         //this.jComboBox2.setSelectedIndex(jComboBox1.getSelectedIndex()+1);   
         validar_horas = true;
@@ -197,6 +199,7 @@ public abstract class NuevaCita extends javax.swing.JDialog {
         Cita c = new Cita(pacientes.getSelectedItem().toString());
      
         c.setDateTime(inicio);
+        c.setRealDateTime(inicioReal);
         c.setDuration(Duration.standardMinutes((jComboBox2.getSelectedIndex() - jComboBox1.getSelectedIndex())*15));
         c.setResource(_resource);
         agregarCita(c);

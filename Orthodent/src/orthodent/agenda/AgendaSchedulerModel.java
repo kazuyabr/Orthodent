@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
+import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
 public class AgendaSchedulerModel extends AbstractScheduleModel
@@ -24,7 +25,7 @@ public class AgendaSchedulerModel extends AbstractScheduleModel
     @Override
     public void visitAppointments(AppointmentVisitor visitor, @NotNull LocalDate date)
     {
-        for (Cita cita : citas) {
+        for (Appointment cita : citas) {
             LocalDate appointmentDate = cita.getDateTime().toLocalDate();
             if (! appointmentDate.equals(date)) {
                 continue;
@@ -52,6 +53,7 @@ public class AgendaSchedulerModel extends AbstractScheduleModel
     
     public void agregarCita(Cita cita)
     {
+        System.out.println("Cita agregada:" + ((AgendaResource)cita.getResource()).getPos());
         citas.add(cita);
         this.fireAppointmentAdded(cita);
     }
@@ -64,6 +66,7 @@ public class AgendaSchedulerModel extends AbstractScheduleModel
         for(String day : days) {
             AgendaResource r = new AgendaResource(day, i++);
             this.resources.add(r);
+            
         }
     }
 }
