@@ -241,4 +241,47 @@ public class PacienteDB {
             return false;
         }
     }
+    
+    static public Paciente getPaciente(int id) throws Exception{
+        Paciente paciente = null;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * from paciente where id_paciente=" + id + "");
+            if (rs.next())
+            {
+                int id_paciente = rs.getInt("id_paciente");
+                String nombre = rs.getString("nombre");
+                String apellido_pat = rs.getString("apellido_pat");
+                String apellido_mat = rs.getString("apellido_mat");
+                String rut = rs.getString("rut");
+                String email = rs.getString("email");
+                String fecha_nacimiento = rs.getString("fecha_nacimiento");
+                int edad = rs.getInt("edad");
+                int sexo = rs.getInt("sexo");
+                String antecedente_medico = rs.getString("antecedente_medico");
+                String telefono  = rs.getString("telefono");
+                String ciudad = rs.getString("ciudad");
+                String comuna = rs.getString("comuna");
+                String direccion = rs.getString("direccion");
+                boolean activo = rs.getBoolean("activo");
+
+                paciente = new Paciente(id_paciente, nombre, apellido_pat, apellido_mat, rut, email, fecha_nacimiento, edad, sexo, antecedente_medico, telefono, ciudad, comuna, direccion, activo);
+            }
+            else{
+                paciente = null;
+            }
+            rs.close();
+            con.close();
+            return paciente;
+        }
+
+        catch ( SQLException e) {
+            return null;
+        }
+    }
+    
 }

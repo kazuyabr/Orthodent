@@ -20,6 +20,10 @@ public class Cita implements Appointment
     private DateTime _dateTime;
     private Duration _duration;
     private Resource _resource;
+    private int profesionalId;
+    private int pacienteId;
+    private String fecha;
+    private int semana;
 
     public Cita(@NotNull String title)
     {
@@ -92,4 +96,38 @@ public class Cita implements Appointment
     public Resource getResource() {
        return _resource;
     }
+
+    public int getProfesionalId() {
+        return profesionalId;
+    }
+
+    public void setProfesionalId(int profesionalId) {
+        this.profesionalId = profesionalId;
+    }
+
+    public int getPacienteId() {
+        return pacienteId;
+    }
+
+    public void setPacienteId(int pacienteId) {
+        this.pacienteId = pacienteId;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    public int getSemana() {
+        return semana;
+    }
+
+    public void setSemana(int semana) {
+        this.semana = semana;
+    }
+    
+    
 }

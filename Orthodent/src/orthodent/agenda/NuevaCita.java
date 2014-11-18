@@ -200,6 +200,7 @@ public abstract class NuevaCita extends javax.swing.JDialog {
         c.setDateTime(inicio);
         c.setDuration(Duration.standardMinutes((jComboBox2.getSelectedIndex() - jComboBox1.getSelectedIndex())*15));
         c.setResource(_resource);
+        c.setPacienteId(((Item)pacientes.getSelectedItem()).getId());
         agregarCita(c);
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -309,14 +310,14 @@ public abstract class NuevaCita extends javax.swing.JDialog {
         ArrayList<Paciente> listaPacientes = PacienteDB.listarPacientes();
         
         Vector model = new Vector();
-        //tem item = null;
-        int i = 0;
+        Item primerItem = null;
         for(Paciente p : listaPacientes){
             String nombre = p.getNombre() + " " + p.getApellido_pat();
             model.addElement(new Item(nombre,p.getId_paciente()));
+            if (primerItem==null) primerItem = new Item(nombre,p.getId_paciente());
         }
         this.pacientes.setModel(new DefaultComboBoxModel(model));
-        this.pacientes.setSelectedIndex(0);
+        //this.pacientes.setSelectedItem(primerItem);
         AutoCompleteDecorator.decorate(this.pacientes);
     }
 }
