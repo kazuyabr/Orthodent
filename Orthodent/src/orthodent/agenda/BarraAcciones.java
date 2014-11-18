@@ -123,7 +123,7 @@ public class BarraAcciones extends javax.swing.JPanel {
     private javax.swing.JComboBox profesionales;
     // End of variables declaration//GEN-END:variables
 
-private void initProfesionales() {
+    private void initProfesionales() {
         ArrayList<Usuario> usuarios = Autenticacion.listarProfesionales();
             
         if(usuarios!=null && usuarios.size()>0){
@@ -163,6 +163,10 @@ private void initProfesionales() {
 
         
         
+    }
+
+    public int getIdProfesional(){
+        return ((Item)profesionales.getSelectedItem()).getId();
     }
 
 }

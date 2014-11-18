@@ -258,8 +258,7 @@
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
                                   <Component id="labelFechaCreacion" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
                                   <Component id="fechaCreacion" min="-2" pref="175" max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -359,7 +358,7 @@
                         <Column editable="false" title="Tratamiento" type="java.lang.String"/>
                         <Column editable="false" title="Valor" type="java.lang.String"/>
                         <Column editable="false" title="Fecha" type="java.lang.String"/>
-                        <Column editable="true" title="Estado" type="java.lang.Boolean"/>
+                        <Column editable="true" title="Realizado" type="java.lang.Boolean"/>
                       </Table>
                     </Property>
                     <Property name="enabled" type="boolean" value="false"/>

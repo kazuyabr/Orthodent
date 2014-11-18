@@ -81,7 +81,7 @@ public class PlanesTratamiento extends JPanel{
     }
     
     public void iniciarTablaPiezaTratamiento() throws Exception{
-        this.columnasNombrePiezaTratamiento = new String [] {"Pieza", "Tratamiento", "Valor", "Fecha", "Estado"};
+        this.columnasNombrePiezaTratamiento = new String [] {"Pieza", "Tratamiento", "Valor", "Fecha", "Realizado"};
         this.updateTablaPiezaTratamiento();
         this.tablaPiezaTratamiento.getTableHeader().setReorderingAllowed(false);
         
@@ -486,7 +486,7 @@ public class PlanesTratamiento extends JPanel{
 
             },
             new String [] {
-                "Pieza", "Tratamiento", "Valor", "Fecha", "Estado"
+                "Pieza", "Tratamiento", "Valor", "Fecha", "Realizado"
             }
         ) {
             Class[] types = new Class [] {
@@ -565,8 +565,7 @@ public class PlanesTratamiento extends JPanel{
                                     .addComponent(avance, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(labelFechaCreacion)
-                            .addGap(10, 10, 10)
-                            .addGap(44, 44, 44)
+                            .addGap(54, 54, 54)
                             .addComponent(fechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );

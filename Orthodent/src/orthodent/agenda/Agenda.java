@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 
 import com.thirdnf.ResourceScheduler.Scheduler;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import modelo.Usuario;
@@ -18,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.LocalDate;
+import orthodent.db.AgendaDB;
 
 /**
  *
@@ -66,8 +68,13 @@ public class Agenda extends JPanel{
         new NuevaCita(((JFrame)this.getTopLevelAncestor()), true, resource, dateTime) {
 
             void agregarCita(Cita cita) {
-                
+                cita.setProfesionalId(barraAcciones.getIdProfesional());
+                cita.setFecha(cita.getDateTime().toString("y-M-d"));
+                cita.setSemana(obtenerSemana(cita.getDateTime().toDate()));
                 modelo.agregarCita(cita);
+                if(!AgendaDB.crearCita(cita)){
+                    System.out.println("NO CREO LA WEA");
+                }
             }
         
         }.setVisible(true);
@@ -77,6 +84,16 @@ public class Agenda extends JPanel{
         int semana = this.obtenerSemana(fecha);
         LocalDate ld = new LocalDate(obtenerLunes(fecha));
         this.scheduler.showDate(ld);
+        ArrayList<Cita> citas = AgendaDB.obtenerCitas(semana, barraAcciones.getIdProfesional());
+        if(citas!=null){
+            for(Cita c : citas){
+                System.out.println(c.getTitle());
+                modelo.agregarCita(c);
+            }
+        }
+        else{
+            System.out.println("Retorno NULO");
+        }
     }
     
     public int obtenerSemana(Date fecha){
