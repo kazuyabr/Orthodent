@@ -13,13 +13,15 @@ public class Tratamiento {
     private int idTratamiento;
     private String nombre;
     private int valorColegio;
-    private int valorClinica;    
+    private int valorClinica;  
+    private boolean activo;
     
-    public Tratamiento(int idTratamiento, String nombre, int valorColegio, int valorClinica) {
+    public Tratamiento(int idTratamiento, String nombre, int valorColegio, int valorClinica, boolean activo) {
         this.idTratamiento = idTratamiento;
         this.nombre = nombre;
         this.valorColegio = valorColegio;
         this.valorClinica = valorClinica;
+        this.activo = activo;
     }    
 
     public int getIdTratamiento() {
@@ -53,4 +55,12 @@ public class Tratamiento {
     public void setValorClinica(int valorClinica) {
         this.valorClinica = valorClinica;
     }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }    
 }

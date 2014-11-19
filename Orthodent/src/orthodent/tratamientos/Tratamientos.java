@@ -31,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import modelo.Tratamiento;
 import modelo.Usuario;
+import orthodent.Item;
 import orthodent.JVentana;
 import orthodent.db.Autenticacion;
 import orthodent.db.TratamientoDB;
@@ -127,40 +128,43 @@ public class Tratamientos extends JPanel implements ActionListener{
                 JTable table =(JTable) me.getSource();
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
-                if (me.getClickCount() == 2) {
+                if(me.getClickCount() == 1){
                     Object [] fila = getRowAt(row);
-                    try {
-                        Usuario usuario = Autenticacion.getUsuario((String)fila[0], (String)fila[3]);
-                        if(usuario!=null){
-                            
-                            Usuario actual = ((JVentana)getTopLevelAncestor()).getUsuario();
-                            
-                            if(actual.getId_usuario()==usuario.getId_usuario()){
-                                infoTratamiento = new MostrarInfoTratamiento(usuario, true, true);
-                            }
-                            else{
-                                infoTratamiento = new MostrarInfoTratamiento(usuario, false, true);
-                            }
-                            
-                            remove(contenedorListarTratamientos);
-                            add(infoTratamiento, BorderLayout.CENTER);
-                            isListarTratamientos = false;
-                            updateUI();
-                        }
-                    } catch (Exception ex) {
-                    }
+                    System.out.println(((Item)fila[0]).getId());
                 }
+//                if (me.getClickCount() == 2) {
+//                    Object [] fila = getRowAt(row);
+//                    try {
+//                        Usuario usuario = Autenticacion.getUsuario((String)fila[0], (String)fila[3]);
+//                        if(usuario!=null){
+//                            
+//                            Usuario actual = ((JVentana)getTopLevelAncestor()).getUsuario();
+//                            
+//                            if(actual.getId_usuario()==usuario.getId_usuario()){
+//                                infoTratamiento = new MostrarInfoTratamiento(usuario, true, true);
+//                            }
+//                            else{
+//                                infoTratamiento = new MostrarInfoTratamiento(usuario, false, true);
+//                            }
+//                            
+//                            remove(contenedorListarTratamientos);
+//                            add(infoTratamiento, BorderLayout.CENTER);
+//                            isListarTratamientos = false;
+//                            updateUI();
+//                        }
+//                    } catch (Exception ex) {
+//                    }
+//                }
             }
         });
     }
     
     private Object[] getRowAt(int row) {
-        Object[] result = new String[this.columnasNombre.length];
+        Object[] result = new Object[this.columnasNombre.length];
         
         for (int i = 0; i < this.columnasNombre.length; i++) {
             result[i] = this.tabla.getModel().getValueAt(row, i);
         }
-        
         return result;
     }
     
@@ -175,7 +179,7 @@ public class Tratamientos extends JPanel implements ActionListener{
         for(Tratamiento tratamiento : tratamientos){
             //if(tratamiento.isActivo()){
 
-                Object [] fila = new Object [] {tratamiento.getNombre(), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
+                Object [] fila = new Object [] {new Item(tratamiento.getNombre(), tratamiento.getIdTratamiento()), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
                 
                 objetos.add(fila);
             //}
@@ -190,7 +194,7 @@ public class Tratamientos extends JPanel implements ActionListener{
         
         this.modelo = new DefaultTableModel(this.filas, this.columnasNombre) {
             Class[] types = new Class [] {
-                String.class, String.class, String.class
+                Item.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false
@@ -327,7 +331,7 @@ public class Tratamientos extends JPanel implements ActionListener{
         for(Tratamiento tratamiento : tratamientos){
             //if(usuario.isActivo()){
 
-                Object [] fila = new Object [] {tratamiento.getNombre(), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
+                Object [] fila = new Object [] {new Item(tratamiento.getNombre(), tratamiento.getIdTratamiento()), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
                 
                 boolean aux = false;
                 
@@ -356,7 +360,7 @@ public class Tratamientos extends JPanel implements ActionListener{
         
         this.modelo = new DefaultTableModel(this.filas, this.columnasNombre) {
             Class[] types = new Class [] {
-                String.class, String.class, String.class
+                Item.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false

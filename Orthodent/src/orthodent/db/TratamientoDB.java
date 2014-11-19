@@ -42,11 +42,11 @@ public class TratamientoDB {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM tratamiento");
+            ResultSet rs = st.executeQuery("SELECT * FROM tratamiento where activo="+1);
             tratamientos = new ArrayList<Tratamiento>();
             while (rs.next())
             {
-                Tratamiento t = new Tratamiento(rs.getInt("id_tratamiento"), rs.getString("nombre"), rs.getInt("valor_colegio"), rs.getInt("valor_clinica"));
+                Tratamiento t = new Tratamiento(rs.getInt("id_tratamiento"), rs.getString("nombre"), rs.getInt("valor_colegio"), rs.getInt("valor_clinica"), rs.getBoolean("activo"));
                 tratamientos.add(t);
             }
             rs.close();
@@ -72,8 +72,9 @@ public class TratamientoDB {
                 String nombre = rs.getString("nombre");
                 int valorColegio = rs.getInt("valor_colegio");
                 int valorClinica = rs.getInt("valor_clinica");
+                boolean activo = rs.getBoolean("activo");
 
-                tratamiento = new Tratamiento(idTratamiento, nombre, valorColegio, valorClinica);
+                tratamiento = new Tratamiento(idTratamiento, nombre, valorColegio, valorClinica, activo);
             }
             else{
                 tratamiento = null;
@@ -86,4 +87,23 @@ public class TratamientoDB {
             return null;
         }
     }
+    
+    public static boolean eliminarTratamiento(int idTratamiento){
+        try{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            
+            java.sql.Statement st = con.createStatement();
+            int aux = st.executeUpdate("UPDATE tratamiento\n" +
+                                        "SET activo='"+0+"'\n" +
+                                        "WHERE id_paciente="+idTratamiento);
+            boolean resultado = (aux == 1)? true : false;
+            st.close();
+            con.close();
+            return resultado;
+        }
+        catch ( SQLException e) {
+            return false;
+        }
+    }    
 }
