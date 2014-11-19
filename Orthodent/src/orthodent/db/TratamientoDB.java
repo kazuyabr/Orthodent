@@ -96,7 +96,7 @@ public class TratamientoDB {
             java.sql.Statement st = con.createStatement();
             int aux = st.executeUpdate("UPDATE tratamiento\n" +
                                         "SET activo='"+0+"'\n" +
-                                        "WHERE id_paciente="+idTratamiento);
+                                        "WHERE id_tratamiento="+idTratamiento);
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();

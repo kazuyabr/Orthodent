@@ -382,7 +382,7 @@ public class Tratamientos extends JPanel implements ActionListener{
         for(Tratamiento tratamiento : tratamientos){
             //if(usuario.isActivo()){
 
-                Object [] fila = new Object [] {new Item(tratamiento.getNombre(), tratamiento.getIdTratamiento()), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
+                Object [] fila = new Object [] {tratamiento.getNombre(), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
                 
                 boolean aux = false;
                 

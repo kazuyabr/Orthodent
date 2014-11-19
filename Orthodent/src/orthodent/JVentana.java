@@ -297,7 +297,6 @@ public class JVentana extends JFrame{
             if(this.tratamientos==null){
                 this.crearTratamientos();
             }
-            
             this.add(this.contenedorTratamiento,BorderLayout.CENTER);
             this.contenedorTratamiento.updateUI();
             this.getTratamientos().updateModelo(); //actualiza el modelo cuando se cambia de pestañas
