@@ -18,10 +18,14 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -30,11 +34,11 @@ import javax.swing.LayoutStyle;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import modelo.Tratamiento;
-import modelo.Usuario;
 import orthodent.Item;
 import orthodent.JVentana;
-import orthodent.db.Autenticacion;
+import orthodent.db.FichaEvolucionDB;
 import orthodent.db.TratamientoDB;
+import orthodent.pacientes.FichasClinicas;
 import orthodent.usuarios.MostrarInfoTratamiento;
 
 /**
@@ -47,6 +51,7 @@ public class Tratamientos extends JPanel implements ActionListener{
     private JTextField buscador;
     private JButton botonBuscar;
     private JButton nuevoTratamiento;
+    private JButton eliminarTratamiento;
     private JTable tabla;
     private TableModel modelo;
     private Object [][] filas;
@@ -54,17 +59,18 @@ public class Tratamientos extends JPanel implements ActionListener{
     private MostrarInfoTratamiento infoTratamiento;
     private JPanel contenedorListarTratamientos;
     private boolean isListarTratamientos;
+    private static int tratamientoSelected;
     
     public Tratamientos(){
         this.setBackground(new Color(243,242,243));
         this.setPreferredSize(new Dimension(1073, 561));
-        
+        this.tratamientoSelected = -1;
         this.setLayout(new BorderLayout());
-        
         this.isListarTratamientos = true;
         this.initComponents();
         this.addComponents();
         this.botonBuscar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.eliminarTratamiento.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.nuevoTratamiento.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -111,11 +117,21 @@ public class Tratamientos extends JPanel implements ActionListener{
         this.nuevoTratamiento.setForeground(new Color(11, 146, 181));
         this.nuevoTratamiento.setFont(new Font("Georgia", 1, 12));
         this.nuevoTratamiento.setIcon(new ImageIcon("src/imagenes/add_mini.png"));
-        this.nuevoTratamiento.setText("Nuevo Tratamiento");
+        this.nuevoTratamiento.setText("Nuevo Tratamiento  ");
         this.nuevoTratamiento.setBorder(null);
         this.nuevoTratamiento.setBorderPainted(false);
         this.nuevoTratamiento.setContentAreaFilled(false);
         this.nuevoTratamiento.addActionListener(this);
+        
+        this.eliminarTratamiento = new JButton();
+        this.eliminarTratamiento.setForeground(new Color(11, 146, 181));
+        this.eliminarTratamiento.setFont(new Font("Georgia", 1, 12));
+        this.eliminarTratamiento.setIcon(new ImageIcon("src/imagenes/delete_mini.png"));
+        this.eliminarTratamiento.setText("Eliminar Tratamiento");
+        this.eliminarTratamiento.setBorder(null);
+        this.eliminarTratamiento.setBorderPainted(false);
+        this.eliminarTratamiento.setContentAreaFilled(false);
+        this.eliminarTratamiento.addActionListener(this); 
         
         this.tabla = new JTable();
         this.tabla.setFont(new Font("Georgia", 0, 11));
@@ -130,7 +146,8 @@ public class Tratamientos extends JPanel implements ActionListener{
                 int row = table.rowAtPoint(p);
                 if(me.getClickCount() == 1){
                     Object [] fila = getRowAt(row);
-                    System.out.println(((Item)fila[0]).getId());
+                    tratamientoSelected = ((Item)fila[0]).getId();
+                    
                 }
 //                if (me.getClickCount() == 2) {
 //                    Object [] fila = getRowAt(row);
@@ -272,6 +289,7 @@ public class Tratamientos extends JPanel implements ActionListener{
                 .addComponent(this.botonBuscar)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(this.nuevoTratamiento)
+                .addComponent(this.eliminarTratamiento)
                 .addContainerGap())
         );
         
@@ -282,7 +300,8 @@ public class Tratamientos extends JPanel implements ActionListener{
                 .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(this.buscador, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(this.botonBuscar)
-                    .addComponent(this.nuevoTratamiento))
+                    .addComponent(this.nuevoTratamiento)
+                    .addComponent(this.eliminarTratamiento))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
     }
@@ -293,6 +312,38 @@ public class Tratamientos extends JPanel implements ActionListener{
         if(e.getSource() == this.nuevoTratamiento){
             new NuevoTratamiento(((JVentana)this.getTopLevelAncestor()),true).setVisible(true);
         }
+        
+        if(e.getSource() == this.eliminarTratamiento){
+            if(tabla.getSelectedRow() != -1){ // existe fila seleccionada
+               Object[] options = {"Sí","No"};
+
+               int n = JOptionPane.showOptionDialog(this,
+                            "¿Esta seguro que desea eliminar el tratamiento?",
+                            "Orthodent",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[1]);
+                if(n==0){
+
+                    boolean respuesta = TratamientoDB.eliminarTratamiento(tratamientoSelected);
+                    System.out.println("respuesta "+respuesta);
+                    this.updateModelo();
+
+                    this.updateUI();
+
+                }
+            }
+            else{
+                    JOptionPane.showMessageDialog(this,
+                                        "Debe seleccionar primero un tratamiento",
+                                        "Orthodent",
+                                        JOptionPane.INFORMATION_MESSAGE);                
+            }
+            
+
+        }        
         
         if(e.getSource() == this.botonBuscar){
             this.buscar();
