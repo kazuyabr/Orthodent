@@ -6,6 +6,7 @@
 package orthodent.agenda;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import modelo.Usuario;
@@ -167,6 +168,10 @@ public class BarraAcciones extends javax.swing.JPanel {
 
     public int getIdProfesional(){
         return ((Item)profesionales.getSelectedItem()).getId();
+    }
+    
+    public void setFechaAgenda(Date fecha){
+        this.fechaAgenda.setDate(fecha);
     }
 
 }

@@ -44,7 +44,7 @@ public class Agenda extends JPanel{
         this.scheduler = new Scheduler();
         this.scheduler.setModel(modelo);
         this.scheduler.showDate(new LocalDate());
-
+        
         this.scheduler.setFont(new Font("Georgia", Font.PLAIN,12));
 
         scheduler.addScheduleListener(new ScheduleListener()
@@ -59,7 +59,8 @@ public class Agenda extends JPanel{
         add(scheduler, BorderLayout.CENTER);
         
         this.barraAcciones = new BarraAcciones(this.usuarioActual,this);
-        
+        //this.cambiarSemanaDeAgenda(new Date());
+        this.barraAcciones.setFechaAgenda(new Date());
         this.add(barraAcciones, BorderLayout.NORTH);
     }
     
@@ -69,11 +70,11 @@ public class Agenda extends JPanel{
 
             void agregarCita(Cita cita) {
                 cita.setProfesionalId(barraAcciones.getIdProfesional());
-                cita.setFecha(cita.getDateTime().toString("y-M-d"));
-                cita.setSemana(obtenerSemana(cita.getDateTime().toDate()));
+                cita.setFecha(cita.getRealDateTime().toString("y-M-d"));
+                cita.setSemana(obtenerSemana(cita.getRealDateTime().toDate()));
                 
                 modelo.agregarCita(cita);
-                if(!AgendaDB.crearCita(cita)){
+                if(!AgendaDB.crearCita(cita,modelo)){
                     System.out.println("NO CREO LA WEA");
                 }
             }
@@ -84,12 +85,13 @@ public class Agenda extends JPanel{
     public void cambiarSemanaDeAgenda(Date fecha){
         int semana = this.obtenerSemana(fecha);
         LocalDate ld = new LocalDate(obtenerLunes(fecha));
-        this.scheduler.showDate(ld);
-        ArrayList<Cita> citas = AgendaDB.obtenerCitas(semana, barraAcciones.getIdProfesional());
+        //this.scheduler.showDate(ld);
+        ArrayList<Cita> citas = AgendaDB.obtenerCitas(semana, barraAcciones.getIdProfesional(),modelo);
         if(citas!=null){
             for(Cita c : citas){
                 System.out.println(c.getTitle());
                 modelo.agregarCita(c);
+                modelo.agregaCitaAlArray(c);
             }
         }
         else{
@@ -116,5 +118,7 @@ public class Agenda extends JPanel{
         lunes = c.getTime();
         return lunes;
     }
+    
+    
     
 }

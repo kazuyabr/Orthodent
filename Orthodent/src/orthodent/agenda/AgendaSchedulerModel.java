@@ -10,6 +10,8 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
@@ -69,6 +71,19 @@ public class AgendaSchedulerModel extends AbstractScheduleModel
             
         }
     }
+    
+    public AgendaResource calcularResource(Date fecha){
+        Calendar c = Calendar.getInstance();
+        c.setTime(fecha);
+        int dia = c.get(Calendar.DAY_OF_WEEK);
+        AgendaResource ar = new AgendaResource(days[dia-2],dia-2);
+        return ar;
+    }
+    
+    public void agregaCitaAlArray(Cita cita){
+        this.citas.add(cita);
+    }
+    
 }
 
 class AgendaResource implements Resource
@@ -99,4 +114,6 @@ class AgendaResource implements Resource
     {
         return pos;
     }
+    
+    
 }
