@@ -200,9 +200,11 @@ public abstract class NuevaCita extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Cita c = new Cita(pacientes.getSelectedItem().toString());
-     
-        c.setDateTime(inicio);
-        c.setRealDateTime(inicioReal);
+        int hour = 9 + jComboBox1.getSelectedIndex()/4;
+        int minute = 15*(jComboBox1.getSelectedIndex()%4);
+        
+        c.setDateTime(inicio.withHourOfDay(hour).withMinuteOfHour(minute));
+        c.setRealDateTime(inicioReal.withHourOfDay(hour).withMinuteOfHour(minute));
         c.setDuration(Duration.standardMinutes((jComboBox2.getSelectedIndex() - jComboBox1.getSelectedIndex())*15));
         c.setResource(_resource);
         c.setPacienteId(((Item)pacientes.getSelectedItem()).getId());
