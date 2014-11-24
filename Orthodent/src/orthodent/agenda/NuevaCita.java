@@ -209,9 +209,6 @@ public abstract class NuevaCita extends javax.swing.JDialog {
         }
         Cita c = new Cita(pacientes.getSelectedItem().toString()+" "+p.getTelefono());
         
-        c.setDateTime(inicio);
-        c.setRealDateTime(inicioReal);
-        Cita c = new Cita(pacientes.getSelectedItem().toString());
         int hour = 9 + jComboBox1.getSelectedIndex()/4;
         int minute = 15*(jComboBox1.getSelectedIndex()%4);
         
