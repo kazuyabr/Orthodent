@@ -32,6 +32,8 @@ public abstract class NuevaCita extends javax.swing.JDialog {
     Resource _resource;
     public NuevaCita(java.awt.Frame parent, boolean modal, Resource resource, DateTime agenda_inicio) {
         super(parent, modal);
+        // Esto alinea la posicion de la cita en la agenda en saltos de 15 min
+        agenda_inicio = agenda_inicio.plusMinutes(-agenda_inicio.getMinuteOfHour()%15);
         this.inicio = agenda_inicio;
         this.inicioReal = agenda_inicio.plusDays(((AgendaResource)resource).getPos());
         

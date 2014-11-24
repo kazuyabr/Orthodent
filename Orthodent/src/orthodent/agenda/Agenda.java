@@ -71,6 +71,7 @@ public class Agenda extends JPanel{
                 cita.setProfesionalId(barraAcciones.getIdProfesional());
                 cita.setFecha(cita.getDateTime().toString("y-M-d"));
                 cita.setSemana(obtenerSemana(cita.getDateTime().toDate()));
+                
                 modelo.agregarCita(cita);
                 if(!AgendaDB.crearCita(cita)){
                     System.out.println("NO CREO LA WEA");
