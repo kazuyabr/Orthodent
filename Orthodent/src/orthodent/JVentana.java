@@ -4,7 +4,7 @@
  */
 package orthodent;
 
-import orthodent.pagos.Pagos;
+import orthodent.tratamientos.Tratamientos;
 import orthodent.historial.Historial;
 import orthodent.agenda.Agenda;
 import orthodent.pacientes.Pacientes;
@@ -16,7 +16,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.*;
 import modelo.Usuario;
-import orthodent.usuarios.MostrarInfoUsuario;
+import orthodent.usuarios.MostrarInfoTratamiento;
 
 public class JVentana extends JFrame{
     
@@ -25,16 +25,16 @@ public class JVentana extends JFrame{
     private PanelOpciones panelOpciones;
     private JPanel contenedorAgenda;
     private JPanel contenedorPacientes;
-    private JPanel contenedorPagos;
+    private JPanel contenedorTratamiento;
     private JPanel contenedorUsuarios;
     private JPanel contenedorHistorial;
     private JPanel contenedorConfigurarCuenta;
     private Agenda agenda;
     private Pacientes pacientes;
-    private Pagos pagos;
+    private Tratamientos tratamientos;
     private Usuarios usuarios;
     private Historial historial;
-    private MostrarInfoUsuario configurarCuenta;
+    private MostrarInfoTratamiento configurarCuenta;
     
     private int opActual;
 
@@ -78,7 +78,7 @@ public class JVentana extends JFrame{
         
         this.contenedorAgenda = new JPanel();
         this.contenedorPacientes = new JPanel();
-        this.contenedorPagos = new JPanel();
+        this.contenedorTratamiento = new JPanel();
         this.contenedorUsuarios = new JPanel();
         this.contenedorHistorial = new JPanel();
         this.contenedorConfigurarCuenta = new JPanel();
@@ -87,7 +87,7 @@ public class JVentana extends JFrame{
         this.add(this.contenedorAgenda,BorderLayout.CENTER);
         
         this.pacientes = null;
-        this.pagos = null;
+        this.tratamientos = null;
         this.usuarios = null;
         this.historial = null;
         this.configurarCuenta = null;
@@ -139,13 +139,13 @@ public class JVentana extends JFrame{
         this.contenedorPacientes.add(panel,BorderLayout.NORTH);
     }
     
-    private void crearPagos(){
-        this.contenedorPagos.setLayout(new BorderLayout());
-        this.pagos = new Pagos();
+    private void crearTratamientos(){
+        this.contenedorTratamiento.setLayout(new BorderLayout());
+        this.tratamientos = new Tratamientos();
         
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        panel.add(this.pagos,BorderLayout.CENTER);
+        panel.add(this.tratamientos,BorderLayout.CENTER);
         
         JPanel borde1 = new JPanel();
         borde1.setBackground(Color.white);
@@ -157,7 +157,7 @@ public class JVentana extends JFrame{
         panel.add(borde1,BorderLayout.WEST);
         panel.add(borde2,BorderLayout.EAST);
         
-        this.contenedorPagos.add(panel,BorderLayout.NORTH);
+        this.contenedorTratamiento.add(panel,BorderLayout.NORTH);
     }
     
     private void crearUsuarios() throws Exception{
@@ -204,7 +204,7 @@ public class JVentana extends JFrame{
     
     private void crearConfigurarCuenta(){
         this.contenedorConfigurarCuenta.setLayout(new BorderLayout());
-        this.configurarCuenta = new MostrarInfoUsuario(this.usuario, true, false);
+        this.configurarCuenta = new MostrarInfoTratamiento(this.usuario, true, false);
         
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -238,7 +238,7 @@ public class JVentana extends JFrame{
         }
         
         try{
-            this.remove(this.contenedorPagos);
+            this.remove(this.contenedorTratamiento);
         }
         catch(Exception e){
         }
@@ -284,21 +284,22 @@ public class JVentana extends JFrame{
             
             this.add(this.contenedorPacientes,BorderLayout.CENTER);
             this.contenedorPacientes.updateUI();
+            this.getPacientes().updateModelo();
             this.opActual = 2;
         }
     }
     
-    public void cambiarPagos(){
+    public void cambiarTratamientos(){
         if(opActual!=3){
             this.removeAncestor();
             this.panelOpciones.setIconButton(3);
             
-            if(this.pagos==null){
-                this.crearPagos();
+            if(this.tratamientos==null){
+                this.crearTratamientos();
             }
-            
-            this.add(this.contenedorPagos,BorderLayout.CENTER);
-            this.contenedorPagos.updateUI();
+            this.add(this.contenedorTratamiento,BorderLayout.CENTER);
+            this.contenedorTratamiento.updateUI();
+            this.getTratamientos().updateModelo(); //actualiza el modelo cuando se cambia de pestañas
             this.opActual = 3;
         }
     }
@@ -314,6 +315,7 @@ public class JVentana extends JFrame{
             
             this.add(this.contenedorUsuarios,BorderLayout.CENTER);
             this.contenedorUsuarios.updateUI();
+            this.getUsuarios().updateModelo();
             this.opActual = 4;
         }
     }
@@ -356,8 +358,8 @@ public class JVentana extends JFrame{
         return this.pacientes;
     }
     
-    public Pagos getPagos(){
-        return this.pagos;
+    public Tratamientos getTratamientos(){
+        return this.tratamientos;
     }
     
     public Usuarios getUsuarios(){

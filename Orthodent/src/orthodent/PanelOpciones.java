@@ -20,7 +20,7 @@ import orthodent.db.RolDB;
 import orthodent.pacientes.MostrarInfoPaciente;
 import orthodent.usuarios.ConfigurarCuenta;
 import orthodent.usuarios.DatosPersonales;
-import orthodent.usuarios.MostrarInfoUsuario;
+import orthodent.usuarios.MostrarInfoTratamiento;
 
 /**
  *
@@ -153,7 +153,7 @@ public class PanelOpciones extends JPanel implements ActionListener{
         
         this.agenda.setIcon(new ImageIcon("src/imagenes/agenda.png"));
         this.pacientes.setIcon(new ImageIcon("src/imagenes/pacientes.png"));
-        this.pagos.setIcon(new ImageIcon("src/imagenes/pagos.png"));
+        this.pagos.setIcon(new ImageIcon("src/imagenes/tratamientos.png"));
         this.usuarios.setIcon(new ImageIcon("src/imagenes/usuarios.png"));
         this.historial.setIcon(new ImageIcon("src/imagenes/historial.png"));
         
@@ -165,7 +165,7 @@ public class PanelOpciones extends JPanel implements ActionListener{
                 this.pacientes.setIcon(new ImageIcon("src/imagenes/pacientesSelec.png"));
                 break;
             case 3:
-                this.pagos.setIcon(new ImageIcon("src/imagenes/pagosSelec.png"));
+                this.pagos.setIcon(new ImageIcon("src/imagenes/tratamientosSelec.png"));
                 break;
             case 4:
                 this.usuarios.setIcon(new ImageIcon("src/imagenes/usuariosSelec.png"));
@@ -346,7 +346,7 @@ public class PanelOpciones extends JPanel implements ActionListener{
         if (e.getSource() == this.pagos){
             try {
                 int op = this.revisarCambios();
-                ((JVentana)this.getTopLevelAncestor()).cambiarPagos();
+                ((JVentana)this.getTopLevelAncestor()).cambiarTratamientos();
             } catch (Exception ex) {
             }
         }
@@ -362,7 +362,7 @@ public class PanelOpciones extends JPanel implements ActionListener{
                             ((JVentana)this.getTopLevelAncestor()).cambiarUsuarios();
                         }
                         else{
-                            MostrarInfoUsuario infoUsuario = ((JVentana)this.getTopLevelAncestor()).getUsuarios().getInfoUsuario();
+                            MostrarInfoTratamiento infoUsuario = ((JVentana)this.getTopLevelAncestor()).getUsuarios().getInfoUsuario();
                             infoUsuario.volver();
                             ((JVentana)this.getTopLevelAncestor()).cambiarUsuarios();
                         }
@@ -378,7 +378,7 @@ public class PanelOpciones extends JPanel implements ActionListener{
                         ((JVentana)this.getTopLevelAncestor()).cambiarUsuarios();
                     }
                     else{
-                        MostrarInfoUsuario infoUsuario = ((JVentana)this.getTopLevelAncestor()).getUsuarios().getInfoUsuario();
+                        MostrarInfoTratamiento infoUsuario = ((JVentana)this.getTopLevelAncestor()).getUsuarios().getInfoUsuario();
                         infoUsuario.volver();
                     }
                 }
@@ -433,7 +433,7 @@ public class PanelOpciones extends JPanel implements ActionListener{
             boolean aux = ((JVentana)this.getTopLevelAncestor()).getUsuarios().isIsListarUsuarios();
 
             if(!aux){
-                MostrarInfoUsuario infoUsuario = ((JVentana)this.getTopLevelAncestor()).getUsuarios().getInfoUsuario();
+                MostrarInfoTratamiento infoUsuario = ((JVentana)this.getTopLevelAncestor()).getUsuarios().getInfoUsuario();
                 infoUsuario.guardarAntes();
             }
         }

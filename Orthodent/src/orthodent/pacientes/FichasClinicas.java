@@ -6,7 +6,6 @@ package orthodent.pacientes;
 
 import java.awt.Cursor;
 import java.awt.Point;
-import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -15,22 +14,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import modelo.FichaEvolucion;
 import modelo.Paciente;
 import modelo.PlanTratamiento;
-import modelo.Rol;
 import modelo.Tratamiento;
 import modelo.Usuario;
 import orthodent.Item;
@@ -38,8 +31,6 @@ import orthodent.JVentana;
 import orthodent.db.Autenticacion;
 import orthodent.db.FichaEvolucionDB;
 import orthodent.db.PlanTratamientoDB;
-import orthodent.db.RolDB;
-import orthodent.db.TratamientoDB;
 
 /**
  *

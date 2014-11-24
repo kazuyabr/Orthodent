@@ -15,7 +15,7 @@ import orthodent.JVentana;
  * 
  * @author Mary
  */
-public class MostrarInfoUsuario extends JPanel implements ActionListener{
+public class MostrarInfoTratamiento extends JPanel implements ActionListener{
     
     private JLabel nombreUsuario;
     private JButton userInfo;
@@ -31,7 +31,7 @@ public class MostrarInfoUsuario extends JPanel implements ActionListener{
     private boolean configurarCuenta;
     private boolean desdeUsuario;
     
-    public MostrarInfoUsuario(Usuario usuario, boolean configurarCuenta, boolean desdeUsuario){
+    public MostrarInfoTratamiento(Usuario usuario, boolean configurarCuenta, boolean desdeUsuario){
         this.usuario = usuario;
         this.configurarCuenta = configurarCuenta;
         this.desdeUsuario = desdeUsuario;

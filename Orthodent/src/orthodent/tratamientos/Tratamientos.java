@@ -2,70 +2,97 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package orthodent.usuarios;
+package orthodent.tratamientos;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import javax.swing.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import modelo.Rol;
-import modelo.Usuario;
+import modelo.Tratamiento;
+import orthodent.Item;
 import orthodent.JVentana;
-import orthodent.db.Autenticacion;
-import orthodent.db.RolDB;
+import orthodent.db.FichaEvolucionDB;
+import orthodent.db.TratamientoDB;
+import orthodent.pacientes.FichasClinicas;
+import orthodent.usuarios.MostrarInfoTratamiento;
 
 /**
- * 
- * @author Mary
+ *
+ * @author Msanhuezal
  */
-public class Usuarios extends JPanel implements ActionListener{
+public class Tratamientos extends JPanel implements ActionListener{
     //Esta clase solo la ve el admin!!
     private Image bannerFondo;
     private JTextField buscador;
     private JButton botonBuscar;
-    private JButton nuevoUsuario;
+    private JButton nuevoTratamiento;
+    private JButton eliminarTratamiento;
     private JTable tabla;
     private TableModel modelo;
     private Object [][] filas;
     private String [] columnasNombre;
-    private MostrarInfoTratamiento infoUsuario;
-    private JPanel contenedorListarUsuarios;
-    private boolean isListarUsuarios;
+    private MostrarInfoTratamiento infoTratamiento;
+    private JPanel contenedorListarTratamientos;
+    private boolean isListarTratamientos;
+    private static int tratamientoSelected;
     
-    public Usuarios(){
+    public Tratamientos(){
         this.setBackground(new Color(243,242,243));
         this.setPreferredSize(new Dimension(1073, 561));
-        
+        this.tratamientoSelected = -1;
         this.setLayout(new BorderLayout());
-        
-        this.isListarUsuarios = true;
+        this.isListarTratamientos = true;
         this.initComponents();
         this.addComponents();
         this.botonBuscar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        this.nuevoUsuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.eliminarTratamiento.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.nuevoTratamiento.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
-    public boolean isIsListarUsuarios() {
-        return isListarUsuarios;
+    public boolean isIsListarTratamientos() {
+        return isListarTratamientos;
     }
 
-    public void setIsListarUsuarios(boolean isListarUsuarios) {
-        this.isListarUsuarios = isListarUsuarios;
+    public void setIsListarTratamientos(boolean isListarTratamientos) {
+        this.isListarTratamientos = isListarTratamientos;
     }
     
-    public MostrarInfoTratamiento getInfoUsuario(){
-        return this.infoUsuario;
+    public MostrarInfoTratamiento getInfoTratamiento(){
+        return this.infoTratamiento;
     }
     
     private void initComponents(){
         
-        this.contenedorListarUsuarios = new JPanel();
-        this.contenedorListarUsuarios.setLayout(new BorderLayout());
+        this.contenedorListarTratamientos = new JPanel();
+        this.contenedorListarTratamientos.setLayout(new BorderLayout());
         
-        this.infoUsuario = null;
-        this.bannerFondo = new ImageIcon("src/imagenes/directorioUsuarios.png").getImage();
+        this.infoTratamiento = null;
+        this.bannerFondo = new ImageIcon("src/imagenes/directorioTratamientos.png").getImage();
         
         this.buscador = new JTextField();
         
@@ -86,19 +113,29 @@ public class Usuarios extends JPanel implements ActionListener{
         this.botonBuscar.setContentAreaFilled(false);
         this.botonBuscar.addActionListener(this);
         
-        this.nuevoUsuario = new JButton();
-        this.nuevoUsuario.setForeground(new Color(11, 146, 181));
-        this.nuevoUsuario.setFont(new Font("Georgia", 1, 12));
-        this.nuevoUsuario.setIcon(new ImageIcon("src/imagenes/add_mini.png"));
-        this.nuevoUsuario.setText("Nuevo Usuario");
-        this.nuevoUsuario.setBorder(null);
-        this.nuevoUsuario.setBorderPainted(false);
-        this.nuevoUsuario.setContentAreaFilled(false);
-        this.nuevoUsuario.addActionListener(this);
+        this.nuevoTratamiento = new JButton();
+        this.nuevoTratamiento.setForeground(new Color(11, 146, 181));
+        this.nuevoTratamiento.setFont(new Font("Georgia", 1, 12));
+        this.nuevoTratamiento.setIcon(new ImageIcon("src/imagenes/add_mini.png"));
+        this.nuevoTratamiento.setText("Nuevo Tratamiento  ");
+        this.nuevoTratamiento.setBorder(null);
+        this.nuevoTratamiento.setBorderPainted(false);
+        this.nuevoTratamiento.setContentAreaFilled(false);
+        this.nuevoTratamiento.addActionListener(this);
+        
+        this.eliminarTratamiento = new JButton();
+        this.eliminarTratamiento.setForeground(new Color(11, 146, 181));
+        this.eliminarTratamiento.setFont(new Font("Georgia", 1, 12));
+        this.eliminarTratamiento.setIcon(new ImageIcon("src/imagenes/delete_mini.png"));
+        this.eliminarTratamiento.setText("Eliminar Tratamiento");
+        this.eliminarTratamiento.setBorder(null);
+        this.eliminarTratamiento.setBorderPainted(false);
+        this.eliminarTratamiento.setContentAreaFilled(false);
+        this.eliminarTratamiento.addActionListener(this); 
         
         this.tabla = new JTable();
         this.tabla.setFont(new Font("Georgia", 0, 11));
-        this.columnasNombre = new String [] {"Nombre", "Apellido Paterno", "Apellido Materno", "Email", "Nombre de Usuario", "Rol"};
+        this.columnasNombre = new String [] {"Nombre", "Valor Colegio", "Valor Clínica"};
         this.updateModelo();
         this.tabla.getTableHeader().setReorderingAllowed(false);
         
@@ -107,60 +144,62 @@ public class Usuarios extends JPanel implements ActionListener{
                 JTable table =(JTable) me.getSource();
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
-                if (me.getClickCount() == 2) {
+                if(me.getClickCount() == 1){
                     Object [] fila = getRowAt(row);
-                    try {
-                        Usuario usuario = Autenticacion.getUsuario((String)fila[0], (String)fila[3]);
-                        if(usuario!=null){
-                            
-                            Usuario actual = ((JVentana)getTopLevelAncestor()).getUsuario();
-                            
-                            if(actual.getId_usuario()==usuario.getId_usuario()){
-                                infoUsuario = new MostrarInfoTratamiento(usuario, true, true);
-                            }
-                            else{
-                                infoUsuario = new MostrarInfoTratamiento(usuario, false, true);
-                            }
-                            
-                            remove(contenedorListarUsuarios);
-                            add(infoUsuario, BorderLayout.CENTER);
-                            isListarUsuarios = false;
-                            updateUI();
-                        }
-                    } catch (Exception ex) {
-                    }
+                    tratamientoSelected = ((Item)fila[0]).getId();
+                    
                 }
+//                if (me.getClickCount() == 2) {
+//                    Object [] fila = getRowAt(row);
+//                    try {
+//                        Usuario usuario = Autenticacion.getUsuario((String)fila[0], (String)fila[3]);
+//                        if(usuario!=null){
+//                            
+//                            Usuario actual = ((JVentana)getTopLevelAncestor()).getUsuario();
+//                            
+//                            if(actual.getId_usuario()==usuario.getId_usuario()){
+//                                infoTratamiento = new MostrarInfoTratamiento(usuario, true, true);
+//                            }
+//                            else{
+//                                infoTratamiento = new MostrarInfoTratamiento(usuario, false, true);
+//                            }
+//                            
+//                            remove(contenedorListarTratamientos);
+//                            add(infoTratamiento, BorderLayout.CENTER);
+//                            isListarTratamientos = false;
+//                            updateUI();
+//                        }
+//                    } catch (Exception ex) {
+//                    }
+//                }
             }
         });
     }
     
     private Object[] getRowAt(int row) {
-        Object[] result = new String[this.columnasNombre.length];
+        Object[] result = new Object[this.columnasNombre.length];
         
         for (int i = 0; i < this.columnasNombre.length; i++) {
             result[i] = this.tabla.getModel().getValueAt(row, i);
         }
-        
         return result;
     }
     
     public void updateModelo(){
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
-        ArrayList<Usuario> usuarios = Autenticacion.listarUsuarios();
+        ArrayList<Tratamiento> tratamientos = TratamientoDB.listarTratamientos();
         
         int m = this.columnasNombre.length;
         
         ArrayList<Object []> objetos = new ArrayList<Object []>();
         
-        for(Usuario usuario : usuarios){
-            if(usuario.isActivo()){
-                Rol rol = RolDB.getRol(usuario.getId_rol());
+        for(Tratamiento tratamiento : tratamientos){
+            //if(tratamiento.isActivo()){
 
-                Object [] fila = new Object [] {usuario.getNombre(), usuario.getApellido_pat(), usuario.getApellido_mat(),
-                                            usuario.getEmail(), usuario.getNombreUsuario(), rol.getNombre().toLowerCase()};
+                Object [] fila = new Object [] {new Item(tratamiento.getNombre(), tratamiento.getIdTratamiento()), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
                 
                 objetos.add(fila);
-            }
+            //}
         }
         
         this.filas = new Object [objetos.size()][m];
@@ -172,10 +211,10 @@ public class Usuarios extends JPanel implements ActionListener{
         
         this.modelo = new DefaultTableModel(this.filas, this.columnasNombre) {
             Class[] types = new Class [] {
-                String.class, String.class, String.class, String.class, String.class, String.class
+                Item.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -190,11 +229,11 @@ public class Usuarios extends JPanel implements ActionListener{
         this.tabla.setModel(modelo);
     }
     
-    public void volverUsuarios() throws Exception{
-        if(!this.isListarUsuarios){
-            this.remove(this.infoUsuario);
-            this.add(this.contenedorListarUsuarios, BorderLayout.CENTER);
-            this.isListarUsuarios = true;
+    public void volverTratamientos() throws Exception{
+        if(!this.isListarTratamientos){
+            this.remove(this.infoTratamiento);
+            this.add(this.contenedorListarTratamientos, BorderLayout.CENTER);
+            this.isListarTratamientos = true;
             this.updateModelo();
             this.updateUI();
         }
@@ -225,16 +264,16 @@ public class Usuarios extends JPanel implements ActionListener{
         auxiliar.add(banner,BorderLayout.CENTER);
         //Fin Panel azul, con el nombre del Directorio
         
-        this.contenedorListarUsuarios.add(auxiliar,BorderLayout.NORTH);
+        this.contenedorListarTratamientos.add(auxiliar,BorderLayout.NORTH);
         
         //Inicio tabla
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setViewportView(this.tabla);
         
-        this.contenedorListarUsuarios.add(scrollPane,BorderLayout.CENTER);
+        this.contenedorListarTratamientos.add(scrollPane,BorderLayout.CENTER);
         //Fin tabla
         
-        this.add(this.contenedorListarUsuarios,BorderLayout.CENTER);
+        this.add(this.contenedorListarTratamientos,BorderLayout.CENTER);
     }
     
     private void addComponentPanel1(JPanel panel1){
@@ -249,7 +288,8 @@ public class Usuarios extends JPanel implements ActionListener{
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(this.botonBuscar)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(this.nuevoUsuario)
+                .addComponent(this.nuevoTratamiento)
+                .addComponent(this.eliminarTratamiento)
                 .addContainerGap())
         );
         
@@ -260,7 +300,8 @@ public class Usuarios extends JPanel implements ActionListener{
                 .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(this.buscador, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(this.botonBuscar)
-                    .addComponent(this.nuevoUsuario))
+                    .addComponent(this.nuevoTratamiento)
+                    .addComponent(this.eliminarTratamiento))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
     }
@@ -268,9 +309,41 @@ public class Usuarios extends JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        if(e.getSource() == this.nuevoUsuario){
-            new NuevoUsuario(((JVentana)this.getTopLevelAncestor()),true).setVisible(true);
+        if(e.getSource() == this.nuevoTratamiento){
+            new NuevoTratamiento(((JVentana)this.getTopLevelAncestor()),true).setVisible(true);
         }
+        
+        if(e.getSource() == this.eliminarTratamiento){
+            if(tabla.getSelectedRow() != -1){ // existe fila seleccionada
+               Object[] options = {"Sí","No"};
+
+               int n = JOptionPane.showOptionDialog(this,
+                            "¿Esta seguro que desea eliminar el tratamiento?",
+                            "Orthodent",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[1]);
+                if(n==0){
+
+                    boolean respuesta = TratamientoDB.eliminarTratamiento(tratamientoSelected);
+                    System.out.println("respuesta "+respuesta);
+                    this.updateModelo();
+
+                    this.updateUI();
+
+                }
+            }
+            else{
+                    JOptionPane.showMessageDialog(this,
+                                        "Debe seleccionar primero un tratamiento",
+                                        "Orthodent",
+                                        JOptionPane.INFORMATION_MESSAGE);                
+            }
+            
+
+        }        
         
         if(e.getSource() == this.botonBuscar){
             this.buscar();
@@ -300,18 +373,16 @@ public class Usuarios extends JPanel implements ActionListener{
     private void buscar(){
         String value = this.buscador.getText();
         
-        ArrayList<Usuario> usuarios = Autenticacion.listarUsuarios();
+        ArrayList<Tratamiento> tratamientos = TratamientoDB.listarTratamientos();
         
         int m = this.columnasNombre.length;
         
         ArrayList<Object []> objetos = new ArrayList<Object []>();
         
-        for(Usuario usuario : usuarios){
-            if(usuario.isActivo()){
-                Rol rol = RolDB.getRol(usuario.getId_rol());
+        for(Tratamiento tratamiento : tratamientos){
+            //if(usuario.isActivo()){
 
-                Object [] fila = new Object [] {usuario.getNombre(), usuario.getApellido_pat(), usuario.getApellido_mat(),
-                                            usuario.getEmail(), usuario.getNombreUsuario(), rol.getNombre().toLowerCase()};
+                Object [] fila = new Object [] {tratamiento.getNombre(), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
                 
                 boolean aux = false;
                 
@@ -327,7 +398,7 @@ public class Usuarios extends JPanel implements ActionListener{
                 if(aux){
                     objetos.add(fila);
                 }
-            }
+           //}
         }
         
         this.filas = new Object [objetos.size()][m];
@@ -340,10 +411,10 @@ public class Usuarios extends JPanel implements ActionListener{
         
         this.modelo = new DefaultTableModel(this.filas, this.columnasNombre) {
             Class[] types = new Class [] {
-                String.class, String.class, String.class, String.class, String.class, String.class
+                Item.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {

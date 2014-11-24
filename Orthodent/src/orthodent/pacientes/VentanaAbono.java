@@ -137,6 +137,12 @@ public class VentanaAbono extends javax.swing.JDialog {
             }
         });
 
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -247,7 +253,9 @@ public class VentanaAbono extends javax.swing.JDialog {
         String descripcion = this.jTextField1.getText();
         int abono=Integer.parseInt(descripcion);
         if(validarCampos()){
-            if(abono > 0 || totalTrat < (abono+totalAbono)){
+            if(abono > 0 && totalTrat >= (totalAbono+abono)){
+                System.out.println("tTrat:"+totalTrat);
+                System.out.println("tAbono:"+totalAbono);
                 if(crearNuevo){ //crear
                     boolean respuesta = PagoDB.crearPago(this.idPlanTratamiento, fechaCita, abono);            
                     try {
@@ -276,6 +284,16 @@ public class VentanaAbono extends javax.swing.JDialog {
             }
             else{
                 System.out.println("Ingresar un abono valido");
+                if(totalTrat > (totalAbono+abono)){
+                    JOptionPane.showMessageDialog(null, "Ingresar un abono valido. ");
+                }
+                else if(totalTrat == totalAbono){
+                    JOptionPane.showMessageDialog(null,"El tratamiento esta cancelado, no necesita agregar abonos. " );
+                }
+                else{
+                    JOptionPane.showMessageDialog(null,"El abono es mayor al costo total del tratamiento. " );
+                }
+                
 
             }
             
@@ -288,6 +306,10 @@ public class VentanaAbono extends javax.swing.JDialog {
         }
        
     }//GEN-LAST:event_aceptarActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     public boolean verificarCambios(){
         Date date = this.calendarioFecha.getDate();

@@ -187,6 +187,10 @@ public class Recaudacion extends JPanel{
         int id = tratamientotoSelected.getIdPlanTratamiento();
         PlanTratamiento planTrat = PlanTratamientoDB.getPlanTratamiento(id);
         planTrat.setTotalAbonos(total);
+        //calculando el porcentaje de abance
+        int cosTotal=tratamientotoSelected.getCostoTotal();
+        int avance= total*100/cosTotal;
+        planTrat.setAvance(avance);
         PlanTratamientoDB.editarPlanTratamiento(planTrat);
         //System.out.println("total 2:"+total+"id:"+id);
         this.tablaPagoAbono.setModel(modeloPagoAbono);
@@ -678,6 +682,11 @@ public class Recaudacion extends JPanel{
         int id = tratamientotoSelected.getIdPlanTratamiento();
         PlanTratamiento planTrat = PlanTratamientoDB.getPlanTratamiento(id);
         planTrat.setTotalAbonos(total);
+        //calculando el porcentaje de abance
+        int cosTotal=tratamientotoSelected.getCostoTotal();
+        int avance= total*100/cosTotal;
+        planTrat.setAvance(avance);
+        
         PlanTratamientoDB.editarPlanTratamiento(planTrat);
         //System.out.println("total 1:"+total+"id:"+id);
         

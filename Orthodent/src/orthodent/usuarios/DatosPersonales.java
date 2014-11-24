@@ -336,7 +336,7 @@ public class DatosPersonales extends JPanel{
                     
                     JPanel contenedor = (JPanel)this.getParent();
                     
-                    ((MostrarInfoUsuario)contenedor.getParent()).volver();
+                    ((MostrarInfoTratamiento)contenedor.getParent()).volver();
                 } catch (Exception ex) {
                 }
             }
@@ -373,7 +373,7 @@ public class DatosPersonales extends JPanel{
                     
                     JPanel contenedor = (JPanel)this.getParent();
                     
-                    ((MostrarInfoUsuario)contenedor.getParent()).updateNombre();
+                    ((MostrarInfoTratamiento)contenedor.getParent()).updateNombre();
                     
                     this.cambios = false;
                     this.guardar.setEnabled(false);
