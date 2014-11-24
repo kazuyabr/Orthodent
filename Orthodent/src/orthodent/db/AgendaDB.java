@@ -10,12 +10,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.Paciente;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
+import orthodent.agenda.AgendaSchedulerModel;
 import orthodent.agenda.Cita;
 
 /**
@@ -24,7 +26,7 @@ import orthodent.agenda.Cita;
  */
 public class AgendaDB {
     
-    public static boolean crearCita(Cita cita){
+    public static boolean crearCita(Cita cita, AgendaSchedulerModel modelo){
         
         try {
             DbConnection db = new DbConnection();
@@ -35,7 +37,7 @@ public class AgendaDB {
             int id_profesional = cita.getProfesionalId();
             int id_paciente = cita.getPacienteId();
             String fecha = cita.getFecha();
-            String horaInicio = cita.getDateTime().toString("h:m");
+            String horaInicio = cita.getRealDateTime().toString("h:m");
             int duracion = cita.getDuration().toStandardSeconds().toStandardMinutes().getMinutes(); 
             int semana = cita.getSemana();
             System.out.println("hora:"+horaInicio+"     fecha:"+fecha);
@@ -53,7 +55,7 @@ public class AgendaDB {
         
     }
     
-    public static ArrayList<Cita> obtenerCitas(int semana, int id_profesional){
+    public static ArrayList<Cita> obtenerCitas(int semana, int id_profesional, AgendaSchedulerModel modelo){
         ArrayList<Cita> citas = null;
         try {
             DbConnection db = new DbConnection();
@@ -72,9 +74,20 @@ public class AgendaDB {
                 c.setPacienteId(p.getId_paciente());
                 Date d = rs.getDate("fecha");
                 Time t = rs.getTime("hora_inicio");
-                c.setDateTime(new DateTime(d.getYear(),d.getMonth(),d.getDay(),t.getHours(),t.getMinutes(), 0, 0));
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(d);
+                String[] hora = t.toString().split(":");
+                cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hora[0]));
+                cal.set(Calendar.MINUTE, Integer.parseInt(hora[1]));
+                cal.set(Calendar.SECOND, 0);
+                //cal.set
+                //d.setTime(t.getTime());
+                DateTime dt = new DateTime(cal.getTime());
+                c.setRealDateTime(dt);
+                c.setDateTime(new DateTime());
                 c.setDuration(new Duration(rs.getInt("duracion")));
-                
+                c.setResource(modelo.calcularResource(c.getRealDateTime().toDate()));
+                System.out.println(c.getRealDateTime()+" "+c.getPacienteId()+" "+t.toString());
                 citas.add(c);
             }
             rs.close();
@@ -88,5 +101,5 @@ public class AgendaDB {
         }
         return citas;
     }
-    
+        
 }

@@ -8,6 +8,8 @@ package orthodent.agenda;
 import com.thirdnf.ResourceScheduler.Resource;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import modelo.Paciente;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -199,6 +201,16 @@ public abstract class NuevaCita extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Paciente p = null;
+        try {
+            p = PacienteDB.getPaciente(((Item)pacientes.getSelectedItem()).getId());
+        } catch (Exception ex) {
+            Logger.getLogger(NuevaCita.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Cita c = new Cita(pacientes.getSelectedItem().toString()+" "+p.getTelefono());
+        
+        c.setDateTime(inicio);
+        c.setRealDateTime(inicioReal);
         Cita c = new Cita(pacientes.getSelectedItem().toString());
         int hour = 9 + jComboBox1.getSelectedIndex()/4;
         int minute = 15*(jComboBox1.getSelectedIndex()%4);
