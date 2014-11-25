@@ -8,7 +8,7 @@ package modelo;
  *
  * @author msanhuezal
  */
-public class ValorUCO {
+public class ValorUco {
 
     public int getIdValorUco() {
         return idValorUco;
@@ -34,7 +34,7 @@ public class ValorUCO {
         this.porcentaje = porcentaje;
     }
 
-    public ValorUCO(int idValorUco, int valor, int porcentaje) {
+    public ValorUco(int idValorUco, int valor, int porcentaje) {
         this.idValorUco = idValorUco;
         this.valor = valor;
         this.porcentaje = porcentaje;
