@@ -20,6 +20,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GroupLayout;
@@ -188,7 +190,7 @@ public class Tratamientos extends JPanel implements ActionListener{
     public void updateModelo(){
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
         ArrayList<Tratamiento> tratamientos = TratamientoDB.listarTratamientos();
-        
+      
         int m = this.columnasNombre.length;
         
         ArrayList<Object []> objetos = new ArrayList<Object []>();
