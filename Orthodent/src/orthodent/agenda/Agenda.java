@@ -85,13 +85,12 @@ public class Agenda extends JPanel{
     public void cambiarSemanaDeAgenda(Date fecha){
         int semana = this.obtenerSemana(fecha);
         LocalDate ld = new LocalDate(obtenerLunes(fecha));
-        //this.scheduler.showDate(ld);
+        this.scheduler.showDate(ld);
         ArrayList<Cita> citas = AgendaDB.obtenerCitas(semana, barraAcciones.getIdProfesional(),modelo);
         if(citas!=null){
             for(Cita c : citas){
                 System.out.println(c.getTitle());
                 modelo.agregarCita(c);
-                modelo.agregaCitaAlArray(c);
             }
         }
         else{

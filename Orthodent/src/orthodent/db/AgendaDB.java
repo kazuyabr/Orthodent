@@ -84,10 +84,10 @@ public class AgendaDB {
                 //d.setTime(t.getTime());
                 DateTime dt = new DateTime(cal.getTime());
                 c.setRealDateTime(dt);
-                c.setDateTime(new DateTime());
+                c.setDateTime(new DateTime(modelo.obtenerLunes(cal.getTime())));
                 c.setDuration(new Duration(rs.getInt("duracion")));
                 c.setResource(modelo.calcularResource(c.getRealDateTime().toDate()));
-                System.out.println(c.getRealDateTime()+" "+c.getPacienteId()+" "+t.toString());
+                System.out.println(c.getRealDateTime()+" "+c.getPacienteId()+" "+c.getDateTime().toString());
                 citas.add(c);
             }
             rs.close();

@@ -76,12 +76,31 @@ public class AgendaSchedulerModel extends AbstractScheduleModel
         Calendar c = Calendar.getInstance();
         c.setTime(fecha);
         int dia = c.get(Calendar.DAY_OF_WEEK);
-        AgendaResource ar = new AgendaResource(days[dia-2],dia-2);
-        return ar;
+        return resources.get(dia-2);
     }
     
     public void agregaCitaAlArray(Cita cita){
         this.citas.add(cita);
+    }
+    
+    public Date obtenerLunes(Date fecha){
+        Date lunes;
+        Calendar c = Calendar.getInstance();
+        c.setTime(fecha);
+        int semana = obtenerSemana(fecha);
+        c.set(Calendar.WEEK_OF_YEAR, semana);
+        c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        lunes = c.getTime();
+        return lunes;
+    }
+    
+    public int obtenerSemana(Date fecha){
+        int semana=0;
+        Date lunes;
+        Calendar c = Calendar.getInstance();
+        c.setTime(fecha);
+        semana = c.get(Calendar.WEEK_OF_YEAR);
+        return semana;
     }
     
 }
