@@ -54,6 +54,16 @@ public class BarraAcciones extends javax.swing.JPanel {
 
         profesionales.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         profesionales.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        profesionales.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                profesionalesItemStateChanged(evt);
+            }
+        });
+        profesionales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                profesionalesActionPerformed(evt);
+            }
+        });
 
         fechaAgenda.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         fechaAgenda.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -66,7 +76,7 @@ public class BarraAcciones extends javax.swing.JPanel {
         jLabel2.setText("Fecha");
 
         hoy.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        hoy.setText("Hoy");
+        hoy.setText("Actual");
         hoy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 hoyActionPerformed(evt);
@@ -78,17 +88,17 @@ public class BarraAcciones extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(30, Short.MAX_VALUE)
+                .addContainerGap(26, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(50, 50, 50)
                 .addComponent(profesionales, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 51, Short.MAX_VALUE)
+                .addGap(18, 45, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(50, 50, 50)
                 .addComponent(fechaAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(hoy)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,7 +124,20 @@ public class BarraAcciones extends javax.swing.JPanel {
 
     private void hoyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hoyActionPerformed
         // TODO add your handling code here:
+        Date hoy = new Date();
+        this.fechaAgenda.setDate(this.contenedor.obtenerLunes(hoy));
+        
     }//GEN-LAST:event_hoyActionPerformed
+
+    private void profesionalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profesionalesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_profesionalesActionPerformed
+
+    private void profesionalesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_profesionalesItemStateChanged
+        // TODO add your handling code here:
+        if(this.fechaAgenda.getDate()!=null)
+            this.contenedor.cambiarProfesional(this.fechaAgenda.getDate());
+    }//GEN-LAST:event_profesionalesItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
