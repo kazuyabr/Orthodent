@@ -63,6 +63,7 @@ public class Tratamientos extends JPanel implements ActionListener{
     private JPanel contenedorListarTratamientos;
     private boolean isListarTratamientos;
     private static int tratamientoSelected;
+    private Tablas tablas;
     
     public Tratamientos(){
         this.setBackground(new Color(243,242,243));
@@ -72,6 +73,7 @@ public class Tratamientos extends JPanel implements ActionListener{
         this.isListarTratamientos = true;
         this.initComponents();
         this.addComponents();
+        
         this.botonBuscar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.eliminarTratamiento.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.nuevoTratamiento.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -151,7 +153,7 @@ public class Tratamientos extends JPanel implements ActionListener{
         this.tabla = new JTable();
         this.tabla.setFont(new Font("Georgia", 0, 11));
         this.columnasNombre = new String [] {"Nombre", "Valor Colegio", "Valor Clínica"};
-        this.updateModelo();
+        //this.updateModelo();
         this.tabla.getTableHeader().setReorderingAllowed(false);
         
         this.tabla.addMouseListener(new MouseAdapter() {
@@ -200,56 +202,56 @@ public class Tratamientos extends JPanel implements ActionListener{
         return result;
     }
     
-    public void updateModelo(){
-        //Podria ser ordenado!! -> una opcion es que la consulta ordene
-        ArrayList<Tratamiento> tratamientos = TratamientoDB.listarTratamientos();
-      
-        int m = this.columnasNombre.length;
-        
-        ArrayList<Object []> objetos = new ArrayList<Object []>();
-        
-        for(Tratamiento tratamiento : tratamientos){
-            //if(tratamiento.isActivo()){
-
-                Object [] fila = new Object [] {new Item(tratamiento.getNombre(), tratamiento.getIdTratamiento()), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
-                
-                objetos.add(fila);
-            //}
-        }
-        
-        this.filas = new Object [objetos.size()][m];
-        int i = 0;
-        for(Object [] o : objetos){
-            this.filas[i] = o;
-            i++;
-        }
-        
-        this.modelo = new DefaultTableModel(this.filas, this.columnasNombre) {
-            Class[] types = new Class [] {
-                Item.class, String.class, String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        };
-        
-        this.tabla.setModel(modelo);
-    }
+//    public void updateModelo(){
+//        //Podria ser ordenado!! -> una opcion es que la consulta ordene
+//        ArrayList<Tratamiento> tratamientos = TratamientoDB.listarTratamientos();
+//      
+//        int m = this.columnasNombre.length;
+//        
+//        ArrayList<Object []> objetos = new ArrayList<Object []>();
+//        
+//        for(Tratamiento tratamiento : tratamientos){
+//            //if(tratamiento.isActivo()){
+//
+//                Object [] fila = new Object [] {new Item(tratamiento.getNombre(), tratamiento.getIdTratamiento()), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
+//                
+//                objetos.add(fila);
+//            //}
+//        }
+//        
+//        this.filas = new Object [objetos.size()][m];
+//        int i = 0;
+//        for(Object [] o : objetos){
+//            this.filas[i] = o;
+//            i++;
+//        }
+//        
+//        this.modelo = new DefaultTableModel(this.filas, this.columnasNombre) {
+//            Class[] types = new Class [] {
+//                Item.class, String.class, String.class
+//            };
+//            boolean[] canEdit = new boolean [] {
+//                false, false, false
+//            };
+//
+//            public Class getColumnClass(int columnIndex) {
+//                return types [columnIndex];
+//            }
+//
+//            public boolean isCellEditable(int rowIndex, int columnIndex) {
+//                return canEdit [columnIndex];
+//            }
+//        };
+//        
+//        this.tabla.setModel(modelo);
+//    }
     
     public void volverTratamientos() throws Exception{
         if(!this.isListarTratamientos){
             this.remove(this.infoTratamiento);
             this.add(this.contenedorListarTratamientos, BorderLayout.CENTER);
             this.isListarTratamientos = true;
-            this.updateModelo();
+            //this.updateModelo();
             this.updateUI();
         }
     }
@@ -284,8 +286,9 @@ public class Tratamientos extends JPanel implements ActionListener{
         //Inicio tabla
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setViewportView(this.tabla);
-        
-        this.contenedorListarTratamientos.add(scrollPane,BorderLayout.CENTER);
+        this.tablas = new Tablas();
+        //this.contenedorListarTratamientos.add(scrollPane,BorderLayout.CENTER);
+        this.contenedorListarTratamientos.add(this.tablas,BorderLayout.CENTER);
         //Fin tabla
         
         this.add(this.contenedorListarTratamientos,BorderLayout.CENTER);
@@ -354,7 +357,7 @@ public class Tratamientos extends JPanel implements ActionListener{
 
                     boolean respuesta = TratamientoDB.eliminarTratamiento(tratamientoSelected);
                     System.out.println("respuesta "+respuesta);
-                    this.updateModelo();
+                    //this.updateModelo();
 
                     this.updateUI();
 
@@ -371,7 +374,7 @@ public class Tratamientos extends JPanel implements ActionListener{
         }        
         
         if(e.getSource() == this.botonBuscar){
-            this.buscar();
+            //this.buscar();
         }
     }
     
@@ -382,75 +385,75 @@ public class Tratamientos extends JPanel implements ActionListener{
             evt.consume();
             
             if(this.buscador.getText().equals("")){
-                this.updateModelo();
+                //this.updateModelo();
             }
             else{
-                this.buscar();
+                //this.buscar();
             }
         }
         else if(c==KeyEvent.VK_BACK_SPACE){
             if(this.buscador.getText().equals("")){
-                this.updateModelo();
+                //this.updateModelo();
             }
         }
     }
     
-    private void buscar(){
-        String value = this.buscador.getText();
-        
-        ArrayList<Tratamiento> tratamientos = TratamientoDB.listarTratamientos();
-        
-        int m = this.columnasNombre.length;
-        
-        ArrayList<Object []> objetos = new ArrayList<Object []>();
-        
-        for(Tratamiento tratamiento : tratamientos){
-            //if(usuario.isActivo()){
-
-                Object [] fila = new Object [] {tratamiento.getNombre(), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
-                
-                boolean aux = false;
-                
-                for(Object o : fila){
-                    String obj = (String) o;
-                    obj = obj.toLowerCase();
-                    if(obj.contains(value)){
-                        aux = true;
-                        break;
-                    }
-                }
-                
-                if(aux){
-                    objetos.add(fila);
-                }
-           //}
-        }
-        
-        this.filas = new Object [objetos.size()][m];
-        
-        int i = 0;
-        for(Object [] el : objetos){
-            this.filas[i] = el;
-            i++;
-        }
-        
-        this.modelo = new DefaultTableModel(this.filas, this.columnasNombre) {
-            Class[] types = new Class [] {
-                Item.class, String.class, String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        };
-        
-        this.tabla.setModel(modelo);
-    }
+//    private void buscar(){
+//        String value = this.buscador.getText();
+//        
+//        ArrayList<Tratamiento> tratamientos = TratamientoDB.listarTratamientos();
+//        
+//        int m = this.columnasNombre.length;
+//        
+//        ArrayList<Object []> objetos = new ArrayList<Object []>();
+//        
+//        for(Tratamiento tratamiento : tratamientos){
+//            //if(usuario.isActivo()){
+//
+//                Object [] fila = new Object [] {tratamiento.getNombre(), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
+//                
+//                boolean aux = false;
+//                
+//                for(Object o : fila){
+//                    String obj = (String) o;
+//                    obj = obj.toLowerCase();
+//                    if(obj.contains(value)){
+//                        aux = true;
+//                        break;
+//                    }
+//                }
+//                
+//                if(aux){
+//                    objetos.add(fila);
+//                }
+//           //}
+//        }
+//        
+//        this.filas = new Object [objetos.size()][m];
+//        
+//        int i = 0;
+//        for(Object [] el : objetos){
+//            this.filas[i] = el;
+//            i++;
+//        }
+//        
+//        this.modelo = new DefaultTableModel(this.filas, this.columnasNombre) {
+//            Class[] types = new Class [] {
+//                Item.class, String.class, String.class
+//            };
+//            boolean[] canEdit = new boolean [] {
+//                false, false, false
+//            };
+//
+//            public Class getColumnClass(int columnIndex) {
+//                return types [columnIndex];
+//            }
+//
+//            public boolean isCellEditable(int rowIndex, int columnIndex) {
+//                return canEdit [columnIndex];
+//            }
+//        };
+//        
+//        this.tabla.setModel(modelo);
+//    }
 }

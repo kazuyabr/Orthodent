@@ -299,7 +299,7 @@ public class JVentana extends JFrame{
             }
             this.add(this.contenedorTratamiento,BorderLayout.CENTER);
             this.contenedorTratamiento.updateUI();
-            this.getTratamientos().updateModelo(); //actualiza el modelo cuando se cambia de pestañas
+            //this.getTratamientos().updateModelo(); //actualiza el modelo cuando se cambia de pestañas
             this.opActual = 3;
         }
     }

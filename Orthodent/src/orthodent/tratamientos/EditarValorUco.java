@@ -219,9 +219,9 @@ public class EditarValorUco extends javax.swing.JDialog {
 
                 } catch (Exception ex) {
                 }
-
-                ((JVentana)this.getParent()).getTratamientos().updateModelo();
-                ((JVentana)this.getParent()).getTratamientos().updateUI();
+//
+//                ((JVentana)this.getParent()).getTratamientos().updateModelo();
+//                ((JVentana)this.getParent()).getTratamientos().updateUI();
                 this.dispose();
             
 

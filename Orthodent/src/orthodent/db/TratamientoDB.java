@@ -34,6 +34,34 @@ public class TratamientoDB {
         }
     }
     
+    
+public static ArrayList<Tratamiento> listarTratamientosCategoria2(int idCategoria2){
+        ArrayList<Tratamiento> tratamientos = null;        
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT tratamiento.id_tratamiento, tratamiento.nombre, (valor_uco.valor*tratamiento.cantidad_uco) as valor_colegio, (valor_uco.valor*tratamiento.cantidad_uco)*(valor_uco.porcentaje/100) as valor_clinica, tratamiento.activo"
+                    + "FROM tratamiento, valor_uco"
+                    + " where activo="+1+"AND"
+                    + " tratamiento.id_categoria2="+idCategoria2);
+            tratamientos = new ArrayList<Tratamiento>();
+            while (rs.next())
+            {
+                Tratamiento t = new Tratamiento(rs.getInt("id_tratamiento"), rs.getString("nombre"), rs.getInt("valor_colegio"), rs.getInt("valor_clinica"), rs.getBoolean("activo"));
+                tratamientos.add(t);
+            }
+            rs.close();
+            con.close();
+            return tratamientos;
+        }
+        catch ( SQLException e) {
+            return null;
+        }
+    }    
+    
     public static ArrayList<Tratamiento> listarTratamientos(){
         ArrayList<Tratamiento> tratamientos = null;        
         try {

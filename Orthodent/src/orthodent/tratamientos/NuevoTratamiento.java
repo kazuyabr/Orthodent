@@ -248,7 +248,7 @@ public class NuevoTratamiento extends javax.swing.JDialog {
                 } catch (Exception ex) {
                 }
 
-                ((JVentana)this.getParent()).getTratamientos().updateModelo();
+                //((JVentana)this.getParent()).getTratamientos().updateModelo();
                 ((JVentana)this.getParent()).getTratamientos().updateUI();
                 this.dispose();
             
