@@ -20,6 +20,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GroupLayout;
@@ -52,6 +54,7 @@ public class Tratamientos extends JPanel implements ActionListener{
     private JButton botonBuscar;
     private JButton nuevoTratamiento;
     private JButton eliminarTratamiento;
+    private JButton editarValorUco;
     private JTable tabla;
     private TableModel modelo;
     private Object [][] filas;
@@ -72,6 +75,7 @@ public class Tratamientos extends JPanel implements ActionListener{
         this.botonBuscar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.eliminarTratamiento.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.nuevoTratamiento.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.editarValorUco.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
     public boolean isIsListarTratamientos() {
@@ -112,6 +116,17 @@ public class Tratamientos extends JPanel implements ActionListener{
         this.botonBuscar.setBorderPainted(false);
         this.botonBuscar.setContentAreaFilled(false);
         this.botonBuscar.addActionListener(this);
+        
+        
+        this.editarValorUco = new JButton();
+        this.editarValorUco.setForeground(new Color(11, 146, 181));
+        this.editarValorUco.setFont(new Font("Georgia", 1, 12));
+        this.editarValorUco.setIcon(new ImageIcon("src/imagenes/edit_mini.png"));
+        this.editarValorUco.setText("Editar Valor UCO  ");
+        this.editarValorUco.setBorder(null);
+        this.editarValorUco.setBorderPainted(false);
+        this.editarValorUco.setContentAreaFilled(false);
+        this.editarValorUco.addActionListener(this);        
         
         this.nuevoTratamiento = new JButton();
         this.nuevoTratamiento.setForeground(new Color(11, 146, 181));
@@ -188,7 +203,7 @@ public class Tratamientos extends JPanel implements ActionListener{
     public void updateModelo(){
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
         ArrayList<Tratamiento> tratamientos = TratamientoDB.listarTratamientos();
-        
+      
         int m = this.columnasNombre.length;
         
         ArrayList<Object []> objetos = new ArrayList<Object []>();
@@ -288,6 +303,7 @@ public class Tratamientos extends JPanel implements ActionListener{
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(this.botonBuscar)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(this.editarValorUco)
                 .addComponent(this.nuevoTratamiento)
                 .addComponent(this.eliminarTratamiento)
                 .addContainerGap())
@@ -300,6 +316,7 @@ public class Tratamientos extends JPanel implements ActionListener{
                 .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(this.buscador, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(this.botonBuscar)
+                    .addComponent(this.editarValorUco)
                     .addComponent(this.nuevoTratamiento)
                     .addComponent(this.eliminarTratamiento))
                 .addContainerGap(13, Short.MAX_VALUE))
@@ -308,6 +325,14 @@ public class Tratamientos extends JPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
+        if(e.getSource() == this.editarValorUco){
+            try {
+                new EditarValorUco(((JVentana)this.getTopLevelAncestor()),true).setVisible(true);
+            } catch (Exception ex) {
+                Logger.getLogger(Tratamientos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }        
         
         if(e.getSource() == this.nuevoTratamiento){
             new NuevoTratamiento(((JVentana)this.getTopLevelAncestor()),true).setVisible(true);
