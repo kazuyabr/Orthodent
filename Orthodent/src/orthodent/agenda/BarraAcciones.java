@@ -29,6 +29,7 @@ public class BarraAcciones extends javax.swing.JPanel {
         this.contenedor = cont;
         initComponents();
         initProfesionales();
+        //this.fechaAgenda.setDate(new Date());
     }
 
     /**

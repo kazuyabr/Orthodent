@@ -67,11 +67,12 @@ public class AgendaDB {
             citas = new ArrayList<Cita>();
             while(rs.next()){
                 Paciente p = PacienteDB.getPaciente(rs.getInt("id_paciente"));
-                Cita c = new Cita(p.getNombre()+" "+p.getApellido_pat());
+                Cita c = new Cita(p.getNombre()+" "+p.getApellido_pat()+" "+p.getTelefono());
                 c.setFecha(rs.getString("fecha"));
                 c.setSemana(rs.getInt("semana"));
                 c.setProfesionalId(rs.getInt("id_profesional"));
                 c.setPacienteId(p.getId_paciente());
+                c.setId(rs.getInt("id_cita"));
                 Date d = rs.getDate("fecha");
                 Time t = rs.getTime("hora_inicio");
                 Calendar cal = Calendar.getInstance();
@@ -85,9 +86,9 @@ public class AgendaDB {
                 DateTime dt = new DateTime(cal.getTime());
                 c.setRealDateTime(dt);
                 c.setDateTime(new DateTime(modelo.obtenerLunes(cal.getTime())));
-                c.setDuration(new Duration(rs.getInt("duracion")));
+                c.setDuration(Duration.standardMinutes(rs.getInt("duracion")));
                 c.setResource(modelo.calcularResource(c.getRealDateTime().toDate()));
-                System.out.println(c.getRealDateTime()+" "+c.getPacienteId()+" "+c.getDateTime().toString());
+                System.out.println(c.getRealDateTime()+" "+c.getDuration().toStandardSeconds().toStandardMinutes().getMinutes()+" "+c.getDateTime().toString());
                 citas.add(c);
             }
             rs.close();
