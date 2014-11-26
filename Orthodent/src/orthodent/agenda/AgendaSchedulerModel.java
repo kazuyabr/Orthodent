@@ -6,6 +6,7 @@
 package orthodent.agenda;
 
 import com.thirdnf.ResourceScheduler.*;
+import java.awt.Color;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
@@ -22,7 +23,7 @@ public class AgendaSchedulerModel extends AbstractScheduleModel
 {
     private String[] days = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"};
     private ArrayList<AgendaResource> resources;
-    private ArrayList<Cita> citas;
+    public ArrayList<Cita> citas;
 
     @Override
     public void visitAppointments(AppointmentVisitor visitor, @NotNull LocalDate date)
@@ -57,7 +58,16 @@ public class AgendaSchedulerModel extends AbstractScheduleModel
     {
         System.out.println("Cita agregada:" + ((AgendaResource)cita.getResource()).getPos());
         citas.add(cita);
+        if( cita.isConfirmada())
+            cita.setColor(Color.CYAN);
+        else
+            cita.setColor(Color.YELLOW);
         this.fireAppointmentAdded(cita);
+    }
+    
+    public void eliminarCita(Cita cita){
+        citas.remove(cita);
+        this.fireAppointmentRemoved(cita);
     }
     
     public AgendaSchedulerModel() 

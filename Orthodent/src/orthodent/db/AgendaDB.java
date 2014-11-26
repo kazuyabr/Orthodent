@@ -73,16 +73,17 @@ public class AgendaDB {
                 c.setProfesionalId(rs.getInt("id_profesional"));
                 c.setPacienteId(p.getId_paciente());
                 c.setId(rs.getInt("id_cita"));
+                c.setConfirmada(rs.getBoolean("confirmada"));
                 Date d = rs.getDate("fecha");
                 Time t = rs.getTime("hora_inicio");
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(d);
                 String[] hora = t.toString().split(":");
+                
                 cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hora[0]));
                 cal.set(Calendar.MINUTE, Integer.parseInt(hora[1]));
                 cal.set(Calendar.SECOND, 0);
-                //cal.set
-                //d.setTime(t.getTime());
+                
                 DateTime dt = new DateTime(cal.getTime());
                 c.setRealDateTime(dt);
                 c.setDateTime(new DateTime(modelo.obtenerLunes(cal.getTime())));
@@ -101,6 +102,47 @@ public class AgendaDB {
             Logger.getLogger(AgendaDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return citas;
+    }
+    
+    public static boolean eliminarCita(Cita cita){
+        boolean resultado = false;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            
+            java.sql.Statement st = con.createStatement();
+            
+            int aux = st.executeUpdate("DELETE FROM cita WHERE id_cita="+cita.getId());
+            resultado = (aux == 1)? true : false;
+        } catch (SQLException ex) {
+            Logger.getLogger(AgendaDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultado;
+    }
+    
+    public static boolean actualizarCita(Cita cita){
+        boolean resultado = false;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            
+            java.sql.Statement st = con.createStatement();
+            
+            int duracion = cita.getDuration().toStandardSeconds().toStandardMinutes().getMinutes();
+            String horaInicio = cita.getRealDateTime().toString("h:m");
+            
+            String confirmada;
+            if(cita.isConfirmada())
+                confirmada="True";
+            else confirmada="False";
+            
+            int aux = st.executeUpdate("UPDATE cita SET id_profesional="+cita.getProfesionalId()+
+                    ", semana="+cita.getSemana()+", fecha='"+cita.getFecha()+"', duracion="+duracion+", hora_inicio='"+horaInicio+"', confirmada="+confirmada+" WHERE id_cita="+cita.getId());
+            resultado = (aux == 1)? true : false;
+        } catch (SQLException ex) {
+            Logger.getLogger(AgendaDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultado;
     }
         
 }

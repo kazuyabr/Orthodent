@@ -6,47 +6,48 @@
 package orthodent.agenda;
 
 import com.thirdnf.ResourceScheduler.Resource;
-import java.util.ArrayList;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultComboBoxModel;
 import modelo.Paciente;
-import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
-//import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import orthodent.Item;
+import orthodent.db.AgendaDB;
 import orthodent.db.PacienteDB;
 
 /**
  *
- * @author felipe
+ * @author Lucy
  */
-public abstract class NuevaCita extends javax.swing.JDialog {
+public abstract class EditarCita extends javax.swing.JDialog {
 
     /**
-     * Creates new form NuevaCita
+     * Creates new form actualizarCita
      */
     DateTime inicio;
     DateTime inicioReal;
     boolean validar_horas = false;
     Resource _resource;
-    public NuevaCita(java.awt.Frame parent, boolean modal, Resource resource, DateTime agenda_inicio) {
+    Cita cita;
+    
+    public EditarCita(java.awt.Frame parent, boolean modal, Cita cita, DateTime agenda_inicio, Resource resource) {
         super(parent, modal);
-        // Esto alinea la posicion de la cita en la agenda en saltos de 15 min
-        agenda_inicio = agenda_inicio.plusMinutes(-agenda_inicio.getMinuteOfHour()%15);
         this.inicio = agenda_inicio;
         this.inicioReal = agenda_inicio.plusDays(((AgendaResource)resource).getPos());
-        
         this._resource = resource;
         initComponents();
-        this.jTextField1.setText(inicioReal.toString("d/M/y"));
-        this.jComboBox1.setSelectedIndex((inicioReal.getHourOfDay()-9)*4 + inicioReal.getMinuteOfHour()/15);
-        this.jComboBox2.setSelectedIndex(jComboBox1.getSelectedIndex()+1);
-        //this.jComboBox2.setSelectedIndex(jComboBox1.getSelectedIndex()+1);   
-        validar_horas = true;
-        initPacientes();
+        this.cita = cita;
+        this.jComboBox1.setSelectedIndex((this.cita.getDateTime().getHourOfDay()-9)*4 + this.cita.getDateTime().getMinuteOfHour()/15);
+        DateTime aux = this.cita.getDateTime().plusMinutes(this.cita.getDuration().toStandardSeconds().toStandardMinutes().getMinutes()+1);
+        this.jComboBox2.setSelectedIndex((aux.getHourOfDay()-9)*4 + aux.getMinuteOfHour()/15);
+        Paciente p = null;
+        try {
+            p = PacienteDB.getPaciente(this.cita.getPacienteId());
+        } catch (Exception ex) {
+            Logger.getLogger(NuevaCita.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.jTextField2.setText(p.getNombre()+" "+p.getApellido_pat());
+        this.jTextField1.setText(this.cita.getRealDateTime().toString("d/M/y"));
     }
 
     /**
@@ -58,8 +59,6 @@ public abstract class NuevaCita extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -68,27 +67,17 @@ public abstract class NuevaCita extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
-        pacientes = new javax.swing.JComboBox();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jButton1.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        jButton1.setText("Crear cita");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        jButton2.setText("Cancelar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Crear Cita", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Georgia", 0, 12))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Editar Cita", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Georgia", 0, 12))); // NOI18N
+        jPanel1.setToolTipText("");
 
         jLabel1.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jLabel1.setText("Fecha");
@@ -127,9 +116,16 @@ public abstract class NuevaCita extends javax.swing.JDialog {
         jLabel4.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jLabel4.setText("Paciente");
 
-        pacientes.setEditable(true);
-        pacientes.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        pacientes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jTextField2.setEditable(false);
+        jTextField2.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        jLabel5.setText("Confirmada");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -137,17 +133,23 @@ public abstract class NuevaCita extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
-                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pacientes, 0, 112, Short.MAX_VALUE)
-                    .addComponent(jTextField1)
-                    .addComponent(jComboBox1, 0, 112, Short.MAX_VALUE)
-                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField1)
+                            .addComponent(jComboBox1, 0, 112, Short.MAX_VALUE)
+                            .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextField2)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jCheckBox1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -168,65 +170,70 @@ public abstract class NuevaCita extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(pacientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(89, Short.MAX_VALUE))
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel5)
+                    .addComponent(jCheckBox1))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
+
+        jButton2.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        jButton2.setText("Cancelar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        jButton3.setText("Eliminar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        jButton4.setText("Guardar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(164, Short.MAX_VALUE)
-                        .addComponent(jButton2)
+                        .addGap(0, 26, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(32, 32, 32)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jButton4)
+                    .addComponent(jButton3)
                     .addComponent(jButton2))
-                .addContainerGap())
+                .addGap(16, 16, 16))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Paciente p = null;
-        try {
-            p = PacienteDB.getPaciente(((Item)pacientes.getSelectedItem()).getId());
-        } catch (Exception ex) {
-            Logger.getLogger(NuevaCita.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Cita c = new Cita(pacientes.getSelectedItem().toString()+" "+p.getTelefono());
-
-        int hour = 9 + jComboBox1.getSelectedIndex()/4;
-        int minute = 15*(jComboBox1.getSelectedIndex()%4);
-        
-        c.setDateTime(inicio.withHourOfDay(hour).withMinuteOfHour(minute));
-        c.setRealDateTime(inicioReal.withHourOfDay(hour).withMinuteOfHour(minute));
-        c.setDuration(Duration.standardMinutes((jComboBox2.getSelectedIndex() - jComboBox1.getSelectedIndex())*15-1));
-        c.setResource(_resource);
-        c.setPacienteId(((Item)pacientes.getSelectedItem()).getId());
-        agregarCita(c);
-        dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    abstract void agregarCita(Cita cita);
-    
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
         // TODO add your handling code here:
@@ -241,10 +248,9 @@ public abstract class NuevaCita extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
-        this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
 
@@ -260,6 +266,48 @@ public abstract class NuevaCita extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox2ItemStateChanged
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        eliminarCita(this.cita);
+        dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        Paciente p = null;
+        try {
+            p = PacienteDB.getPaciente(this.cita.getPacienteId());
+        } catch (Exception ex) {
+            Logger.getLogger(NuevaCita.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Cita c = new Cita(this.jTextField2.getText()+" "+p.getTelefono());
+        
+        int hour = 9 + jComboBox1.getSelectedIndex()/4;
+        int minute = 15*(jComboBox1.getSelectedIndex()%4);
+        //c.setTitle(this.jTextField2.getText()+" "+p.getTelefono());
+        c.setDateTime(inicio.withHourOfDay(hour).withMinuteOfHour(minute));
+        c.setRealDateTime(inicioReal.withHourOfDay(hour).withMinuteOfHour(minute));
+        c.setDuration(Duration.standardMinutes((jComboBox2.getSelectedIndex() - jComboBox1.getSelectedIndex())*15-1));
+        c.setResource(_resource);
+        c.setPacienteId(p.getId_paciente());
+        c.setId(this.cita.getId());
+        c.setConfirmada(this.jCheckBox1.isSelected());
+        actualizarCita(c,this.cita);
+        dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    abstract void actualizarCita(Cita citaNueva, Cita citaAntigua);
+    abstract void eliminarCita(Cita cita);
+    
     /**
      * @param args the command line arguments
      */
@@ -277,26 +325,30 @@ public abstract class NuevaCita extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NuevaCita.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarCita.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NuevaCita.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarCita.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NuevaCita.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarCita.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NuevaCita.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarCita.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                NuevaCita dialog = new NuevaCita(new javax.swing.JFrame(), true, null, null) {
+                EditarCita dialog = new EditarCita(new javax.swing.JFrame(), true, null, null, null) {
 
                     @Override
-                    void agregarCita(Cita cita) {
+                    void eliminarCita(Cita cita) {
                         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                     }
-                    
+
+                    @Override
+                    void actualizarCita(Cita citaNueva, Cita citaAntigua) {
+                        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    }
                 };
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
@@ -310,31 +362,19 @@ public abstract class NuevaCita extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JComboBox pacientes;
+    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
-
-    private void initPacientes() {
-        ArrayList<Paciente> listaPacientes = PacienteDB.listarPacientes();
-        
-        Vector model = new Vector();
-        Item primerItem = null;
-        for(Paciente p : listaPacientes){
-            String nombre = p.getNombre() + " " + p.getApellido_pat();
-            model.addElement(new Item(nombre,p.getId_paciente()));
-            if (primerItem==null) primerItem = new Item(nombre,p.getId_paciente());
-        }
-        this.pacientes.setModel(new DefaultComboBoxModel(model));
-        //this.pacientes.setSelectedItem(primerItem);
-        AutoCompleteDecorator.decorate(this.pacientes);
-    }
 }

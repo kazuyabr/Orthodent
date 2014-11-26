@@ -2,6 +2,9 @@ package orthodent.agenda;
 
 import com.thirdnf.ResourceScheduler.Appointment;
 import com.thirdnf.ResourceScheduler.Resource;
+import com.thirdnf.ResourceScheduler.components.BasicAppointmentComponent;
+import java.awt.Color;
+import java.awt.Graphics;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joda.time.DateTime;
@@ -14,7 +17,7 @@ import org.joda.time.LocalTime;
  *
  * @author Joshua Gerth - jgerth@thirdnf.com
  */
-public class Cita implements Appointment
+public class Cita implements Appointment 
 {
     private String _title;
     private DateTime _dateTime;
@@ -25,6 +28,9 @@ public class Cita implements Appointment
     private int pacienteId;
     private String fecha;
     private int semana;
+    private int id;
+    private boolean confirmada;
+    private Color color;
 
     public Cita(@NotNull String title)
     {
@@ -139,6 +145,29 @@ public class Cita implements Appointment
     public void setSemana(int semana) {
         this.semana = semana;
     }
-    
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public boolean isConfirmada() {
+        return confirmada;
+    }
+
+    public void setConfirmada(boolean confirmada) {
+        this.confirmada = confirmada;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
     
 }
