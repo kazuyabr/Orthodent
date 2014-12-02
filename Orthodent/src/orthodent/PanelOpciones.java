@@ -388,7 +388,7 @@ public class PanelOpciones extends JPanel implements ActionListener{
         if (e.getSource() == this.historial){
             try {
                 int op = this.revisarCambios();
-                ((JVentana)this.getTopLevelAncestor()).cambiarHistorial();
+                ((JVentana)this.getTopLevelAncestor()).cambiarBitacora();
             } catch (Exception ex) {
             }
         }

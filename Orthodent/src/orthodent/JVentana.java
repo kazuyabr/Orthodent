@@ -5,7 +5,6 @@
 package orthodent;
 
 import orthodent.tratamientos.Tratamientos;
-import orthodent.historial.Historial;
 import orthodent.agenda.Agenda;
 import orthodent.pacientes.Pacientes;
 import orthodent.usuarios.Usuarios;
@@ -16,6 +15,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.*;
 import modelo.Usuario;
+import orthodent.bitacora.Bitacoras;
 import orthodent.usuarios.MostrarInfoTratamiento;
 
 public class JVentana extends JFrame{
@@ -27,13 +27,13 @@ public class JVentana extends JFrame{
     private JPanel contenedorPacientes;
     private JPanel contenedorTratamiento;
     private JPanel contenedorUsuarios;
-    private JPanel contenedorHistorial;
+    private JPanel contenedorBitacora;
     private JPanel contenedorConfigurarCuenta;
     private Agenda agenda;
     private Pacientes pacientes;
     private Tratamientos tratamientos;
     private Usuarios usuarios;
-    private Historial historial;
+    private Bitacoras bitacoras;
     private MostrarInfoTratamiento configurarCuenta;
     
     private int opActual;
@@ -80,7 +80,7 @@ public class JVentana extends JFrame{
         this.contenedorPacientes = new JPanel();
         this.contenedorTratamiento = new JPanel();
         this.contenedorUsuarios = new JPanel();
-        this.contenedorHistorial = new JPanel();
+        this.contenedorBitacora = new JPanel();
         this.contenedorConfigurarCuenta = new JPanel();
         
         this.crearAgenda();
@@ -89,7 +89,7 @@ public class JVentana extends JFrame{
         this.pacientes = null;
         this.tratamientos = null;
         this.usuarios = null;
-        this.historial = null;
+        this.bitacoras = null;
         this.configurarCuenta = null;
     }
     
@@ -181,13 +181,13 @@ public class JVentana extends JFrame{
         this.contenedorUsuarios.add(panel,BorderLayout.NORTH);
     }
     
-    private void crearHistorial(){
-        this.contenedorHistorial.setLayout(new BorderLayout());
-        this.historial = new Historial();
+    private void crearBitacora(){
+        this.contenedorBitacora.setLayout(new BorderLayout());
+        this.bitacoras = new Bitacoras();
         
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        panel.add(this.historial,BorderLayout.CENTER);
+        panel.add(this.bitacoras,BorderLayout.CENTER);
         
         JPanel borde1 = new JPanel();
         borde1.setBackground(Color.white);
@@ -199,7 +199,7 @@ public class JVentana extends JFrame{
         panel.add(borde1,BorderLayout.WEST);
         panel.add(borde2,BorderLayout.EAST);
         
-        this.contenedorHistorial.add(panel,BorderLayout.NORTH);
+        this.contenedorBitacora.add(panel,BorderLayout.NORTH);
     }
     
     private void crearConfigurarCuenta(){
@@ -250,7 +250,7 @@ public class JVentana extends JFrame{
         }
         
         try{
-            this.remove(this.contenedorHistorial);
+            this.remove(this.contenedorBitacora);
         }
         catch(Exception e){
         }
@@ -320,17 +320,17 @@ public class JVentana extends JFrame{
         }
     }
     
-    public void cambiarHistorial(){
+    public void cambiarBitacora(){
         if(opActual!=5){
             this.removeAncestor();
             this.panelOpciones.setIconButton(5);
             
-            if(this.historial==null){
-                this.crearHistorial();
+            if(this.bitacoras==null){
+                this.crearBitacora();
             }
             
-            this.add(this.contenedorHistorial,BorderLayout.CENTER);
-            this.contenedorHistorial.updateUI();
+            this.add(this.contenedorBitacora,BorderLayout.CENTER);
+            this.contenedorBitacora.updateUI();
             this.opActual = 5;
         }
     }
@@ -366,8 +366,8 @@ public class JVentana extends JFrame{
         return this.usuarios;
     }
     
-    public Historial getHistorial(){
-        return this.historial;
+    public Bitacoras getBitacora(){
+        return this.bitacoras;
     }
     
     public JPanel getContenedorUsuarios(){
