@@ -6,8 +6,11 @@
 package orthodent.db;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import modelo.Bitacora;
 import static orthodent.db.PresupuestoDB.getTimestamp;
 
 /**
@@ -37,6 +40,54 @@ public class BitacoraDB
             return false;
         }
     }
+     
+     public static ArrayList<Bitacora> listarPresupuestos(){
+        ArrayList<Bitacora> bitacoras = null;        
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * FROM bitacora");
+            bitacoras = new ArrayList<Bitacora>();
+            while (rs.next())
+            {
+                Bitacora b = new Bitacora(rs.getInt("id_bitacora"), rs.getString("operacion"),rs.getInt("usuario"),
+                                                rs.getString("tabla"), rs.getInt("primary_key"), BitacoraDB.convertTimestampToString(rs.getTimestamp("created_at")));
+                                                
+                bitacoras.add(b);
+            }
+            rs.close();
+            con.close();
+            return bitacoras;
+        }
+        catch ( SQLException e) {
+            return null;
+        }
+    }
+     
+     public static boolean eliminarBitacora(int idBitacora) throws SQLException{
+        try{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            
+            java.sql.Statement st = con.createStatement();
+            int aux = st.executeUpdate("UPDATE bitacora\n" +
+                                            "SET activo="+0+"\n" +
+                                            "WHERE id_bitacora="+idBitacora);
+            boolean resultado = (aux == 1)? true : false;
+            st.close();
+            con.close();
+            return resultado;
+        }
+        catch ( SQLException e) {
+            return false;
+        }
+    }
+     
+     
+     
      
     public static Timestamp getTimestamp(String fecha){
         
