@@ -159,6 +159,10 @@ public class Cita implements Appointment
     }
 
     public void setConfirmada(boolean confirmada) {
+        if(confirmada)
+            this.color = new Color(127,255,81);
+        else
+            this.color = Color.YELLOW;
         this.confirmada = confirmada;
     }
 

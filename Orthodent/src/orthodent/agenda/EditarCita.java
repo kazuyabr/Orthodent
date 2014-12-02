@@ -6,8 +6,12 @@
 package orthodent.agenda;
 
 import com.thirdnf.ResourceScheduler.Resource;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import modelo.Paciente;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -39,7 +43,7 @@ public abstract class EditarCita extends javax.swing.JDialog {
         this.cita = cita;
         this.jComboBox1.setSelectedIndex((this.cita.getDateTime().getHourOfDay()-9)*4 + this.cita.getDateTime().getMinuteOfHour()/15);
         DateTime aux = this.cita.getDateTime().plusMinutes(this.cita.getDuration().toStandardSeconds().toStandardMinutes().getMinutes()+1);
-        this.jComboBox2.setSelectedIndex((aux.getHourOfDay()-9)*4 + aux.getMinuteOfHour()/15);
+        //this.jComboBox2.setSelectedIndex((aux.getHourOfDay()-9)*4 + aux.getMinuteOfHour()/15);
         Paciente p = null;
         try {
             p = PacienteDB.getPaciente(this.cita.getPacienteId());
@@ -48,6 +52,11 @@ public abstract class EditarCita extends javax.swing.JDialog {
         }
         this.jTextField2.setText(p.getNombre()+" "+p.getApellido_pat());
         this.jTextField1.setText(this.cita.getRealDateTime().toString("d/M/y"));
+        this.jSpinner1.setValue(cita.getDuration().toStandardSeconds().toStandardMinutes().getMinutes()+1);
+        this.jLabel9.setText(p.getTelefono());
+        this.setIconImage(new ImageIcon("src/imagenes/icono.png").getImage());
+        this.centrarVentana();
+        this.jCheckBox1.setSelected(cita.isConfirmada());
     }
 
     /**
@@ -64,12 +73,16 @@ public abstract class EditarCita extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jComboBox1 = new javax.swing.JComboBox();
-        jLabel3 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
+        jSpinner1 = new javax.swing.JSpinner();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -84,6 +97,7 @@ public abstract class EditarCita extends javax.swing.JDialog {
 
         jLabel2.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jLabel2.setText("Hora inicio");
+        jLabel2.setInheritsPopupMenu(false);
 
         jTextField1.setEditable(false);
         jTextField1.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
@@ -102,19 +116,9 @@ public abstract class EditarCita extends javax.swing.JDialog {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        jLabel3.setText("Hora final");
-
-        jComboBox2.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "9:00", "9:15", "9:30", "9:45", "10:00", "10:15", "10:30", "10:45", "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30", "12:45", "13:00", "13:15", "13:30", "13:45", "14:00", "14:15", "14:30", "14:45", "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45", "17:00", "17:15", "17:30", "17:45", "18:00", "18:15", "18:30", "18:45", "19:00", "19:15", "19:30", "19:45", "20:00" }));
-        jComboBox2.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboBox2ItemStateChanged(evt);
-            }
-        });
-
         jLabel4.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jLabel4.setText("Paciente");
+        jLabel4.setInheritsPopupMenu(false);
 
         jTextField2.setEditable(false);
         jTextField2.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
@@ -126,6 +130,27 @@ public abstract class EditarCita extends javax.swing.JDialog {
 
         jLabel5.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jLabel5.setText("Confirmada");
+        jLabel5.setInheritsPopupMenu(false);
+
+        jSpinner1.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(10, 10, 60, 5));
+
+        jLabel6.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        jLabel6.setText("minutos");
+
+        jLabel3.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        jLabel3.setText("Duración");
+        jLabel3.setInheritsPopupMenu(false);
+
+        jLabel7.setText(" ");
+
+        jLabel8.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        jLabel8.setText("Teléfono");
+        jLabel8.setInheritsPopupMenu(false);
+
+        jLabel9.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        jLabel9.setText(" ");
+        jLabel9.setInheritsPopupMenu(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -133,24 +158,32 @@ public abstract class EditarCita extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
-                            .addComponent(jComboBox1, 0, 112, Short.MAX_VALUE)
-                            .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField2)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jCheckBox1)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jCheckBox1))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel8))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jSpinner1)
+                                    .addComponent(jTextField1)
+                                    .addComponent(jComboBox1, 0, 112, Short.MAX_VALUE)
+                                    .addComponent(jTextField2)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,18 +197,25 @@ public abstract class EditarCita extends javax.swing.JDialog {
                     .addComponent(jLabel2)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel3)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(11, 11, 11)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel5)
                     .addComponent(jCheckBox1))
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addGap(11, 11, 11)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel9))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel7)
+                .addContainerGap())
         );
 
         jButton2.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
@@ -237,7 +277,7 @@ public abstract class EditarCita extends javax.swing.JDialog {
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
         // TODO add your handling code here:
-        if(validar_horas) {
+        /*if(validar_horas) {
             int fin_idx = this.jComboBox2.getSelectedIndex();
             int inicio_idx = this.jComboBox1.getSelectedIndex();
             System.out.println(""+inicio_idx + " " + fin_idx);
@@ -245,26 +285,12 @@ public abstract class EditarCita extends javax.swing.JDialog {
                 fin_idx = inicio_idx + 1;
                 this.jComboBox2.setSelectedIndex(fin_idx);
             }
-        }
+        }*/
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
-
-    private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
-
-        if(validar_horas) {
-            int fin_idx = this.jComboBox2.getSelectedIndex();
-            int inicio_idx = this.jComboBox1.getSelectedIndex();
-            if (inicio_idx >= fin_idx) {
-                fin_idx = inicio_idx + 1;
-                this.jComboBox2.setSelectedIndex(fin_idx);
-            }
-        }
-
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ItemStateChanged
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -289,23 +315,33 @@ public abstract class EditarCita extends javax.swing.JDialog {
         } catch (Exception ex) {
             Logger.getLogger(NuevaCita.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Cita c = new Cita(this.jTextField2.getText()+" "+p.getTelefono());
-        
+        Cita c = new Cita(p.getNombre()+" "+p.getApellido_pat()+" "+p.getTelefono());
         int hour = 9 + jComboBox1.getSelectedIndex()/4;
         int minute = 15*(jComboBox1.getSelectedIndex()%4);
         //c.setTitle(this.jTextField2.getText()+" "+p.getTelefono());
         c.setDateTime(inicio.withHourOfDay(hour).withMinuteOfHour(minute));
         c.setRealDateTime(inicioReal.withHourOfDay(hour).withMinuteOfHour(minute));
-        c.setDuration(Duration.standardMinutes((jComboBox2.getSelectedIndex() - jComboBox1.getSelectedIndex())*15-1));
+        c.setDuration(Duration.standardMinutes(((Integer)this.jSpinner1.getValue())-1));
         c.setResource(_resource);
         c.setPacienteId(p.getId_paciente());
         c.setId(this.cita.getId());
         c.setConfirmada(this.jCheckBox1.isSelected());
-        actualizarCita(c,this.cita);
-        dispose();
+        if(!actualizarCita(c, this.cita)){
+            this.jLabel7.setText("Conflicto de Horario");
+            this.jLabel7.setForeground(Color.RED);
+        }
+        else{
+            dispose();
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    abstract void actualizarCita(Cita citaNueva, Cita citaAntigua);
+    private void centrarVentana(){
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation((screenSize.width - this.getSize().width) / 2 ,
+                (screenSize.height - this.getSize().height) / 2);
+    }
+    
+    abstract Boolean actualizarCita(Cita cita, Cita citaVieja);
     abstract void eliminarCita(Cita cita);
     
     /**
@@ -346,7 +382,7 @@ public abstract class EditarCita extends javax.swing.JDialog {
                     }
 
                     @Override
-                    void actualizarCita(Cita citaNueva, Cita citaAntigua) {
+                    Boolean actualizarCita(Cita cita, Cita citaVieja) {
                         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                     }
                 };
@@ -367,13 +403,17 @@ public abstract class EditarCita extends javax.swing.JDialog {
     private javax.swing.JButton jButton4;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables

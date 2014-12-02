@@ -40,9 +40,14 @@ public class AgendaDB {
             String horaInicio = cita.getRealDateTime().toString("h:m");
             int duracion = cita.getDuration().toStandardSeconds().toStandardMinutes().getMinutes(); 
             int semana = cita.getSemana();
+            String confirmada;
+            if(cita.isConfirmada())
+                confirmada = "True";
+            else
+                confirmada = "False";
             System.out.println("hora:"+horaInicio+"     fecha:"+fecha);
-            int aux = st.executeUpdate("INSERT INTO cita (id_profesional, id_paciente, fecha, hora_inicio, duracion, semana, comentario)\n"+
-                    "VALUES ("+id_profesional+","+id_paciente+",'"+fecha+"','"+horaInicio+"',"+duracion+","+semana+",'Sin Comentario')");
+            int aux = st.executeUpdate("INSERT INTO cita (id_profesional, id_paciente, fecha, hora_inicio, duracion, semana, comentario, confirmada)\n"+
+                    "VALUES ("+id_profesional+","+id_paciente+",'"+fecha+"','"+horaInicio+"',"+duracion+","+semana+",'Sin Comentario',"+confirmada+")");
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();

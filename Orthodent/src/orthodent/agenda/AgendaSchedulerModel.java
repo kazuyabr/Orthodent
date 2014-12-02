@@ -58,16 +58,16 @@ public class AgendaSchedulerModel extends AbstractScheduleModel
     {
         System.out.println("Cita agregada:" + ((AgendaResource)cita.getResource()).getPos());
         citas.add(cita);
-        if( cita.isConfirmada())
-            cita.setColor(Color.CYAN);
-        else
-            cita.setColor(Color.YELLOW);
         this.fireAppointmentAdded(cita);
     }
     
     public void eliminarCita(Cita cita){
         citas.remove(cita);
         this.fireAppointmentRemoved(cita);
+    }
+    
+    public void actualizarCita(Cita cita){
+        this.fireAppointmentUpdated(cita);
     }
     
     public AgendaSchedulerModel() 
@@ -129,7 +129,8 @@ class AgendaResource implements Resource
     public Iterator<Availability> getAvailability(LocalDate localDate)
     {
        List<Availability> availabilities = new ArrayList<Availability>();
-       availabilities.add(new Availability(new LocalTime(9,0,0), Duration.standardHours(11)));
+       availabilities.add(new Availability(new LocalTime(9,0,0), Duration.standardHours(4)));
+       availabilities.add(new Availability(new LocalTime(15,0,0), Duration.standardHours(5)));
        return availabilities.iterator();
     }
 
