@@ -127,13 +127,14 @@ public class TratamientoDB {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * from tratamiento where id_tratamiento=" + idTratamiento);
             ResultSet ru = st.executeQuery("SELECT * from valor_uco where id_valor_uco=1");
             
             int valorUCO = 0;
             if(ru.next()){
                 valorUCO = ru.getInt("valor");
             }
+            ru.close();
+            ResultSet rs = st.executeQuery("SELECT * from tratamiento where id_tratamiento=" + idTratamiento);
             if (rs.next())
             {
                 int idCategoria2 = rs.getInt("id_categoria2");
@@ -174,5 +175,26 @@ public class TratamientoDB {
         catch ( SQLException e) {
             return false;
         }
-    }    
+    }
+    
+    public static boolean editarTratamiento(int idTratamiento, String nombre, float valorUCO){
+        try{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            
+            java.sql.Statement st = con.createStatement();
+            System.out.println("valorUCO"+valorUCO);
+            int aux = st.executeUpdate("UPDATE tratamiento\n" +
+                                        "SET nombre='"+nombre+"'\n" +
+                                        ",cantidad_uco="+valorUCO+"\n" +
+                                        "WHERE id_tratamiento="+idTratamiento);
+            boolean resultado = (aux == 1)? true : false;
+            st.close();
+            con.close();
+            return resultado;
+        }
+        catch ( SQLException e) {
+            return false;
+        }
+    }
 }

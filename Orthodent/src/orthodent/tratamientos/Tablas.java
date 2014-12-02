@@ -9,6 +9,8 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -416,6 +418,11 @@ public class Tablas extends javax.swing.JPanel {
         editar3.setBorder(null);
         editar3.setBorderPainted(false);
         editar3.setContentAreaFilled(false);
+        editar3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editar3ActionPerformed(evt);
+            }
+        });
 
         eliminar3.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
         eliminar3.setForeground(new java.awt.Color(11, 146, 181));
@@ -524,8 +531,19 @@ public class Tablas extends javax.swing.JPanel {
             if(resul){
                 this.updateModeloTratamientos(categoria2Selected);
             }
+            
+            this.editar3.setEnabled(false);
+            this.eliminar3.setEnabled(false);
         }
     }//GEN-LAST:event_eliminar3ActionPerformed
+
+    private void editar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editar3ActionPerformed
+        JVentana ventana = (JVentana)this.getTopLevelAncestor();
+        try {
+            new EditarTratamiento(ventana, true, categoria2Selected, tratamientosSelected).setVisible(true);
+        } catch (Exception ex) {
+        }
+    }//GEN-LAST:event_editar3ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton editar1;
