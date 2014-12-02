@@ -4,6 +4,7 @@
  */
 package orthodent.tratamientos;
 
+import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -41,6 +42,32 @@ public class Tablas extends javax.swing.JPanel {
     public Tablas() {
         initComponents();
         this.iniciarTablaCategoria1();
+        this.setCursor();
+        
+        this.nuevo2.setEnabled(false);
+        this.nuevo3.setEnabled(false);
+        
+        this.editar1.setEnabled(false);
+        this.editar2.setEnabled(false);
+        this.editar3.setEnabled(false);
+        
+        this.eliminar1.setEnabled(false);
+        this.eliminar2.setEnabled(false);
+        this.eliminar3.setEnabled(false);
+    }
+    
+    public void setCursor(){
+        this.nuevo1.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.nuevo2.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.nuevo3.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        this.editar1.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.editar2.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.editar3.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        this.eliminar1.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.eliminar2.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.eliminar3.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
     private Object[] getRowAt1(int row) {
@@ -150,7 +177,9 @@ public class Tablas extends javax.swing.JPanel {
         
         for(Tratamiento tratamiento : tratamientos){
             if(tratamiento.isActivo()){
-                Object [] fila = new Object [] {};
+                Object [] fila = new Object [] {new Item(tratamiento.getNombre(), tratamiento.getIdTratamiento()),
+                                                tratamiento.getCantidadUCO(), "$"+tratamiento.getValorColegio(),
+                                                "$"+tratamiento.getValorClinica()};
                 objetos.add(fila);
             }
         }
@@ -197,6 +226,18 @@ public class Tablas extends javax.swing.JPanel {
         tablaCat2 = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaTratamientos = new javax.swing.JTable();
+        labelCategoria = new javax.swing.JLabel();
+        labelSubCategoria = new javax.swing.JLabel();
+        labelTratamiento = new javax.swing.JLabel();
+        eliminar1 = new javax.swing.JButton();
+        editar1 = new javax.swing.JButton();
+        nuevo1 = new javax.swing.JButton();
+        nuevo2 = new javax.swing.JButton();
+        editar2 = new javax.swing.JButton();
+        eliminar2 = new javax.swing.JButton();
+        nuevo3 = new javax.swing.JButton();
+        editar3 = new javax.swing.JButton();
+        eliminar3 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -275,34 +316,176 @@ public class Tablas extends javax.swing.JPanel {
         });
         jScrollPane3.setViewportView(tablaTratamientos);
 
+        labelCategoria.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelCategoria.setForeground(new java.awt.Color(11, 146, 181));
+        labelCategoria.setText("Categoria");
+
+        labelSubCategoria.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelSubCategoria.setForeground(new java.awt.Color(11, 146, 181));
+        labelSubCategoria.setText("SubCategoria");
+
+        labelTratamiento.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelTratamiento.setForeground(new java.awt.Color(11, 146, 181));
+        labelTratamiento.setText("Tratamiento");
+
+        eliminar1.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
+        eliminar1.setForeground(new java.awt.Color(11, 146, 181));
+        eliminar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/delete_mini.png"))); // NOI18N
+        eliminar1.setText("Eliminar");
+        eliminar1.setBorder(null);
+        eliminar1.setBorderPainted(false);
+        eliminar1.setContentAreaFilled(false);
+
+        editar1.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
+        editar1.setForeground(new java.awt.Color(11, 146, 181));
+        editar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/edit_mini.png"))); // NOI18N
+        editar1.setText("Editar");
+        editar1.setBorder(null);
+        editar1.setBorderPainted(false);
+        editar1.setContentAreaFilled(false);
+
+        nuevo1.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
+        nuevo1.setForeground(new java.awt.Color(11, 146, 181));
+        nuevo1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/add_mini.png"))); // NOI18N
+        nuevo1.setText("Nuevo");
+        nuevo1.setBorder(null);
+        nuevo1.setBorderPainted(false);
+        nuevo1.setContentAreaFilled(false);
+
+        nuevo2.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
+        nuevo2.setForeground(new java.awt.Color(11, 146, 181));
+        nuevo2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/add_mini.png"))); // NOI18N
+        nuevo2.setText("Nuevo");
+        nuevo2.setBorder(null);
+        nuevo2.setBorderPainted(false);
+        nuevo2.setContentAreaFilled(false);
+
+        editar2.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
+        editar2.setForeground(new java.awt.Color(11, 146, 181));
+        editar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/edit_mini.png"))); // NOI18N
+        editar2.setText("Editar");
+        editar2.setBorder(null);
+        editar2.setBorderPainted(false);
+        editar2.setContentAreaFilled(false);
+
+        eliminar2.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
+        eliminar2.setForeground(new java.awt.Color(11, 146, 181));
+        eliminar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/delete_mini.png"))); // NOI18N
+        eliminar2.setText("Eliminar");
+        eliminar2.setBorder(null);
+        eliminar2.setBorderPainted(false);
+        eliminar2.setContentAreaFilled(false);
+
+        nuevo3.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
+        nuevo3.setForeground(new java.awt.Color(11, 146, 181));
+        nuevo3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/add_mini.png"))); // NOI18N
+        nuevo3.setText("Nuevo");
+        nuevo3.setBorder(null);
+        nuevo3.setBorderPainted(false);
+        nuevo3.setContentAreaFilled(false);
+
+        editar3.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
+        editar3.setForeground(new java.awt.Color(11, 146, 181));
+        editar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/edit_mini.png"))); // NOI18N
+        editar3.setText("Editar");
+        editar3.setBorder(null);
+        editar3.setBorderPainted(false);
+        editar3.setContentAreaFilled(false);
+
+        eliminar3.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
+        eliminar3.setForeground(new java.awt.Color(11, 146, 181));
+        eliminar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/delete_mini.png"))); // NOI18N
+        eliminar3.setText("Eliminar");
+        eliminar3.setBorder(null);
+        eliminar3.setBorderPainted(false);
+        eliminar3.setContentAreaFilled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(nuevo1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(editar1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(eliminar1))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(labelCategoria)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(nuevo2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(editar2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(eliminar2))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelSubCategoria))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelTratamiento)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 87, Short.MAX_VALUE)
+                        .addComponent(nuevo3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(editar3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(eliminar3)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelSubCategoria)
+                    .addComponent(labelCategoria)
+                    .addComponent(labelTratamiento))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(74, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(eliminar1)
+                    .addComponent(nuevo1)
+                    .addComponent(editar1)
+                    .addComponent(nuevo2)
+                    .addComponent(editar2)
+                    .addComponent(eliminar2)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(eliminar3)
+                        .addComponent(editar3)
+                        .addComponent(nuevo3)))
+                .addGap(188, 188, 188))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton editar1;
+    private javax.swing.JButton editar2;
+    private javax.swing.JButton editar3;
+    private javax.swing.JButton eliminar1;
+    private javax.swing.JButton eliminar2;
+    private javax.swing.JButton eliminar3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel labelCategoria;
+    private javax.swing.JLabel labelSubCategoria;
+    private javax.swing.JLabel labelTratamiento;
+    private javax.swing.JButton nuevo1;
+    private javax.swing.JButton nuevo2;
+    private javax.swing.JButton nuevo3;
     private javax.swing.JTable tablaCat1;
     private javax.swing.JTable tablaCat2;
     private javax.swing.JTable tablaTratamientos;
@@ -325,6 +508,14 @@ public class Tablas extends javax.swing.JPanel {
                         categoria1Selected = ((Item)fila[0]).getId();
                         iniciarTablaCategoria2();
                         iniciarTablaTratamientos(-1);
+                        editar1.setEnabled(true);
+                        eliminar1.setEnabled(true);
+                        nuevo2.setEnabled(true);
+                        editar2.setEnabled(false);
+                        eliminar2.setEnabled(false);
+                        nuevo3.setEnabled(false);
+                        editar3.setEnabled(false);
+                        eliminar3.setEnabled(false);
                     } catch (Exception ex) {
                     }
                 }
@@ -348,6 +539,11 @@ public class Tablas extends javax.swing.JPanel {
                     try {
                         categoria2Selected = ((Item)fila[0]).getId();
                         iniciarTablaTratamientos(categoria2Selected);
+                        editar2.setEnabled(true);
+                        eliminar2.setEnabled(true);
+                        nuevo3.setEnabled(true);
+                        editar3.setEnabled(false);
+                        eliminar3.setEnabled(false);
                     } catch (Exception ex) {
                     }
                 }
@@ -373,6 +569,8 @@ public class Tablas extends javax.swing.JPanel {
                     Object [] fila = getRowAt2(row);
                     try {
                         tratamientosSelected = ((Item)fila[0]).getId();
+                        editar3.setEnabled(true);
+                        eliminar3.setEnabled(true);
                     } catch (Exception ex) {
                     }
                 }
