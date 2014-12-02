@@ -34,8 +34,7 @@ public class TratamientoDB {
         }
     }
     
-    
-public static ArrayList<Tratamiento> listarTratamientosCategoria2(int idCategoria2){
+    public static ArrayList<Tratamiento> listarTratamientosCategoria2(int idCategoria2){
         ArrayList<Tratamiento> tratamientos = null;        
         try {
             DbConnection db = new DbConnection();
@@ -45,7 +44,7 @@ public static ArrayList<Tratamiento> listarTratamientosCategoria2(int idCategori
             
             ResultSet rs = st.executeQuery("SELECT tratamiento.id_tratamiento, tratamiento.nombre, (valor_uco.valor*tratamiento.cantidad_uco) as valor_colegio, (valor_uco.valor*tratamiento.cantidad_uco)*(valor_uco.porcentaje/100) as valor_clinica, tratamiento.activo"
                     + "FROM tratamiento, valor_uco"
-                    + " where activo="+1+"AND"
+                    + " where activo="+1+" AND"
                     + " tratamiento.id_categoria2="+idCategoria2);
             tratamientos = new ArrayList<Tratamiento>();
             while (rs.next())
@@ -58,6 +57,8 @@ public static ArrayList<Tratamiento> listarTratamientosCategoria2(int idCategori
             return tratamientos;
         }
         catch ( SQLException e) {
+            System.out.println("aqui??");
+            System.out.println(""+e);
             return null;
         }
     }    

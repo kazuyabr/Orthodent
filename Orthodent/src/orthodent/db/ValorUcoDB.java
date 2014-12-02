@@ -34,7 +34,7 @@ public class ValorUcoDB {
         }
     }
     
- public static ValorUco getValorUco(int idValorUco) throws Exception{
+    public static ValorUco getValorUco(int idValorUco) throws Exception{
         ValorUco valorUco = null;
         try {
             DbConnection db = new DbConnection();
