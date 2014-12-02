@@ -16,14 +16,14 @@ import modelo.Tratamiento;
  */
 public class TratamientoDB {
     
-    public static boolean crearTratamiento(String nombre, int ValorColegio, int ValorClinica){
+    public static boolean crearTratamiento(int idCategoria2, String nombre, int cantidadUCO){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
             
             java.sql.Statement st = con.createStatement();
-            int aux = st.executeUpdate("INSERT INTO tratamiento (nombre, valor_colegio, valor_clinica)\n" +
-                                        "VALUES ('"+nombre+"',"+ValorColegio+","+ValorClinica+")");
+            int aux = st.executeUpdate("INSERT INTO tratamiento (id_categoria2, nombre, cantidad_uco)\n" +
+                                        "VALUES ("+idCategoria2+",'"+nombre+"',"+cantidadUCO+")");
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
@@ -34,8 +34,7 @@ public class TratamientoDB {
         }
     }
     
-    
-public static ArrayList<Tratamiento> listarTratamientosCategoria2(int idCategoria2){
+    public static ArrayList<Tratamiento> listarTratamientosCategoria2(int idCategoria2){
         ArrayList<Tratamiento> tratamientos = null;        
         try {
             DbConnection db = new DbConnection();
@@ -43,14 +42,29 @@ public static ArrayList<Tratamiento> listarTratamientosCategoria2(int idCategori
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT tratamiento.id_tratamiento, tratamiento.nombre, (valor_uco.valor*tratamiento.cantidad_uco) as valor_colegio, (valor_uco.valor*tratamiento.cantidad_uco)*(valor_uco.porcentaje/100) as valor_clinica, tratamiento.activo"
-                    + "FROM tratamiento, valor_uco"
-                    + " where activo="+1+"AND"
-                    + " tratamiento.id_categoria2="+idCategoria2);
+            ResultSet ru = st.executeQuery("SELECT * from valor_uco where id_valor_uco=1");
+            
+            int valorUCO = 0;
+            int porcentaje = 0;
+            if(ru.next()){
+                valorUCO = ru.getInt("valor");
+                porcentaje = ru.getInt("porcentaje");
+            }
+            ru.close();
+            
+            ResultSet rs = st.executeQuery("SELECT * FROM tratamiento where activo="+1+" AND tratamiento.id_categoria2="+idCategoria2);
             tratamientos = new ArrayList<Tratamiento>();
+            
             while (rs.next())
             {
-                Tratamiento t = new Tratamiento(rs.getInt("id_tratamiento"), rs.getString("nombre"), rs.getInt("valor_colegio"), rs.getInt("valor_clinica"), rs.getBoolean("activo"));
+                int idTratamiento = rs.getInt("id_tratamiento");
+                String nombre = rs.getString("nombre");
+                float cantidadUCO = rs.getFloat("cantidad_uco");
+                int valorColegio = (int)cantidadUCO*valorUCO;
+                int valorClinica = (valorColegio*porcentaje)/100;
+                boolean activo = rs.getBoolean("activo");
+
+                Tratamiento t = new Tratamiento(idTratamiento, idCategoria2, nombre, cantidadUCO, valorColegio, valorClinica, activo);
                 tratamientos.add(t);
             }
             rs.close();
@@ -70,11 +84,30 @@ public static ArrayList<Tratamiento> listarTratamientosCategoria2(int idCategori
             
             java.sql.Statement st = con.createStatement();
             
+            ResultSet ru = st.executeQuery("SELECT * from valor_uco where id_valor_uco=1");
+            
+            int valorUCO = 0;
+            int porcentaje = 0;
+            if(ru.next()){
+                valorUCO = ru.getInt("valor");
+                porcentaje = ru.getInt("porcentaje");
+            }
+            ru.close();
+            
             ResultSet rs = st.executeQuery("SELECT * FROM tratamiento where activo="+1);
             tratamientos = new ArrayList<Tratamiento>();
+            
             while (rs.next())
             {
-                Tratamiento t = new Tratamiento(rs.getInt("id_tratamiento"), rs.getString("nombre"), rs.getInt("valor_colegio"), rs.getInt("valor_clinica"), rs.getBoolean("activo"));
+                int idTratamiento = rs.getInt("id_tratamiento");
+                int idCategoria2 = rs.getInt("id_categoria2");
+                String nombre = rs.getString("nombre");
+                float cantidadUCO = rs.getFloat("cantidad_uco");
+                int valorColegio = (int)cantidadUCO*valorUCO;
+                int valorClinica = (valorColegio*porcentaje)/100;
+                boolean activo = rs.getBoolean("activo");
+
+                Tratamiento t = new Tratamiento(idTratamiento, idCategoria2, nombre, cantidadUCO, valorColegio, valorClinica, activo);
                 tratamientos.add(t);
             }
             rs.close();
@@ -95,14 +128,22 @@ public static ArrayList<Tratamiento> listarTratamientosCategoria2(int idCategori
             java.sql.Statement st = con.createStatement();
             
             ResultSet rs = st.executeQuery("SELECT * from tratamiento where id_tratamiento=" + idTratamiento);
+            ResultSet ru = st.executeQuery("SELECT * from valor_uco where id_valor_uco=1");
+            
+            int valorUCO = 0;
+            if(ru.next()){
+                valorUCO = ru.getInt("valor");
+            }
             if (rs.next())
             {
+                int idCategoria2 = rs.getInt("id_categoria2");
                 String nombre = rs.getString("nombre");
-                int valorColegio = rs.getInt("valor_colegio");
-                int valorClinica = rs.getInt("valor_clinica");
+                float cantidadUCO = rs.getFloat("cantidad_uco");
+                int valorColegio = (int)cantidadUCO*valorUCO;
+                int valorClinica = valorColegio/2;
                 boolean activo = rs.getBoolean("activo");
 
-                tratamiento = new Tratamiento(idTratamiento, nombre, valorColegio, valorClinica, activo);
+                tratamiento = new Tratamiento(idTratamiento, idCategoria2, nombre, cantidadUCO, valorColegio, valorClinica, activo);
             }
             else{
                 tratamiento = null;

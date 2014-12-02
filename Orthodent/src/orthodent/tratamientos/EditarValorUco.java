@@ -212,19 +212,15 @@ public class EditarValorUco extends javax.swing.JDialog {
         boolean aux = validarCamposObligatorios(valor+"", porcentaje+"");
         
         if(aux){
-                try {
-                    valorUco.setValor(valor);
-                    valorUco.setPorcentaje(porcentaje);
-                    boolean respuesta = ValorUcoDB.editarPresupuesto(valorUco);
-
-                } catch (Exception ex) {
-                }
-//
-//                ((JVentana)this.getParent()).getTratamientos().updateModelo();
-//                ((JVentana)this.getParent()).getTratamientos().updateUI();
-                this.dispose();
-            
-
+            try {
+                valorUco.setValor(valor);
+                valorUco.setPorcentaje(porcentaje);
+                boolean respuesta = ValorUcoDB.editarPresupuesto(valorUco);
+            } catch (Exception ex) {
+            }
+//            ((JVentana)this.getParent()).getTratamientos().updateModelo();
+//            ((JVentana)this.getParent()).getTratamientos().updateUI();
+            this.dispose();
         }
         else{
             JOptionPane.showMessageDialog(this,

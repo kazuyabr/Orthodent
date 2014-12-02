@@ -11,17 +11,10 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GroupLayout;
@@ -33,14 +26,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import modelo.Tratamiento;
-import orthodent.Item;
 import orthodent.JVentana;
-import orthodent.db.FichaEvolucionDB;
 import orthodent.db.TratamientoDB;
-import orthodent.pacientes.FichasClinicas;
 import orthodent.usuarios.MostrarInfoTratamiento;
 
 /**
@@ -52,8 +40,6 @@ public class Tratamientos extends JPanel implements ActionListener{
     private Image bannerFondo;
     private JTextField buscador;
     private JButton botonBuscar;
-    private JButton nuevoTratamiento;
-    private JButton eliminarTratamiento;
     private JButton editarValorUco;
     private JTable tabla;
     private TableModel modelo;
@@ -75,8 +61,6 @@ public class Tratamientos extends JPanel implements ActionListener{
         this.addComponents();
         
         this.botonBuscar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        this.eliminarTratamiento.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        this.nuevoTratamiento.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.editarValorUco.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -128,69 +112,7 @@ public class Tratamientos extends JPanel implements ActionListener{
         this.editarValorUco.setBorder(null);
         this.editarValorUco.setBorderPainted(false);
         this.editarValorUco.setContentAreaFilled(false);
-        this.editarValorUco.addActionListener(this);        
-        
-        this.nuevoTratamiento = new JButton();
-        this.nuevoTratamiento.setForeground(new Color(11, 146, 181));
-        this.nuevoTratamiento.setFont(new Font("Georgia", 1, 12));
-        this.nuevoTratamiento.setIcon(new ImageIcon("src/imagenes/add_mini.png"));
-        this.nuevoTratamiento.setText("Nuevo Tratamiento  ");
-        this.nuevoTratamiento.setBorder(null);
-        this.nuevoTratamiento.setBorderPainted(false);
-        this.nuevoTratamiento.setContentAreaFilled(false);
-        this.nuevoTratamiento.addActionListener(this);
-        
-        this.eliminarTratamiento = new JButton();
-        this.eliminarTratamiento.setForeground(new Color(11, 146, 181));
-        this.eliminarTratamiento.setFont(new Font("Georgia", 1, 12));
-        this.eliminarTratamiento.setIcon(new ImageIcon("src/imagenes/delete_mini.png"));
-        this.eliminarTratamiento.setText("Eliminar Tratamiento");
-        this.eliminarTratamiento.setBorder(null);
-        this.eliminarTratamiento.setBorderPainted(false);
-        this.eliminarTratamiento.setContentAreaFilled(false);
-        this.eliminarTratamiento.addActionListener(this); 
-        
-        this.tabla = new JTable();
-        this.tabla.setFont(new Font("Georgia", 0, 11));
-        this.columnasNombre = new String [] {"Nombre", "Valor Colegio", "Valor Clínica"};
-        //this.updateModelo();
-        this.tabla.getTableHeader().setReorderingAllowed(false);
-        
-        this.tabla.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent me) {
-                JTable table =(JTable) me.getSource();
-                Point p = me.getPoint();
-                int row = table.rowAtPoint(p);
-                if(me.getClickCount() == 1){
-                    Object [] fila = getRowAt(row);
-                    tratamientoSelected = ((Item)fila[0]).getId();
-                    
-                }
-//                if (me.getClickCount() == 2) {
-//                    Object [] fila = getRowAt(row);
-//                    try {
-//                        Usuario usuario = Autenticacion.getUsuario((String)fila[0], (String)fila[3]);
-//                        if(usuario!=null){
-//                            
-//                            Usuario actual = ((JVentana)getTopLevelAncestor()).getUsuario();
-//                            
-//                            if(actual.getId_usuario()==usuario.getId_usuario()){
-//                                infoTratamiento = new MostrarInfoTratamiento(usuario, true, true);
-//                            }
-//                            else{
-//                                infoTratamiento = new MostrarInfoTratamiento(usuario, false, true);
-//                            }
-//                            
-//                            remove(contenedorListarTratamientos);
-//                            add(infoTratamiento, BorderLayout.CENTER);
-//                            isListarTratamientos = false;
-//                            updateUI();
-//                        }
-//                    } catch (Exception ex) {
-//                    }
-//                }
-            }
-        });
+        this.editarValorUco.addActionListener(this);
     }
     
     private Object[] getRowAt(int row) {
@@ -201,50 +123,6 @@ public class Tratamientos extends JPanel implements ActionListener{
         }
         return result;
     }
-    
-//    public void updateModelo(){
-//        //Podria ser ordenado!! -> una opcion es que la consulta ordene
-//        ArrayList<Tratamiento> tratamientos = TratamientoDB.listarTratamientos();
-//      
-//        int m = this.columnasNombre.length;
-//        
-//        ArrayList<Object []> objetos = new ArrayList<Object []>();
-//        
-//        for(Tratamiento tratamiento : tratamientos){
-//            //if(tratamiento.isActivo()){
-//
-//                Object [] fila = new Object [] {new Item(tratamiento.getNombre(), tratamiento.getIdTratamiento()), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
-//                
-//                objetos.add(fila);
-//            //}
-//        }
-//        
-//        this.filas = new Object [objetos.size()][m];
-//        int i = 0;
-//        for(Object [] o : objetos){
-//            this.filas[i] = o;
-//            i++;
-//        }
-//        
-//        this.modelo = new DefaultTableModel(this.filas, this.columnasNombre) {
-//            Class[] types = new Class [] {
-//                Item.class, String.class, String.class
-//            };
-//            boolean[] canEdit = new boolean [] {
-//                false, false, false
-//            };
-//
-//            public Class getColumnClass(int columnIndex) {
-//                return types [columnIndex];
-//            }
-//
-//            public boolean isCellEditable(int rowIndex, int columnIndex) {
-//                return canEdit [columnIndex];
-//            }
-//        };
-//        
-//        this.tabla.setModel(modelo);
-//    }
     
     public void volverTratamientos() throws Exception{
         if(!this.isListarTratamientos){
@@ -307,8 +185,6 @@ public class Tratamientos extends JPanel implements ActionListener{
                 .addComponent(this.botonBuscar)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(this.editarValorUco)
-                .addComponent(this.nuevoTratamiento)
-                .addComponent(this.eliminarTratamiento)
                 .addContainerGap())
         );
         
@@ -319,9 +195,7 @@ public class Tratamientos extends JPanel implements ActionListener{
                 .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(this.buscador, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(this.botonBuscar)
-                    .addComponent(this.editarValorUco)
-                    .addComponent(this.nuevoTratamiento)
-                    .addComponent(this.eliminarTratamiento))
+                    .addComponent(this.editarValorUco))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
     }
@@ -335,44 +209,7 @@ public class Tratamientos extends JPanel implements ActionListener{
             } catch (Exception ex) {
                 Logger.getLogger(Tratamientos.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }        
-        
-        if(e.getSource() == this.nuevoTratamiento){
-            new NuevoTratamiento(((JVentana)this.getTopLevelAncestor()),true).setVisible(true);
         }
-        
-        if(e.getSource() == this.eliminarTratamiento){
-            if(tabla.getSelectedRow() != -1){ // existe fila seleccionada
-               Object[] options = {"Sí","No"};
-
-               int n = JOptionPane.showOptionDialog(this,
-                            "¿Esta seguro que desea eliminar el tratamiento?",
-                            "Orthodent",
-                            JOptionPane.YES_NO_CANCEL_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null,
-                            options,
-                            options[1]);
-                if(n==0){
-
-                    boolean respuesta = TratamientoDB.eliminarTratamiento(tratamientoSelected);
-                    System.out.println("respuesta "+respuesta);
-                    //this.updateModelo();
-
-                    this.updateUI();
-
-                }
-            }
-            else{
-                    JOptionPane.showMessageDialog(this,
-                                        "Debe seleccionar primero un tratamiento",
-                                        "Orthodent",
-                                        JOptionPane.INFORMATION_MESSAGE);                
-            }
-            
-
-        }        
-        
         if(e.getSource() == this.botonBuscar){
             //this.buscar();
         }
