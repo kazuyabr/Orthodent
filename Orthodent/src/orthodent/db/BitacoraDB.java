@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import modelo.Bitacora;
-import static orthodent.db.PresupuestoDB.getTimestamp;
 
 /**
  *
@@ -19,18 +18,15 @@ import static orthodent.db.PresupuestoDB.getTimestamp;
  */
 public class BitacoraDB 
 {
- 
     
-     public static boolean crearBitacora(int idBitacora, String accion, int idUsuario, String tabla, int pk, String fecha, String created_at, String update_at){
+     public static boolean crearBitacora(String accion, int idUsuario, String tabla, int pk){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
             
             java.sql.Statement st = con.createStatement();
-            int aux = st.executeUpdate("INSERT INTO bitacora (id_bitacora, operacion, usuario, tabla, primary_key, created_at, update_at)\n" +
-                                        "VALUES ("+idBitacora+","+accion+","+idUsuario+","+tabla+","+
-                                                    pk+","+
-                                                    "'"+getTimestamp(created_at)+"','"+getTimestamp(update_at)+"')");
+            int aux = st.executeUpdate("INSERT INTO bitacora (operacion, usuario, tabla, primary_key)\n" +
+                                        "VALUES ('"+accion+"',"+idUsuario+",'"+tabla+"',"+pk+")");
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
@@ -73,8 +69,7 @@ public class BitacoraDB
             Connection con = db.connection;
             
             java.sql.Statement st = con.createStatement();
-            int aux = st.executeUpdate("UPDATE bitacora\n" +
-                                            "SET activo="+0+"\n" +
+            int aux = st.executeUpdate("DELETE FROM bitacora "+
                                             "WHERE id_bitacora="+idBitacora);
             boolean resultado = (aux == 1)? true : false;
             st.close();
@@ -84,33 +79,6 @@ public class BitacoraDB
         catch ( SQLException e) {
             return false;
         }
-    }
-     
-     
-     
-     
-    public static Timestamp getTimestamp(String fecha){
-        
-        int dia = Integer.parseInt(fecha.substring(0, fecha.indexOf("-")));
-        fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
-        
-        int mes = Integer.parseInt(fecha.substring(0,fecha.indexOf("-")))-1;
-        fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
-        
-        int año = Integer.parseInt(fecha.substring(0, fecha.indexOf(" ")))-1900;
-        fecha = fecha.substring(fecha.indexOf(" ")+1, fecha.length());
-        
-        int hora = Integer.parseInt(fecha.substring(0, fecha.indexOf(":")));
-        fecha = fecha.substring(fecha.indexOf(":")+1, fecha.length());
-        
-        int minuto = Integer.parseInt(fecha.substring(0, fecha.indexOf(":")));
-        fecha = fecha.substring(fecha.indexOf(":")+1, fecha.length());
-        
-        int segundo = Integer.parseInt(fecha);
-        
-        Timestamp date = new Timestamp(año, mes, dia, hora, minuto, segundo, 0);
-        
-        return date;
     }
     
     public static String convertTimestampToString(Timestamp date){
@@ -149,23 +117,4 @@ public class BitacoraDB
         }
         return "";
     }
-    
-    public static String girarFecha(String fecha){
-        
-        if(fecha!=null){
-            String dia = fecha.substring(0, fecha.indexOf("-"));
-            fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
-            
-            String mes = fecha.substring(0, fecha.indexOf("-"));
-            fecha = fecha.substring(fecha.indexOf("-")+1, fecha.length());
-            
-            String año = fecha.substring(0, fecha.indexOf(" "));
-            fecha = fecha.substring(fecha.indexOf(" ")+1, fecha.length());
-
-            return (año+"-"+mes+"-"+dia+" "+fecha);
-        }
-        return "";
-    }
-     
-    
 }
