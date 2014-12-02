@@ -4,6 +4,7 @@
  */
 package orthodent.agenda;
 
+import com.thirdnf.ResourceScheduler.Availability;
 import com.thirdnf.ResourceScheduler.Resource;
 import com.thirdnf.ResourceScheduler.ScheduleListener;
 import javax.swing.*;
@@ -14,11 +15,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import modelo.Usuario;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joda.time.DateTime;
-import org.joda.time.Duration;
 import org.joda.time.LocalDate;
 import orthodent.db.AgendaDB;
 
@@ -48,7 +49,7 @@ public class Agenda extends JPanel{
         this.scheduler = new Scheduler();
         this.scheduler.setModel(modelo);
         this.scheduler.showDate(new LocalDate());
-
+        this.scheduler.setCursor(new Cursor(Cursor.HAND_CURSOR));
         scheduler.addScheduleListener(new ScheduleListener()
         {
             @Override
@@ -58,11 +59,14 @@ public class Agenda extends JPanel{
             }
         });
         this.setLayout(new BorderLayout());
+        AgendaComponentFactory cf = new AgendaComponentFactory();
+        scheduler.setComponentFactory(cf);
         add(scheduler, BorderLayout.CENTER);
         
         this.barraAcciones = new BarraAcciones(this.usuarioActual,this);
         //this.cambiarSemanaDeAgenda(new Date());
         this.barraAcciones.setFechaAgenda(new Date());
+        //this.cargarAgendainicial();
         this.add(barraAcciones, BorderLayout.NORTH);
     }
     
@@ -86,24 +90,30 @@ public class Agenda extends JPanel{
         if(!esta){
             new NuevaCita(((JFrame)this.getTopLevelAncestor()), true, resource, dateTime) {
 
-                void agregarCita(Cita cita) {
+                Boolean agregarCita(Cita cita) {
                     cita.setProfesionalId(barraAcciones.getIdProfesional());
                     cita.setFecha(cita.getRealDateTime().toString("y-M-d"));
                     cita.setSemana(obtenerSemana(cita.getRealDateTime().toDate()));
-
-                    modelo.agregarCita(cita);
-                    if(!citasDeLaSemana.containsKey(cita.getSemana())){
-                        ArrayList<Cita> citas = new ArrayList<Cita>();
-                        citas.add(cita);
-                        citasDeLaSemana.put(cita.getSemana(), citas);
+                    cita.setConfirmada(false);
+                    if(validarBloques(cita) && validarTopeHora(cita)){
+                        modelo.agregarCita(cita);
+                        if(!citasDeLaSemana.containsKey(cita.getSemana())){
+                            ArrayList<Cita> citas = new ArrayList<Cita>();
+                            citas.add(cita);
+                            citasDeLaSemana.put(cita.getSemana(), citas);
+                        }
+                        else{
+                            citasDeLaSemana.get(cita.getSemana()).add(cita);
+                        }
+                        if(!AgendaDB.crearCita(cita,modelo)){
+                            System.out.println("NO CREO LA WEA");
+                            return false;
+                        }
+                        return true;
                     }
-                    else{
-                        citasDeLaSemana.get(cita.getSemana()).add(cita);
-                    }
-                    if(!AgendaDB.crearCita(cita,modelo)){
-                        System.out.println("NO CREO LA WEA");
-                    }
+                    return false;
                 }
+
 
             }.setVisible(true);
         }
@@ -112,18 +122,23 @@ public class Agenda extends JPanel{
             new EditarCita(((JFrame)this.getTopLevelAncestor()), true, clickeada, dateTime, resource){
 
                 @Override
-                void actualizarCita(Cita citaNueva, Cita citaAntigua) {
-                    citaNueva.setProfesionalId(barraAcciones.getIdProfesional());
-                    citaNueva.setFecha(cita.getRealDateTime().toString("y-M-d"));
-                    citaNueva.setSemana(obtenerSemana(cita.getRealDateTime().toDate()));
+                Boolean actualizarCita(Cita cita, Cita citaVieja) {
+                    cita.setProfesionalId(barraAcciones.getIdProfesional());
+                    cita.setFecha(cita.getRealDateTime().toString("y-M-d"));
+                    cita.setSemana(obtenerSemana(cita.getRealDateTime().toDate()));
                     
-                    if(AgendaDB.actualizarCita(citaNueva)){
-                        citasDeLaSemana.get(obtenerSemana(cita.getRealDateTime().toDate())).remove(citaAntigua);
-                        citasDeLaSemana.get(obtenerSemana(cita.getRealDateTime().toDate())).add(citaNueva);
-                        modelo.eliminarCita(citaAntigua);
-                        modelo.agregarCita(citaNueva);
+                    if(validarBloques(cita) && validarTopeHora(cita)){
+                        if(AgendaDB.actualizarCita(cita)){
+                            citasDeLaSemana.get(cita.getSemana()).remove(citaVieja);
+                            citasDeLaSemana.get(cita.getSemana()).add(cita);
+                            modelo.eliminarCita(citaVieja);
+                            modelo.agregarCita(cita);
+                            updateUI();
+                            return true;
+                        }
+                        return false;
                     }
-                    
+                    return false;
                 }
 
                 @Override
@@ -141,6 +156,20 @@ public class Agenda extends JPanel{
         }
     }
     
+    public void cargarAgendainicial(){
+        int semana = this.obtenerSemana(new Date());
+        ArrayList<Cita> citas = AgendaDB.obtenerCitas(semana, barraAcciones.getIdProfesional(),modelo);
+        if(citas!=null){
+            this.semanasCargadas.put(semana, Boolean.TRUE);
+            this.citasDeLaSemana.put(semana, citas);
+            for(Cita c: citas){
+                modelo.agregarCita(c);
+            }
+            updateUI();
+        }
+    }
+    
+    
     public void cambiarSemanaDeAgenda(Date fecha){
         int semana = this.obtenerSemana(fecha);
         LocalDate ld = new LocalDate(obtenerLunes(fecha));
@@ -148,11 +177,11 @@ public class Agenda extends JPanel{
         if(!this.semanasCargadas.containsKey(semana)){
             ArrayList<Cita> citas = AgendaDB.obtenerCitas(semana, barraAcciones.getIdProfesional(),modelo);
             if(citas!=null){
+                this.citasDeLaSemana.put(semana, citas);
+                this.semanasCargadas.put(semana, Boolean.TRUE);
                 for(Cita c : citas){
                     System.out.println(c.getTitle());
                     modelo.agregarCita(c);
-                    this.semanasCargadas.put(semana, Boolean.TRUE);
-                    this.citasDeLaSemana.put(semana, citas);
                 }
             }
             else{
@@ -206,6 +235,41 @@ public class Agenda extends JPanel{
         return lunes;
     }
     
+    public Boolean validarTopeHora(Cita cita){
+        boolean sePuede = true;
+        int semana = this.obtenerSemana(cita.getRealDateTime().toDate());
+        DateTime horaInicio = cita.getDateTime().plusMinutes(1);
+        DateTime horaFin = cita.getDateTime().plusMinutes(cita.getDuration().toStandardSeconds().toStandardMinutes().getMinutes()).minusMinutes(1);
+        System.out.println(horaFin.toString());
+        for(Cita c : this.citasDeLaSemana.get(semana)){
+            if(c.getId()!=cita.getId()){
+                DateTime citaFin = c.getDateTime().plusMinutes(c.getDuration().toStandardSeconds().toStandardMinutes().getMinutes());
+                DateTime citaInicio = c.getDateTime();
+                if(c.getResource()==cita.getResource()){
+                    if(horaFin.isBefore(citaFin) && horaFin.isAfter(citaInicio))
+                        sePuede = false;
+                    else if(horaInicio.isAfter(citaInicio) && horaInicio.isBefore(citaFin))
+                        sePuede = false;
+                }
+            }
+        }
+        
+        return sePuede;
+    }
     
+    public Boolean validarBloques(Cita cita){
+        boolean sePuede = false;
+        Iterator<Availability> av = cita.getResource().getAvailability(cita.getRealDateTime().toLocalDate());
+        while(av.hasNext()){
+            Availability a = av.next();
+            DateTime inicioBloque = new DateTime(cita.getDateTime().getYear(),cita.getDateTime().getMonthOfYear(),cita.getDateTime().getDayOfMonth(),a.getTime().getHourOfDay(),a.getTime().getMinuteOfHour(),0,0);
+            DateTime finBloque = inicioBloque.plusMinutes(a.getDuration().toStandardSeconds().toStandardMinutes().getMinutes());
+            DateTime finCita = cita.getDateTime().plusMinutes(cita.getDuration().toStandardSeconds().toStandardMinutes().getMinutes());
+            if(cita.getDateTime().isAfter(inicioBloque) && finCita.isBefore(finBloque)){
+                sePuede = true;
+            }
+        }
+        return sePuede;
+    }
     
 }
