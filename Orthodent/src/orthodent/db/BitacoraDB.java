@@ -41,7 +41,7 @@ public class BitacoraDB
         }
     }
      
-     public static ArrayList<Bitacora> listarPresupuestos(){
+     public static ArrayList<Bitacora> listarBitacora(){
         ArrayList<Bitacora> bitacoras = null;        
         try {
             DbConnection db = new DbConnection();
