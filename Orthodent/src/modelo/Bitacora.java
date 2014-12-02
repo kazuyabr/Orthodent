@@ -12,15 +12,15 @@ package modelo;
 public class Bitacora 
 {
     private int idBitacora;
-    private int idUsuario;
     private String accion;
+    private int idUsuario;
     private String tabla;
     private int pk;
     private String fecha;
 
-    public Bitacora(int idBitacora, int idUsuario, String accion, String tabla, int pk, String fecha) {
+    public Bitacora(int idBitacora, String accion, int idUsuario, String tabla, int pk, String fecha) {
         this.idBitacora = idBitacora;
-        this.idUsuario = idUsuario;
+        this.idUsuario = idUsuario; 
         this.accion = accion;
         this.tabla = tabla;
         this.pk = pk;
