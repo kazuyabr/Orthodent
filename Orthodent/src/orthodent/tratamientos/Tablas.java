@@ -365,6 +365,11 @@ public class Tablas extends javax.swing.JPanel {
         editar1.setBorder(null);
         editar1.setBorderPainted(false);
         editar1.setContentAreaFilled(false);
+        editar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editar1ActionPerformed(evt);
+            }
+        });
 
         nuevo1.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
         nuevo1.setForeground(new java.awt.Color(11, 146, 181));
@@ -373,6 +378,11 @@ public class Tablas extends javax.swing.JPanel {
         nuevo1.setBorder(null);
         nuevo1.setBorderPainted(false);
         nuevo1.setContentAreaFilled(false);
+        nuevo1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nuevo1ActionPerformed(evt);
+            }
+        });
 
         nuevo2.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
         nuevo2.setForeground(new java.awt.Color(11, 146, 181));
@@ -381,6 +391,11 @@ public class Tablas extends javax.swing.JPanel {
         nuevo2.setBorder(null);
         nuevo2.setBorderPainted(false);
         nuevo2.setContentAreaFilled(false);
+        nuevo2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nuevo2ActionPerformed(evt);
+            }
+        });
 
         editar2.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
         editar2.setForeground(new java.awt.Color(11, 146, 181));
@@ -389,6 +404,11 @@ public class Tablas extends javax.swing.JPanel {
         editar2.setBorder(null);
         editar2.setBorderPainted(false);
         editar2.setContentAreaFilled(false);
+        editar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editar2ActionPerformed(evt);
+            }
+        });
 
         eliminar2.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
         eliminar2.setForeground(new java.awt.Color(11, 146, 181));
@@ -544,6 +564,38 @@ public class Tablas extends javax.swing.JPanel {
         } catch (Exception ex) {
         }
     }//GEN-LAST:event_editar3ActionPerformed
+
+    private void nuevo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevo1ActionPerformed
+        JVentana ventana = (JVentana)this.getTopLevelAncestor();
+        try {
+            new NuevaCategoria(ventana, true).setVisible(true);
+        } catch (Exception ex) {
+        }
+    }//GEN-LAST:event_nuevo1ActionPerformed
+
+    private void nuevo2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevo2ActionPerformed
+        JVentana ventana = (JVentana)this.getTopLevelAncestor();
+        try {
+            new NuevaSubCategoria(ventana, true, this.categoria1Selected).setVisible(true);
+        } catch (Exception ex) {
+        }
+    }//GEN-LAST:event_nuevo2ActionPerformed
+
+    private void editar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editar1ActionPerformed
+        JVentana ventana = (JVentana)this.getTopLevelAncestor();
+        try {
+            new EditarCategoria(ventana, true, this.categoria1Selected).setVisible(true);
+        } catch (Exception ex) {
+        }
+    }//GEN-LAST:event_editar1ActionPerformed
+
+    private void editar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editar2ActionPerformed
+        JVentana ventana = (JVentana)this.getTopLevelAncestor();
+        try {
+            new EditarSubCategoria(ventana, true, this.categoria2Selected).setVisible(true);
+        } catch (Exception ex) {
+        }
+    }//GEN-LAST:event_editar2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton editar1;

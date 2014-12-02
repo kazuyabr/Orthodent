@@ -16,7 +16,7 @@ import modelo.Categoria1;
  */
 public class Categoria1DB {
     
-public static boolean crearCategoria1(String nombre){
+    public static boolean crearCategoria1(String nombre){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
@@ -24,6 +24,25 @@ public static boolean crearCategoria1(String nombre){
             java.sql.Statement st = con.createStatement();
             int aux = st.executeUpdate("INSERT INTO categoria1 (nombre)\n" +
                                         "VALUES ('"+nombre+"')");
+            boolean resultado = (aux == 1)? true : false;
+            st.close();
+            con.close();
+            return resultado;
+        }
+        catch ( SQLException e) {
+            return false;
+        }
+    }
+    
+    public static boolean editarCategoria1(int idCategoria, String nombre){
+        try{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            
+            java.sql.Statement st = con.createStatement();
+            int aux = st.executeUpdate("UPDATE categoria1\n" +
+                                        "SET nombre='"+nombre+"'\n" +
+                                        "WHERE id_categoria1="+idCategoria);
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
