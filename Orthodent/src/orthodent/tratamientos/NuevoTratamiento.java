@@ -18,11 +18,11 @@ import orthodent.db.TratamientoDB;
  */
 public class NuevoTratamiento extends javax.swing.JDialog {
 
-    /**
-     * Creates new form NuevoTratamiento
-     */
-    public NuevoTratamiento(java.awt.Frame parent, boolean modal) {
+    private int idCategoria2;
+    
+    public NuevoTratamiento(java.awt.Frame parent, boolean modal, int idCategoria2) {
         super(parent, modal);
+        this.idCategoria2 = idCategoria2;
         initComponents();
         this.setCursor();
         this.setTitle("Nuevo Tratamiento");
@@ -53,12 +53,10 @@ public class NuevoTratamiento extends javax.swing.JDialog {
         aceptar = new javax.swing.JButton();
         nombres = new javax.swing.JTextField();
         labelNombre = new javax.swing.JLabel();
-        tf_valorColegio = new javax.swing.JTextField();
-        labelTelefono = new javax.swing.JLabel();
+        tf_valorUCO = new javax.swing.JTextField();
+        labelValorUCO = new javax.swing.JLabel();
         titulo = new javax.swing.JLabel();
         camposObligatorios = new javax.swing.JLabel();
-        labelTelefono1 = new javax.swing.JLabel();
-        tf_valorClinica = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nuevo Usuario");
@@ -94,17 +92,22 @@ public class NuevoTratamiento extends javax.swing.JDialog {
         labelNombre.setForeground(new java.awt.Color(255, 255, 255));
         labelNombre.setText("Nombre (*)");
 
-        tf_valorColegio.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
-        tf_valorColegio.addKeyListener(new java.awt.event.KeyAdapter() {
+        tf_valorUCO.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        tf_valorUCO.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_valorUCOActionPerformed(evt);
+            }
+        });
+        tf_valorUCO.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                tf_valorColegioKeyTyped(evt);
+                tf_valorUCOKeyTyped(evt);
             }
         });
 
-        labelTelefono.setBackground(new java.awt.Color(9, 133, 179));
-        labelTelefono.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        labelTelefono.setForeground(new java.awt.Color(255, 255, 255));
-        labelTelefono.setText("Valor Colegio (*)");
+        labelValorUCO.setBackground(new java.awt.Color(9, 133, 179));
+        labelValorUCO.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        labelValorUCO.setForeground(new java.awt.Color(255, 255, 255));
+        labelValorUCO.setText("Valor UCO (*)");
 
         titulo.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
         titulo.setForeground(new java.awt.Color(255, 255, 255));
@@ -114,57 +117,38 @@ public class NuevoTratamiento extends javax.swing.JDialog {
         camposObligatorios.setForeground(new java.awt.Color(255, 255, 255));
         camposObligatorios.setText("(*) Campos Obligatorios");
 
-        labelTelefono1.setBackground(new java.awt.Color(9, 133, 179));
-        labelTelefono1.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        labelTelefono1.setForeground(new java.awt.Color(255, 255, 255));
-        labelTelefono1.setText("Valor Clínica (*)");
-
-        tf_valorClinica.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
-        tf_valorClinica.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                tf_valorClinicaKeyTyped(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(labelTelefono1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(tf_valorClinica, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelTelefono)
-                                    .addComponent(labelNombre))
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                        .addGap(15, 15, 15)
-                                        .addComponent(tf_valorColegio, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGap(19, 19, 19)
-                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(nombres, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                                .addComponent(camposObligatorios)
-                                                .addGap(21, 21, 21)))))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(73, 73, 73)
                 .addComponent(titulo)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelValorUCO)
+                            .addComponent(labelNombre))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(tf_valorUCO, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(19, 19, 19)
+                                .addComponent(nombres, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addComponent(cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(camposObligatorios, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,19 +161,15 @@ public class NuevoTratamiento extends javax.swing.JDialog {
                     .addComponent(labelNombre))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tf_valorColegio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelTelefono))
+                    .addComponent(tf_valorUCO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelValorUCO))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tf_valorClinica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelTelefono1))
-                .addGap(18, 18, 18)
                 .addComponent(camposObligatorios)
-                .addGap(31, 31, 31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(aceptar)
                     .addComponent(cancelar))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -197,27 +177,29 @@ public class NuevoTratamiento extends javax.swing.JDialog {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(71, 71, 71))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -230,29 +212,18 @@ public class NuevoTratamiento extends javax.swing.JDialog {
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
         
         String nombre = this.nombres.getText();
-        String valorColegio = this.tf_valorColegio.getText();
-        String valorClinica = this.tf_valorClinica.getText();
+        String valorUCO = this.tf_valorUCO.getText();
         
-        boolean aux = validarCamposObligatorios(nombre, valorColegio, valorClinica);
+        boolean aux = validarCamposObligatorios(nombre, valorUCO);
         
         if(aux){
-                try {
-                    boolean respuesta = TratamientoDB.crearTratamiento(nombre, Integer.parseInt(valorColegio), Integer.parseInt(valorClinica));
-
-                    /*if(respuesta){
-                        System.out.println("Agregado :)");
-                    }
-                    else{
-                        System.out.println("Algo ocurrio mal =/");
-                    }*/
+            try {
+                boolean respuesta = TratamientoDB.crearTratamiento(idCategoria2, nombre, Float.parseFloat(valorUCO));
                 } catch (Exception ex) {
                 }
-
-                //((JVentana)this.getParent()).getTratamientos().updateModelo();
-                ((JVentana)this.getParent()).getTratamientos().updateUI();
+                ((JVentana)this.getParent()).getTratamientos().getTablas().updateModeloTratamientos(idCategoria2);
+                ((JVentana)this.getParent()).getTratamientos().getTablas().updateUI();
                 this.dispose();
-            
-
         }
         else{
             JOptionPane.showMessageDialog(this,
@@ -280,33 +251,31 @@ public class NuevoTratamiento extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_nombresKeyTyped
 
-    private void tf_valorColegioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_valorColegioKeyTyped
+    private void tf_valorUCOKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_valorUCOKeyTyped
         char c = evt.getKeyChar();
-        if (!(c>='0' && c<='9')){
+        if(c=='.'){
+            if(this.tf_valorUCO.getText().contains(".")){
+                evt.consume();
+            }
+        }
+        else if(!(c>='0' && c<='9')){
             evt.consume();
         }
-    }//GEN-LAST:event_tf_valorColegioKeyTyped
+    }//GEN-LAST:event_tf_valorUCOKeyTyped
 
-    private void tf_valorClinicaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_valorClinicaKeyTyped
-        char c = evt.getKeyChar();
-        if (!(c>='0' && c<='9')){
-            evt.consume();
-        }
-    }//GEN-LAST:event_tf_valorClinicaKeyTyped
+    private void tf_valorUCOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_valorUCOActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_valorUCOActionPerformed
     
-    private boolean validarCamposObligatorios(String nombre, String valorColegio, String valorClinica){
+    private boolean validarCamposObligatorios(String nombre, String valorUCO){
         
         if(nombre.equals("")){
             return false;
         }
         
-        if(valorColegio.equals("")){
+        if(valorUCO.equals("")){
             return false;
         }
-        
-        if(valorClinica.equals("")){
-            return false;
-        }        
        
         return true;
     }
@@ -318,11 +287,9 @@ public class NuevoTratamiento extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel labelNombre;
-    private javax.swing.JLabel labelTelefono;
-    private javax.swing.JLabel labelTelefono1;
+    private javax.swing.JLabel labelValorUCO;
     private javax.swing.JTextField nombres;
-    private javax.swing.JTextField tf_valorClinica;
-    private javax.swing.JTextField tf_valorColegio;
+    private javax.swing.JTextField tf_valorUCO;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }

@@ -16,7 +16,7 @@ import modelo.Tratamiento;
  */
 public class TratamientoDB {
     
-    public static boolean crearTratamiento(int idCategoria2, String nombre, int cantidadUCO){
+    public static boolean crearTratamiento(int idCategoria2, String nombre, float cantidadUCO){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;

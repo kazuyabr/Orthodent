@@ -76,6 +76,10 @@ public class Tratamientos extends JPanel implements ActionListener{
         return this.infoTratamiento;
     }
     
+    public Tablas getTablas(){
+        return this.tablas;
+    }
+    
     private void initComponents(){
         
         this.contenedorListarTratamientos = new JPanel();

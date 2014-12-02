@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -16,6 +17,7 @@ import modelo.Categoria1;
 import modelo.Categoria2;
 import modelo.Tratamiento;
 import orthodent.Item;
+import orthodent.JVentana;
 import orthodent.db.Categoria1DB;
 import orthodent.db.Categoria2DB;
 import orthodent.db.TratamientoDB;
@@ -103,10 +105,19 @@ public class Tablas extends javax.swing.JPanel {
       
         int m = this.columnasNombreCat1.length;
         
-        this.filasCat1 = new Object [categorias1.size()][m];
+        ArrayList<Object []> objetos = new ArrayList<Object []>();
+        
+        for(Categoria1 categoria1 : categorias1){
+            if(categoria1.isActivo()){
+                Object [] fila = new Object [] {new Item(categoria1.getNombre(), categoria1.getIdCategoria1())};
+                objetos.add(fila);
+            }
+        }
+        
+        this.filasCat1 = new Object [objetos.size()][m];
         int i = 0;
-        for(Categoria1  categoria1 : categorias1){
-            this.filasCat1[i] = new Object [] {new Item(categoria1.getNombre(), categoria1.getIdCategoria1())};
+        for(Object [] o : objetos){
+            this.filasCat1[i] = o;
             i++;
         }
         
@@ -136,10 +147,19 @@ public class Tablas extends javax.swing.JPanel {
       
         int m = this.columnasNombreCat2.length;
         
-        this.filasCat2 = new Object [categorias2.size()][m];
-        int i = 0;
+        ArrayList<Object []> objetos = new ArrayList<Object []>();
+        
         for(Categoria2 categoria2 : categorias2){
-            this.filasCat2[i] = new Object [] {new Item(categoria2.getNombre(), categoria2.getIdCategoria2())};
+            if(categoria2.isActivo()){
+                Object [] fila = new Object [] {new Item(categoria2.getNombre(), categoria2.getIdCategoria2())};
+                objetos.add(fila);
+            }
+        }
+        
+        this.filasCat2 = new Object [objetos.size()][m];
+        int i = 0;
+        for(Object [] o : objetos){
+            this.filasCat2[i] = o;
             i++;
         }
         
@@ -383,6 +403,11 @@ public class Tablas extends javax.swing.JPanel {
         nuevo3.setBorder(null);
         nuevo3.setBorderPainted(false);
         nuevo3.setContentAreaFilled(false);
+        nuevo3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nuevo3ActionPerformed(evt);
+            }
+        });
 
         editar3.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
         editar3.setForeground(new java.awt.Color(11, 146, 181));
@@ -399,6 +424,11 @@ public class Tablas extends javax.swing.JPanel {
         eliminar3.setBorder(null);
         eliminar3.setBorderPainted(false);
         eliminar3.setContentAreaFilled(false);
+        eliminar3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminar3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -456,20 +486,47 @@ public class Tablas extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(eliminar1)
-                    .addComponent(nuevo1)
-                    .addComponent(editar1)
-                    .addComponent(nuevo2)
-                    .addComponent(editar2)
-                    .addComponent(eliminar2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(eliminar3)
                         .addComponent(editar3)
-                        .addComponent(nuevo3)))
+                        .addComponent(nuevo3))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(eliminar1)
+                        .addComponent(nuevo1)
+                        .addComponent(editar1)
+                        .addComponent(nuevo2)
+                        .addComponent(editar2)
+                        .addComponent(eliminar2)))
                 .addGap(188, 188, 188))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void nuevo3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevo3ActionPerformed
+        JVentana ventana = (JVentana)this.getTopLevelAncestor();
+        new NuevoTratamiento(ventana, true, categoria2Selected).setVisible(true);
+    }//GEN-LAST:event_nuevo3ActionPerformed
+
+    private void eliminar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminar3ActionPerformed
+        Object[] options = {"Sí","No"};
+        
+        int n = JOptionPane.showOptionDialog(this,
+                    "¿Esta seguro que desea eliminar el tratamiento?",
+                    "Orthodent",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[1]);
+        
+        if(n==0){
+            boolean resul = TratamientoDB.eliminarTratamiento(tratamientosSelected);
+            if(resul){
+                this.updateModeloTratamientos(categoria2Selected);
+            }
+        }
+    }//GEN-LAST:event_eliminar3ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton editar1;
     private javax.swing.JButton editar2;
@@ -566,7 +623,7 @@ public class Tablas extends javax.swing.JPanel {
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
                 if (me.getClickCount() == 1) { 
-                    Object [] fila = getRowAt2(row);
+                    Object [] fila = getRowAt3(row);
                     try {
                         tratamientosSelected = ((Item)fila[0]).getId();
                         editar3.setEnabled(true);
