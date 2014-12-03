@@ -43,9 +43,10 @@ public class Autenticacion {
                     String telefono  = rs.getString("telefono");
                     String especialidad  = rs.getString("especialidad");
                     int tiempoCita = rs.getInt("tiempo_cita");
-                    boolean activo = rs.getBoolean("activo");  
+                    boolean activo = rs.getBoolean("activo"); 
+                    int id_clinica = rs.getInt("id_clinica");
                     
-                    usuario = new Usuario(id_usuario, id_rol, nombre, apellido_pat, apellido_mat, userName, contraseña, email, telefono, especialidad, tiempoCita, activo);
+                    usuario = new Usuario(id_usuario, id_rol, nombre, apellido_pat, apellido_mat, userName, contraseña, email, telefono, especialidad, tiempoCita, activo, id_clinica);
                 }
                 else{
                     usuario = null;
@@ -145,7 +146,7 @@ public class Autenticacion {
                 Usuario u = new Usuario(rs.getInt("id_usuario"), rs.getInt("id_rol"), rs.getString("nombre"),
                         rs.getString("apellido_pat"), rs.getString("apellido_mat"), rs.getString("nombre_usuario"),
                         rs.getString("contrasena"), rs.getString("email"), rs.getString("telefono"),
-                        rs.getString("especialidad"),rs.getInt("tiempo_cita"), rs.getBoolean("activo"));
+                        rs.getString("especialidad"),rs.getInt("tiempo_cita"), rs.getBoolean("activo"), rs.getInt("id_clinica"));
                 usuarios.add(u);
             }
             rs.close();
@@ -172,7 +173,7 @@ public class Autenticacion {
                 Usuario u = new Usuario(rs.getInt("id_usuario"), rs.getInt("id_rol"), rs.getString("nombre"),
                         rs.getString("apellido_pat"), rs.getString("apellido_mat"), rs.getString("nombre_usuario"),
                         rs.getString("contrasena"), rs.getString("email"), rs.getString("telefono"),
-                        rs.getString("especialidad"),rs.getInt("tiempo_cita"), rs.getBoolean("activo"));
+                        rs.getString("especialidad"),rs.getInt("tiempo_cita"), rs.getBoolean("activo"), rs.getInt("id_clinica"));
                 usuarios.add(u);
             }
             rs.close();
@@ -224,7 +225,7 @@ public class Autenticacion {
     
     //Profesional
     public static boolean crearUsuario(int idRol, String nombre, String apellidoPat, String apellidoMat, String nombreUsuario, String contrasena,
-                                        String email, String telefono, String especialidad, int tiempoCita) throws Exception{
+                                        String email, String telefono, String especialidad, int tiempoCita, int id_clinica) throws Exception{
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
@@ -233,9 +234,9 @@ public class Autenticacion {
             contrasena = encripMd5(contrasena);
             
             int aux = st.executeUpdate("INSERT INTO usuario (id_rol, nombre, apellido_pat, apellido_mat, nombre_usuario, contrasena,"
-                                        + "email, telefono, especialidad, tiempo_cita)\n" +
+                                        + "email, telefono, especialidad, tiempo_cita, id_clinica)\n" +
                                         "VALUES ("+idRol+",'"+nombre+"','"+apellidoPat+"','"+apellidoMat+"','"+nombreUsuario+"','"+contrasena
-                                        +"','"+email+"','"+telefono+"','"+especialidad+"',"+tiempoCita+")");
+                                        +"','"+email+"','"+telefono+"','"+especialidad+"',"+tiempoCita+","+id_clinica+")");
             
             boolean resultado = (aux == 1)? true : false;
             st.close();
@@ -249,7 +250,7 @@ public class Autenticacion {
     
     //Basico
     public static boolean crearUsuario(int idRol, String nombre, String apellidoPat, String apellidoMat, String nombreUsuario, String contrasena,
-                                        String email, String telefono) throws Exception{
+                                        String email, String telefono, int id_clinica) throws Exception{
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
@@ -258,9 +259,9 @@ public class Autenticacion {
             contrasena = encripMd5(contrasena);
             
             int aux = st.executeUpdate("INSERT INTO usuario (id_rol, nombre, apellido_pat, apellido_mat, nombre_usuario, contrasena,"
-                                        + "email, telefono)\n" +
+                                        + "email, telefono, id_clinica)\n" +
                                         "VALUES ("+idRol+",'"+nombre+"','"+apellidoPat+"','"+apellidoMat+"','"+nombreUsuario+"','"+contrasena
-                                        +"','"+email+"','"+telefono+"')");
+                                        +"','"+email+"','"+telefono+"',"+id_clinica+")");
             
             boolean resultado = (aux == 1)? true : false;
             st.close();
@@ -290,6 +291,7 @@ public class Autenticacion {
                     ",telefono='"+usuario.getTelefono()+"'\n" +
                     ",especialidad='"+usuario.getEspecialidad()+"'\n" +
                     ",tiempo_cita="+usuario.getTiempoCita()+"\n" +
+                    ",id_clinica="+usuario.getId_clinica()+"\n" +
                     "WHERE id_usuario="+usuario.getId_usuario());
             
             boolean resultado = (aux == 1)? true : false;
@@ -324,8 +326,9 @@ public class Autenticacion {
                 String especialidad  = rs.getString("especialidad");
                 int tiempoCita = rs.getInt("tiempo_cita");
                 boolean activo = rs.getBoolean("activo");
-
-                usuario = new Usuario(id_usuario, id_rol, nombre, apellido_pat, apellido_mat, userName, contraseña, email, telefono, especialidad, tiempoCita, activo);
+                int id_clinica = rs.getInt("id_clinica");
+                
+                usuario = new Usuario(id_usuario, id_rol, nombre, apellido_pat, apellido_mat, userName, contraseña, email, telefono, especialidad, tiempoCita, activo, id_clinica);
             }
             else{
                 usuario = null;
@@ -360,8 +363,9 @@ public class Autenticacion {
                 String especialidad  = rs.getString("especialidad");
                 int tiempoCita = rs.getInt("tiempo_cita");
                 boolean activo = rs.getBoolean("activo");
-
-                usuario = new Usuario(id_usuario, id_rol, nombre, apellido_pat, apellido_mat, userName, contraseña, email, telefono, especialidad, tiempoCita, activo);
+                int id_clinica = rs.getInt("id_clinica");
+                
+                usuario = new Usuario(id_usuario, id_rol, nombre, apellido_pat, apellido_mat, userName, contraseña, email, telefono, especialidad, tiempoCita, activo, id_clinica);
             }
             else{
                 usuario = null;

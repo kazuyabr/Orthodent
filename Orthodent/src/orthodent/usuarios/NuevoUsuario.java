@@ -460,18 +460,22 @@ public class NuevoUsuario extends javax.swing.JDialog {
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
         
         int idRol = 0;
-        
+        int idClinica;
         if(this.admin.isSelected()){
             idRol = 1;
+            idClinica = 0;
         }
         else if(this.asistenteAdministrativa.isSelected()){
             idRol = 2;
+            idClinica = 0;
         }
         else if(this.profesional.isSelected()){
             idRol = 3;
+            idClinica = ((Item)this.clinicas.getSelectedItem()).getId();
         }
         else{
             idRol = 4;
+            idClinica = ((Item)this.clinicas.getSelectedItem()).getId();
         }
         
         String nombre = this.nombres.getText();
@@ -490,13 +494,15 @@ public class NuevoUsuario extends javax.swing.JDialog {
         
         String telefono = this.telefono.getText();
         
+        
+        
         boolean aux = validarCamposObligatorios(nombre,apellidoPat,email,contraseña1,contraseña2);
         
         if(aux){
             if(contraseña1.equals(contraseña2)){
                 try {
                     boolean respuesta = Autenticacion.crearUsuario(idRol, nombre, apellidoPat, apellidoMat, 
-                                                            nombreUsuario, contraseña1, email, telefono);
+                                                            nombreUsuario, contraseña1, email, telefono, idClinica);
                     
                     /*if(respuesta){
                         System.out.println("Agregado :)");

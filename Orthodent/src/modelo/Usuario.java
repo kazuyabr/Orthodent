@@ -12,6 +12,7 @@ public class Usuario {
 
     private int id_usuario;
     private int id_rol;
+    private int id_clinica;
     private String nombre;
     private String apellido_pat;
     private String apellido_mat;
@@ -24,7 +25,7 @@ public class Usuario {
     private boolean activo;
     
    //constructor PROFESIONAL 
-   public Usuario(int id_usuario, int id_rol, String nombre, String apellido_pat, String apellido_mat, String nombreUsuario, String contraseña, String email, String telefono, String especialidad, int tiempoCita, boolean activo) {
+   public Usuario(int id_usuario, int id_rol, String nombre, String apellido_pat, String apellido_mat, String nombreUsuario, String contraseña, String email, String telefono, String especialidad, int tiempoCita, boolean activo, int id_clinica) {
         this.id_usuario = id_usuario;
         this.id_rol = id_rol;
         this.nombre = nombre;
@@ -37,6 +38,7 @@ public class Usuario {
         this.especialidad = especialidad;
         this.tiempoCita = tiempoCita;
         this.activo = activo;
+        this.id_clinica = id_clinica;
     }    
     
     //constructor usuarios ASISTENTE Y ADMINISTRADOR
@@ -148,4 +150,12 @@ public class Usuario {
     public void setTiempoCita(int tiempoCita) {
         this.tiempoCita = tiempoCita;
     }
+
+    public int getId_clinica() {
+        return id_clinica;
+    }
+
+    public void setId_clinica(int id_clinica) {
+        this.id_clinica = id_clinica;
+    }    
 }

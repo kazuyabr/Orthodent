@@ -6,10 +6,14 @@ package orthodent.usuarios;
 
 import java.awt.Cursor;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import modelo.Rol;
 import modelo.Usuario;
+import orthodent.Item;
 import orthodent.db.Autenticacion;
 import orthodent.db.RolDB;
 
@@ -32,6 +36,11 @@ public class DatosPersonales extends JPanel{
         this.guardar.setEnabled(false);
         this.guardar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.eliminar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.initClinicas();
+        this.clinicas.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                habilitarBoton();
+            }});
     }
     
     public boolean getCambios(){
@@ -88,6 +97,8 @@ public class DatosPersonales extends JPanel{
         telefono = new javax.swing.JTextField();
         guardar = new javax.swing.JButton();
         eliminar = new javax.swing.JButton();
+        labelTelefono1 = new javax.swing.JLabel();
+        clinicas = new javax.swing.JComboBox();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(850, 551));
@@ -193,6 +204,11 @@ public class DatosPersonales extends JPanel{
         });
 
         telefono.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        telefono.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                telefonoActionPerformed(evt);
+            }
+        });
         telefono.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 telefonoKeyReleased(evt);
@@ -218,6 +234,27 @@ public class DatosPersonales extends JPanel{
             }
         });
 
+        labelTelefono1.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelTelefono1.setText("Clínica");
+
+        clinicas.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        clinicas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        clinicas.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                clinicasItemStateChanged(evt);
+            }
+        });
+        clinicas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clinicasMouseClicked(evt);
+            }
+        });
+        clinicas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clinicasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -225,6 +262,12 @@ public class DatosPersonales extends JPanel{
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(panelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(eliminar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(guardar)
+                .addGap(83, 83, 83))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(61, 61, 61)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -234,26 +277,21 @@ public class DatosPersonales extends JPanel{
                     .addComponent(labelApellidoPat)
                     .addComponent(labelNombres)
                     .addComponent(labelRol)
-                    .addComponent(labelApellidoMat))
+                    .addComponent(labelApellidoMat)
+                    .addComponent(labelTelefono1))
                 .addGap(34, 34, 34)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(apellidoMat, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(apellidoPat, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(rol)
-                        .addComponent(nombres, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(telefono, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(contraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(apellidoMat, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                    .addComponent(apellidoPat, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                    .addComponent(rol)
+                    .addComponent(nombres, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                    .addComponent(telefono, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                    .addComponent(contraseña, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                    .addComponent(email, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                    .addComponent(clinicas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
                 .addComponent(imagenProfesional)
                 .addGap(239, 239, 239))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(eliminar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(guardar)
-                .addGap(83, 83, 83))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -287,7 +325,11 @@ public class DatosPersonales extends JPanel{
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(telefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelTelefono))
-                .addGap(0, 227, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelTelefono1)
+                    .addComponent(clinicas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 201, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(imagenProfesional)
@@ -357,7 +399,7 @@ public class DatosPersonales extends JPanel{
         String nombreUsuario = this.usuario.getNombreUsuario();
         String contraseña = this.contraseña.getText();
         String telefono = this.telefono.getText();
-        
+        int idClinica = ((Item)this.clinicas.getSelectedItem()).getId();
         boolean aux = validarCamposObligatorios(nombre,apellidoPat,email,contraseña);
         
         if(aux){
@@ -367,6 +409,7 @@ public class DatosPersonales extends JPanel{
                 this.usuario.setApellido_mat(apellidoMat);
                 this.usuario.setContraseña(contraseña);
                 this.usuario.setTelefono(telefono);
+                this.usuario.setId_clinica(idClinica);
                 boolean respuesta = Autenticacion.editarUsuario(usuario);
 
                 if(respuesta){
@@ -528,9 +571,46 @@ public class DatosPersonales extends JPanel{
         }
     }//GEN-LAST:event_telefonoKeyTyped
 
+    private void clinicasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_clinicasItemStateChanged
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_clinicasItemStateChanged
+
+    private void clinicasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clinicasActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_clinicasActionPerformed
+
+    private void telefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_telefonoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_telefonoActionPerformed
+
+    private void clinicasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clinicasMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_clinicasMouseClicked
+
+    private void initClinicas() {
+        ArrayList<ClinicaInterna> clinicas = Autenticacion.listarClinicas();
+        if(clinicas!=null && clinicas.size()>0){
+            Vector model = new Vector();
+            Item item = null;
+            for(ClinicaInterna clinica : clinicas){
+                String name = clinica.getNombre();
+                Item aux = new Item(name,clinica.getId());
+                model.addElement(aux);
+                if(clinica.getId()==this.usuario.getId_clinica())
+                    item = aux;
+            }
+            this.clinicas.setModel(new DefaultComboBoxModel(model));
+            this.clinicas.setSelectedItem(item);
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField apellidoMat;
     private javax.swing.JTextField apellidoPat;
+    private javax.swing.JComboBox clinicas;
     private javax.swing.JPasswordField contraseña;
     private javax.swing.JButton eliminar;
     private javax.swing.JTextField email;
@@ -544,6 +624,7 @@ public class DatosPersonales extends JPanel{
     private javax.swing.JLabel labelNombres;
     private javax.swing.JLabel labelRol;
     private javax.swing.JLabel labelTelefono;
+    private javax.swing.JLabel labelTelefono1;
     private javax.swing.JLabel labelTitulo;
     private javax.swing.JTextField nombres;
     private javax.swing.JPanel panelTitulo;
