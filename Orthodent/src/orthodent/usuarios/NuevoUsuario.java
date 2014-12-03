@@ -48,17 +48,16 @@ public class NuevoUsuario extends javax.swing.JDialog {
 
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        cancelar = new javax.swing.JButton();
         contrasena1 = new javax.swing.JPasswordField();
         jPanel1 = new javax.swing.JPanel();
         admin = new javax.swing.JRadioButton();
-        asistente = new javax.swing.JRadioButton();
+        asistenteAdministrativa = new javax.swing.JRadioButton();
         profesional = new javax.swing.JRadioButton();
+        asistente = new javax.swing.JRadioButton();
         apellidoMat = new javax.swing.JTextField();
         labelApellidoPat = new javax.swing.JLabel();
         email = new javax.swing.JTextField();
         labelApellidoMat = new javax.swing.JLabel();
-        aceptar = new javax.swing.JButton();
         apellidoPat = new javax.swing.JTextField();
         nombres = new javax.swing.JTextField();
         labelContraseña1 = new javax.swing.JLabel();
@@ -70,6 +69,8 @@ public class NuevoUsuario extends javax.swing.JDialog {
         labelContraseña2 = new javax.swing.JLabel();
         titulo = new javax.swing.JLabel();
         camposObligatorios = new javax.swing.JLabel();
+        cancelar = new javax.swing.JButton();
+        aceptar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nuevo Usuario");
@@ -77,14 +78,6 @@ public class NuevoUsuario extends javax.swing.JDialog {
         jPanel2.setBackground(new java.awt.Color(9, 133, 179));
 
         jPanel3.setBackground(new java.awt.Color(9, 133, 179));
-
-        cancelar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        cancelar.setText("Cancelar");
-        cancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelarActionPerformed(evt);
-            }
-        });
 
         contrasena1.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         contrasena1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -108,14 +101,14 @@ public class NuevoUsuario extends javax.swing.JDialog {
             }
         });
 
-        asistente.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        asistente.setForeground(new java.awt.Color(255, 255, 255));
-        asistente.setText("Asistente");
-        asistente.setBorder(null);
-        asistente.setContentAreaFilled(false);
-        asistente.addActionListener(new java.awt.event.ActionListener() {
+        asistenteAdministrativa.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        asistenteAdministrativa.setForeground(new java.awt.Color(255, 255, 255));
+        asistenteAdministrativa.setText("Asistente Administrativa");
+        asistenteAdministrativa.setBorder(null);
+        asistenteAdministrativa.setContentAreaFilled(false);
+        asistenteAdministrativa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                asistenteActionPerformed(evt);
+                asistenteAdministrativaActionPerformed(evt);
             }
         });
 
@@ -130,18 +123,34 @@ public class NuevoUsuario extends javax.swing.JDialog {
             }
         });
 
+        asistente.setBackground(new java.awt.Color(9, 133, 179));
+        asistente.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        asistente.setForeground(new java.awt.Color(255, 255, 255));
+        asistente.setText("Asistente");
+        asistente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                asistenteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addComponent(admin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                .addComponent(asistente)
-                .addGap(29, 29, 29)
-                .addComponent(profesional)
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(asistenteAdministrativa)
+                    .addComponent(admin))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 22, Short.MAX_VALUE)
+                        .addComponent(profesional)
+                        .addContainerGap(28, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(asistente)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,9 +158,12 @@ public class NuevoUsuario extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(admin)
-                    .addComponent(asistente)
                     .addComponent(profesional))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(asistenteAdministrativa)
+                    .addComponent(asistente, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         apellidoMat.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
@@ -175,14 +187,6 @@ public class NuevoUsuario extends javax.swing.JDialog {
         labelApellidoMat.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         labelApellidoMat.setForeground(new java.awt.Color(255, 255, 255));
         labelApellidoMat.setText("Apellido Materno");
-
-        aceptar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        aceptar.setText("Aceptar");
-        aceptar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aceptarActionPerformed(evt);
-            }
-        });
 
         apellidoPat.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         apellidoPat.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -278,12 +282,7 @@ public class NuevoUsuario extends javax.swing.JDialog {
                             .addComponent(contrasena1)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                .addComponent(cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(camposObligatorios, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addComponent(camposObligatorios)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -322,13 +321,25 @@ public class NuevoUsuario extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(camposObligatorios)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(aceptar)
-                    .addComponent(cancelar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
+
+        cancelar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        cancelar.setText("Cancelar");
+        cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarActionPerformed(evt);
+            }
+        });
+
+        aceptar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        aceptar.setText("Aceptar");
+        aceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aceptarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -337,14 +348,24 @@ public class NuevoUsuario extends javax.swing.JDialog {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(aceptar)
+                    .addComponent(cancelar))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -355,7 +376,9 @@ public class NuevoUsuario extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -363,19 +386,19 @@ public class NuevoUsuario extends javax.swing.JDialog {
 
     private void adminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminActionPerformed
         this.admin.setSelected(true);
-        this.asistente.setSelected(false);
+        this.asistenteAdministrativa.setSelected(false);
         this.profesional.setSelected(false);
     }//GEN-LAST:event_adminActionPerformed
 
-    private void asistenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asistenteActionPerformed
+    private void asistenteAdministrativaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asistenteAdministrativaActionPerformed
         this.admin.setSelected(false);
-        this.asistente.setSelected(true);
+        this.asistenteAdministrativa.setSelected(true);
         this.profesional.setSelected(false);
-    }//GEN-LAST:event_asistenteActionPerformed
+    }//GEN-LAST:event_asistenteAdministrativaActionPerformed
 
     private void profesionalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profesionalActionPerformed
         this.admin.setSelected(false);
-        this.asistente.setSelected(false);
+        this.asistenteAdministrativa.setSelected(false);
         this.profesional.setSelected(true);
     }//GEN-LAST:event_profesionalActionPerformed
 
@@ -390,11 +413,14 @@ public class NuevoUsuario extends javax.swing.JDialog {
         if(this.admin.isSelected()){
             idRol = 1;
         }
-        else if(this.asistente.isSelected()){
+        else if(this.asistenteAdministrativa.isSelected()){
             idRol = 2;
         }
-        else{
+        else if(this.profesional.isSelected()){
             idRol = 3;
+        }
+        else{
+            idRol = 4;
         }
         
         String nombre = this.nombres.getText();
@@ -539,6 +565,10 @@ public class NuevoUsuario extends javax.swing.JDialog {
             evt.consume();
         }
     }//GEN-LAST:event_telefonoKeyTyped
+
+    private void asistenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asistenteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_asistenteActionPerformed
     
     private boolean validarCamposObligatorios(String nombre, String apellidoPat, String email, String contraseña1, String contraseña2){
         
@@ -571,6 +601,7 @@ public class NuevoUsuario extends javax.swing.JDialog {
     private javax.swing.JTextField apellidoMat;
     private javax.swing.JTextField apellidoPat;
     private javax.swing.JRadioButton asistente;
+    private javax.swing.JRadioButton asistenteAdministrativa;
     private javax.swing.JLabel camposObligatorios;
     private javax.swing.JButton cancelar;
     private javax.swing.JPasswordField contrasena1;

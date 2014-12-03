@@ -132,6 +132,11 @@ public class Usuarios extends JPanel implements ActionListener{
                 }
             }
         });
+        
+        Usuario actual = ((JVentana)getTopLevelAncestor()).getUsuario();
+        if(actual.getId_rol()==1 || actual.getId_rol()==2){
+            
+        }
     }
     
     private Object[] getRowAt(int row) {
