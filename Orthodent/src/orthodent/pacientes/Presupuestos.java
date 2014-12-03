@@ -58,7 +58,7 @@ public class Presupuestos extends JPanel{
     private DefaultTableModel modeloPiezaTratamiento;
     private String [] columnasNombreLaboratorio;
     private Object [][] filasLaboratorio;
-    private TableModel modeloLaboratorio;
+    private DefaultTableModel modeloLaboratorio;
     private String profesionalSelected;
     private String estadoSelected;
     private Presupuesto presupuestoSelected;
@@ -214,6 +214,19 @@ public class Presupuestos extends JPanel{
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
                 if (me.getClickCount() == 1) {
+                    
+                    int total = 0;
+                    for(int i=0; i<modeloLaboratorio.getRowCount(); i++){
+                        Object valor = modeloLaboratorio.getValueAt(i, 2);
+                        Integer lalala = 0;
+                        if(valor instanceof Integer){
+                            lalala = (Integer)valor;
+                            
+                        }
+                        total = total + lalala;
+                    }
+                    costoTotalLaboratorio.setText("$"+total);
+                    
                     int col = table.columnAtPoint(p);
                     if(col==1){
                         rowSelectedLaboratorio = row;
@@ -243,10 +256,10 @@ public class Presupuestos extends JPanel{
         
         this.modeloLaboratorio = new DefaultTableModel(this.filasLaboratorio, this.columnasNombreLaboratorio) {
             Class[] types = new Class [] {
-                Item.class, String.class, String.class
+                Integer.class, String.class, Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -727,7 +740,7 @@ public class Presupuestos extends JPanel{
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1068,7 +1081,7 @@ public class Presupuestos extends JPanel{
                                 if(resp2){
                                     for(int i=0; i<this.tablaLaboratorio.getRowCount(); i++){ //recorro las filas
                                         
-                                        int pieza = Integer.parseInt(((Item)this.tablaLaboratorio.getValueAt(i, 0)).getValue());
+                                        int pieza = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 0));
                                         String prestacion = (String)this.tablaLaboratorio.getValueAt(i, 1);
                                         int valor = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 2));
                                         LaboratorioPiezaPresupuestoDB.crearLaboratorioPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto(), pieza, prestacion, valor);
@@ -1491,11 +1504,27 @@ public class Presupuestos extends JPanel{
     }//GEN-LAST:event_costoTotalLaboratorioActionPerformed
 
     private void addLabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addLabActionPerformed
-        // TODO add your handling code here:
+        this.modeloLaboratorio.addRow(new Object []{"","",""});
+        this.habilitarBoton();
     }//GEN-LAST:event_addLabActionPerformed
 
     private void removeLabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeLabActionPerformed
-        // TODO add your handling code here:
+        int SelectedRow = this.tablaLaboratorio.getSelectedRow();
+        this.modeloLaboratorio.removeRow(this.tablaLaboratorio.convertRowIndexToModel(SelectedRow));
+        
+        int total = 0;
+        for(int i=0; i<modeloLaboratorio.getRowCount(); i++){
+            String valor = (String) modeloLaboratorio.getValueAt(i, 2);
+            if(!valor.equals("")){
+                if(valor.contains("$")){
+                    valor = valor.substring(valor.indexOf("$")+1, valor.length());
+                }
+                int precio = Integer.parseInt(valor);
+                total = total + precio;
+            }
+        }
+        costoTotalLaboratorio.setText("$"+total);
+        habilitarBoton();
     }//GEN-LAST:event_removeLabActionPerformed
     
     private void habilitarBoton(){
