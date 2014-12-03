@@ -17,15 +17,15 @@ import modelo.Presupuesto;
  */
 public class PresupuestoDB {
     
-    public static boolean crearPresupuesto(int idPaciente, int idProfesional, boolean estado, int costoTotal, int cantidadTratamiento, boolean activo, String created_at, String update_at){
+    public static boolean crearPresupuesto(int idPaciente, int idProfesional, boolean estado, int costoTotal, int cantidadTratamiento, int costoLab, boolean activo, String created_at, String update_at){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
             
             java.sql.Statement st = con.createStatement();
-            int aux = st.executeUpdate("INSERT INTO presupuesto (id_paciente, id_profesional, estado, costo_total, cantidad_tratamiento, activo, created_at, update_at)\n" +
+            int aux = st.executeUpdate("INSERT INTO presupuesto (id_paciente, id_profesional, estado, costo_total, cantidad_tratamiento, costo_lab, activo, created_at, update_at)\n" +
                                         "VALUES ("+idPaciente+","+idProfesional+","+estado+","+costoTotal+","+
-                                                    cantidadTratamiento+","+activo+","+
+                                                    cantidadTratamiento+","+costoLab+","+activo+","+
                                                     "'"+getTimestamp(created_at)+"','"+getTimestamp(update_at)+"')");
             boolean resultado = (aux == 1)? true : false;
             st.close();
@@ -47,6 +47,7 @@ public class PresupuestoDB {
                                             "SET estado="+presupuesto.getEstado()+"\n" +
                                             ",costo_total="+presupuesto.getCostoTotal()+"\n" +
                                             ",cantidad_tratamiento="+presupuesto.getCantidadTratamiento()+"\n" +
+                                            ",costo_lab="+presupuesto.getCostoLab()+"\n" +
                                             ",update_at='"+getTimestamp(presupuesto.getFechaModificacion())+"'\n" +
                                             ",id_profesional="+presupuesto.getIdProfesional()+"\n"+
                                             "WHERE id_presupuesto="+presupuesto.getIdPresupuesto());
@@ -134,6 +135,7 @@ public class PresupuestoDB {
             {
                 Presupuesto p = new Presupuesto(rs.getInt("id_presupuesto"), rs.getInt("id_paciente"), rs.getInt("id_profesional"),
                                                 rs.getBoolean("estado"), rs.getInt("costo_total"), rs.getInt("cantidad_tratamiento"),
+                                                rs.getInt("costo_lab"),
                                                 rs.getBoolean("activo"), PresupuestoDB.convertTimestampToString(rs.getTimestamp("created_at")),
                                                 PresupuestoDB.convertTimestampToString(rs.getTimestamp("update_at")));
                 presupuestos.add(p);
@@ -164,6 +166,7 @@ public class PresupuestoDB {
             {
                 Presupuesto p = new Presupuesto(rs.getInt("id_presupuesto"), rs.getInt("id_paciente"), rs.getInt("id_profesional"),
                                                 rs.getBoolean("estado"), rs.getInt("costo_total"), rs.getInt("cantidad_tratamiento"),
+                                                rs.getInt("costo_lab"),
                                                 rs.getBoolean("activo"), PresupuestoDB.convertTimestampToString(rs.getTimestamp("created_at")),
                                                 PresupuestoDB.convertTimestampToString(rs.getTimestamp("update_at")));
                 presupuestos.add(p);
@@ -192,6 +195,7 @@ public class PresupuestoDB {
             {
                 Presupuesto p = new Presupuesto(rs.getInt("id_presupuesto"), rs.getInt("id_paciente"), rs.getInt("id_profesional"),
                                                 rs.getBoolean("estado"), rs.getInt("costo_total"), rs.getInt("cantidad_tratamiento"),
+                                                rs.getInt("costo_lab"),
                                                 rs.getBoolean("activo"), PresupuestoDB.convertTimestampToString(rs.getTimestamp("created_at")),
                                                 PresupuestoDB.convertTimestampToString(rs.getTimestamp("update_at")));
                 presupuestos.add(p);
@@ -276,10 +280,11 @@ public class PresupuestoDB {
                 boolean estado = rs.getBoolean("estado");
                 int costoTotal = rs.getInt("costo_total");
                 int cantidadTratamiento = rs.getInt("cantidad_tratamiento");
+                int costoLab = rs.getInt("costo_lab");
                 boolean activo = rs.getBoolean("activo");
                 String fechaModificacion = PresupuestoDB.convertTimestampToString(rs.getTimestamp("update_at"));
 
-                presupuesto = new Presupuesto(idPresupuesto, idPaciente, idProfesional, estado, costoTotal, cantidadTratamiento, activo, fechaCreacion, fechaModificacion);
+                presupuesto = new Presupuesto(idPresupuesto, idPaciente, idProfesional, estado, costoTotal, cantidadTratamiento, costoLab, activo, fechaCreacion, fechaModificacion);
             }
             else{
                 presupuesto = null;

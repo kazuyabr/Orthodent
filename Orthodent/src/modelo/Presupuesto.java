@@ -16,29 +16,32 @@ public class Presupuesto {
     private boolean estado;
     private int costoTotal;
     private int cantidadTratamiento;
+    private int costoLab;
     private String fechaCreacion;
     private String fechaModificacion;
     private boolean activo;
     
-    public Presupuesto(int idPresupuesto, int idPaciente, int idProfesional, boolean estado, int costoTotal, int cantidadTratamiento, boolean activo, String fechaCreacion, String fechaModificacion) {
+    public Presupuesto(int idPresupuesto, int idPaciente, int idProfesional, boolean estado, int costoTotal, int cantidadTratamiento, int costoLab, boolean activo, String fechaCreacion, String fechaModificacion) {
         this.idPresupuesto = idPresupuesto;
         this.idPaciente = idPaciente;
         this.idProfesional = idProfesional;
         this.estado = estado;
         this.costoTotal = costoTotal;
         this.cantidadTratamiento = cantidadTratamiento;
+        this.costoLab = costoLab;
         this.activo = activo;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
     }    
     
-    public Presupuesto(int idPresupuesto, int idPaciente, int idProfesional, boolean estado, int costoTotal, int cantidadTratamiento, boolean activo, String fechaCreacion) {
+    public Presupuesto(int idPresupuesto, int idPaciente, int idProfesional, boolean estado, int costoTotal, int cantidadTratamiento, int costoLab, boolean activo, String fechaCreacion) {
         this.idPresupuesto = idPresupuesto;
         this.idPaciente = idPaciente;
         this.idProfesional = idProfesional;
         this.estado = estado;
         this.costoTotal = costoTotal;
         this.cantidadTratamiento = cantidadTratamiento;
+        this.costoLab = costoLab;
         this.activo = activo;
         this.fechaCreacion = fechaCreacion;
     } 
@@ -113,5 +116,13 @@ public class Presupuesto {
 
     public void setFechaModificacion(String fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
+    }
+
+    public int getCostoLab() {
+        return costoLab;
+    }
+
+    public void setCostoLab(int costoLab) {
+        this.costoLab = costoLab;
     }
 }
