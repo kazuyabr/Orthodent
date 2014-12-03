@@ -247,10 +247,10 @@ public class Presupuestos extends JPanel{
         
         ArrayList<Object []> objetos = new ArrayList<Object []>();
         
-        this.filasLaboratorio = new Object [laboratorios.size()][m];
+        this.filasPresupuesto = new Object [laboratorios.size()][m];
         int i = 0;
         for(LaboratorioPiezaPresupuesto labs : laboratorios){
-            this.filasLaboratorio[i] = new Object[]{new Item(labs.getPieza()+"", labs.getId()),labs.getPrestacion(), "$"+labs.getValor()};
+            this.filasPresupuesto[i] = new Object[]{new Item(labs.getPieza()+"", labs.getId()),labs.getPrestacion(), "$"+labs.getValor()};
             i++;
         }
         
