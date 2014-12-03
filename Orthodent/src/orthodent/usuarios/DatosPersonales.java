@@ -25,18 +25,22 @@ public class DatosPersonales extends JPanel{
 
     private Usuario usuario;
     private boolean cambios;
+    private boolean cambioContraseña;
     
     public DatosPersonales(Usuario usuario) {
         initComponents();
         
         this.usuario = usuario;
         this.cambios = false;
-        
+        this.cambioContraseña=false;
         this.addInfo();
         this.guardar.setEnabled(false);
         this.guardar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.eliminar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.initClinicas();
+        if(usuario.getId_rol()==1 || usuario.getId_rol()==2){
+            this.clinicas.setEnabled(false);
+        }
         this.clinicas.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 habilitarBoton();
@@ -399,7 +403,9 @@ public class DatosPersonales extends JPanel{
         String nombreUsuario = this.usuario.getNombreUsuario();
         String contraseña = this.contraseña.getText();
         String telefono = this.telefono.getText();
-        int idClinica = ((Item)this.clinicas.getSelectedItem()).getId();
+        int idClinica = 0;
+        if(usuario.getId_rol()==3 || usuario.getId_rol()==4)
+            idClinica = ((Item)this.clinicas.getSelectedItem()).getId();
         boolean aux = validarCamposObligatorios(nombre,apellidoPat,email,contraseña);
         
         if(aux){
@@ -407,10 +413,11 @@ public class DatosPersonales extends JPanel{
                 this.usuario.setNombre(nombre);
                 this.usuario.setApellido_pat(apellidoPat);
                 this.usuario.setApellido_mat(apellidoMat);
-                this.usuario.setContraseña(contraseña);
+                if(this.cambioContraseña)
+                    this.usuario.setContraseña(contraseña);
                 this.usuario.setTelefono(telefono);
                 this.usuario.setId_clinica(idClinica);
-                boolean respuesta = Autenticacion.editarUsuario(usuario);
+                boolean respuesta = Autenticacion.editarUsuario(usuario, this.cambioContraseña);
 
                 if(respuesta){
                     
@@ -443,10 +450,6 @@ public class DatosPersonales extends JPanel{
         }
         
         if(email.equals("")){
-            return false;
-        }
-        
-        if(contraseña1.equals("")){
             return false;
         }
         
@@ -558,6 +561,7 @@ public class DatosPersonales extends JPanel{
         }
         else{
             this.habilitarBoton();
+            this.cambioContraseña=true;
         }
     }//GEN-LAST:event_contraseñaKeyTyped
 

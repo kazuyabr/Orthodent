@@ -51,7 +51,6 @@ public class AgendaDB {
             ResultSet rs = st.getGeneratedKeys();
             
             while(rs.next()){
-                System.out.println(rs.getObject(1).toString());
                 cita.setId(Integer.parseInt(rs.getObject(1).toString()));
             }
             

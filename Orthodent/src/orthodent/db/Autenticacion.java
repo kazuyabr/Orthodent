@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.Paciente;
 import modelo.Usuario;
 import orthodent.usuarios.ClinicaInterna;
@@ -140,6 +142,33 @@ public class Autenticacion {
             java.sql.Statement st = con.createStatement();
             
             ResultSet rs = st.executeQuery("SELECT * FROM usuario");
+            usuarios = new ArrayList<Usuario>();
+            while (rs.next())
+            {
+                Usuario u = new Usuario(rs.getInt("id_usuario"), rs.getInt("id_rol"), rs.getString("nombre"),
+                        rs.getString("apellido_pat"), rs.getString("apellido_mat"), rs.getString("nombre_usuario"),
+                        rs.getString("contrasena"), rs.getString("email"), rs.getString("telefono"),
+                        rs.getString("especialidad"),rs.getInt("tiempo_cita"), rs.getBoolean("activo"), rs.getInt("id_clinica"));
+                usuarios.add(u);
+            }
+            rs.close();
+            con.close();
+            return usuarios;
+        }
+        catch ( SQLException e) {
+            return null;
+        }
+    }
+    
+    public static ArrayList<Usuario> listarUsuarios(int id_clinica){
+        ArrayList<Usuario> usuarios = null;        
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE id_clinica="+id_clinica);
             usuarios = new ArrayList<Usuario>();
             while (rs.next())
             {
@@ -326,20 +355,34 @@ public class Autenticacion {
         }
     }
     
-    public static boolean editarUsuario(Usuario usuario) throws Exception{
+    public static boolean editarUsuario(Usuario usuario, boolean cambioContraseña) throws Exception{
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
             
             java.sql.Statement st = con.createStatement();
-            
-            int aux = st.executeUpdate("UPDATE usuario\n" +
+            int aux;
+            if(cambioContraseña)
+                aux = st.executeUpdate("UPDATE usuario\n" +
                     "SET id_rol="+usuario.getId_rol()+"\n" +
                     ",nombre='"+usuario.getNombre()+"'\n" +
                     ",apellido_pat='"+usuario.getApellido_pat()+"'\n" +
                     ",apellido_mat='"+usuario.getApellido_mat()+"'\n" +
                     ",nombre_usuario='"+usuario.getNombreUsuario()+"'\n" +
                     ",contrasena='"+encripMd5(usuario.getContraseña())+"'\n" +
+                    ",email='"+usuario.getEmail()+"'\n" +
+                    ",telefono='"+usuario.getTelefono()+"'\n" +
+                    ",especialidad='"+usuario.getEspecialidad()+"'\n" +
+                    ",tiempo_cita="+usuario.getTiempoCita()+"\n" +
+                    ",id_clinica="+usuario.getId_clinica()+"\n" +
+                    "WHERE id_usuario="+usuario.getId_usuario());
+            else
+                aux = st.executeUpdate("UPDATE usuario\n" +
+                    "SET id_rol="+usuario.getId_rol()+"\n" +
+                    ",nombre='"+usuario.getNombre()+"'\n" +
+                    ",apellido_pat='"+usuario.getApellido_pat()+"'\n" +
+                    ",apellido_mat='"+usuario.getApellido_mat()+"'\n" +
+                    ",nombre_usuario='"+usuario.getNombreUsuario()+"'\n" +
                     ",email='"+usuario.getEmail()+"'\n" +
                     ",telefono='"+usuario.getTelefono()+"'\n" +
                     ",especialidad='"+usuario.getEspecialidad()+"'\n" +
@@ -454,6 +497,94 @@ public class Autenticacion {
         catch ( SQLException e) {
             return null;
         }
+    }
+    
+    public static boolean crearClinica(ClinicaInterna clinica){    
+        boolean resultado = false;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            int aux = st.executeUpdate("INSERT INTO clinica (nombre) VALUES ('"+clinica.getNombre()+"')");
+            ResultSet rs = st.getGeneratedKeys();
+            if(rs!=null){
+                while(rs.next()){
+                    clinica.setId(Integer.parseInt(rs.getObject(1).toString()));
+                }
+            }
+            
+            resultado = (aux==1) ? true : false;
+            st.close();
+            con.close();
+            return resultado;
+        }
+        catch ( SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public static boolean eliminarClinica(ClinicaInterna clinica){
+        boolean resultado = false;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            
+            java.sql.Statement st = con.createStatement();
+            
+            int aux = st.executeUpdate("DELETE FROM clinica WHERE id="+clinica.getId());
+            resultado = (aux == 1)? true : false;
+        } catch (SQLException ex) {
+            return false;
+        }
+        return resultado;
+    }
+    
+    public static boolean actualizarClinica(ClinicaInterna clinica){
+        boolean resultado = false;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            
+            java.sql.Statement st = con.createStatement();
+            
+            int aux = st.executeUpdate("UPDATE clinica SET nombre='"+clinica.getNombre()+"' WHERE id="+clinica.getId());
+            resultado = (aux == 1)? true : false;
+        } catch (SQLException ex) {
+            return false;
+        }
+        return resultado;
+    }
+    
+    public static ClinicaInterna getClinica(String nombre)throws Exception{
+        ClinicaInterna clinica = null;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * from clinica where nombre='" + nombre + "'");
+            if (rs.next()){
+               
+                String nombreClinica = rs.getString("nombre");
+                int id = rs.getInt("id");
+                
+                clinica = new ClinicaInterna(nombreClinica,id);
+            }
+            else{
+                clinica = null;
+            }
+            rs.close();
+            con.close();
+            return clinica;
+        }
+        catch ( SQLException e) {
+            return null;
+        }
+        
     }
     
 }

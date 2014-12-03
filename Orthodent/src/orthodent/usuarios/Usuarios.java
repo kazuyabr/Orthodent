@@ -37,9 +37,11 @@ public class Usuarios extends JPanel implements ActionListener{
     private String [] columnasNombre;
     private String [] columnasNombreClinicas;
     private MostrarInfoTratamiento infoUsuario;
+    private DatosClinica infoClinica;
     private JPanel contenedorListarUsuarios;
     private JPanel contenedorListarClinicas;
     private boolean isListarUsuarios;
+    private boolean mostrandoClinica;
     
     public Usuarios(){
         this.setBackground(new Color(243,242,243));
@@ -50,6 +52,7 @@ public class Usuarios extends JPanel implements ActionListener{
         this.isListarUsuarios = true;
         this.initComponents();
         this.addComponents();
+        this.mostrandoClinica = false;
         this.botonBuscar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.nuevoUsuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
@@ -155,6 +158,16 @@ public class Usuarios extends JPanel implements ActionListener{
         return result;
     }
     
+    private Object[] getRowAtClinicas(int row) {
+        Object[] result = new String[this.columnasNombreClinicas.length];
+        
+        for (int i = 0; i < this.columnasNombreClinicas.length; i++) {
+            result[i] = this.tablaClinicas.getModel().getValueAt(row, i);
+        }
+        
+        return result;
+    }
+    
     public void updateModelo(){
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
         ArrayList<Usuario> usuarios = Autenticacion.listarUsuarios();
@@ -207,6 +220,18 @@ public class Usuarios extends JPanel implements ActionListener{
             this.add(this.contenedorListarUsuarios, BorderLayout.CENTER);
             this.add(this.contenedorListarClinicas, BorderLayout.SOUTH);
             this.isListarUsuarios = true;
+            this.updateModelo();
+            this.updateUI();
+        }
+    }
+    
+    public void VolverUsuariosDesdeClinica(){
+        if(!this.isListarUsuarios){
+            this.remove(this.infoClinica);
+            this.add(this.contenedorListarUsuarios, BorderLayout.CENTER);
+            this.add(this.contenedorListarClinicas, BorderLayout.SOUTH);
+            this.isListarUsuarios = true;
+            this.mostrandoClinica = false;
             this.updateModelo();
             this.updateUI();
         }
@@ -286,6 +311,9 @@ public class Usuarios extends JPanel implements ActionListener{
         
         if(e.getSource() == this.botonBuscar){
             this.buscar();
+        }
+        if(e.getSource() == this.nuevaClinica){
+            new NuevaClinica(((JVentana)this.getTopLevelAncestor()),true).setVisible(true);
         }
     }
     
@@ -393,6 +421,33 @@ public class Usuarios extends JPanel implements ActionListener{
         this.updateModeloClinica();
         this.tablaClinicas.getTableHeader().setReorderingAllowed(false);
         
+        this.tablaClinicas.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                JTable table2 =(JTable) me.getSource();
+                Point p = me.getPoint();
+                int row = table2.rowAtPoint(p);
+                if (me.getClickCount() == 2) {
+                    Object [] fila = getRowAtClinicas(row);
+                    try {
+                        ClinicaInterna clinica = Autenticacion.getClinica((String)fila[0]);
+                        System.out.println(fila[0]);
+                        if(clinica!=null){
+                            
+                            infoClinica = new DatosClinica(clinica);
+                            
+                            remove(contenedorListarUsuarios);
+                            remove(contenedorListarClinicas);
+                            add(infoClinica, BorderLayout.CENTER);
+                            mostrandoClinica = true;
+                            isListarUsuarios = false;
+                            updateUI();
+                        }
+                    } catch (Exception ex) {
+                    }
+                }
+            }
+        });
+        
     }
 
     private void updateModeloClinica() {
@@ -494,5 +549,19 @@ public class Usuarios extends JPanel implements ActionListener{
                 .addContainerGap(13, Short.MAX_VALUE))
         );*/
     }
+
+    public boolean isMostrandoClinica() {
+        return mostrandoClinica;
+    }
+
+    public void setMostrandoClinica(boolean mostrandoClinica) {
+        this.mostrandoClinica = mostrandoClinica;
+    }
+
+    void actualizarClinicas() {
+        this.updateModeloClinica();
+    }
+    
+    
     
 }

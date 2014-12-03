@@ -368,13 +368,18 @@ public class PanelOpciones extends JPanel implements ActionListener{
                         }
                     }
                     else{
+                        
                         ((JVentana)this.getTopLevelAncestor()).cambiarUsuarios();
+                        
                     }
                 }
                 else{
                     boolean aux = ((JVentana)this.getTopLevelAncestor()).getUsuarios().isIsListarUsuarios();
-
-                    if(aux){
+                    boolean queHace = ((JVentana)this.getTopLevelAncestor()).getUsuarios().isMostrandoClinica();
+                    if(queHace){
+                        ((JVentana)this.getTopLevelAncestor()).getUsuarios().VolverUsuariosDesdeClinica();
+                    }
+                    else if(aux){
                         ((JVentana)this.getTopLevelAncestor()).cambiarUsuarios();
                     }
                     else{
@@ -383,6 +388,7 @@ public class PanelOpciones extends JPanel implements ActionListener{
                     }
                 }
             } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
         if (e.getSource() == this.historial){
@@ -431,8 +437,8 @@ public class PanelOpciones extends JPanel implements ActionListener{
         }
         if(opVentana==4){//Revisar cambios en usuarios
             boolean aux = ((JVentana)this.getTopLevelAncestor()).getUsuarios().isIsListarUsuarios();
-
-            if(!aux){
+            boolean queHace = ((JVentana)this.getTopLevelAncestor()).getUsuarios().isMostrandoClinica();
+            if(!aux && !queHace){
                 MostrarInfoTratamiento infoUsuario = ((JVentana)this.getTopLevelAncestor()).getUsuarios().getInfoUsuario();
                 infoUsuario.guardarAntes();
             }

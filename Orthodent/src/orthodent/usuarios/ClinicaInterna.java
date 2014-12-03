@@ -19,6 +19,10 @@ public class ClinicaInterna {
         this.id = id;
     }
 
+    public ClinicaInterna(String nombre) {
+        this.nombre = nombre;
+    }
+    
     public String getNombre() {
         return nombre;
     }
