@@ -72,6 +72,9 @@ public class Agenda extends JPanel{
     
     private void handleAddAppointment(@Nullable Resource resource, @NotNull DateTime dateTime) {
         
+        if(this.usuarioActual.getId_rol()==3 || this.usuarioActual.getId_rol()==4) return;
+        
+        
         int semana = obtenerSemana(dateTime.toDate());
         Cita clickeada = null;
         boolean esta = false;
