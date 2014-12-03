@@ -215,7 +215,7 @@ public class DatosProfesional extends JPanel{
             try {
                 this.usuario.setEspecialidad(especialidad);
                 this.usuario.setTiempoCita(Integer.parseInt(tiempoCita));
-                boolean respuesta = Autenticacion.editarUsuario(usuario);
+                boolean respuesta = Autenticacion.editarUsuario(usuario,false);
 
                 if(respuesta){
                     this.cambios = false;

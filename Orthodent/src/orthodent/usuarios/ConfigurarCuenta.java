@@ -21,12 +21,14 @@ public class ConfigurarCuenta extends JPanel{
 
     private Usuario usuario;
     private boolean cambios;
+    private boolean cambioContraseña;
     
     public ConfigurarCuenta(Usuario usuario) {
         initComponents();
         
         this.usuario = usuario;
         this.cambios = false;
+        this.cambioContraseña = false;
         
         this.addInfo();
         this.guardar.setEnabled(false);
@@ -317,16 +319,17 @@ public class ConfigurarCuenta extends JPanel{
         String contraseña = this.contraseña.getText();
         String telefono = this.telefono.getText();
         
-        boolean aux = validarCamposObligatorios(nombre,apellidoPat,email,contraseña);
+        boolean aux = validarCamposObligatorios(nombre,apellidoPat,email);
         
         if(aux){
             try {
                 this.usuario.setNombre(nombre);
                 this.usuario.setApellido_pat(apellidoPat);
                 this.usuario.setApellido_mat(apellidoMat);
-                this.usuario.setContraseña(contraseña);
+                if(this.cambioContraseña)
+                    this.usuario.setContraseña(contraseña);
                 this.usuario.setTelefono(telefono);
-                boolean respuesta = Autenticacion.editarUsuario(usuario);
+                boolean respuesta = Autenticacion.editarUsuario(usuario,this.cambioContraseña);
 
                 if(respuesta){
                     this.cambios = false;
@@ -343,7 +346,7 @@ public class ConfigurarCuenta extends JPanel{
         }
     }//GEN-LAST:event_guardarActionPerformed
     
-    private boolean validarCamposObligatorios(String nombre, String apellidoPat, String email, String contraseña1){
+    private boolean validarCamposObligatorios(String nombre, String apellidoPat, String email){
         
         if(nombre.equals("")){
             return false;
@@ -357,9 +360,6 @@ public class ConfigurarCuenta extends JPanel{
             return false;
         }
         
-        if(contraseña1.equals("")){
-            return false;
-        }
         
         return true;
     }
