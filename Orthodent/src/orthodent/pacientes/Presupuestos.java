@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -216,20 +214,17 @@ public class Presupuestos extends JPanel{
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
                 if (me.getClickCount() == 1) {
+                    
                     int total = 0;
                     for(int i=0; i<modeloLaboratorio.getRowCount(); i++){
                         Object valor = modeloLaboratorio.getValueAt(i, 2);
                         Integer lalala = 0;
-                        if(valor instanceof String){
-                            try{
-                                lalala = Integer.parseInt((String)valor);
-                            }
-                            catch(Exception e){
-                            }
+                        if(valor instanceof Integer){
+                            lalala = (Integer)valor;
+                            
                         }
                         total = total + lalala;
                     }
-                    
                     costoTotalLaboratorio.setText("$"+total);
                     
                     int col = table.columnAtPoint(p);
@@ -246,26 +241,22 @@ public class Presupuestos extends JPanel{
     
     public void updateTablaLaboratorio() throws Exception{
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
-        ArrayList<LaboratorioPiezaPresupuesto> laboratorios = new ArrayList<LaboratorioPiezaPresupuesto>();
-        
-        if(!this.nuevoPresupuestoSel){
-            laboratorios = LaboratorioPiezaPresupuestoDB.listarLaboratoriosPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto());
-        }
+        ArrayList<LaboratorioPiezaPresupuesto> laboratorios = LaboratorioPiezaPresupuestoDB.listarLaboratoriosPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto());
         
         int m = this.columnasNombreLaboratorio.length;
         
         ArrayList<Object []> objetos = new ArrayList<Object []>();
         
-        this.filasLaboratorio = new Object [laboratorios.size()][m];
+        this.filasPresupuesto = new Object [laboratorios.size()][m];
         int i = 0;
         for(LaboratorioPiezaPresupuesto labs : laboratorios){
-            this.filasLaboratorio[i] = new Object[]{labs.getPieza()+"",labs.getPrestacion(), labs.getValor()+""};
+            this.filasPresupuesto[i] = new Object[]{new Item(labs.getPieza()+"", labs.getId()),labs.getPrestacion(), "$"+labs.getValor()};
             i++;
         }
         
         this.modeloLaboratorio = new DefaultTableModel(this.filasLaboratorio, this.columnasNombreLaboratorio) {
             Class[] types = new Class [] {
-                String.class, String.class, String.class
+                Integer.class, String.class, Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 true, true, true
@@ -385,7 +376,7 @@ public class Presupuestos extends JPanel{
                                 }
                             }
                             
-                            costoTotal.setText("$"+(presupuestoSelected.getCostoTotal()));
+                            costoTotal.setText("$"+presupuestoSelected.getCostoTotal());
                             
                             estado.setModel(new DefaultComboBoxModel(new String [] {"Activo","Cancelado"}));
                             estado.setEnabled(true);
@@ -458,7 +449,7 @@ public class Presupuestos extends JPanel{
                 
                 String estado = "";
                 
-                String costoTotal = this.getMoneda(presupuesto.getCostoTotal()+presupuesto.getCostoLab());
+                String costoTotal = this.getMoneda(presupuesto.getCostoTotal());
                 
                 if(presupuesto.getEstado()){
                     estado = "Activo";
@@ -749,14 +740,13 @@ public class Presupuestos extends JPanel{
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        tablaLaboratorio.setEnabled(false);
         jScrollPane3.setViewportView(tablaLaboratorio);
 
         costoTotalLaboratorio.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
@@ -1070,45 +1060,10 @@ public class Presupuestos extends JPanel{
                     }
                 }
                 
-                for(int i=0; i<this.tablaLaboratorio.getRowCount(); i++){ //recorro las filas
-                    try {
-                        int pieza = Integer.parseInt((String) this.tablaLaboratorio.getValueAt(i, 0));
-                        
-                        String a = (String)this.tablaLaboratorio.getValueAt(i, 1);
-                        
-                        if(a.equals("")){
-                            JOptionPane.showMessageDialog(this,
-                                "Hay cambios en la tabla sin completar!",
-                                "Orthodent",
-                                JOptionPane.INFORMATION_MESSAGE);
-                            error = true;
-                            break;
-                        }
-                        
-                        try{
-                            int val = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 2));
-                        }
-                        catch(Exception e){
-                            JOptionPane.showMessageDialog(this,
-                                "Hay cambios en la tabla sin completar!",
-                                "Orthodent",
-                                JOptionPane.INFORMATION_MESSAGE);
-                            error = true;
-                            break;
-                        }
-                    } catch (Exception e) {
-                        JOptionPane.showMessageDialog(this,
-                            "Hay cambios en la tabla sin completar!",
-                            "Orthodent",
-                            JOptionPane.INFORMATION_MESSAGE);
-                        error = true;
-                        break;
-                    }
-                }
-                
                 if(!error){
                     try {
                         boolean resp = TratamientoPiezaPresupuestoDB.eliminarTratamientoPieza(presupuestoSelected.getIdPresupuesto());
+
                         if(resp){
                             for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
                                 int pieza = Integer.parseInt((String)this.tablaPiezaTratamiento.getValueAt(i, 0));
@@ -1125,13 +1080,14 @@ public class Presupuestos extends JPanel{
                                 boolean resp2 = LaboratorioPiezaPresupuestoDB.eliminarLaboratorioPieza(presupuestoSelected.getIdPresupuesto());
                                 if(resp2){
                                     for(int i=0; i<this.tablaLaboratorio.getRowCount(); i++){ //recorro las filas
+                                        
                                         int pieza = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 0));
                                         String prestacion = (String)this.tablaLaboratorio.getValueAt(i, 1);
                                         int valor = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 2));
                                         LaboratorioPiezaPresupuestoDB.crearLaboratorioPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto(), pieza, prestacion, valor);
                                     }
                                     try {
-                                        this.updateTablaPresupuestos();
+                                        this.updateTablaLaboratorio();
                                     } catch (Exception ex) {
                                     }
                                 }
@@ -1208,42 +1164,6 @@ public class Presupuestos extends JPanel{
                     }
                 }
                 
-                for(int i=0; i<this.tablaLaboratorio.getRowCount(); i++){ //recorro las filas
-                    try {
-                        int pieza = Integer.parseInt((String) this.tablaLaboratorio.getValueAt(i, 0));
-                        
-                        String a = (String)this.tablaLaboratorio.getValueAt(i, 1);
-                        
-                        if(a.equals("")){
-                            JOptionPane.showMessageDialog(this,
-                                "Hay cambios en la tabla sin completar!",
-                                "Orthodent",
-                                JOptionPane.INFORMATION_MESSAGE);
-                            error = true;
-                            break;
-                        }
-                        
-                        try{
-                            int val = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 2));
-                        }
-                        catch(Exception e){
-                            JOptionPane.showMessageDialog(this,
-                                "Hay cambios en la tabla sin completar!",
-                                "Orthodent",
-                                JOptionPane.INFORMATION_MESSAGE);
-                            error = true;
-                            break;
-                        }
-                    } catch (Exception e) {
-                        JOptionPane.showMessageDialog(this,
-                            "Hay cambios en la tabla sin completar!",
-                            "Orthodent",
-                            JOptionPane.INFORMATION_MESSAGE);
-                        error = true;
-                        break;
-                    }
-                }
-                
                 if(!error){
                     try {
                         Presupuesto pre = PresupuestoDB.getPresupuesto(fechaModificacion, this.paciente.getId_paciente());
@@ -1261,13 +1181,13 @@ public class Presupuestos extends JPanel{
                             this.updateTablaPresupuestos();
                             try {
                                 for(int i=0; i<this.tablaLaboratorio.getRowCount(); i++){ //recorro las filas
-                                    int pieza = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 0));
+                                    int pieza = Integer.parseInt(((Item)this.tablaLaboratorio.getValueAt(i, 0)).getValue());
                                     String prestacion = (String)this.tablaLaboratorio.getValueAt(i, 1);
                                     int valor = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 2));
                                     LaboratorioPiezaPresupuestoDB.crearLaboratorioPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto(), pieza, prestacion, valor);
                                 }
                                 try {
-                                    this.updateTablaPresupuestos();
+                                    this.updateTablaLaboratorio();
                                 } catch (Exception ex) {
                                 }
                             } catch (Exception ex) {
@@ -1506,15 +1426,12 @@ public class Presupuestos extends JPanel{
         this.nuevoPresupuestoSel = true;
         this.cambios = true;
         this.costoTotal.setText("$");
-        this.costoTotalLaboratorio.setText("$");
         this.tablaPiezaTratamiento.setEnabled(true);
         this.profesional.setEnabled(true);
         this.remove.setEnabled(true);
         this.add.setEnabled(true);
         this.estado.setEnabled(true);
         this.guardar.setEnabled(true);
-        this.addLab.setEnabled(true);
-        this.removeLab.setEnabled(true);
         
         if(actual.getId_rol()==3){
             //Profesional
@@ -1564,12 +1481,6 @@ public class Presupuestos extends JPanel{
         } catch (Exception ex) {
         }
         
-        try {
-            System.out.println("pase??");
-            this.iniciarTablaLaboratorio();
-            System.out.println("noooo");
-        } catch (Exception ex) {
-        }
     }//GEN-LAST:event_nuevoPresupuestoActionPerformed
 
     private void estadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadoActionPerformed
