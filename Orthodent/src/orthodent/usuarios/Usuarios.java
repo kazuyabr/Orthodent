@@ -130,6 +130,7 @@ public class Usuarios extends JPanel implements ActionListener{
                             }
                             
                             remove(contenedorListarUsuarios);
+                            remove(contenedorListarClinicas);
                             add(infoUsuario, BorderLayout.CENTER);
                             isListarUsuarios = false;
                             updateUI();
@@ -204,6 +205,7 @@ public class Usuarios extends JPanel implements ActionListener{
         if(!this.isListarUsuarios){
             this.remove(this.infoUsuario);
             this.add(this.contenedorListarUsuarios, BorderLayout.CENTER);
+            this.add(this.contenedorListarClinicas, BorderLayout.SOUTH);
             this.isListarUsuarios = true;
             this.updateModelo();
             this.updateUI();
