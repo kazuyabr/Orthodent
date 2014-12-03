@@ -25,6 +25,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
+import modelo.LaboratorioPiezaPresupuesto;
 import modelo.Paciente;
 import modelo.PlanTratamiento;
 import modelo.Presupuesto;
@@ -33,6 +34,7 @@ import modelo.TratamientoPiezaPresupuesto;
 import modelo.Usuario;
 import orthodent.Item;
 import orthodent.db.Autenticacion;
+import orthodent.db.LaboratorioPiezaPresupuestoDB;
 import orthodent.db.PlanTratamientoDB;
 import orthodent.db.PresupuestoDB;
 import orthodent.db.TratamientoDB;
@@ -54,11 +56,15 @@ public class Presupuestos extends JPanel{
     private String [] columnasNombrePiezaTratamiento;
     private Object [][] filasPiezaTratamiento;
     private DefaultTableModel modeloPiezaTratamiento;
+    private String [] columnasNombreLaboratorio;
+    private Object [][] filasLaboratorio;
+    private TableModel modeloLaboratorio;
     private String profesionalSelected;
     private String estadoSelected;
     private Presupuesto presupuestoSelected;
     private ArrayList<Tratamiento> auxiliar;
     private int rowSelected;
+    private int rowSelectedLaboratorio;
     private boolean nuevoPresupuestoSel;
     
     public Presupuestos(Paciente paciente, Usuario actual) throws Exception {
@@ -124,8 +130,7 @@ public class Presupuestos extends JPanel{
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
         ArrayList<TratamientoPiezaPresupuesto> piezasPresupuesto = new ArrayList<TratamientoPiezaPresupuesto>();
         if(!this.nuevoPresupuestoSel){
-            System.out.println("esta selected");
-             piezasPresupuesto = TratamientoPiezaPresupuestoDB.listarTratamientosPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto());
+            piezasPresupuesto = TratamientoPiezaPresupuestoDB.listarTratamientosPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto());
         }
         int m = this.columnasNombrePiezaTratamiento.length;
         
@@ -134,7 +139,7 @@ public class Presupuestos extends JPanel{
         for(TratamientoPiezaPresupuesto piezaPresupuesto : piezasPresupuesto){
             String pieza = piezaPresupuesto.getPieza()+"";
             Tratamiento tratamiento = TratamientoDB.getTratamiento(piezaPresupuesto.getId_tratamiento());
-            Object [] fila = new Object [] {pieza, new Item(tratamiento.getNombre(),tratamiento.getIdTratamiento()), "$"+tratamiento.getValorColegio(), "$"+tratamiento.getValorClinica()};
+            Object [] fila = new Object [] {pieza, new Item(tratamiento.getNombre(),tratamiento.getIdTratamiento()), "$"+piezaPresupuesto.getValorColegio(), "$"+piezaPresupuesto.getValorClinica()};
 
             objetos.add(fila);
         }
@@ -198,6 +203,64 @@ public class Presupuestos extends JPanel{
         tratamientos.setCellEditor(new DefaultCellEditor(comboBox));
     }
     
+    public void iniciarTablaLaboratorio() throws Exception{
+        this.columnasNombreLaboratorio = new String [] {"Pieza", "Prestación", "Valor"};
+        this.updateTablaLaboratorio();
+        this.tablaLaboratorio.getTableHeader().setReorderingAllowed(false);
+        
+        this.tablaLaboratorio.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                JTable table =(JTable) me.getSource();
+                Point p = me.getPoint();
+                int row = table.rowAtPoint(p);
+                if (me.getClickCount() == 1) {
+                    int col = table.columnAtPoint(p);
+                    if(col==1){
+                        rowSelectedLaboratorio = row;
+                    }
+                }
+                if (me.getClickCount() == 2) {
+                    habilitarBoton();
+                }
+            }
+        });
+    }
+    
+    public void updateTablaLaboratorio() throws Exception{
+        //Podria ser ordenado!! -> una opcion es que la consulta ordene
+        ArrayList<LaboratorioPiezaPresupuesto> laboratorios = LaboratorioPiezaPresupuestoDB.listarLaboratoriosPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto());
+        
+        int m = this.columnasNombreLaboratorio.length;
+        
+        ArrayList<Object []> objetos = new ArrayList<Object []>();
+        
+        this.filasPresupuesto = new Object [laboratorios.size()][m];
+        int i = 0;
+        for(LaboratorioPiezaPresupuesto labs : laboratorios){
+            this.filasPresupuesto[i] = new Object[]{new Item(labs.getPieza()+"", labs.getId()),labs.getPrestacion(), "$"+labs.getValor()};
+            i++;
+        }
+        
+        this.modeloLaboratorio = new DefaultTableModel(this.filasLaboratorio, this.columnasNombreLaboratorio) {
+            Class[] types = new Class [] {
+                Item.class, String.class, String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
+        
+        this.tablaLaboratorio.setModel(modeloLaboratorio);
+    }
+    
     public void iniciarTablaPresupuestos() throws Exception{
         
         this.columnasNombrePresupuestos = new String [] {"Profesional", "Cantidad de Tratamientos", "Costo Total", "Estado", "Fecha de Creación"};
@@ -241,6 +304,8 @@ public class Presupuestos extends JPanel{
                             eliminar.setEnabled(true);
                             remove.setEnabled(true);
                             add.setEnabled(true);
+                            addLab.setEnabled(true);
+                            removeLab.setEnabled(true);
                             
                             if(actual.getId_rol()==3){
                                 //Profesional
@@ -313,11 +378,13 @@ public class Presupuestos extends JPanel{
                                 aprobar.setEnabled(false);
                             }
                             
-                            fechaCreacion.setText(presupuestoSelected.getFechaCreacion());
-                            fechaUltimaModificacion.setText(presupuestoSelected.getFechaModificacion());
-                            
                             tablaPiezaTratamiento.setEnabled(true);
                             iniciarTablaPiezaTratamiento();
+                            
+                            tablaLaboratorio.setEnabled(true);
+                            iniciarTablaLaboratorio();
+                            costoTotalLaboratorio.setText("$"+presupuestoSelected.getCostoLab());
+                            
                             guardar.setEnabled(false);
                         }
                     } catch (Exception ex) {
@@ -455,16 +522,19 @@ public class Presupuestos extends JPanel{
         profesional = new javax.swing.JComboBox();
         labelEstado = new javax.swing.JLabel();
         estado = new javax.swing.JComboBox();
-        labelFechaCreacion = new javax.swing.JLabel();
-        fechaCreacion = new javax.swing.JTextField();
-        labelFechaUltimaModificacion = new javax.swing.JLabel();
-        fechaUltimaModificacion = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaPiezaTratamiento = new javax.swing.JTable();
         labelTotal = new javax.swing.JLabel();
         costoTotal = new javax.swing.JTextField();
         add = new javax.swing.JButton();
         remove = new javax.swing.JButton();
+        labelLaboratorio = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tablaLaboratorio = new javax.swing.JTable();
+        costoTotalLaboratorio = new javax.swing.JTextField();
+        labelTotal1 = new javax.swing.JLabel();
+        addLab = new javax.swing.JButton();
+        removeLab = new javax.swing.JButton();
         nuevoPresupuesto = new javax.swing.JButton();
         aprobar = new javax.swing.JButton();
 
@@ -584,18 +654,6 @@ public class Presupuestos extends JPanel{
             }
         });
 
-        labelFechaCreacion.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
-        labelFechaCreacion.setText("Fecha de Creación");
-
-        fechaCreacion.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        fechaCreacion.setEnabled(false);
-
-        labelFechaUltimaModificacion.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
-        labelFechaUltimaModificacion.setText("Fecha Modificación");
-
-        fechaUltimaModificacion.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        fechaUltimaModificacion.setEnabled(false);
-
         tablaPiezaTratamiento.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         tablaPiezaTratamiento.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -656,6 +714,61 @@ public class Presupuestos extends JPanel{
             }
         });
 
+        labelLaboratorio.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelLaboratorio.setText("Laboratorio");
+
+        tablaLaboratorio.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        tablaLaboratorio.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Pieza", "Prestación", "Valor"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(tablaLaboratorio);
+
+        costoTotalLaboratorio.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        costoTotalLaboratorio.setEnabled(false);
+        costoTotalLaboratorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                costoTotalLaboratorioActionPerformed(evt);
+            }
+        });
+
+        labelTotal1.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelTotal1.setText("Total");
+
+        addLab.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/add_mini.png"))); // NOI18N
+        addLab.setBorder(null);
+        addLab.setBorderPainted(false);
+        addLab.setContentAreaFilled(false);
+        addLab.setEnabled(false);
+        addLab.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addLabActionPerformed(evt);
+            }
+        });
+
+        removeLab.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/delete_mini.png"))); // NOI18N
+        removeLab.setBorder(null);
+        removeLab.setBorderPainted(false);
+        removeLab.setContentAreaFilled(false);
+        removeLab.setEnabled(false);
+        removeLab.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeLabActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -663,29 +776,37 @@ public class Presupuestos extends JPanel{
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelLaboratorio)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelProfesional)
-                            .addComponent(labelEstado)
-                            .addComponent(labelFechaUltimaModificacion)
-                            .addComponent(labelFechaCreacion))
-                        .addGap(44, 44, 44)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(fechaCreacion)
-                            .addComponent(fechaUltimaModificacion)
-                            .addComponent(estado, 0, 175, Short.MAX_VALUE)
-                            .addComponent(profesional, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(187, 187, 187)
+                        .addComponent(profesional, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(labelTotal)
+                                .addComponent(labelEstado)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(estado, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labelTotal)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(add)
-                            .addComponent(remove))))
+                            .addComponent(remove)))
+                    .addComponent(labelProfesional)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(labelTotal1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(costoTotalLaboratorio, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(addLab)
+                            .addComponent(removeLab))))
                 .addContainerGap(43, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -695,31 +816,41 @@ public class Presupuestos extends JPanel{
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelProfesional)
                     .addComponent(profesional, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
+                        .addGap(25, 25, 25)
                         .addComponent(add)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(remove)))
+                        .addComponent(remove))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelTotal)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelEstado)
+                            .addComponent(estado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelLaboratorio)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(addLab)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(removeLab)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelTotal))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(estado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelEstado))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelFechaCreacion))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelFechaUltimaModificacion)
-                    .addComponent(fechaUltimaModificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(costoTotalLaboratorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelTotal1)))
         );
 
         nuevoPresupuesto.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
@@ -773,7 +904,7 @@ public class Presupuestos extends JPanel{
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(panelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nuevoPresupuesto)
@@ -785,7 +916,7 @@ public class Presupuestos extends JPanel{
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(guardar)
                         .addComponent(aprobar)))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -801,7 +932,7 @@ public class Presupuestos extends JPanel{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 539, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -874,6 +1005,12 @@ public class Presupuestos extends JPanel{
             this.presupuestoSelected.setCantidadTratamiento(cantidadTratamientos);
             this.presupuestoSelected.setFechaModificacion(fechaModificacion);
             
+            int costoLabs = 0;
+            if(!this.costoTotalLaboratorio.getText().equals("$")){
+                costoLabs = Integer.parseInt(this.costoTotalLaboratorio.getText().substring(this.costoTotal.getText().indexOf("$")+1, this.costoTotalLaboratorio.getText().length()));
+            }
+            this.presupuestoSelected.setCostoLab(costoLabs);
+            
             boolean respuesta = PresupuestoDB.editarPresupuesto(presupuestoSelected);
             if(respuesta){
                 
@@ -918,10 +1055,29 @@ public class Presupuestos extends JPanel{
                             for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
                                 int pieza = Integer.parseInt((String)this.tablaPiezaTratamiento.getValueAt(i, 0));
                                 int id_tratamiento = ((Item)this.tablaPiezaTratamiento.getValueAt(i, 1)).getId();
-                                TratamientoPiezaPresupuestoDB.crearTratamientoPiezaPresupuesto(id_tratamiento, this.presupuestoSelected.getIdPresupuesto(), pieza);
+                                String valorColegio = ((String)this.tablaPiezaTratamiento.getValueAt(i, 2));
+                                int valColegio = Integer.parseInt(valorColegio.substring(1, valorColegio.length()));
+                                String valorClinica = ((String)this.tablaPiezaTratamiento.getValueAt(i, 3));
+                                int valClinica = Integer.parseInt(valorClinica.substring(1, valorClinica.length()));
+                                TratamientoPiezaPresupuestoDB.crearTratamientoPiezaPresupuesto(id_tratamiento, this.presupuestoSelected.getIdPresupuesto(), pieza, valColegio, valClinica);
                             }
                             try {
                                 this.updateTablaPresupuestos();
+                                
+                                boolean resp2 = LaboratorioPiezaPresupuestoDB.eliminarLaboratorioPieza(presupuestoSelected.getIdPresupuesto());
+                                if(resp2){
+                                    for(int i=0; i<this.tablaLaboratorio.getRowCount(); i++){ //recorro las filas
+                                        
+                                        int pieza = Integer.parseInt(((Item)this.tablaLaboratorio.getValueAt(i, 0)).getValue());
+                                        String prestacion = (String)this.tablaLaboratorio.getValueAt(i, 1);
+                                        int valor = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 2));
+                                        LaboratorioPiezaPresupuestoDB.crearLaboratorioPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto(), pieza, prestacion, valor);
+                                    }
+                                    try {
+                                        this.updateTablaLaboratorio();
+                                    } catch (Exception ex) {
+                                    }
+                                }
                             } catch (Exception ex) {
                             }
                             this.cambios = false;
@@ -953,11 +1109,15 @@ public class Presupuestos extends JPanel{
             
             String fechaModificacion = this.getCurrentDateTime();
             
+            int costoLabs = 0;
+            if(!this.costoTotalLaboratorio.getText().equals("$")){
+                costoLabs = Integer.parseInt(this.costoTotalLaboratorio.getText().substring(this.costoTotal.getText().indexOf("$")+1, this.costoTotalLaboratorio.getText().length()));
+            }
+            
             boolean respuesta = PresupuestoDB.crearPresupuesto(this.paciente.getId_paciente(), id_profesional, estado,
-                    costoTotal, cantidadTratamientos, true, fechaModificacion, fechaModificacion);
+                    costoTotal, cantidadTratamientos, costoLabs, true, fechaModificacion, fechaModificacion);
             
             if(respuesta){
-                
                 boolean error = false;
                 for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
                     try {
@@ -998,10 +1158,27 @@ public class Presupuestos extends JPanel{
                         for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
                             int pieza = Integer.parseInt((String)this.tablaPiezaTratamiento.getValueAt(i, 0));
                             int id_tratamiento = ((Item)this.tablaPiezaTratamiento.getValueAt(i, 1)).getId();
-                            TratamientoPiezaPresupuestoDB.crearTratamientoPiezaPresupuesto(id_tratamiento, pre.getIdPresupuesto(), pieza);
+                            String valorColegio = ((String)this.tablaPiezaTratamiento.getValueAt(i, 2));
+                            int valColegio = Integer.parseInt(valorColegio.substring(1, valorColegio.length()));
+                            String valorClinica = ((String)this.tablaPiezaTratamiento.getValueAt(i, 3));
+                            int valClinica = Integer.parseInt(valorClinica.substring(1, valorClinica.length()));
+                            TratamientoPiezaPresupuestoDB.crearTratamientoPiezaPresupuesto(id_tratamiento, pre.getIdPresupuesto(), pieza, valColegio, valClinica);
                         }
                         try {
                             this.updateTablaPresupuestos();
+                            try {
+                                for(int i=0; i<this.tablaLaboratorio.getRowCount(); i++){ //recorro las filas
+                                    int pieza = Integer.parseInt(((Item)this.tablaLaboratorio.getValueAt(i, 0)).getValue());
+                                    String prestacion = (String)this.tablaLaboratorio.getValueAt(i, 1);
+                                    int valor = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 2));
+                                    LaboratorioPiezaPresupuestoDB.crearLaboratorioPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto(), pieza, prestacion, valor);
+                                }
+                                try {
+                                    this.updateTablaLaboratorio();
+                                } catch (Exception ex) {
+                                }
+                            } catch (Exception ex) {
+                            }
                         } catch (Exception ex) {
                         }
                         this.cambios = false;
@@ -1081,8 +1258,6 @@ public class Presupuestos extends JPanel{
                         this.estado.setModel(new DefaultComboBoxModel(new String [] {""}));
                         this.estado.setSelectedItem("");
                         this.estado.setEnabled(false);
-                        this.fechaCreacion.setText("");
-                        this.fechaUltimaModificacion.setText("");
                         this.presupuestoSelected = null;
                         this.eliminar.setEnabled(false);
                         this.aprobar.setEnabled(false);
@@ -1193,8 +1368,6 @@ public class Presupuestos extends JPanel{
                             this.estado.setModel(new DefaultComboBoxModel(new String [] {""}));
                             this.estado.setSelectedItem("");
                             this.estado.setEnabled(false);
-                            this.fechaCreacion.setText("");
-                            this.fechaUltimaModificacion.setText("");
                             this.presupuestoSelected = null;
                             this.eliminar.setEnabled(false);
                             this.aprobar.setEnabled(false);
@@ -1312,6 +1485,18 @@ public class Presupuestos extends JPanel{
     private void costoTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costoTotalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_costoTotalActionPerformed
+
+    private void costoTotalLaboratorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costoTotalLaboratorioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_costoTotalLaboratorioActionPerformed
+
+    private void addLabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addLabActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addLabActionPerformed
+
+    private void removeLabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeLabActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_removeLabActionPerformed
     
     private void habilitarBoton(){
         this.cambios = true;
@@ -1320,27 +1505,30 @@ public class Presupuestos extends JPanel{
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add;
+    private javax.swing.JButton addLab;
     private javax.swing.JButton aprobar;
     private javax.swing.JTextField costoTotal;
+    private javax.swing.JTextField costoTotalLaboratorio;
     private javax.swing.JButton eliminar;
     private javax.swing.JComboBox estado;
-    private javax.swing.JTextField fechaCreacion;
-    private javax.swing.JTextField fechaUltimaModificacion;
     private javax.swing.JButton guardar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel labelEstado;
-    private javax.swing.JLabel labelFechaCreacion;
-    private javax.swing.JLabel labelFechaUltimaModificacion;
+    private javax.swing.JLabel labelLaboratorio;
     private javax.swing.JLabel labelProfesional;
     private javax.swing.JLabel labelTitulo;
     private javax.swing.JLabel labelTotal;
+    private javax.swing.JLabel labelTotal1;
     private javax.swing.JButton nuevoPresupuesto;
     private javax.swing.JPanel panelTitulo;
     private javax.swing.JComboBox profesional;
     private javax.swing.JButton remove;
+    private javax.swing.JButton removeLab;
+    private javax.swing.JTable tablaLaboratorio;
     private javax.swing.JTable tablaPiezaTratamiento;
     private javax.swing.JTable tablaPresupuestos;
     // End of variables declaration//GEN-END:variables

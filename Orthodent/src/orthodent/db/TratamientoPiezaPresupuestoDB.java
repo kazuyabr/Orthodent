@@ -16,14 +16,14 @@ import modelo.TratamientoPiezaPresupuesto;
  */
 public class TratamientoPiezaPresupuestoDB {
     
-    public static boolean crearTratamientoPiezaPresupuesto(int id_tratamiento, int id_presupuesto, int pieza){
+    public static boolean crearTratamientoPiezaPresupuesto(int id_tratamiento, int id_presupuesto, int pieza, int valorColegio, int valorClinica){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
             
             java.sql.Statement st = con.createStatement();
-            int aux = st.executeUpdate("INSERT INTO tratamiento_piezapresupuesto (id_tratamiento, id_presupuesto, pieza)\n" +
-                                        "VALUES ("+id_tratamiento+","+id_presupuesto+","+pieza+")");
+            int aux = st.executeUpdate("INSERT INTO tratamiento_piezapresupuesto (id_tratamiento, id_presupuesto, pieza, valor_colegio, valor_clinica)\n" +
+                                        "VALUES ("+id_tratamiento+","+id_presupuesto+","+pieza+","+valorColegio+","+valorClinica+")");
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
@@ -45,7 +45,7 @@ public class TratamientoPiezaPresupuestoDB {
             tratamientosPP = new ArrayList<TratamientoPiezaPresupuesto>();
             while (rs.next())
             {
-                TratamientoPiezaPresupuesto t = new TratamientoPiezaPresupuesto(rs.getInt("id_tratamiento"), rs.getInt("id_presupuesto"), rs.getInt("pieza"));
+                TratamientoPiezaPresupuesto t = new TratamientoPiezaPresupuesto(rs.getInt("id_tratamiento"), rs.getInt("id_presupuesto"), rs.getInt("pieza"), rs.getInt("valor_colegio"), rs.getInt("valor_clinica"));
                 tratamientosPP.add(t);
             }
             rs.close();

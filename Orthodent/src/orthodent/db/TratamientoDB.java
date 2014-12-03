@@ -60,7 +60,7 @@ public class TratamientoDB {
                 int idTratamiento = rs.getInt("id_tratamiento");
                 String nombre = rs.getString("nombre");
                 float cantidadUCO = rs.getFloat("cantidad_uco");
-                int valorColegio = (int)cantidadUCO*valorUCO;
+                int valorColegio = (int)(cantidadUCO*valorUCO);
                 int valorClinica = (valorColegio*porcentaje)/100;
                 boolean activo = rs.getBoolean("activo");
 
@@ -103,7 +103,7 @@ public class TratamientoDB {
                 int idCategoria2 = rs.getInt("id_categoria2");
                 String nombre = rs.getString("nombre");
                 float cantidadUCO = rs.getFloat("cantidad_uco");
-                int valorColegio = (int)cantidadUCO*valorUCO;
+                int valorColegio = (int)(cantidadUCO*valorUCO);
                 int valorClinica = (valorColegio*porcentaje)/100;
                 boolean activo = rs.getBoolean("activo");
 
@@ -140,7 +140,7 @@ public class TratamientoDB {
                 int idCategoria2 = rs.getInt("id_categoria2");
                 String nombre = rs.getString("nombre");
                 float cantidadUCO = rs.getFloat("cantidad_uco");
-                int valorColegio = (int)cantidadUCO*valorUCO;
+                int valorColegio = (int)(cantidadUCO*valorUCO);
                 int valorClinica = valorColegio/2;
                 boolean activo = rs.getBoolean("activo");
 

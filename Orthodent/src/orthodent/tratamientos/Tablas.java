@@ -357,6 +357,11 @@ public class Tablas extends javax.swing.JPanel {
         eliminar1.setBorder(null);
         eliminar1.setBorderPainted(false);
         eliminar1.setContentAreaFilled(false);
+        eliminar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminar1ActionPerformed(evt);
+            }
+        });
 
         editar1.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
         editar1.setForeground(new java.awt.Color(11, 146, 181));
@@ -596,6 +601,30 @@ public class Tablas extends javax.swing.JPanel {
         } catch (Exception ex) {
         }
     }//GEN-LAST:event_editar2ActionPerformed
+
+    private void eliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminar1ActionPerformed
+        Object[] options = {"Sí","No"};
+        
+        int n = JOptionPane.showOptionDialog(this,
+                    "¿Esta seguro que desea eliminar la categoria?",
+                    "Orthodent",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[1]);
+        
+        if(n==0){
+            boolean resul = Categoria1DB.eliminarCategoria1(categoria1Selected);
+            //aqui!!
+            if(resul){
+                this.updateModelo1();
+            }
+            
+            this.editar1.setEnabled(false);
+            this.eliminar1.setEnabled(false);
+        }
+    }//GEN-LAST:event_eliminar1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton editar1;
