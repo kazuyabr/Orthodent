@@ -71,7 +71,7 @@ public class Agenda extends JPanel{
     }
     
     private void handleAddAppointment(@Nullable Resource resource, @NotNull DateTime dateTime) {
-        System.out.println(dateTime);
+        
         int semana = obtenerSemana(dateTime.toDate());
         Cita clickeada = null;
         boolean esta = false;
@@ -106,7 +106,7 @@ public class Agenda extends JPanel{
                             citasDeLaSemana.get(cita.getSemana()).add(cita);
                         }
                         if(!AgendaDB.crearCita(cita,modelo)){
-                            System.out.println("NO CREO LA WEA");
+                            
                             return false;
                         }
                         return true;
@@ -118,7 +118,7 @@ public class Agenda extends JPanel{
             }.setVisible(true);
         }
         else{
-            System.out.println("CLICKEO UNA QUE YA ESTAAAA!!!");
+            
             new EditarCita(((JFrame)this.getTopLevelAncestor()), true, clickeada, dateTime, resource){
 
                 @Override
@@ -133,11 +133,15 @@ public class Agenda extends JPanel{
                             citasDeLaSemana.get(cita.getSemana()).add(cita);
                             modelo.eliminarCita(citaVieja);
                             modelo.agregarCita(cita);
+                            System.out.println("ADASASADADASS");
                             updateUI();
                             return true;
                         }
+                        System.out.println("QWQWQWQWQWQW");
                         return false;
                     }
+                    if(!validarBloques(cita)) System.out.println("ValidarBloques");
+                    if(!validarTopeHora(cita)) System.out.println("ValidarTopeHora");
                     return false;
                 }
 
@@ -238,18 +242,26 @@ public class Agenda extends JPanel{
     public Boolean validarTopeHora(Cita cita){
         boolean sePuede = true;
         int semana = this.obtenerSemana(cita.getRealDateTime().toDate());
-        DateTime horaInicio = cita.getDateTime().plusMinutes(1);
-        DateTime horaFin = cita.getDateTime().plusMinutes(cita.getDuration().toStandardSeconds().toStandardMinutes().getMinutes()).minusMinutes(1);
+        DateTime horaInicio = cita.getDateTime();
+        DateTime horaFin = cita.getDateTime().plusMinutes(cita.getDuration().toStandardSeconds().toStandardMinutes().getMinutes());
         System.out.println(horaFin.toString());
-        for(Cita c : this.citasDeLaSemana.get(semana)){
-            if(c.getId()!=cita.getId()){
-                DateTime citaFin = c.getDateTime().plusMinutes(c.getDuration().toStandardSeconds().toStandardMinutes().getMinutes());
-                DateTime citaInicio = c.getDateTime();
-                if(c.getResource()==cita.getResource()){
-                    if(horaFin.isBefore(citaFin) && horaFin.isAfter(citaInicio))
-                        sePuede = false;
-                    else if(horaInicio.isAfter(citaInicio) && horaInicio.isBefore(citaFin))
-                        sePuede = false;
+        
+        if(this.citasDeLaSemana.containsKey(semana)){
+            for(Cita c : this.citasDeLaSemana.get(semana)){
+                if(c.getId()!=cita.getId()){
+                    DateTime citaFin = c.getDateTime().plusMinutes(c.getDuration().toStandardSeconds().toStandardMinutes().getMinutes());
+                    DateTime citaInicio = c.getDateTime();
+                    if(c.getResource()==cita.getResource()){
+                        if(horaFin.isBefore(citaFin) && horaFin.isAfter(citaInicio)){
+                            sePuede = false;
+                        }
+                        else if((horaInicio.isAfter(citaInicio) || horaInicio.isEqual(citaInicio)) && horaInicio.isBefore(citaFin)){
+                            sePuede = false;
+                        }
+                        else if(horaInicio.isBefore(citaInicio) && horaFin.isAfter(citaFin)){
+                            sePuede = false;
+                        }
+                    }
                 }
             }
         }

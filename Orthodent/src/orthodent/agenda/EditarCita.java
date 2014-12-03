@@ -42,8 +42,8 @@ public abstract class EditarCita extends javax.swing.JDialog {
         initComponents();
         this.cita = cita;
         this.jComboBox1.setSelectedIndex((this.cita.getDateTime().getHourOfDay()-9)*4 + this.cita.getDateTime().getMinuteOfHour()/15);
-        DateTime aux = this.cita.getDateTime().plusMinutes(this.cita.getDuration().toStandardSeconds().toStandardMinutes().getMinutes()+1);
-        //this.jComboBox2.setSelectedIndex((aux.getHourOfDay()-9)*4 + aux.getMinuteOfHour()/15);
+        
+        
         Paciente p = null;
         try {
             p = PacienteDB.getPaciente(this.cita.getPacienteId());

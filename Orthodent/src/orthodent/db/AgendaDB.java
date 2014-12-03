@@ -48,6 +48,14 @@ public class AgendaDB {
             System.out.println("hora:"+horaInicio+"     fecha:"+fecha);
             int aux = st.executeUpdate("INSERT INTO cita (id_profesional, id_paciente, fecha, hora_inicio, duracion, semana, comentario, confirmada)\n"+
                     "VALUES ("+id_profesional+","+id_paciente+",'"+fecha+"','"+horaInicio+"',"+duracion+","+semana+",'Sin Comentario',"+confirmada+")");
+            ResultSet rs = st.getGeneratedKeys();
+            
+            while(rs.next()){
+                System.out.println(rs.getObject(1).toString());
+                cita.setId(Integer.parseInt(rs.getObject(1).toString()));
+            }
+            
+            System.out.println(aux);
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
@@ -140,10 +148,11 @@ public class AgendaDB {
             if(cita.isConfirmada())
                 confirmada="True";
             else confirmada="False";
-            
+            System.out.println(cita.getProfesionalId()+","+cita.getSemana()+","+cita.getFecha()+","+duracion+","+horaInicio+","+confirmada+","+cita.getId());
             int aux = st.executeUpdate("UPDATE cita SET id_profesional="+cita.getProfesionalId()+
                     ", semana="+cita.getSemana()+", fecha='"+cita.getFecha()+"', duracion="+duracion+", hora_inicio='"+horaInicio+"', confirmada="+confirmada+" WHERE id_cita="+cita.getId());
             resultado = (aux == 1)? true : false;
+            System.out.println(resultado);
         } catch (SQLException ex) {
             Logger.getLogger(AgendaDB.class.getName()).log(Level.SEVERE, null, ex);
         }
