@@ -1453,6 +1453,7 @@ public class Presupuestos extends JPanel{
             profesional.setEnabled(true);
 
             ArrayList<Usuario> usuarios = Autenticacion.listarProfesionales();
+            
 
             if(usuarios!=null && usuarios.size()>0){
                 Vector model = new Vector();
