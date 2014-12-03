@@ -117,6 +117,7 @@ public class AgendaDB {
         return citas;
     }
     
+    
     public static boolean eliminarCita(Cita cita){
         boolean resultado = false;
         try {

@@ -149,7 +149,13 @@ public class BarraAcciones extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void initProfesionales() {
-        ArrayList<Usuario> usuarios = Autenticacion.listarProfesionales();
+        ArrayList<Usuario> usuarios = null;
+        if(this.usuarioActual.getId_rol()==4)
+            usuarios = Autenticacion.listarProfesionales(this.usuarioActual.getId_clinica());
+        else if(this.usuarioActual.getId_rol()==3)
+            usuarios = Autenticacion.listarProfesional(this.usuarioActual.getId_usuario());
+        else
+            usuarios = Autenticacion.listarProfesionales();
             
         if(usuarios!=null && usuarios.size()>0){
             

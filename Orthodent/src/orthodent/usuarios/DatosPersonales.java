@@ -64,7 +64,7 @@ public class DatosPersonales extends JPanel{
         this.apellidoPat.setText(this.usuario.getApellido_pat());
         this.apellidoMat.setText(this.usuario.getApellido_mat());
         this.email.setText(this.usuario.getEmail());
-        this.contraseña.setText(this.usuario.getContraseña());
+        this.contraseña.setText("");
         this.telefono.setText(this.usuario.getTelefono());
     }
 

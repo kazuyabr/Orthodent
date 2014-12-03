@@ -185,6 +185,59 @@ public class Autenticacion {
         }
     }
     
+    public static ArrayList<Usuario> listarProfesionales(int id_clinica){
+        ArrayList<Usuario> usuarios = null;        
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE id_rol=3 AND id_clinica="+id_clinica);
+            usuarios = new ArrayList<Usuario>();
+            while (rs.next())
+            {
+                Usuario u = new Usuario(rs.getInt("id_usuario"), rs.getInt("id_rol"), rs.getString("nombre"),
+                        rs.getString("apellido_pat"), rs.getString("apellido_mat"), rs.getString("nombre_usuario"),
+                        rs.getString("contrasena"), rs.getString("email"), rs.getString("telefono"),
+                        rs.getString("especialidad"),rs.getInt("tiempo_cita"), rs.getBoolean("activo"), rs.getInt("id_clinica"));
+                usuarios.add(u);
+            }
+            rs.close();
+            con.close();
+            return usuarios;
+        }
+        catch ( SQLException e) {
+            return null;
+        }
+    }
+    public static ArrayList<Usuario> listarProfesional(int id_profesional){
+        ArrayList<Usuario> usuarios = null;        
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE id_rol=3 AND id_usuario="+id_profesional);
+            usuarios = new ArrayList<Usuario>();
+            while (rs.next())
+            {
+                Usuario u = new Usuario(rs.getInt("id_usuario"), rs.getInt("id_rol"), rs.getString("nombre"),
+                        rs.getString("apellido_pat"), rs.getString("apellido_mat"), rs.getString("nombre_usuario"),
+                        rs.getString("contrasena"), rs.getString("email"), rs.getString("telefono"),
+                        rs.getString("especialidad"),rs.getInt("tiempo_cita"), rs.getBoolean("activo"), rs.getInt("id_clinica"));
+                usuarios.add(u);
+            }
+            rs.close();
+            con.close();
+            return usuarios;
+        }
+        catch ( SQLException e) {
+            return null;
+        }
+    }
+   
     public static boolean habilitarUsuario(int id_usuario){
         try{
             DbConnection db = new DbConnection();
