@@ -139,11 +139,9 @@ public class Usuarios extends JPanel implements ActionListener{
                 }
             }
         });
-        
-        Usuario actual = ((JVentana)getTopLevelAncestor()).getUsuario();
-        if(actual.getId_rol()==1 || actual.getId_rol()==2){
-            initComponentsClinicas();
-        }
+
+        this.initComponentsClinicas();
+        this.addComponentsClinicas();
     }
     
     private Object[] getRowAt(int row) {
@@ -381,7 +379,7 @@ public class Usuarios extends JPanel implements ActionListener{
         this.nuevaClinica.setForeground(new Color(11, 146, 181));
         this.nuevaClinica.setFont(new Font("Georgia", 1, 12));
         this.nuevaClinica.setIcon(new ImageIcon("src/imagenes/add_mini.png"));
-        this.nuevaClinica.setText("Nueva Clinica");
+        this.nuevaClinica.setText("Nueva Clínica");
         this.nuevaClinica.setBorder(null);
         this.nuevaClinica.setBorderPainted(false);
         this.nuevaClinica.setContentAreaFilled(false);
@@ -467,29 +465,32 @@ public class Usuarios extends JPanel implements ActionListener{
         
         this.contenedorListarClinicas.add(scrollPane,BorderLayout.CENTER);
         //Fin tabla
-        
+        this.contenedorListarClinicas.setPreferredSize(new Dimension(1106,300));
         this.add(this.contenedorListarClinicas,BorderLayout.SOUTH);
     }
 
     private void addComponentPanel2(JPanel panel1) {
+        panel1.setLayout(new BorderLayout());
+        panel1.add(this.nuevaClinica, BorderLayout.EAST);
+        /*
         GroupLayout groupLayout = new GroupLayout(panel1);
         panel1.setLayout(groupLayout);
         groupLayout.setHorizontalGroup(
-            groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            groupLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
             .addGroup(groupLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(this.nuevoUsuario)
+                .addComponent(this.nuevaClinica)
                 .addContainerGap())
         );
         
         groupLayout.setVerticalGroup(
-            groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            groupLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
             .addGroup(groupLayout.createSequentialGroup()
                 .addContainerGap(15, Short.MAX_VALUE)
-                .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(this.nuevoUsuario))
+                .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    .addComponent(this.nuevaClinica))
                 .addContainerGap(13, Short.MAX_VALUE))
-        );
+        );*/
     }
     
 }
