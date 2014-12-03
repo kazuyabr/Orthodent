@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import modelo.Paciente;
 import modelo.Usuario;
+import orthodent.usuarios.ClinicaInterna;
 
 /**
  *
@@ -373,4 +374,29 @@ public class Autenticacion {
             return null;
         }
     }
+    
+    public static ArrayList<ClinicaInterna> listarClinicas(){
+        ArrayList<ClinicaInterna> clinicas = null;        
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * FROM clinica");
+            clinicas = new ArrayList<ClinicaInterna>();
+            while (rs.next())
+            {
+                ClinicaInterna u = new ClinicaInterna(rs.getString("nombre"), rs.getInt("id"));
+                clinicas.add(u);
+            }
+            rs.close();
+            con.close();
+            return clinicas;
+        }
+        catch ( SQLException e) {
+            return null;
+        }
+    }
+    
 }
