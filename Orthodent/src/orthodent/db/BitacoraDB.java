@@ -80,6 +80,41 @@ public class BitacoraDB
             return false;
         }
     }
+     
+     static public Bitacora getBitacora(int idBitacora) throws Exception{
+        Bitacora bitacora = null;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * from bitacora where id_bitacora='" + idBitacora + "'");
+            if (rs.next())
+            {
+                int id_bitacora = rs.getInt("id_bitacora");
+                String accion = rs.getString("operacion");
+                int idUsuario = rs.getInt("usuario");
+                String tabla = rs.getString("tabla");
+                int pk = rs.getInt("rut");
+                String fecha = rs.getString("email");
+               
+
+                bitacora = new Bitacora(id_bitacora, accion, idUsuario, tabla, pk,fecha);
+            }
+            else{
+                bitacora = null;
+            }
+            rs.close();
+            con.close();
+            return bitacora;
+        }
+
+        catch ( SQLException e) {
+            return null;
+        }
+    }
+     
     
     public static String convertTimestampToString(Timestamp date){
         

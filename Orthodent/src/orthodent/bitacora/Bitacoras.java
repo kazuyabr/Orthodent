@@ -109,17 +109,6 @@ public class Bitacoras extends JPanel implements ActionListener
         this.botonBuscar.setBorderPainted(false);
         this.botonBuscar.setContentAreaFilled(false);
         this.botonBuscar.addActionListener(this);
-        /*
-        this.nuevoPaciente = new JButton();
-        this.nuevoPaciente.setForeground(new Color(11, 146, 181));
-        this.nuevoPaciente.setFont(new Font("Georgia", 1, 12));
-        this.nuevoPaciente.setIcon(new ImageIcon("src/imagenes/add_mini.png"));
-        this.nuevoPaciente.setText("Nuevo Paciente");
-        this.nuevoPaciente.setBorder(null);
-        this.nuevoPaciente.setBorderPainted(false);
-        this.nuevoPaciente.setContentAreaFilled(false);
-        this.nuevoPaciente.addActionListener(this);
-        */
         this.tabla = new JTable();
         this.tabla.setFont(new Font("Georgia", 0, 11));
         this.columnasNombre = new String [] {"ID", "Accion", "Usuario", "Tabla", "Fecha "};
@@ -133,12 +122,14 @@ public class Bitacoras extends JPanel implements ActionListener
                 int row = table.rowAtPoint(p);
                 if (me.getClickCount() == 2) {
                     Object [] fila = getRowAt(row);
+                    String idAux = (String)(fila[0]);
+                    int idAuxasd = Integer.parseInt(idAux);
                     try {
                         
-                        //Bitacora bitacora = BitacoraDB.  .getBitacora((String)fila[3]);
-                        Paciente paciente = PacienteDB.getPaciente((String)fila[3]);
+                        Bitacora bitacora = BitacoraDB.getBitacora((idAuxasd));
+                        //Paciente paciente = PacienteDB.getPaciente((String)fila[3]);
                         
-                        if(paciente!=null){
+                        if(bitacora!=null){
                             
                             //infoPaciente = new MostrarInfoPaciente(paciente, actual);
                             
@@ -375,8 +366,7 @@ public class Bitacoras extends JPanel implements ActionListener
             }
         }
         
-        this.filas = new Object [objetos.size()][m];
-        
+        this.filas = new Object [objetos.size()][m];        
         int i = 0;
         for(Object [] el : objetos){
             this.filas[i] = el;
