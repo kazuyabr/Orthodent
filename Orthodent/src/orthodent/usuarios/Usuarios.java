@@ -23,15 +23,22 @@ import orthodent.db.RolDB;
 public class Usuarios extends JPanel implements ActionListener{
     //Esta clase solo la ve el admin!!
     private Image bannerFondo;
+    private Image bannerClinicas;
     private JTextField buscador;
     private JButton botonBuscar;
     private JButton nuevoUsuario;
+    private JButton nuevaClinica;
     private JTable tabla;
+    private JTable tablaClinicas;
     private TableModel modelo;
+    private TableModel modeloClinicas;
     private Object [][] filas;
+    private Object [][] filasClinicas;
     private String [] columnasNombre;
+    private String [] columnasNombreClinicas;
     private MostrarInfoTratamiento infoUsuario;
     private JPanel contenedorListarUsuarios;
+    private JPanel contenedorListarClinicas;
     private boolean isListarUsuarios;
     
     public Usuarios(){
@@ -135,7 +142,7 @@ public class Usuarios extends JPanel implements ActionListener{
         
         Usuario actual = ((JVentana)getTopLevelAncestor()).getUsuario();
         if(actual.getId_rol()==1 || actual.getId_rol()==2){
-            
+            initComponentsClinicas();
         }
     }
     
@@ -362,4 +369,127 @@ public class Usuarios extends JPanel implements ActionListener{
         
         this.tabla.setModel(modelo);
     }
+
+    private void initComponentsClinicas() {
+        
+        this.contenedorListarClinicas = new JPanel();
+        this.contenedorListarClinicas.setLayout(new BorderLayout());
+        
+        this.bannerClinicas = new ImageIcon("src/imagenes/directorioClinicas.png").getImage();
+        
+        this.nuevaClinica = new JButton();
+        this.nuevaClinica.setForeground(new Color(11, 146, 181));
+        this.nuevaClinica.setFont(new Font("Georgia", 1, 12));
+        this.nuevaClinica.setIcon(new ImageIcon("src/imagenes/add_mini.png"));
+        this.nuevaClinica.setText("Nueva Clinica");
+        this.nuevaClinica.setBorder(null);
+        this.nuevaClinica.setBorderPainted(false);
+        this.nuevaClinica.setContentAreaFilled(false);
+        this.nuevaClinica.addActionListener(this);
+        
+        this.tablaClinicas = new JTable();
+        this.tablaClinicas.setFont(new Font("Georgia", 0, 11));
+        this.columnasNombreClinicas = new String [] {"Nombre"};
+        this.updateModeloClinica();
+        this.tablaClinicas.getTableHeader().setReorderingAllowed(false);
+        
+    }
+
+    private void updateModeloClinica() {
+        ArrayList<ClinicaInterna> clinicas = Autenticacion.listarClinicas();
+        
+        int m = this.columnasNombreClinicas.length;
+        
+        ArrayList<Object []> objetos = new ArrayList<Object []>();
+        
+        for(ClinicaInterna clinica : clinicas){
+            Object [] fila = new Object [] {clinica.getNombre()};
+            objetos.add(fila);
+        }
+        
+        this.filasClinicas = new Object [objetos.size()][m];
+        int i = 0;
+        for(Object [] o : objetos){
+            this.filasClinicas[i] = o;
+            i++;
+        }
+        
+        this.modeloClinicas = new DefaultTableModel(this.filasClinicas, this.columnasNombreClinicas) {
+            Class[] types = new Class [] {
+                String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
+        
+        this.tablaClinicas.setModel(modeloClinicas);
+    }
+    
+    private void addComponentsClinicas(){
+        JPanel auxiliar = new JPanel();
+        auxiliar.setLayout(new BorderLayout());
+        
+        //Inicio Buscador y boton agregar
+        JPanel panel1 = new JPanel();
+        panel1.setPreferredSize(new Dimension(1106, 47));
+        panel1.setBackground(new Color(255,255,255));
+        this.addComponentPanel2(panel1);
+        auxiliar.add(panel1,BorderLayout.NORTH);
+        //Fin Buscador y boton agregar
+        
+        //Inicio Panel azul, con el nombre del Directorio
+        JPanel banner = new JPanel(){
+            @Override
+            public void paint(Graphics g){
+                paintComponent(g);
+                g.drawImage(bannerClinicas, 0, 0, 1106, 61, this);
+            }
+        };
+        banner.setBackground(new Color(255,255,255));
+        banner.setPreferredSize(new Dimension(1106, 61));
+        auxiliar.add(banner,BorderLayout.CENTER);
+        //Fin Panel azul, con el nombre del Directorio
+        
+        this.contenedorListarClinicas.add(auxiliar,BorderLayout.NORTH);
+        
+        //Inicio tabla
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setViewportView(this.tablaClinicas);
+        
+        this.contenedorListarClinicas.add(scrollPane,BorderLayout.CENTER);
+        //Fin tabla
+        
+        this.add(this.contenedorListarClinicas,BorderLayout.SOUTH);
+    }
+
+    private void addComponentPanel2(JPanel panel1) {
+        GroupLayout groupLayout = new GroupLayout(panel1);
+        panel1.setLayout(groupLayout);
+        groupLayout.setHorizontalGroup(
+            groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(groupLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(this.nuevoUsuario)
+                .addContainerGap())
+        );
+        
+        groupLayout.setVerticalGroup(
+            groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(groupLayout.createSequentialGroup()
+                .addContainerGap(15, Short.MAX_VALUE)
+                .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(this.nuevoUsuario))
+                .addContainerGap(13, Short.MAX_VALUE))
+        );
+    }
+    
 }
