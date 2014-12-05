@@ -65,6 +65,7 @@ public class BarraAcciones extends javax.swing.JPanel {
             }
         });
 
+        fechaAgenda.setBackground(new java.awt.Color(255, 255, 255));
         fechaAgenda.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         fechaAgenda.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {

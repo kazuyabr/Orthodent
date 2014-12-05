@@ -226,7 +226,6 @@ public abstract class NuevaCita extends javax.swing.JDialog {
 
         int hour = 9 + jComboBox1.getSelectedIndex()/4;
         int minute = 15*(jComboBox1.getSelectedIndex()%4);
-        
         c.setDateTime(inicio.withHourOfDay(hour).withMinuteOfHour(minute));
         c.setRealDateTime(inicioReal.withHourOfDay(hour).withMinuteOfHour(minute));
         c.setDuration(Duration.standardMinutes(((Integer)this.jSpinner1.getValue())-1));

@@ -37,10 +37,11 @@ public class AgendaDB {
             int id_profesional = cita.getProfesionalId();
             int id_paciente = cita.getPacienteId();
             String fecha = cita.getFecha();
-            String horaInicio = cita.getRealDateTime().toString("h:m");
+            String horaInicio = cita.getRealDateTime().toString("H:m");
             int duracion = cita.getDuration().toStandardSeconds().toStandardMinutes().getMinutes(); 
             int semana = cita.getSemana();
             String confirmada;
+            
             if(cita.isConfirmada())
                 confirmada = "True";
             else
