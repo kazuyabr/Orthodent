@@ -14,14 +14,16 @@ public class TratamientoPiezaPlan {
     private int IdPlanTratamiento;
     private int idTratamiento;
     private int pieza;
+    private int valor;
     private String fechaRealizado;
     private boolean estado;
     
-    public TratamientoPiezaPlan(int idTratamientoPiezaPlan, int IdPlanTratamiento, int idTratamiento, int pieza, String fechaRealizado, boolean estado) {
+    public TratamientoPiezaPlan(int idTratamientoPiezaPlan, int IdPlanTratamiento, int idTratamiento, int pieza, int valor, String fechaRealizado, boolean estado) {
         this.idTratamientoPiezaPlan = idTratamientoPiezaPlan;
         this.IdPlanTratamiento = IdPlanTratamiento;
         this.idTratamiento = idTratamiento;
         this.pieza = pieza;
+        this.valor = valor;
         this.fechaRealizado = fechaRealizado;
         this.estado = estado;
     }
@@ -72,5 +74,13 @@ public class TratamientoPiezaPlan {
 
     public void setEstado(boolean estado) {
         this.estado = estado;
+    }
+
+    public int getValor() {
+        return valor;
+    }
+
+    public void setValor(int valor) {
+        this.valor = valor;
     }
 }
