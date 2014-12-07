@@ -210,6 +210,8 @@ public class Tratamientos extends JPanel implements ActionListener{
         if(e.getSource() == this.editarValorUco){
             try {
                 new EditarValorUco(((JVentana)this.getTopLevelAncestor()),true).setVisible(true);
+                this.getTablas().updateTablas();
+                this.tablas.updateUI();
             } catch (Exception ex) {
                 Logger.getLogger(Tratamientos.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -74,6 +74,12 @@ public class Tablas extends javax.swing.JPanel {
         this.eliminar3.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
+    public void updateTablas(){
+        this.updateModelo1();
+        this.updateModelo2(categoria1Selected);
+        this.updateModeloTratamientos(categoria2Selected);
+    }
+    
     private Object[] getRowAt1(int row) {
         Object[] result = new Object[this.columnasNombreCat1.length];
         
