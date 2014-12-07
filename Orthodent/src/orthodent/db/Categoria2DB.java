@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import modelo.Categoria2;
+import orthodent.db.TratamientoDB;
 
 /**
  *
@@ -126,5 +127,24 @@ public class Categoria2DB {
             return false;
         }
     }       
+
+    public static boolean eliminarCategoria2DeCategoria1(int categoria1Selected) {
+        try{
+            //tengo todos las categorias 2 que pertenecen a una categoria 1 en especifico
+            ArrayList<Categoria2> categorias2 = Categoria2DB.listarCategoria2(categoria1Selected);
+            for(int i=0; i< categorias2.size();i++){
+                //elimino la categoria2
+                Categoria2DB.eliminarCategoria2(categorias2.get(i).getIdCategoria2());
+                TratamientoDB.eliminarTratamientoCategoria2(categorias2.get(i).getIdCategoria2());
+
+
+            } 
+            return true;
+        }
+        catch ( Exception e) {
+            return false;
+        }
+        
+    }
     
 }

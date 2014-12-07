@@ -117,30 +117,6 @@ public class Bitacoras extends JPanel implements ActionListener
         
         this.tabla.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
-                JTable table =(JTable) me.getSource();
-                Point p = me.getPoint();
-                int row = table.rowAtPoint(p);
-                if (me.getClickCount() == 2) {
-                    Object [] fila = getRowAt(row);
-                    String idAux = (String)(fila[0]);
-                    int idAuxasd = Integer.parseInt(idAux);
-                    try {
-                        
-                        Bitacora bitacora = BitacoraDB.getBitacora((idAuxasd));
-                        //Paciente paciente = PacienteDB.getPaciente((String)fila[3]);
-                        
-                        if(bitacora!=null){
-                            
-                            //infoPaciente = new MostrarInfoPaciente(paciente, actual);
-                            
-                            remove(contenedorListarBitacoras);
-                            //add(infoPaciente, BorderLayout.CENTER);
-                            isListarBitacoras = false;
-                            updateUI();
-                        }
-                    } catch (Exception ex) {
-                    }
-                }
             }
         });
     }
@@ -190,11 +166,11 @@ public class Bitacoras extends JPanel implements ActionListener
         
         for(Bitacora bitacora : bitacoras){
             
-                
-                String fechaNacimiento = this.girarFecha(bitacora.getFecha());
+                String[] fecha = bitacora.getFecha().split(" ");
+                String fechaBitacora = fecha[0];
                 
                 Object [] fila = new Object [] {bitacora.getIdBitacora(), bitacora.getAccion(),bitacora.getId_usuario(),
-                                            bitacora.getTabla(), bitacora.getFecha()};
+                                            bitacora.getTabla(), fechaBitacora};
                 
                 objetos.add(fila);
             
@@ -209,10 +185,10 @@ public class Bitacoras extends JPanel implements ActionListener
         
         this.modelo = new DefaultTableModel(this.filas, this.columnasNombre) {
             Class[] types = new Class [] {
-                String.class, String.class, String.class, String.class, String.class, String.class, String.class
+                String.class, String.class, String.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {

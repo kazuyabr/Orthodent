@@ -74,6 +74,16 @@ public class Tablas extends javax.swing.JPanel {
         this.eliminar3.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
+    public void updateTablas(){
+        this.updateModelo1();
+        if(categoria1Selected > 0){
+          this.updateModelo2(categoria1Selected);
+        }
+        if(categoria2Selected > 0){
+          this.updateModeloTratamientos(categoria2Selected);
+        }
+    }
+    
     private Object[] getRowAt1(int row) {
         Object[] result = new Object[this.columnasNombreCat1.length];
         
@@ -422,6 +432,11 @@ public class Tablas extends javax.swing.JPanel {
         eliminar2.setBorder(null);
         eliminar2.setBorderPainted(false);
         eliminar2.setContentAreaFilled(false);
+        eliminar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminar2ActionPerformed(evt);
+            }
+        });
 
         nuevo3.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
         nuevo3.setForeground(new java.awt.Color(11, 146, 181));
@@ -620,11 +635,48 @@ public class Tablas extends javax.swing.JPanel {
             if(resul){
                 this.updateModelo1();
             }
-            
+            boolean resul2 = Categoria2DB.eliminarCategoria2DeCategoria1(categoria1Selected);
+            if(resul2){
+                this.updateModelo2(categoria2Selected);
+                //this.updateModeloTratamientos(categoria1Selected);
+            }
             this.editar1.setEnabled(false);
             this.eliminar1.setEnabled(false);
         }
     }//GEN-LAST:event_eliminar1ActionPerformed
+
+    private void eliminar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminar2ActionPerformed
+        //MODIFICANDO   
+        Object[] options = {"Sí","No"};
+        
+        int n = JOptionPane.showOptionDialog(this,
+                    "¿Esta seguro que desea eliminar el tratamiento?",
+                    "Orthodent",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[1]);
+        
+        if(n==0){
+            
+            //boolean resul = TratamientoDB.eliminarTratamiento(tratamientosSelected);
+            boolean resul = Categoria2DB.eliminarCategoria2(categoria2Selected);
+            if(resul){
+                this.updateModelo2(categoria1Selected);
+                //this.updateModeloTratamientos(categoria1Selected);
+            }
+            boolean resul2 = TratamientoDB.eliminarTratamientoCategoria2(categoria2Selected);
+            if(resul2){
+                this.updateModeloTratamientos(tratamientosSelected);
+                //this.updateModeloTratamientos(categoria1Selected);
+            }
+//            this.editar3.setEnabled(false);
+//            this.eliminar3.setEnabled(false);
+            this.editar2.setEnabled(false);
+            this.eliminar2.setEnabled(false);
+        }
+    }//GEN-LAST:event_eliminar2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton editar1;

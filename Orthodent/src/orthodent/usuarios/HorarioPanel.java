@@ -7,6 +7,7 @@ package orthodent.usuarios;
 import java.awt.Cursor;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import modelo.Horario;
 import modelo.Usuario;
@@ -335,98 +336,233 @@ public class HorarioPanel extends JPanel{
         inicioHoraLunes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioHoraLunes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         inicioHoraLunes.setEnabled(false);
+        inicioHoraLunes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                inicioHoraLunesItemStateChanged(evt);
+            }
+        });
 
         inicioMinLunes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioMinLunes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         inicioMinLunes.setEnabled(false);
+        inicioMinLunes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                inicioMinLunesItemStateChanged(evt);
+            }
+        });
 
         finHoraLunes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finHoraLunes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         finHoraLunes.setEnabled(false);
+        finHoraLunes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                finHoraLunesItemStateChanged(evt);
+            }
+        });
 
         finMinLunes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finMinLunes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         finMinLunes.setEnabled(false);
+        finMinLunes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                finMinLunesItemStateChanged(evt);
+            }
+        });
 
         inicioHoraMartes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioHoraMartes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         inicioHoraMartes.setEnabled(false);
+        inicioHoraMartes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                inicioHoraMartesItemStateChanged(evt);
+            }
+        });
 
         inicioMinMartes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioMinMartes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         inicioMinMartes.setEnabled(false);
+        inicioMinMartes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                inicioMinMartesItemStateChanged(evt);
+            }
+        });
 
         finHoraMartes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finHoraMartes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         finHoraMartes.setEnabled(false);
+        finHoraMartes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                finHoraMartesItemStateChanged(evt);
+            }
+        });
 
         finMinMartes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finMinMartes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         finMinMartes.setEnabled(false);
+        finMinMartes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                finMinMartesItemStateChanged(evt);
+            }
+        });
 
         inicioHoraMiercoles.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioHoraMiercoles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         inicioHoraMiercoles.setEnabled(false);
+        inicioHoraMiercoles.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                inicioHoraMiercolesItemStateChanged(evt);
+            }
+        });
 
         inicioMinMiercoles.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioMinMiercoles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         inicioMinMiercoles.setEnabled(false);
+        inicioMinMiercoles.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                inicioMinMiercolesItemStateChanged(evt);
+            }
+        });
 
         finHoraMiercoles.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finHoraMiercoles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         finHoraMiercoles.setEnabled(false);
+        finHoraMiercoles.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                finHoraMiercolesItemStateChanged(evt);
+            }
+        });
 
         finMinMiercoles.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finMinMiercoles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         finMinMiercoles.setEnabled(false);
+        finMinMiercoles.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                finMinMiercolesItemStateChanged(evt);
+            }
+        });
 
         inicioHoraJueves.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioHoraJueves.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         inicioHoraJueves.setEnabled(false);
+        inicioHoraJueves.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                inicioHoraJuevesItemStateChanged(evt);
+            }
+        });
 
         inicioMinJueves.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioMinJueves.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         inicioMinJueves.setEnabled(false);
+        inicioMinJueves.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                inicioMinJuevesItemStateChanged(evt);
+            }
+        });
 
         finHoraJueves.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finHoraJueves.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         finHoraJueves.setEnabled(false);
+        finHoraJueves.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                finHoraJuevesItemStateChanged(evt);
+            }
+        });
 
         finMinJueves.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finMinJueves.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         finMinJueves.setEnabled(false);
+        finMinJueves.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                finMinJuevesItemStateChanged(evt);
+            }
+        });
 
         inicioHoraViernes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioHoraViernes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         inicioHoraViernes.setEnabled(false);
+        inicioHoraViernes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                inicioHoraViernesItemStateChanged(evt);
+            }
+        });
+        inicioHoraViernes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inicioHoraViernesActionPerformed(evt);
+            }
+        });
 
         inicioMinViernes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioMinViernes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         inicioMinViernes.setEnabled(false);
+        inicioMinViernes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                inicioMinViernesItemStateChanged(evt);
+            }
+        });
 
         finHoraViernes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finHoraViernes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19" }));
         finHoraViernes.setEnabled(false);
+        finHoraViernes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                finHoraViernesItemStateChanged(evt);
+            }
+        });
 
         finMinViernes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finMinViernes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         finMinViernes.setEnabled(false);
+        finMinViernes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                finMinViernesItemStateChanged(evt);
+            }
+        });
 
         inicioHoraSabado.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioHoraSabado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12" }));
         inicioHoraSabado.setEnabled(false);
+        inicioHoraSabado.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                inicioHoraSabadoItemStateChanged(evt);
+            }
+        });
+        inicioHoraSabado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inicioHoraSabadoActionPerformed(evt);
+            }
+        });
 
         inicioMinSabado.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         inicioMinSabado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         inicioMinSabado.setEnabled(false);
+        inicioMinSabado.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                inicioMinSabadoItemStateChanged(evt);
+            }
+        });
+        inicioMinSabado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inicioMinSabadoActionPerformed(evt);
+            }
+        });
 
         finHoraSabado.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finHoraSabado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09", "10", "11", "12" }));
         finHoraSabado.setEnabled(false);
+        finHoraSabado.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                finHoraSabadoItemStateChanged(evt);
+            }
+        });
 
         finMinSabado.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         finMinSabado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
         finMinSabado.setEnabled(false);
+        finMinSabado.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                finMinSabadoItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -492,7 +628,7 @@ public class HorarioPanel extends JPanel{
                         .addComponent(labelInicio)
                         .addGap(109, 109, 109)
                         .addComponent(labelFin)))
-                .addContainerGap(448, Short.MAX_VALUE))
+                .addContainerGap(456, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(guardar)
@@ -593,15 +729,21 @@ public class HorarioPanel extends JPanel{
             boolean aux = HorarioDB.eliminarHorario(this.usuario.getId_usuario());
         } catch (SQLException ex) {
         }
-        
+        boolean cmbs = false;
         if(this.lunes.isSelected()){
             int horaInicio = this.convertToMin((String)this.inicioHoraLunes.getSelectedItem());
             horaInicio = horaInicio + Integer.parseInt((String)this.inicioMinLunes.getSelectedItem());
             
             int horaFin = this.convertToMin((String)this.finHoraLunes.getSelectedItem());
             horaFin = horaFin + Integer.parseInt((String)this.finMinLunes.getSelectedItem());
-            
-            HorarioDB.crearHorario(this.usuario.getId_usuario(), "Lunes", horaInicio, horaFin);
+            if(horaInicio<horaFin){
+                HorarioDB.crearHorario(this.usuario.getId_usuario(), "Lunes", horaInicio, horaFin);
+                cmbs = true;
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Ingrese un horario valido");
+                cmbs = false;
+            }
         }
         if(this.martes.isSelected()){
             int horaInicio = this.convertToMin((String)this.inicioHoraMartes.getSelectedItem());
@@ -609,8 +751,14 @@ public class HorarioPanel extends JPanel{
             
             int horaFin = this.convertToMin((String)this.finHoraMartes.getSelectedItem());
             horaFin = horaFin + Integer.parseInt((String)this.finMinMartes.getSelectedItem());
-            
-            HorarioDB.crearHorario(this.usuario.getId_usuario(), "Martes", horaInicio, horaFin);
+            if(horaInicio<horaFin){
+                HorarioDB.crearHorario(this.usuario.getId_usuario(), "Martes", horaInicio, horaFin);
+                cmbs = true;
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Ingrese un horario valido");
+                cmbs = false;
+            }
         }
         if(this.miercoles.isSelected()){
             int horaInicio = this.convertToMin((String)this.inicioHoraMiercoles.getSelectedItem());
@@ -618,8 +766,14 @@ public class HorarioPanel extends JPanel{
             
             int horaFin = this.convertToMin((String)this.finHoraMiercoles.getSelectedItem());
             horaFin = horaFin + Integer.parseInt((String)this.finMinMiercoles.getSelectedItem());
-            
-            HorarioDB.crearHorario(this.usuario.getId_usuario(), "Miercoles", horaInicio, horaFin);
+            if(horaInicio<horaFin){
+                HorarioDB.crearHorario(this.usuario.getId_usuario(), "Miercoles", horaInicio, horaFin);
+                cmbs = true;
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Ingrese un horario valido");
+                cmbs = false;
+            }
         }
         if(this.jueves.isSelected()){
             int horaInicio = this.convertToMin((String)this.inicioHoraJueves.getSelectedItem());
@@ -627,8 +781,14 @@ public class HorarioPanel extends JPanel{
             
             int horaFin = this.convertToMin((String)this.finHoraJueves.getSelectedItem());
             horaFin = horaFin + Integer.parseInt((String)this.finMinJueves.getSelectedItem());
-            
-            HorarioDB.crearHorario(this.usuario.getId_usuario(), "Jueves", horaInicio, horaFin);
+            if(horaInicio<horaFin){
+                HorarioDB.crearHorario(this.usuario.getId_usuario(), "Jueves", horaInicio, horaFin);
+                cmbs = true;
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Ingrese un horario valido");
+                cmbs = false;
+            }
         }
         if(this.viernes.isSelected()){
             int horaInicio = this.convertToMin((String)this.inicioHoraViernes.getSelectedItem());
@@ -636,8 +796,14 @@ public class HorarioPanel extends JPanel{
             
             int horaFin = this.convertToMin((String)this.finHoraViernes.getSelectedItem());
             horaFin = horaFin + Integer.parseInt((String)this.finMinViernes.getSelectedItem());
-            
-            HorarioDB.crearHorario(this.usuario.getId_usuario(), "Viernes", horaInicio, horaFin);
+            if(horaInicio<horaFin){
+                HorarioDB.crearHorario(this.usuario.getId_usuario(), "Viernes", horaInicio, horaFin);
+                cmbs = true;
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Ingrese un horario valido");
+                cmbs = false;
+            }
         }
         if(this.sabado.isSelected()){
             int horaInicio = this.convertToMin((String)this.inicioHoraSabado.getSelectedItem());
@@ -646,11 +812,20 @@ public class HorarioPanel extends JPanel{
             int horaFin = this.convertToMin((String)this.finHoraSabado.getSelectedItem());
             horaFin = horaFin + Integer.parseInt((String)this.finMinSabado.getSelectedItem());
             
-            HorarioDB.crearHorario(this.usuario.getId_usuario(), "Sabado", horaInicio, horaFin);
+            if(horaInicio<horaFin){
+                HorarioDB.crearHorario(this.usuario.getId_usuario(), "Sabado", horaInicio, horaFin);
+                cmbs = true;
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Ingrese un horario valido");
+                cmbs = false;
+            }
+            
         }
-        
-        this.cambios = false;
-        this.guardar.setEnabled(false);
+        if(cmbs){
+            this.cambios = false;
+            this.guardar.setEnabled(false);
+        }
     }//GEN-LAST:event_guardarActionPerformed
 
     private void lunesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lunesActionPerformed
@@ -766,6 +941,114 @@ public class HorarioPanel extends JPanel{
             this.finMinSabado.setEnabled(false);
         }
     }//GEN-LAST:event_sabadoActionPerformed
+
+    private void inicioHoraSabadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inicioHoraSabadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inicioHoraSabadoActionPerformed
+
+    private void inicioMinSabadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inicioMinSabadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inicioMinSabadoActionPerformed
+
+    private void inicioHoraViernesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inicioHoraViernesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inicioHoraViernesActionPerformed
+
+    private void inicioHoraSabadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioHoraSabadoItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_inicioHoraSabadoItemStateChanged
+
+    private void inicioHoraLunesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioHoraLunesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_inicioHoraLunesItemStateChanged
+
+    private void inicioMinLunesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioMinLunesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_inicioMinLunesItemStateChanged
+
+    private void finHoraLunesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finHoraLunesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_finHoraLunesItemStateChanged
+
+    private void finMinLunesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finMinLunesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_finMinLunesItemStateChanged
+
+    private void inicioHoraMartesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioHoraMartesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_inicioHoraMartesItemStateChanged
+
+    private void inicioMinMartesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioMinMartesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_inicioMinMartesItemStateChanged
+
+    private void finHoraMartesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finHoraMartesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_finHoraMartesItemStateChanged
+
+    private void finMinMartesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finMinMartesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_finMinMartesItemStateChanged
+
+    private void inicioHoraMiercolesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioHoraMiercolesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_inicioHoraMiercolesItemStateChanged
+
+    private void inicioMinMiercolesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioMinMiercolesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_inicioMinMiercolesItemStateChanged
+
+    private void finHoraMiercolesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finHoraMiercolesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_finHoraMiercolesItemStateChanged
+
+    private void finMinMiercolesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finMinMiercolesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_finMinMiercolesItemStateChanged
+
+    private void inicioHoraJuevesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioHoraJuevesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_inicioHoraJuevesItemStateChanged
+
+    private void inicioMinJuevesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioMinJuevesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_inicioMinJuevesItemStateChanged
+
+    private void finHoraJuevesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finHoraJuevesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_finHoraJuevesItemStateChanged
+
+    private void finMinJuevesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finMinJuevesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_finMinJuevesItemStateChanged
+
+    private void inicioHoraViernesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioHoraViernesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_inicioHoraViernesItemStateChanged
+
+    private void inicioMinViernesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioMinViernesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_inicioMinViernesItemStateChanged
+
+    private void finHoraViernesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finHoraViernesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_finHoraViernesItemStateChanged
+
+    private void finMinViernesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finMinViernesItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_finMinViernesItemStateChanged
+
+    private void inicioMinSabadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioMinSabadoItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_inicioMinSabadoItemStateChanged
+
+    private void finHoraSabadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finHoraSabadoItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_finHoraSabadoItemStateChanged
+
+    private void finMinSabadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finMinSabadoItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_finMinSabadoItemStateChanged
         
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox finHoraJueves;
