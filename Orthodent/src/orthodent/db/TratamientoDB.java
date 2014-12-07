@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.Tratamiento;
 
 /**
@@ -194,6 +196,23 @@ public class TratamientoDB {
             return resultado;
         }
         catch ( SQLException e) {
+            return false;
+        }
+    }
+
+    public static boolean eliminarTratamientoCategoria2(int categoria2Selected) {
+        try{
+            ArrayList<Tratamiento> tratamientos=TratamientoDB.listarTratamientos();
+            for(int i =0; i< tratamientos.size();i++){
+                int idCad2Trat = tratamientos.get(i).getIdCategoria2();
+                if(idCad2Trat==categoria2Selected){
+                    TratamientoDB.eliminarTratamiento(tratamientos.get(i).getIdTratamiento());
+                }
+
+            }
+            return true;
+        }
+        catch ( Exception e) {
             return false;
         }
     }
