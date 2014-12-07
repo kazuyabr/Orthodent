@@ -166,8 +166,8 @@ public class Bitacoras extends JPanel implements ActionListener
         
         for(Bitacora bitacora : bitacoras){
             
-                
-                String fechaBitacora = this.girarFecha(bitacora.getFecha());
+                String[] fecha = bitacora.getFecha().split(" ");
+                String fechaBitacora = fecha[0];
                 
                 Object [] fila = new Object [] {bitacora.getIdBitacora(), bitacora.getAccion(),bitacora.getId_usuario(),
                                             bitacora.getTabla(), fechaBitacora};
