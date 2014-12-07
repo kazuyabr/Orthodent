@@ -163,7 +163,7 @@ public class PacienteDB {
                                             ",sexo="+paciente.getSexo()+"\n" +
                                             ",antecedente_medico='"+paciente.getAntecedenteMedico()+"'\n" +
                                             ",telefono='"+paciente.getTelefono()+"'\n" +
-                                            ",ciudad='"+paciente.getCiudad()+"'\n" +
+                                            ",ciudad='"+paciente.getRegion()+"'\n" +
                                             ",comuna='"+paciente.getComuna()+"'\n" +
                                             ",direccion='"+paciente.getDireccion()+"'\n" +
                                             "WHERE id_paciente="+paciente.getId_paciente());

@@ -23,12 +23,12 @@ public class Paciente {
     private int sexo;//1 femenino, 2 masculino
     private String antecedenteMedico;
     private String telefono;
-    private String ciudad;
+    private String region;
     private String comuna;
     private String direccion;
     private boolean activo;
     
-    public Paciente(int id_paciente, String nombre, String apellido_pat, String apellido_mat, String rut, String email, String fechaNacimiento, int edad, int sexo, String antecedenteMedico, String telefono, String ciudad, String comuna, String direccion, boolean activo) {
+    public Paciente(int id_paciente, String nombre, String apellido_pat, String apellido_mat, String rut, String email, String fechaNacimiento, int edad, int sexo, String antecedenteMedico, String telefono, String region, String comuna, String direccion, boolean activo) {
         this.id_paciente = id_paciente;
         this.nombre = nombre;
         this.apellido_pat = apellido_pat;
@@ -40,7 +40,7 @@ public class Paciente {
         this.sexo = sexo;
         this.antecedenteMedico = antecedenteMedico;
         this.telefono = telefono;
-        this.ciudad = ciudad;
+        this.region = region;
         this.comuna = comuna;
         this.direccion = direccion;
         this.activo = activo;
@@ -118,12 +118,12 @@ public class Paciente {
         this.activo = activo;
     }
 
-    public String getCiudad() {
-        return ciudad;
+    public String getRegion() {
+        return region;
     }
 
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public String getComuna() {

@@ -66,7 +66,7 @@ public class DatosPersonales extends JPanel{
         
         this.edad.setText(this.paciente.getEdad()+"");
         
-        this.ciudad.setSelectedItem(this.paciente.getCiudad());
+        this.ciudad.setSelectedItem(this.paciente.getRegion());
         this.comuna.setSelectedItem(this.paciente.getComuna());
         this.direccion.setText(this.paciente.getDireccion());
     }
@@ -562,7 +562,7 @@ public class DatosPersonales extends JPanel{
         
         String antecedenteMedico = this.antecedentesMedicos.getText();
         String telefono = this.telefono.getText();
-        String ciudad = (String)this.ciudad.getSelectedItem();
+        String region = (String)this.ciudad.getSelectedItem();
         String comuna = (String)this.comuna.getSelectedItem();
         String direccion = this.direccion.getText();
         
@@ -579,7 +579,7 @@ public class DatosPersonales extends JPanel{
                 this.paciente.setSexo(sexo);
                 this.paciente.setAntecedenteMedico(antecedenteMedico);
                 this.paciente.setTelefono(telefono);
-                this.paciente.setCiudad(ciudad);
+                this.paciente.setRegion(region);
                 this.paciente.setComuna(comuna);
                 this.paciente.setDireccion(direccion);
                 
