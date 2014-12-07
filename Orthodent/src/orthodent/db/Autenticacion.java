@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.Paciente;
 import modelo.Usuario;
-import orthodent.usuarios.ClinicaInterna;
+import modelo.ClinicaInterna;
 
 /**
  *

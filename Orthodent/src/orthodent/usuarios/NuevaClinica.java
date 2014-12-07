@@ -5,6 +5,7 @@
  */
 package orthodent.usuarios;
 
+import modelo.ClinicaInterna;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;

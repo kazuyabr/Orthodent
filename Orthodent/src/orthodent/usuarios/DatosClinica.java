@@ -5,6 +5,7 @@
  */
 package orthodent.usuarios;
 
+import modelo.ClinicaInterna;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
