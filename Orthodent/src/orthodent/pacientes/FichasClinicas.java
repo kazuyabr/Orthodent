@@ -118,7 +118,7 @@ public class FichasClinicas extends JPanel{
     
     public void editarFichaEvolucion(){
        if(fichaEvolucionSelected != null){
-           new VentanaFichaEvaluacion(((JVentana)this.getTopLevelAncestor()),true, tratamientotoSelected.getIdPlanTratamiento(), this, false, fichaEvolucionSelected).setVisible(true);
+           new VentanaFichaEvaluacion(this.actual.getId_usuario(),((JVentana)this.getTopLevelAncestor()),true, tratamientotoSelected.getIdPlanTratamiento(), this, false, fichaEvolucionSelected).setVisible(true);
        }
     }
     
@@ -657,7 +657,7 @@ public class FichasClinicas extends JPanel{
     }
     
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
-        new VentanaFichaEvaluacion(((JVentana)this.getTopLevelAncestor()),true, tratamientotoSelected.getIdPlanTratamiento(), this, true, fichaEvolucionSelected).setVisible(true);
+        new VentanaFichaEvaluacion(this.actual.getId_usuario(),((JVentana)this.getTopLevelAncestor()),true, tratamientotoSelected.getIdPlanTratamiento(), this, true, fichaEvolucionSelected).setVisible(true);
     }//GEN-LAST:event_addActionPerformed
 
     private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed

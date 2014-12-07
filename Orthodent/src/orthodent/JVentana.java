@@ -181,7 +181,7 @@ public class JVentana extends JFrame{
         this.contenedorUsuarios.add(panel,BorderLayout.NORTH);
     }
     
-    private void crearBitacora(){
+    private void crearBitacora() throws Exception{
         this.contenedorBitacora.setLayout(new BorderLayout());
         this.bitacoras = new Bitacoras();
         
@@ -320,7 +320,7 @@ public class JVentana extends JFrame{
         }
     }
     
-    public void cambiarBitacora(){
+    public void cambiarBitacora() throws Exception{
         if(opActual!=5){
             this.removeAncestor();
             this.panelOpciones.setIconButton(5);

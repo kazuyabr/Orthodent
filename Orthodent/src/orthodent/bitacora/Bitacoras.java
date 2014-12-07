@@ -20,6 +20,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -35,6 +37,7 @@ import modelo.Bitacora;
 import modelo.Paciente;
 import modelo.Usuario;
 import orthodent.JVentana;
+import orthodent.db.Autenticacion;
 import orthodent.db.BitacoraDB;
 import orthodent.db.PacienteDB;
 import orthodent.pacientes.MostrarInfoPaciente;
@@ -57,7 +60,7 @@ public class Bitacoras extends JPanel implements ActionListener
     private JPanel contenedorListarBitacoras;
     private boolean isListarBitacoras;
     
-    public Bitacoras(){
+    public Bitacoras() throws Exception{
         
         this.setBackground(new Color(243,242,243));
         this.setPreferredSize(new Dimension(1073, 561));
@@ -83,7 +86,7 @@ public class Bitacoras extends JPanel implements ActionListener
         return this.infoPaciente;
     }
     
-    private void initComponents(){
+    private void initComponents() throws Exception{
         
         this.contenedorListarBitacoras = new JPanel();
         this.contenedorListarBitacoras.setLayout(new BorderLayout());
@@ -96,7 +99,11 @@ public class Bitacoras extends JPanel implements ActionListener
         this.buscador.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent evt) {
-                buscadorKeyTyped(evt);
+                try {
+                    buscadorKeyTyped(evt);
+                } catch (Exception ex) {
+                    Logger.getLogger(Bitacoras.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         
@@ -147,7 +154,7 @@ public class Bitacoras extends JPanel implements ActionListener
         return fecha;
     }
     
-    public void updateModelo(){
+    public void updateModelo() throws Exception{
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
         ArrayList<Bitacora> bitacoras = null;
         
@@ -169,7 +176,15 @@ public class Bitacoras extends JPanel implements ActionListener
                 String[] fecha = bitacora.getFecha().split(" ");
                 String fechaBitacora = fecha[0];
                 
-                Object [] fila = new Object [] {bitacora.getIdBitacora(), bitacora.getAccion(),bitacora.getId_usuario(),
+                Usuario usuario = Autenticacion.getUsuario(bitacora.getId_usuario());
+                            
+                String nombre = usuario.getNombre();
+                if(nombre.contains(" ")){
+                    nombre = nombre.substring(0,nombre.indexOf(" "));
+                }
+                nombre = nombre + " " + usuario.getApellido_pat();
+                
+                Object [] fila = new Object [] {bitacora.getIdBitacora(), bitacora.getAccion(),nombre,
                                             bitacora.getTabla(), fechaBitacora};
                 
                 objetos.add(fila);
@@ -289,7 +304,7 @@ public class Bitacoras extends JPanel implements ActionListener
         }
     }
     
-    private void buscadorKeyTyped(KeyEvent evt) {
+    private void buscadorKeyTyped(KeyEvent evt) throws Exception {
         char c = evt.getKeyChar();
         
         if(c==KeyEvent.VK_ENTER){
