@@ -76,8 +76,12 @@ public class Tablas extends javax.swing.JPanel {
     
     public void updateTablas(){
         this.updateModelo1();
-        this.updateModelo2(categoria1Selected);
-        this.updateModeloTratamientos(categoria2Selected);
+        if(categoria1Selected > 0){
+          this.updateModelo2(categoria1Selected);
+        }
+        if(categoria2Selected > 0){
+          this.updateModeloTratamientos(categoria2Selected);
+        }
     }
     
     private Object[] getRowAt1(int row) {
