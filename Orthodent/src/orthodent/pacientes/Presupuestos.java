@@ -318,7 +318,6 @@ public class Presupuestos extends JPanel{
                     Object [] fila = getRowAt(row);
                     try {
                         presupuestoSelected = PresupuestoDB.getPresupuesto((String)fila[4], paciente.getId_paciente());
-                        System.out.println((String)fila[4]);
                         if(presupuestoSelected!=null){
                             eliminar.setEnabled(true);
                             remove.setEnabled(true);
@@ -1262,7 +1261,7 @@ public class Presupuestos extends JPanel{
                                     int pieza = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 0));
                                     String prestacion = (String)this.tablaLaboratorio.getValueAt(i, 1);
                                     int valor = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 2));
-                                    LaboratorioPiezaPresupuestoDB.crearLaboratorioPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto(), pieza, prestacion, valor);
+                                    LaboratorioPiezaPresupuestoDB.crearLaboratorioPiezaPresupuesto(pre.getIdPresupuesto(), pieza, prestacion, valor);
                                 }
                                 try {
                                     this.updateTablaPresupuestos();
@@ -1566,9 +1565,7 @@ public class Presupuestos extends JPanel{
         try {
             this.iniciarTablaPiezaTratamiento();
             try {
-                System.out.println("pase??");
                 this.iniciarTablaLaboratorio();
-                System.out.println("noooo");
             } catch (Exception ex) {
             }
         } catch (Exception ex) {
