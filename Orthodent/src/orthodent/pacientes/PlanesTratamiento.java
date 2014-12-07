@@ -18,7 +18,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import modelo.LaboratorioPiezaPlan;
-import modelo.LaboratorioPiezaPresupuesto;
 import modelo.Paciente;
 import modelo.PlanTratamiento;
 import modelo.Tratamiento;
