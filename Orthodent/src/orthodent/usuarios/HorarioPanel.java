@@ -729,15 +729,21 @@ public class HorarioPanel extends JPanel{
             boolean aux = HorarioDB.eliminarHorario(this.usuario.getId_usuario());
         } catch (SQLException ex) {
         }
-        
+        boolean cmbs = false;
         if(this.lunes.isSelected()){
             int horaInicio = this.convertToMin((String)this.inicioHoraLunes.getSelectedItem());
             horaInicio = horaInicio + Integer.parseInt((String)this.inicioMinLunes.getSelectedItem());
             
             int horaFin = this.convertToMin((String)this.finHoraLunes.getSelectedItem());
             horaFin = horaFin + Integer.parseInt((String)this.finMinLunes.getSelectedItem());
-            
-            HorarioDB.crearHorario(this.usuario.getId_usuario(), "Lunes", horaInicio, horaFin);
+            if(horaInicio<horaFin){
+                HorarioDB.crearHorario(this.usuario.getId_usuario(), "Lunes", horaInicio, horaFin);
+                cmbs = true;
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Ingrese un horario valido");
+                cmbs = false;
+            }
         }
         if(this.martes.isSelected()){
             int horaInicio = this.convertToMin((String)this.inicioHoraMartes.getSelectedItem());
@@ -745,8 +751,14 @@ public class HorarioPanel extends JPanel{
             
             int horaFin = this.convertToMin((String)this.finHoraMartes.getSelectedItem());
             horaFin = horaFin + Integer.parseInt((String)this.finMinMartes.getSelectedItem());
-            
-            HorarioDB.crearHorario(this.usuario.getId_usuario(), "Martes", horaInicio, horaFin);
+            if(horaInicio<horaFin){
+                HorarioDB.crearHorario(this.usuario.getId_usuario(), "Martes", horaInicio, horaFin);
+                cmbs = true;
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Ingrese un horario valido");
+                cmbs = false;
+            }
         }
         if(this.miercoles.isSelected()){
             int horaInicio = this.convertToMin((String)this.inicioHoraMiercoles.getSelectedItem());
@@ -754,8 +766,14 @@ public class HorarioPanel extends JPanel{
             
             int horaFin = this.convertToMin((String)this.finHoraMiercoles.getSelectedItem());
             horaFin = horaFin + Integer.parseInt((String)this.finMinMiercoles.getSelectedItem());
-            
-            HorarioDB.crearHorario(this.usuario.getId_usuario(), "Miercoles", horaInicio, horaFin);
+            if(horaInicio<horaFin){
+                HorarioDB.crearHorario(this.usuario.getId_usuario(), "Miercoles", horaInicio, horaFin);
+                cmbs = true;
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Ingrese un horario valido");
+                cmbs = false;
+            }
         }
         if(this.jueves.isSelected()){
             int horaInicio = this.convertToMin((String)this.inicioHoraJueves.getSelectedItem());
@@ -763,8 +781,14 @@ public class HorarioPanel extends JPanel{
             
             int horaFin = this.convertToMin((String)this.finHoraJueves.getSelectedItem());
             horaFin = horaFin + Integer.parseInt((String)this.finMinJueves.getSelectedItem());
-            
-            HorarioDB.crearHorario(this.usuario.getId_usuario(), "Jueves", horaInicio, horaFin);
+            if(horaInicio<horaFin){
+                HorarioDB.crearHorario(this.usuario.getId_usuario(), "Jueves", horaInicio, horaFin);
+                cmbs = true;
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Ingrese un horario valido");
+                cmbs = false;
+            }
         }
         if(this.viernes.isSelected()){
             int horaInicio = this.convertToMin((String)this.inicioHoraViernes.getSelectedItem());
@@ -772,8 +796,14 @@ public class HorarioPanel extends JPanel{
             
             int horaFin = this.convertToMin((String)this.finHoraViernes.getSelectedItem());
             horaFin = horaFin + Integer.parseInt((String)this.finMinViernes.getSelectedItem());
-            
-            HorarioDB.crearHorario(this.usuario.getId_usuario(), "Viernes", horaInicio, horaFin);
+            if(horaInicio<horaFin){
+                HorarioDB.crearHorario(this.usuario.getId_usuario(), "Viernes", horaInicio, horaFin);
+                cmbs = true;
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Ingrese un horario valido");
+                cmbs = false;
+            }
         }
         if(this.sabado.isSelected()){
             int horaInicio = this.convertToMin((String)this.inicioHoraSabado.getSelectedItem());
@@ -784,15 +814,18 @@ public class HorarioPanel extends JPanel{
             
             if(horaInicio<horaFin){
                 HorarioDB.crearHorario(this.usuario.getId_usuario(), "Sabado", horaInicio, horaFin);
+                cmbs = true;
             }
             else{
                 JOptionPane.showMessageDialog(null, "Ingrese un horario valido");
+                cmbs = false;
             }
             
         }
-        
-        this.cambios = false;
-        this.guardar.setEnabled(false);
+        if(cmbs){
+            this.cambios = false;
+            this.guardar.setEnabled(false);
+        }
     }//GEN-LAST:event_guardarActionPerformed
 
     private void lunesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lunesActionPerformed
