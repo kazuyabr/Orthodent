@@ -484,8 +484,6 @@ public class NuevoPaciente extends javax.swing.JDialog {
         
         String fechaNacimiento = getFechaString(date);
         
-        int edad = this.calculaEdad(this.girarFecha(fechaNacimiento));
-        
         String email = this.email.getText();
         
         String telefono = this.telefono.getText();
@@ -503,6 +501,7 @@ public class NuevoPaciente extends javax.swing.JDialog {
                     boolean valida = PacienteDB.validaRut(rut);
                     if(valida){
                         try {
+                            int edad = this.calculaEdad(this.girarFecha(fechaNacimiento));
                             boolean respuesta = PacienteDB.crearPaciente(nombre,apellidoPat,apellidoMat,rut,email,fechaNacimiento,edad,
                                                                         sexo,"",telefono,ciudad,comuna,direccion);
 
