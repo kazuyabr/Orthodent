@@ -262,7 +262,7 @@ public class VentanaFichaEvaluacion extends javax.swing.JDialog {
                 if(verificarCambios()){
                     fichaEvolucion.setFechaCita(fechaCita);
                     fichaEvolucion.setDescripcion(descripcion);
-                    boolean respuesta = FichaEvolucionDB.editarFichaEvolucion(fichaEvolucion);   
+                    boolean respuesta = FichaEvolucionDB.editarFichaEvolucion(this.idUsuarioActual, fichaEvolucion);   
                     this.fichaClinicaPadre.updateModeloFichaEvolucion();
                     this.fichaClinicaPadre.updateUI();                    
                 }

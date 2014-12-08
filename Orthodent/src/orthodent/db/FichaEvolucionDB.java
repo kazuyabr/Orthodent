@@ -26,7 +26,7 @@ public class FichaEvolucionDB {
                                         "VALUES ("+idPlanTratamiento+",'"+fechaCita+"','"+descripcion+"')");
             boolean resultado = (aux == 1)? true : false;
             if(resultado){
-                BitacoraDB.crearBitacora("CREAR FICHA EVOLUCION", idUsuarioActual, "FICHA EVOLUCION", 1);
+                BitacoraDB.crearBitacora("CREAR", idUsuarioActual, "FICHA EVOLUCION", -1);
             }
             st.close();
             con.close();
@@ -37,7 +37,7 @@ public class FichaEvolucionDB {
         }
     }
     
-    public static boolean editarFichaEvolucion(FichaEvolucion fichaEvolucion){
+    public static boolean editarFichaEvolucion(int idUsuarioActual, FichaEvolucion fichaEvolucion){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
@@ -51,6 +51,10 @@ public class FichaEvolucionDB {
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
+            
+            if(resultado){
+                BitacoraDB.crearBitacora("EDITAR", idUsuarioActual, "FICHA EVOLUCION", -1);
+            }
             return resultado;
         }
         catch ( SQLException e) { 
