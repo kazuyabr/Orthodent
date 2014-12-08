@@ -366,6 +366,11 @@ public class DatosPersonales extends JPanel{
         });
 
         comuna.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        comuna.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comunaActionPerformed(evt);
+            }
+        });
 
         direccion.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         direccion.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -819,8 +824,19 @@ public class DatosPersonales extends JPanel{
             for(int i=0; i<comunas.size(); i++){
                 this.comuna.addItem(comunas.get(i).getNombre());
             }
-        }  
+        } 
+//        if(!ciudad.getSelectedItem().toString().equals(this.paciente.getRegion().toString())){
+//             this.cambios = true;
+//             this.guardar.setEnabled(true);
+//        }
     }//GEN-LAST:event_ciudadActionPerformed
+
+    private void comunaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comunaActionPerformed
+//        if(!comuna.getSelectedItem().toString().equals(this.paciente.getComuna())){
+//             this.cambios = true;
+//             this.guardar.setEnabled(true);
+//        }
+    }//GEN-LAST:event_comunaActionPerformed
 
     private String getFechaString(Date date){
         
