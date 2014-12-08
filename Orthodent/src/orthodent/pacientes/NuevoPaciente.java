@@ -201,6 +201,11 @@ public class NuevoPaciente extends javax.swing.JDialog {
         });
 
         comuna.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        comuna.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comunaActionPerformed(evt);
+            }
+        });
 
         labelComuna.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         labelComuna.setForeground(new java.awt.Color(255, 255, 255));
@@ -725,6 +730,10 @@ public class NuevoPaciente extends javax.swing.JDialog {
         }        
         
     }//GEN-LAST:event_ciudadActionPerformed
+
+    private void comunaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comunaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comunaActionPerformed
     
     private boolean validarCamposObligatorios(String nombre, String apellidoPat, String rut, String fechaNacimiento, String telefono){
         

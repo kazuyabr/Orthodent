@@ -9,11 +9,16 @@ import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import modelo.Comuna;
 import modelo.Paciente;
+import modelo.Region;
+import orthodent.db.ComunaDB;
 import orthodent.db.PacienteDB;
+import orthodent.db.RegionDB;
 
 /**
  *
@@ -23,6 +28,7 @@ public class DatosPersonales extends JPanel{
 
     private Paciente paciente;
     private boolean cambios;
+    ArrayList<Region> regiones;
     
     public DatosPersonales(Paciente paciente) {
         initComponents();
@@ -66,10 +72,32 @@ public class DatosPersonales extends JPanel{
         
         this.edad.setText(this.paciente.getEdad()+"");
         
-        this.ciudad.setSelectedItem(this.paciente.getRegion());
-        this.comuna.setSelectedItem(this.paciente.getComuna());
+        regiones = RegionDB.listarRegiones();
+        for(int i=0; i<regiones.size(); i++){
+            this.ciudad.addItem(regiones.get(i).getNombre());
+        }        
+        ciudad.setSelectedItem(this.paciente.getRegion());
+        
+        int id = buscarIdRegion(this.paciente.getRegion());
+        if(id != 0){
+            ArrayList<Comuna> comunas = ComunaDB.listarComunasPorRegion(id);
+            this.comuna.removeAllItems();
+            for(int i=0; i<comunas.size(); i++){
+                this.comuna.addItem(comunas.get(i).getNombre());
+            }
+        }  
+        comuna.setSelectedItem(this.paciente.getComuna());
         this.direccion.setText(this.paciente.getDireccion());
     }
+    
+    public int buscarIdRegion(String regionSeleccionada){
+        for(int i=0; i<regiones.size(); i++){
+            if(regiones.get(i).getNombre().equals(regionSeleccionada)){
+                return regiones.get(i).getCodigo();
+            }
+        }
+        return 0;
+    }    
     
     //Recibe la fecha en fomato DD-MM-AAAA
     private int calculaEdad(String fecha){//M2
@@ -312,7 +340,7 @@ public class DatosPersonales extends JPanel{
         labelFechaNacimiento.setText("Fecha de Nacimiento");
 
         labelCiudad.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
-        labelCiudad.setText("Ciudad");
+        labelCiudad.setText("Región");
 
         labelComuna.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
         labelComuna.setText("Comuna");
@@ -331,7 +359,6 @@ public class DatosPersonales extends JPanel{
         labelTelefono.setText("Telefono");
 
         ciudad.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        ciudad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Curico", "Talca", "Linaes" }));
         ciudad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ciudadActionPerformed(evt);
@@ -339,7 +366,6 @@ public class DatosPersonales extends JPanel{
         });
 
         comuna.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        comuna.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Curico", "Talca", "Linares" }));
 
         direccion.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         direccion.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -385,7 +411,7 @@ public class DatosPersonales extends JPanel{
                 .addComponent(panelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(66, Short.MAX_VALUE)
+                .addContainerGap(74, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(eliminar)
@@ -485,7 +511,7 @@ public class DatosPersonales extends JPanel{
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(guardar)
                     .addComponent(eliminar))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -501,7 +527,7 @@ public class DatosPersonales extends JPanel{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -786,7 +812,14 @@ public class DatosPersonales extends JPanel{
     }//GEN-LAST:event_fechaNacimientoPropertyChange
 
     private void ciudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ciudadActionPerformed
-        // TODO add your handling code here:
+        int id = buscarIdRegion(ciudad.getSelectedItem().toString());
+        if(id != 0){
+            ArrayList<Comuna> comunas = ComunaDB.listarComunasPorRegion(id);
+            this.comuna.removeAllItems();
+            for(int i=0; i<comunas.size(); i++){
+                this.comuna.addItem(comunas.get(i).getNombre());
+            }
+        }  
     }//GEN-LAST:event_ciudadActionPerformed
 
     private String getFechaString(Date date){

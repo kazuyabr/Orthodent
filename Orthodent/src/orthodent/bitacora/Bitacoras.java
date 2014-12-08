@@ -12,7 +12,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -25,7 +24,6 @@ import java.util.logging.Logger;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -36,12 +34,10 @@ import javax.swing.table.TableModel;
 import modelo.Bitacora;
 import modelo.Paciente;
 import modelo.Usuario;
-import orthodent.JVentana;
 import orthodent.db.Autenticacion;
 import orthodent.db.BitacoraDB;
 import orthodent.db.PacienteDB;
 import orthodent.pacientes.MostrarInfoPaciente;
-import orthodent.pacientes.NuevoPaciente;
 
 /**
  *
