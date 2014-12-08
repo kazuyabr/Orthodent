@@ -118,7 +118,7 @@ public class Bitacoras extends JPanel implements ActionListener
         this.botonBuscar.addActionListener(this);
         this.tabla = new JTable();
         this.tabla.setFont(new Font("Georgia", 0, 11));
-        this.columnasNombre = new String [] {"ID", "Accion", "Usuario", "Tabla", "Fecha "};
+        this.columnasNombre = new String [] {"Fecha", "Accion", "Usuario", "Tabla"};
         this.updateModelo();
         this.tabla.getTableHeader().setReorderingAllowed(false);
         
@@ -184,8 +184,8 @@ public class Bitacoras extends JPanel implements ActionListener
                 }
                 nombre = nombre + " " + usuario.getApellido_pat();
                 
-                Object [] fila = new Object [] {bitacora.getIdBitacora(), bitacora.getAccion(),nombre,
-                                            bitacora.getTabla(), fechaBitacora};
+                Object [] fila = new Object [] {fechaBitacora, bitacora.getAccion(),nombre,
+                                            bitacora.getTabla()};
                 
                 objetos.add(fila);
             
@@ -200,7 +200,7 @@ public class Bitacoras extends JPanel implements ActionListener
         
         this.modelo = new DefaultTableModel(this.filas, this.columnasNombre) {
             Class[] types = new Class [] {
-                String.class, String.class, String.class, String.class, String.class
+                String.class, String.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false
