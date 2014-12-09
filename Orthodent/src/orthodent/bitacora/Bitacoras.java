@@ -114,7 +114,7 @@ public class Bitacoras extends JPanel implements ActionListener
         this.botonBuscar.addActionListener(this);
         this.tabla = new JTable();
         this.tabla.setFont(new Font("Georgia", 0, 11));
-        this.columnasNombre = new String [] {"Fecha", "Accion", "Usuario", "Tabla"};
+        this.columnasNombre = new String [] {"Fecha", "Accion", "Tabla", "Usuario"};
         this.updateModelo();
         this.tabla.getTableHeader().setReorderingAllowed(false);
         
@@ -180,8 +180,7 @@ public class Bitacoras extends JPanel implements ActionListener
                 }
                 nombre = nombre + " " + usuario.getApellido_pat();
                 
-                Object [] fila = new Object [] {fechaBitacora, bitacora.getAccion(),nombre,
-                                            bitacora.getTabla()};
+                Object [] fila = new Object [] {fechaBitacora, bitacora.getAccion(), bitacora.getTabla(),nombre};
                 
                 objetos.add(fila);
             

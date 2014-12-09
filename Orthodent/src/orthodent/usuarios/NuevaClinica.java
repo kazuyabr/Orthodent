@@ -28,6 +28,7 @@ public class NuevaClinica extends javax.swing.JDialog {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation((screenSize.width - this.getSize().width) / 2 ,
                 (screenSize.height - this.getSize().height) / 2);
+        this.setTitle("Nueva Clínica");
     }
 
     /**
