@@ -9,9 +9,11 @@ import modelo.ClinicaInterna;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import orthodent.JVentana;
 import orthodent.db.Autenticacion;
+import orthodent.db.ClinicaInternaDB;
 
 /**
  *
@@ -204,10 +206,20 @@ public class NuevaClinica extends javax.swing.JDialog {
         boolean aux = validarCamposObligatorios(nombre);
 
         if(aux){
+            ArrayList<ClinicaInterna> clinicas = ClinicaInternaDB.listarClinicas();
+            for(int i=0; i<clinicas.size(); i++){
+                if(clinicas.get(i).getNombre().toUpperCase().equals(nombre.toUpperCase())){
+                    JOptionPane.showMessageDialog(this,
+                    "Ya existe una clínica con el nombre ingresado.",
+                    "Orthodent",
+                    JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
             ClinicaInterna nueva = new ClinicaInterna(nombre);
-            if(!Autenticacion.crearClinica(nueva)){
+            if(!ClinicaInternaDB.crearClinica(nueva)){
                 JOptionPane.showMessageDialog(this,
-                "No se pudo crear la clínica",
+                "No se pudo crear la clínica.",
                 "Orthodent",
                 JOptionPane.ERROR_MESSAGE);
             }
@@ -219,7 +231,7 @@ public class NuevaClinica extends javax.swing.JDialog {
         }
         else{
             JOptionPane.showMessageDialog(this,
-                "Faltan campos obligatorios",
+                "Faltan campos obligatorios.",
                 "Orthodent",
                 JOptionPane.INFORMATION_MESSAGE);
         }

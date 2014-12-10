@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import orthodent.Item;
 import orthodent.JVentana;
 import orthodent.db.Autenticacion;
+import orthodent.db.ClinicaInternaDB;
 
 /**
  *
@@ -665,7 +666,7 @@ public class NuevoUsuario extends javax.swing.JDialog {
     }
     
     private void initClinicas() {
-        ArrayList<ClinicaInterna> clinicas = Autenticacion.listarClinicas();
+        ArrayList<ClinicaInterna> clinicas = ClinicaInternaDB.listarClinicas();
             
         if(clinicas!=null && clinicas.size()>0){
             Vector model = new Vector();

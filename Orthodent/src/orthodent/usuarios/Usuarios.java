@@ -15,6 +15,7 @@ import modelo.Rol;
 import modelo.Usuario;
 import orthodent.JVentana;
 import orthodent.db.Autenticacion;
+import orthodent.db.ClinicaInternaDB;
 import orthodent.db.RolDB;
 
 /**
@@ -430,7 +431,7 @@ public class Usuarios extends JPanel implements ActionListener{
                 if (me.getClickCount() == 2) {
                     Object [] fila = getRowAtClinicas(row);
                     try {
-                        ClinicaInterna clinica = Autenticacion.getClinica((String)fila[0]);
+                        ClinicaInterna clinica = ClinicaInternaDB.getClinica((String)fila[0]);
                         System.out.println(fila[0]);
                         if(clinica!=null){
                             
@@ -452,7 +453,7 @@ public class Usuarios extends JPanel implements ActionListener{
     }
 
     private void updateModeloClinica() {
-        ArrayList<ClinicaInterna> clinicas = Autenticacion.listarClinicas();
+        ArrayList<ClinicaInterna> clinicas = ClinicaInternaDB.listarClinicas();
         
         int m = this.columnasNombreClinicas.length;
         

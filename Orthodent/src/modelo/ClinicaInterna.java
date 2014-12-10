@@ -13,12 +13,27 @@ public class ClinicaInterna {
     
     private String nombre;
     private int id;
+    private boolean activo;
 
+    public ClinicaInterna(String nombre, int id, boolean activo) {
+        this.nombre = nombre;
+        this.id = id;
+        this.activo = activo;
+    }
+    
     public ClinicaInterna(String nombre, int id) {
         this.nombre = nombre;
         this.id = id;
+    }    
+    
+    public boolean isActivo() {
+        return activo;
     }
 
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+    
     public ClinicaInterna(String nombre) {
         this.nombre = nombre;
     }
