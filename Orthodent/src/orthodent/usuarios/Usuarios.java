@@ -57,6 +57,7 @@ public class Usuarios extends JPanel implements ActionListener{
         this.mostrandoClinica = false;
         this.botonBuscar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.nuevoUsuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.nuevaClinica.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
     public boolean isIsListarUsuarios() {
@@ -452,7 +453,7 @@ public class Usuarios extends JPanel implements ActionListener{
         
     }
 
-    private void updateModeloClinica() {
+    public void updateModeloClinica() {
         ArrayList<ClinicaInterna> clinicas = ClinicaInternaDB.listarClinicas();
         
         int m = this.columnasNombreClinicas.length;

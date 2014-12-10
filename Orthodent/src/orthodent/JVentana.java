@@ -283,8 +283,8 @@ public class JVentana extends JFrame{
             }
             
             this.add(this.contenedorPacientes,BorderLayout.CENTER);
-            this.contenedorPacientes.updateUI();
             this.getPacientes().updateModelo();
+            this.contenedorPacientes.updateUI();            
             this.opActual = 2;
         }
     }
@@ -298,11 +298,13 @@ public class JVentana extends JFrame{
                 this.crearTratamientos();
             }
             this.add(this.contenedorTratamiento,BorderLayout.CENTER);
+            this.getTratamientos().getTablas().updateTablas();
             this.contenedorTratamiento.updateUI();
             //this.getTratamientos().updateModelo(); //actualiza el modelo cuando se cambia de pestañas
             this.opActual = 3;
         }
     }
+    
     
     public void cambiarUsuarios() throws Exception{
         if(opActual!=4){
@@ -314,8 +316,10 @@ public class JVentana extends JFrame{
             }
             
             this.add(this.contenedorUsuarios,BorderLayout.CENTER);
+            this.getUsuarios().updateModelo(); 
+            this.getUsuarios().updateModeloClinica();
             this.contenedorUsuarios.updateUI();
-            this.getUsuarios().updateModelo();
+            
             this.opActual = 4;
         }
     }

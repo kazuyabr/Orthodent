@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -28,7 +27,6 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import javax.swing.table.TableModel;
 import orthodent.JVentana;
-import orthodent.db.TratamientoDB;
 import orthodent.usuarios.MostrarInfoTratamiento;
 
 /**
