@@ -51,7 +51,6 @@ public class DatosPersonales extends JPanel{
     }
     
     private void addInfo(){
-        
         this.nombres.setText(this.paciente.getNombre());
         this.apellidoPat.setText(this.paciente.getApellido_pat());
         this.apellidoMat.setText(this.paciente.getApellido_mat());
@@ -359,6 +358,11 @@ public class DatosPersonales extends JPanel{
         labelTelefono.setText("Telefono");
 
         ciudad.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        ciudad.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                ciudadItemStateChanged(evt);
+            }
+        });
         ciudad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ciudadActionPerformed(evt);
@@ -366,6 +370,11 @@ public class DatosPersonales extends JPanel{
         });
 
         comuna.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        comuna.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comunaItemStateChanged(evt);
+            }
+        });
         comuna.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comunaActionPerformed(evt);
@@ -404,6 +413,11 @@ public class DatosPersonales extends JPanel{
 
         edad.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         edad.setEnabled(false);
+        edad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                edadActionPerformed(evt);
+            }
+        });
 
         labelEdad.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
         labelEdad.setText("Edad");
@@ -825,18 +839,46 @@ public class DatosPersonales extends JPanel{
                 this.comuna.addItem(comunas.get(i).getNombre());
             }
         } 
+        System.out.println("***");
+        System.out.println(ciudad.getSelectedItem().toString()+"-"+this.paciente.getRegion().toString());
+        System.out.println("***");
 //        if(!ciudad.getSelectedItem().toString().equals(this.paciente.getRegion().toString())){
 //             this.cambios = true;
 //             this.guardar.setEnabled(true);
 //        }
+//        else{
+//             this.cambios = false;
+//             this.guardar.setEnabled(false);
+//        }
     }//GEN-LAST:event_ciudadActionPerformed
 
     private void comunaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comunaActionPerformed
+//        System.out.println("***");
+//        System.out.println(comuna.getSelectedItem().toString()+"-"+this.paciente.getComuna().toString());
+//        System.out.println("***");       
 //        if(!comuna.getSelectedItem().toString().equals(this.paciente.getComuna())){
 //             this.cambios = true;
 //             this.guardar.setEnabled(true);
 //        }
+//        else{
+//             this.cambios = false;
+//             this.guardar.setEnabled(false);
+//        }
     }//GEN-LAST:event_comunaActionPerformed
+
+    private void edadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_edadActionPerformed
+
+    private void ciudadItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ciudadItemStateChanged
+        this.cambios = true;
+        this.guardar.setEnabled(true);
+    }//GEN-LAST:event_ciudadItemStateChanged
+
+    private void comunaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comunaItemStateChanged
+        this.cambios = true;
+        this.guardar.setEnabled(true);
+    }//GEN-LAST:event_comunaItemStateChanged
 
     private String getFechaString(Date date){
         
