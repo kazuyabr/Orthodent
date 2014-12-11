@@ -27,7 +27,9 @@ public class Usuarios extends JPanel implements ActionListener{
     private Image bannerFondo;
     private Image bannerClinicas;
     private JTextField buscador;
+    private JTextField buscadorClinicas;
     private JButton botonBuscar;
+    private JButton botonBuscarClinicas;
     private JButton nuevoUsuario;
     private JButton nuevaClinica;
     private JTable tabla;
@@ -56,6 +58,7 @@ public class Usuarios extends JPanel implements ActionListener{
         this.addComponents();
         this.mostrandoClinica = false;
         this.botonBuscar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.botonBuscarClinicas.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.nuevoUsuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.nuevaClinica.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
@@ -408,6 +411,25 @@ public class Usuarios extends JPanel implements ActionListener{
         
         this.bannerClinicas = new ImageIcon("src/imagenes/directorioClinicas.png").getImage();
         
+        this.buscadorClinicas = new JTextField();
+        
+        this.buscadorClinicas.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent evt) {
+                buscadorKeyTyped(evt);
+            }
+        });
+        
+        this.botonBuscarClinicas = new JButton();
+        this.botonBuscarClinicas.setForeground(new Color(11, 146, 181));
+        this.botonBuscarClinicas.setFont(new Font("Georgia", 1, 12));
+        this.botonBuscarClinicas.setIcon(new ImageIcon("src/imagenes/lupa_mini.png"));
+        this.botonBuscarClinicas.setText("Buscar");
+        this.botonBuscarClinicas.setBorder(null);
+        this.botonBuscarClinicas.setBorderPainted(false);
+        this.botonBuscarClinicas.setContentAreaFilled(false);
+        this.botonBuscarClinicas.addActionListener(this);        
+        
         this.nuevaClinica = new JButton();
         this.nuevaClinica.setForeground(new Color(11, 146, 181));
         this.nuevaClinica.setFont(new Font("Georgia", 1, 12));
@@ -530,27 +552,30 @@ public class Usuarios extends JPanel implements ActionListener{
     }
 
     private void addComponentPanel2(JPanel panel1) {
-        panel1.setLayout(new BorderLayout());
-        panel1.add(this.nuevaClinica, BorderLayout.EAST);
-        /*
         GroupLayout groupLayout = new GroupLayout(panel1);
         panel1.setLayout(groupLayout);
         groupLayout.setHorizontalGroup(
-            groupLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+            groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(groupLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(this.buscadorClinicas, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(this.botonBuscarClinicas)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(this.nuevaClinica)
                 .addContainerGap())
         );
         
         groupLayout.setVerticalGroup(
-            groupLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+            groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(groupLayout.createSequentialGroup()
                 .addContainerGap(15, Short.MAX_VALUE)
-                .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(this.buscadorClinicas, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(this.botonBuscarClinicas)
                     .addComponent(this.nuevaClinica))
                 .addContainerGap(13, Short.MAX_VALUE))
-        );*/
+        );
     }
 
     public boolean isMostrandoClinica() {
