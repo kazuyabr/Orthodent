@@ -318,9 +318,14 @@ public class Usuarios extends JPanel implements ActionListener{
         if(e.getSource() == this.botonBuscar){
             this.buscar();
         }
+        
         if(e.getSource() == this.nuevaClinica){
             new NuevaClinica(((JVentana)this.getTopLevelAncestor()),true).setVisible(true);
         }
+        
+        if(e.getSource() == this.botonBuscarClinicas){
+            this.buscarClinica();
+        }        
     }
     
     private void buscadorKeyTyped(KeyEvent evt) {
@@ -342,6 +347,26 @@ public class Usuarios extends JPanel implements ActionListener{
             }
         }
     }
+    
+    private void buscadorClinicasKeyTyped(KeyEvent evt) {
+        char c = evt.getKeyChar();
+        
+        if(c==KeyEvent.VK_ENTER){
+            evt.consume();
+            
+            if(this.buscadorClinicas.getText().equals("")){
+                this.updateModeloClinica();
+            }
+            else{
+                this.buscarClinica();
+            }
+        }
+        else if(c==KeyEvent.VK_BACK_SPACE){
+            if(this.buscadorClinicas.getText().equals("")){
+                this.updateModeloClinica();
+            }
+        }
+    }    
     
     private void buscar(){
         String value = this.buscador.getText();
@@ -403,6 +428,64 @@ public class Usuarios extends JPanel implements ActionListener{
         
         this.tabla.setModel(modelo);
     }
+    
+    
+    private void buscarClinica(){
+        String value = this.buscadorClinicas.getText();
+        
+        ArrayList<ClinicaInterna> clinicas = ClinicaInternaDB.listarClinicas();
+        
+        int m = this.columnasNombre.length;
+        
+        ArrayList<Object []> objetos = new ArrayList<Object []>();
+        
+        for(ClinicaInterna clinica : clinicas){
+
+                Object [] fila = new Object [] {clinica.getNombre()};
+                
+                boolean aux = false;
+                
+                for(Object o : fila){
+                    String obj = (String) o;
+                    obj = obj.toLowerCase();
+                    if(obj.contains(value)){
+                        aux = true;
+                        break;
+                    }
+                }
+                
+                if(aux){
+                    objetos.add(fila);
+                }
+            
+        }
+        
+        this.filasClinicas = new Object [objetos.size()][m];
+        int i = 0;
+        for(Object [] o : objetos){
+            this.filasClinicas[i] = o;
+            i++;
+        }
+        
+        this.modeloClinicas = new DefaultTableModel(this.filasClinicas, this.columnasNombreClinicas) {
+            Class[] types = new Class [] {
+                String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
+        
+        this.tablaClinicas.setModel(modeloClinicas);
+    }    
 
     private void initComponentsClinicas() {
         
@@ -416,7 +499,7 @@ public class Usuarios extends JPanel implements ActionListener{
         this.buscadorClinicas.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent evt) {
-                buscadorKeyTyped(evt);
+                buscadorClinicasKeyTyped(evt);
             }
         });
         
