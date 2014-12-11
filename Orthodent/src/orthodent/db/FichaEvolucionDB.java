@@ -16,7 +16,7 @@ import modelo.FichaEvolucion;
  */
 public class FichaEvolucionDB {
     
-    public static boolean crearFichaEvolucion(int idUsuarioActual, int idPlanTratamiento, String fechaCita, String descripcion){
+    public static boolean crearFichaEvolucion(int idPlanTratamiento, String fechaCita, String descripcion){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
@@ -25,11 +25,9 @@ public class FichaEvolucionDB {
             int aux = st.executeUpdate("INSERT INTO ficha_evolucion (id_plantratamiento, fecha_cita, descripcion)\n" +
                                         "VALUES ("+idPlanTratamiento+",'"+fechaCita+"','"+descripcion+"')");
             boolean resultado = (aux == 1)? true : false;
-            if(resultado){
-                BitacoraDB.crearBitacora("CREAR", idUsuarioActual, "FICHA EVOLUCION", -1);
-            }
             st.close();
             con.close();
+            
             return resultado;
         }
         catch ( SQLException e) {
@@ -37,7 +35,7 @@ public class FichaEvolucionDB {
         }
     }
     
-    public static boolean editarFichaEvolucion(int idUsuarioActual, FichaEvolucion fichaEvolucion){
+    public static boolean editarFichaEvolucion(FichaEvolucion fichaEvolucion){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
@@ -52,9 +50,6 @@ public class FichaEvolucionDB {
             st.close();
             con.close();
             
-            if(resultado){
-                BitacoraDB.crearBitacora("EDITAR", idUsuarioActual, "FICHA EVOLUCION", -1);
-            }
             return resultado;
         }
         catch ( SQLException e) { 

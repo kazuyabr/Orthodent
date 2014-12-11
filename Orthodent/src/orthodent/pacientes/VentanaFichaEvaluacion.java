@@ -27,7 +27,7 @@ public class VentanaFichaEvaluacion extends javax.swing.JDialog {
     public static FichaEvolucion fichaEvolucion;
     public static int idUsuarioActual;
     
-    public VentanaFichaEvaluacion(int idUsuarioActual, java.awt.Frame parent, boolean modal, int idPlanTratamiento, FichasClinicas fc, boolean crear, FichaEvolucion fEvolucion) {
+    public VentanaFichaEvaluacion(java.awt.Frame parent, boolean modal, int idPlanTratamiento, FichasClinicas fc, boolean crear, FichaEvolucion fEvolucion) {
         super(parent, modal);
         initComponents();
         fichaClinicaPadre = fc;
@@ -253,7 +253,7 @@ public class VentanaFichaEvaluacion extends javax.swing.JDialog {
         String descripcion = this.textDescripcion.getText();
         if(validarCampos()){
             if(crearNuevo){ //crear
-                boolean respuesta = FichaEvolucionDB.crearFichaEvolucion(this.idUsuarioActual, this.idPlanTratamiento, fechaCita, descripcion);            
+                boolean respuesta = FichaEvolucionDB.crearFichaEvolucion(this.idPlanTratamiento, fechaCita, descripcion);            
                 this.fichaClinicaPadre.updateModeloFichaEvolucion();
                 this.fichaClinicaPadre.updateUI();
                 //this.dispose();
@@ -262,7 +262,7 @@ public class VentanaFichaEvaluacion extends javax.swing.JDialog {
                 if(verificarCambios()){
                     fichaEvolucion.setFechaCita(fechaCita);
                     fichaEvolucion.setDescripcion(descripcion);
-                    boolean respuesta = FichaEvolucionDB.editarFichaEvolucion(this.idUsuarioActual, fichaEvolucion);   
+                    boolean respuesta = FichaEvolucionDB.editarFichaEvolucion(fichaEvolucion);   
                     this.fichaClinicaPadre.updateModeloFichaEvolucion();
                     this.fichaClinicaPadre.updateUI();                    
                 }
