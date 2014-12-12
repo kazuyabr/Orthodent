@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="presupuesto" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="24b36cd3-5989-4e88-8a07-a3df2b85fa5e">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="291"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0FFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#EFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#EFF7FF"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="dataset1" uuid="7e8fc919-5cfc-4b5f-bcae-53d5eda72e84"/>
+	<subDataset name="tratamientos" uuid="70e9f5e1-a575-4795-bb1d-53dbd0f5bd0f">
+		<parameter name="ID_PRESUPUESTO" class="java.lang.Integer" isForPrompting="false">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[SELECT
+     tratamiento_piezapresupuesto.`pieza` AS tratamiento_piezapresupuesto_pieza,
+     tratamiento_piezapresupuesto.`valor_colegio` AS tratamiento_piezapresupuesto_valor_colegio,
+     tratamiento_piezapresupuesto.`valor_clinica` AS tratamiento_piezapresupuesto_valor_clinica
+FROM
+     `tratamiento_piezapresupuesto` tratamiento_piezapresupuesto
+WHERE
+     tratamiento_piezapresupuesto.`id_presupuesto` = $P{ID_PRESUPUESTO}]]>
+		</queryString>
+		<field name="tratamiento_piezapresupuesto_pieza" class="java.lang.Integer"/>
+		<field name="tratamiento_piezapresupuesto_valor_colegio" class="java.lang.Integer"/>
+		<field name="tratamiento_piezapresupuesto_valor_clinica" class="java.lang.Integer"/>
+	</subDataset>
+	<subDataset name="laboratorio" uuid="0e2b2d42-62d0-4948-9857-0aad627f50ae">
+		<parameter name="ID_PRESUPUESTO" class="java.lang.Integer" isForPrompting="false">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[SELECT
+     laboratorio_piezapresupuesto.`pieza` AS laboratorio_piezapresupuesto_pieza,
+     laboratorio_piezapresupuesto.`prestacion` AS laboratorio_piezapresupuesto_prestacion,
+     laboratorio_piezapresupuesto.`valor` AS laboratorio_piezapresupuesto_valor
+FROM
+     `laboratorio_piezapresupuesto` laboratorio_piezapresupuesto
+WHERE
+     `id_presupuesto`=$P{ID_PRESUPUESTO}]]>
+		</queryString>
+		<field name="laboratorio_piezapresupuesto_pieza" class="java.lang.Integer"/>
+		<field name="laboratorio_piezapresupuesto_prestacion" class="java.lang.String"/>
+		<field name="laboratorio_piezapresupuesto_valor" class="java.lang.Integer"/>
+	</subDataset>
+	<parameter name="ID_PRESUPUESTO" class="java.lang.Integer"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/felipe/Devel/Orthodent/Orthodent/src/orthodent/reportes/"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     presupuesto.`id_presupuesto` AS presupuesto_id_presupuesto,
+     presupuesto.`costo_total` AS presupuesto_costo_total,
+     presupuesto.`cantidad_tratamiento` AS presupuesto_cantidad_tratamiento,
+     presupuesto.`costo_lab` AS presupuesto_costo_lab,
+     usuario.`nombre` AS usuario_nombre,
+     usuario.`apellido_pat` AS usuario_apellido_pat,
+     usuario.`apellido_mat` AS usuario_apellido_mat,
+     paciente.`nombre` AS paciente_nombre,
+     paciente.`apellido_pat` AS paciente_apellido_pat,
+     paciente.`apellido_mat` AS paciente_apellido_mat
+FROM
+     `presupuesto` presupuesto INNER JOIN `paciente` paciente ON presupuesto.`id_paciente` = paciente.`id_paciente`
+     INNER JOIN `usuario` usuario ON presupuesto.`id_profesional` = usuario.`id_usuario`
+WHERE
+     presupuesto.id_presupuesto=$P{ID_PRESUPUESTO}]]>
+	</queryString>
+	<field name="presupuesto_id_presupuesto" class="java.lang.Integer"/>
+	<field name="presupuesto_costo_total" class="java.lang.Integer"/>
+	<field name="presupuesto_cantidad_tratamiento" class="java.lang.Integer"/>
+	<field name="presupuesto_costo_lab" class="java.lang.Integer"/>
+	<field name="usuario_nombre" class="java.lang.String"/>
+	<field name="usuario_apellido_pat" class="java.lang.String"/>
+	<field name="usuario_apellido_mat" class="java.lang.String"/>
+	<field name="paciente_nombre" class="java.lang.String"/>
+	<field name="paciente_apellido_pat" class="java.lang.String"/>
+	<field name="paciente_apellido_mat" class="java.lang.String"/>
+	<variable name="paciente_nombre_completo" class="java.lang.String">
+		<variableExpression><![CDATA[$F{paciente_nombre}+ " " + $F{paciente_apellido_pat} + " " +$F{paciente_apellido_mat}]]></variableExpression>
+	</variable>
+	<variable name="profesional_nombre_completo" class="java.lang.String">
+		<variableExpression><![CDATA[$F{usuario_nombre} + " " + $F{usuario_apellido_pat} + " " + $F{usuario_apellido_mat}]]></variableExpression>
+	</variable>
+	<variable name="costo_total" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{presupuesto_costo_total}+$F{presupuesto_costo_lab}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="201" splitType="Stretch">
+			<componentElement>
+				<reportElement key="table 1" style="table 1" x="106" y="111" width="360" height="50" uuid="5aa6a46d-439c-4147-8c62-56dd7d056706"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="tratamientos" uuid="3902ef44-8704-4b69-8791-b5c0bdd50494">
+						<datasetParameter name="ID_PRESUPUESTO">
+							<datasetParameterExpression><![CDATA[$F{presupuesto_id_presupuesto}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="90" uuid="4847ac15-3ba2-4988-8ed6-8756f7aa4a5e">
+						<jr:columnHeader style="table 1_CH" height="38" rowSpan="1">
+							<staticText>
+								<reportElement x="29" y="10" width="33" height="19" uuid="c319c437-511e-4725-bf1c-227d89e03aa6"/>
+								<text><![CDATA[Pieza]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="40" y="4" width="30" height="15" uuid="0e7a3fd5-30d4-4d17-9ad5-194ae92ae279"/>
+								<textFieldExpression><![CDATA[$F{tratamiento_piezapresupuesto_pieza}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="1e022913-fa30-4b66-ac9d-5f957ca58279">
+						<jr:columnHeader style="table 1_CH" height="38" rowSpan="1">
+							<staticText>
+								<reportElement x="15" y="10" width="64" height="19" uuid="35be3c89-0fc0-4601-8923-042bb767f6a2"/>
+								<text><![CDATA[Valor colegio]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="16" y="4" width="74" height="15" uuid="438bfdd9-07f8-470f-96fb-5b9d93fe756e"/>
+								<textFieldExpression><![CDATA[$F{tratamiento_piezapresupuesto_valor_colegio}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="4ad40a22-08fb-4b2a-b562-847279ea78c3">
+						<jr:columnHeader style="table 1_CH" height="38" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="10" width="90" height="19" uuid="e98cc0d4-6e6b-4ae0-9879-c90770044ce9"/>
+								<text><![CDATA[Valor clinica]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="16" y="4" width="74" height="15" uuid="5eb5265c-b340-4f32-96da-d2807bbcf070"/>
+								<textFieldExpression><![CDATA[$F{tratamiento_piezapresupuesto_valor_clinica}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<staticText>
+				<reportElement x="26" y="0" width="54" height="20" uuid="2478a6c0-3940-43a9-901b-8d1f87340b6b"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Paciente: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="31" width="67" height="20" uuid="3f7c316e-87c6-4762-991f-74325535e481"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Profesional:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="64" width="555" height="1" uuid="27364112-a03d-4f89-9144-92ecd80e0ffb"/>
+			</line>
+			<textField>
+				<reportElement x="80" y="0" width="187" height="20" uuid="58931115-6293-4eec-a876-ca7b985b1309"/>
+				<textFieldExpression><![CDATA[$V{paciente_nombre_completo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="31" width="187" height="20" uuid="98b0a3c6-a716-434b-b6e8-03093b0c5218"/>
+				<textFieldExpression><![CDATA[$V{profesional_nombre_completo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="218" y="79" width="157" height="20" uuid="587d37ba-7edc-476d-87a7-af92e2b87cb6"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tratamientos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="357" y="181" width="37" height="20" uuid="c0e704dd-a4ee-4e7d-9d15-e5fb5fb4d8b9"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="394" y="181" width="61" height="20" uuid="98d65847-0feb-4c53-8534-b7484033dd83"/>
+				<textFieldExpression><![CDATA[$F{presupuesto_costo_total}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="197">
+			<staticText>
+				<reportElement x="218" y="14" width="157" height="20" uuid="5fa5abf9-41c5-4a97-8d77-d64093c66edb"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Laboratorio]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement key="table 2" style="table 2" x="106" y="49" width="360" height="50" uuid="71bbc03f-bf21-4557-a1b5-366904c13486"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="laboratorio" uuid="969e6ab8-7cb1-48cf-95d3-c25c1ec7cdc4">
+						<datasetParameter name="ID_PRESUPUESTO">
+							<datasetParameterExpression><![CDATA[$F{presupuesto_id_presupuesto}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="90" uuid="8b06a67a-0c6c-49fc-8762-447d7f9b463e">
+						<jr:columnHeader style="table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="0e44bd42-0a3b-4458-86aa-e29a1f1dba3c"/>
+								<text><![CDATA[Pieza]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 2_TD" height="20">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="20" uuid="075a117f-b96e-43df-aa46-d847192b933f"/>
+								<textFieldExpression><![CDATA[$F{laboratorio_piezapresupuesto_pieza}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="f660d259-b099-41c8-9688-dda0077a616b">
+						<jr:columnHeader style="table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="dc5001da-6af3-4e95-804a-dadec0d9e5d5"/>
+								<text><![CDATA[Prestacion]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 2_TD" height="20">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="20" uuid="1be0e0e9-a857-4425-9997-c7c5241ac9a3"/>
+								<textFieldExpression><![CDATA[$F{laboratorio_piezapresupuesto_prestacion}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="738075b9-3475-42b7-8e67-010468868bfb">
+						<jr:columnHeader style="table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="282d2565-a34c-41ae-a946-2826e275af87"/>
+								<text><![CDATA[Valor]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 2_TD" height="20">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="20" uuid="a5088127-b695-4525-936e-85df260da147"/>
+								<textFieldExpression><![CDATA[$F{laboratorio_piezapresupuesto_valor}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<staticText>
+				<reportElement x="357" y="131" width="37" height="20" uuid="25bf0ba0-b184-4e99-a857-85c98c60d88d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="394" y="131" width="61" height="20" uuid="97bff73f-1788-40fa-ab4e-2b1598f7e8db"/>
+				<textFieldExpression><![CDATA[$F{presupuesto_costo_lab}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="405" y="177" width="100" height="20" uuid="1fe4efd3-5f66-4de1-abdb-340b0fe2c0db"/>
+				<textFieldExpression><![CDATA[$V{costo_total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="331" y="177" width="63" height="20" uuid="f5bf1073-8fe6-4fb7-b4be-c987e022fccf"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costo total:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="150" width="555" height="1" uuid="210b7ec7-0d00-40d8-9204-12f905448662"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

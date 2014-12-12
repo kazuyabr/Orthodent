@@ -3,44 +3,56 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package reportes;
+package orthodent.reportes;
 
+import java.awt.Desktop;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Map;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 import net.sf.jasperreports.view.JasperViewer;
+import orthodent.db.DbConnection;
+import  java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author felipe
  */
 public class PruebaReporte {
-    TableModel tableModel = null;
+
     public void do_test() {
         JasperPrint jasperPrint = null;
-        
-        TableModelData();
+
         try {
-            InputStream in = this.getClass().getClassLoader().getResourceAsStream("reportes/pagos.jrxml");
-            JasperReport report = JasperCompileManager.compileReport(in);
+            /* Asi se usa, (ID de presupuesto, DB connection) */
+            jasperPrint = Reportes.generarPresupuesto(5, new DbConnection());
             
-            jasperPrint = JasperFillManager.fillReport(report, new HashMap(),
-                    new JRTableModelDataSource(tableModel));
-            JasperViewer jasperViewer = new JasperViewer(jasperPrint);
-            jasperViewer.setVisible(true);
+            /* Asi se genera un PDF */
+            File tempPdf;
+            try {
+                tempPdf = File.createTempFile("orthodent_reporte", ".pdf");
+                JasperExportManager.exportReportToPdfFile(jasperPrint, tempPdf.getPath());
+                System.out.println("PDF en " + tempPdf.getPath());
+                /* Asi se visualiza */
+                Desktop.getDesktop().open(tempPdf);
+            } catch (IOException ex) {
+                Logger.getLogger(PruebaReporte.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         } catch (JRException ex) {
             System.out.println(ex.toString());
         }
-    }
-
-    public void TableModelData() {
-        
     }
     
     static public void main(String []args) {
