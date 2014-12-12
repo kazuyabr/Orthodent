@@ -215,9 +215,9 @@ public class NuevaSubCategoria extends javax.swing.JDialog {
                 evt.consume();
             }
         }
-        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
-            evt.consume();
-        }
+//        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
+//            evt.consume();
+//        }
     }//GEN-LAST:event_nombresKeyTyped
     
     private boolean validarCamposObligatorios(String nombre){

@@ -246,9 +246,9 @@ public class NuevoTratamiento extends javax.swing.JDialog {
                 evt.consume();
             }
         }
-        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
-            evt.consume();
-        }
+//        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
+//            evt.consume();
+//        }
     }//GEN-LAST:event_nombresKeyTyped
 
     private void tf_valorUCOKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_valorUCOKeyTyped
