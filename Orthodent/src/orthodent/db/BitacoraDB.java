@@ -50,7 +50,7 @@ public class BitacoraDB
             while (rs.next())
             {
                 Bitacora b = new Bitacora(rs.getInt("id_bitacora"), rs.getString("operacion"),rs.getInt("usuario"),
-                                                rs.getString("tabla"), rs.getInt("primary_key"), BitacoraDB.convertTimestampToString(rs.getTimestamp("created_at")));
+                                                rs.getString("tabla"), rs.getInt("primary_key"), convertTimestampToString(rs.getTimestamp("created_at")));
                                                 
                 bitacoras.add(b);
             }
@@ -63,57 +63,7 @@ public class BitacoraDB
         }
     }
      
-     public static boolean eliminarBitacora(int idBitacora) throws SQLException{
-        try{
-            DbConnection db = new DbConnection();
-            Connection con = db.connection;
-            
-            java.sql.Statement st = con.createStatement();
-            int aux = st.executeUpdate("DELETE FROM bitacora "+
-                                            "WHERE id_bitacora="+idBitacora);
-            boolean resultado = (aux == 1)? true : false;
-            st.close();
-            con.close();
-            return resultado;
-        }
-        catch ( SQLException e) {
-            return false;
-        }
-    }
      
-     static public Bitacora getBitacora(int idBitacora) throws Exception{
-        Bitacora bitacora = null;
-        try {
-            DbConnection db = new DbConnection();
-            Connection con = db.getConnection();
-            
-            java.sql.Statement st = con.createStatement();
-            
-            ResultSet rs = st.executeQuery("SELECT * from bitacora where id_bitacora='" + idBitacora + "'");
-            if (rs.next())
-            {
-                int id_bitacora = rs.getInt("id_bitacora");
-                String accion = rs.getString("operacion");
-                int idUsuario = rs.getInt("usuario");
-                String tabla = rs.getString("tabla");
-                int pk = rs.getInt("rut");
-                String fecha = rs.getString("email");
-               
-
-                bitacora = new Bitacora(id_bitacora, accion, idUsuario, tabla, pk,fecha);
-            }
-            else{
-                bitacora = null;
-            }
-            rs.close();
-            con.close();
-            return bitacora;
-        }
-
-        catch ( SQLException e) {
-            return null;
-        }
-    }
      
     
     public static String convertTimestampToString(Timestamp date){

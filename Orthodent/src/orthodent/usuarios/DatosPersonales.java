@@ -4,6 +4,7 @@
  */
 package orthodent.usuarios;
 
+import modelo.ClinicaInterna;
 import java.awt.Cursor;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import modelo.Rol;
 import modelo.Usuario;
 import orthodent.Item;
 import orthodent.db.Autenticacion;
+import orthodent.db.ClinicaInternaDB;
 import orthodent.db.RolDB;
 
 /**
@@ -595,7 +597,7 @@ public class DatosPersonales extends JPanel{
     }//GEN-LAST:event_clinicasMouseClicked
 
     private void initClinicas() {
-        ArrayList<ClinicaInterna> clinicas = Autenticacion.listarClinicas();
+        ArrayList<ClinicaInterna> clinicas = ClinicaInternaDB.listarClinicas();
         if(clinicas!=null && clinicas.size()>0){
             Vector model = new Vector();
             Item item = null;

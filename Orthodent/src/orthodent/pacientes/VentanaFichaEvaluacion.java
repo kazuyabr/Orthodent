@@ -25,6 +25,7 @@ public class VentanaFichaEvaluacion extends javax.swing.JDialog {
     public static FichasClinicas fichaClinicaPadre;
     public static boolean crearNuevo;
     public static FichaEvolucion fichaEvolucion;
+    public static int idUsuarioActual;
     
     public VentanaFichaEvaluacion(java.awt.Frame parent, boolean modal, int idPlanTratamiento, FichasClinicas fc, boolean crear, FichaEvolucion fEvolucion) {
         super(parent, modal);
@@ -32,6 +33,7 @@ public class VentanaFichaEvaluacion extends javax.swing.JDialog {
         fichaClinicaPadre = fc;
         crearNuevo = crear;
         fichaEvolucion = fEvolucion;
+        this.idUsuarioActual = idUsuarioActual;
         this.textDescripcion.setLineWrap(true);
         this.aceptar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.cancelar.setCursor(new Cursor(Cursor.HAND_CURSOR));

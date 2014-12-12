@@ -5,12 +5,14 @@
  */
 package orthodent.usuarios;
 
+import modelo.ClinicaInterna;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import modelo.Usuario;
 import orthodent.db.Autenticacion;
+import orthodent.db.ClinicaInternaDB;
 
 /**
  *
@@ -195,7 +197,7 @@ public class DatosClinica extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "No se puede eliminar esta clínica porque está asociada a usuarios", "Orthodent", JOptionPane.ERROR_MESSAGE);
         }
         else if(n==0){
-            boolean resul = Autenticacion.eliminarClinica(this.clinica);
+            boolean resul = ClinicaInternaDB.eliminarClinica(this.clinica);
 
             if(resul){
                 try {
@@ -216,7 +218,7 @@ public class DatosClinica extends javax.swing.JPanel {
         
         this.clinica.setNombre(nombreNuevo);
         
-        if(!Autenticacion.actualizarClinica(this.clinica)){
+        if(!ClinicaInternaDB.actualizarClinica(this.clinica)){
             this.clinica.setNombre(nombreAntiguo);
             JOptionPane.showMessageDialog(this,
                     "No se pudo guardar el cambio",

@@ -9,6 +9,8 @@ import orthodent.db.Autenticacion;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import modelo.Usuario;
@@ -251,6 +253,11 @@ public class Login extends javax.swing.JDialog implements WindowListener{
                 JOptionPane.PLAIN_MESSAGE,null,null,"");
         
         if(correo!=null && correo.length()>0){
+            if(!validarEmail(correo)){
+                JOptionPane.showMessageDialog(this,
+                        "Debe ingresar un correo válido.");
+                return;
+            }
             boolean respuesta;
             try {
                 respuesta = Autenticacion.recuperarContrasena(correo);
@@ -266,6 +273,10 @@ public class Login extends javax.swing.JDialog implements WindowListener{
                 JOptionPane.showMessageDialog(this,
                         "El correo no coincide con ningún registro.");
             }
+        }
+        if(correo.equals("")){
+            JOptionPane.showMessageDialog(this,
+                        "Debe ingresar un correo válido.");
         }
     }//GEN-LAST:event_botonOlvidoContraseñaActionPerformed
 
@@ -288,6 +299,19 @@ public class Login extends javax.swing.JDialog implements WindowListener{
     private void campoNombreUsuarioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoNombreUsuarioKeyReleased
         
     }//GEN-LAST:event_campoNombreUsuarioKeyReleased
+    
+    
+    public static boolean validarEmail(String email) {
+        final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        // Compiles the given regular expression into a pattern.
+        Pattern pattern = Pattern.compile(PATTERN_EMAIL);
+ 
+        // Match the given input against this pattern
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+ 
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAceptar;

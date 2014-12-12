@@ -27,6 +27,7 @@ public class FichaEvolucionDB {
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
+            
             return resultado;
         }
         catch ( SQLException e) {
@@ -48,6 +49,7 @@ public class FichaEvolucionDB {
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
+            
             return resultado;
         }
         catch ( SQLException e) { 
@@ -87,7 +89,7 @@ public class FichaEvolucionDB {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM ficha_evolucion WHERE id_plantratamiento="+idPlanTratamiento);
+            ResultSet rs = st.executeQuery("SELECT * FROM ficha_evolucion WHERE id_plantratamiento="+idPlanTratamiento+" ORDER BY fecha_cita DESC");
             fichasEvolucion = new ArrayList<FichaEvolucion>();
             while (rs.next())
             {

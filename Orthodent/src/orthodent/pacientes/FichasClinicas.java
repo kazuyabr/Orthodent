@@ -100,6 +100,7 @@ public class FichasClinicas extends JPanel{
                 Object [] fila = getRowAt2(row);
                 if (me.getClickCount() == 1) { 
                     try {
+                        habilitarBtnEdit();
                         fichaEvolucionSelected = FichaEvolucionDB.getFichaEvolucion(((Item)fila[1]).getId());
                         if(fichaEvolucionSelected != null){
                             habilitarBtnRemove();
@@ -109,23 +110,16 @@ public class FichasClinicas extends JPanel{
                     }
                 }
                 else if(me.getClickCount() == 2){
-                    try {
-                        fichaEvolucionSelected = FichaEvolucionDB.getFichaEvolucion(((Item)fila[1]).getId());
-                        if(fichaEvolucionSelected != null){
-                            habilitarBtnRemove();
-                            editarFichaEvolucion();
-                        }                        
-                    } catch (Exception ex) {
-                        Logger.getLogger(FichasClinicas.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+
                 }
             }
         });
     }
     
     public void editarFichaEvolucion(){
-        //System.out.println("problem");
-        new VentanaFichaEvaluacion(((JVentana)this.getTopLevelAncestor()),true, tratamientotoSelected.getIdPlanTratamiento(), this, false, fichaEvolucionSelected).setVisible(true);
+       if(fichaEvolucionSelected != null){
+           new VentanaFichaEvaluacion(((JVentana)this.getTopLevelAncestor()),true, tratamientotoSelected.getIdPlanTratamiento(), this, false, fichaEvolucionSelected).setVisible(true);
+       }
     }
     
     public void updateTablaFichaEvolucion() throws Exception{
@@ -155,7 +149,7 @@ public class FichasClinicas extends JPanel{
         
         this.modeloFichaEvolucion = new DefaultTableModel(this.filasFichaEvolucion, this.columnasNombreFichaEvolucion) {
             Class[] types = new Class [] {
-                String.class, Item.class, String.class, String.class
+                Item.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false
@@ -176,8 +170,19 @@ public class FichasClinicas extends JPanel{
     
     public void habilitarBtnAdd(){
         this.add.setEnabled(true);
-        //this.remove.setEnabled(true);
     }
+    
+    public void deshabilitarBtnAdd(){
+        this.add.setEnabled(false);
+    }    
+    
+    public void habilitarBtnEdit(){
+        this.edit.setEnabled(true);
+    }
+    
+    public void deshabilitarBtnEdit(){
+        this.edit.setEnabled(false);
+    }    
     
     public void habilitarBtnRemove(){
         this.remove.setEnabled(true);
@@ -199,14 +204,16 @@ public class FichasClinicas extends JPanel{
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
                 if (me.getClickCount() == 1) { 
+                    deshabilitarBtnAdd();
+                    deshabilitarBtnEdit();
                     Object [] fila = getRowAt(row);
                     try {
-                        habilitarBtnAdd();
                         deshabilitarBtnRemove();
                         
                         tratamientotoSelected = PlanTratamientoDB.getPlanTratamiento(((Item)fila[1]).getId());
                                                
                         if(tratamientotoSelected!=null){
+                            habilitarBtnAdd();
                             tablaFichaEvolucion.setEnabled(true);
                             iniciarTablaFichaEvolucion();
                             updateTablaFichaEvolucion();
@@ -348,6 +355,7 @@ public class FichasClinicas extends JPanel{
         tablaFichaEvolucion = new javax.swing.JTable();
         add = new javax.swing.JButton();
         remove = new javax.swing.JButton();
+        edit = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(850, 551));
@@ -456,6 +464,19 @@ public class FichasClinicas extends JPanel{
             }
         });
 
+        edit.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        edit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/edit_mini.png"))); // NOI18N
+        edit.setText("Editar Ficha Clínica");
+        edit.setBorder(null);
+        edit.setBorderPainted(false);
+        edit.setContentAreaFilled(false);
+        edit.setEnabled(false);
+        edit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -466,11 +487,13 @@ public class FichasClinicas extends JPanel{
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(labelProfesional)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(add))
+                        .addComponent(add)
+                        .addGap(18, 18, 18)
+                        .addComponent(edit))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(remove)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -478,7 +501,8 @@ public class FichasClinicas extends JPanel{
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelProfesional)
-                    .addComponent(add))
+                    .addComponent(add)
+                    .addComponent(edit))
                 .addGap(13, 13, 13)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -498,7 +522,7 @@ public class FichasClinicas extends JPanel{
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(157, Short.MAX_VALUE))
+                .addContainerGap(147, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -635,10 +659,15 @@ public class FichasClinicas extends JPanel{
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
         new VentanaFichaEvaluacion(((JVentana)this.getTopLevelAncestor()),true, tratamientotoSelected.getIdPlanTratamiento(), this, true, fichaEvolucionSelected).setVisible(true);
     }//GEN-LAST:event_addActionPerformed
+
+    private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
+        editarFichaEvolucion();
+    }//GEN-LAST:event_editActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add;
+    private javax.swing.JButton edit;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

@@ -16,14 +16,14 @@ import modelo.TratamientoPiezaPlan;
  */
 public class TratamientoPiezaPlanDB {
     
-    public static boolean crearTratamientoPiezaPlan(int idPlanTratamiento, int idTratamiento, int pieza, boolean estado){
+    public static boolean crearTratamientoPiezaPlan(int idPlanTratamiento, int idTratamiento, int pieza, int valor, boolean estado){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
             
             java.sql.Statement st = con.createStatement();
-            int aux = st.executeUpdate("INSERT INTO tratamiento_piezaplan (id_plantratamiento, id_tratamiento, pieza, estado)\n" +
-                                        "VALUES ("+idPlanTratamiento+","+idTratamiento+","+pieza+","+estado+")");
+            int aux = st.executeUpdate("INSERT INTO tratamiento_piezaplan (id_plantratamiento, id_tratamiento, pieza, valor, estado)\n" +
+                                        "VALUES ("+idPlanTratamiento+","+idTratamiento+","+pieza+","+valor+","+estado+")");
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
@@ -44,6 +44,7 @@ public class TratamientoPiezaPlanDB {
                                             "SET id_plantratamiento = "+tratamientoPiezaPlan.getIdPlanTratamiento()+"\n" +
                                             ",id_tratamiento="+tratamientoPiezaPlan.getIdTratamiento()+"\n" +
                                             ",pieza="+tratamientoPiezaPlan.getPieza()+"\n" +
+                                            ",valor="+tratamientoPiezaPlan.getValor()+"\n" +
                                             ",fecha_realizado='"+tratamientoPiezaPlan.getFechaRealizado()+"'\n" +
                                             ",estado="+tratamientoPiezaPlan.getEstado()+"\n" +
                                             "WHERE id_tratamiento_piezaplan="+tratamientoPiezaPlan.getIdTratamientoPiezaPlan());
@@ -71,7 +72,7 @@ public class TratamientoPiezaPlanDB {
             while (rs.next())
             {
                 TratamientoPiezaPlan t = new TratamientoPiezaPlan(rs.getInt("id_tratamiento_piezaplan"), rs.getInt("id_plantratamiento"), 
-                                                                            rs.getInt("id_tratamiento"), rs.getInt("pieza"),
+                                                                            rs.getInt("id_tratamiento"), rs.getInt("pieza"), rs.getInt("valor"),
                                                                             rs.getString("fecha_realizado"), rs.getBoolean("estado"));
                 tratamientosPiezaPlan.add(t);
             }
@@ -97,7 +98,7 @@ public class TratamientoPiezaPlanDB {
             while (rs.next())
             {
                 TratamientoPiezaPlan t = new TratamientoPiezaPlan(rs.getInt("id_tratamiento_piezaplan"), rs.getInt("id_plantratamiento"), 
-                                                                            rs.getInt("id_tratamiento"), rs.getInt("pieza"),
+                                                                            rs.getInt("id_tratamiento"), rs.getInt("pieza"), rs.getInt("valor"),
                                                                             rs.getString("fecha_realizado"), rs.getBoolean("estado"));
                 tratamientosPiezaPlan.add(t);
             }
@@ -124,10 +125,11 @@ public class TratamientoPiezaPlanDB {
                 int idPlanTratamiento = rs.getInt("id_plantratamiento");
                 int idTratamiento = rs.getInt("id_tratamiento");
                 int pieza = rs.getInt("pieza");
+                int valor = rs.getInt("valor");
                 String fechaRealizado = rs.getString("fecha_realizado");
                 boolean estado = rs.getBoolean("estado");
 
-                tratamientoPiezaPlan = new TratamientoPiezaPlan(idTratamientoPiezaPlan, idPlanTratamiento, idTratamiento, pieza, fechaRealizado, estado);
+                tratamientoPiezaPlan = new TratamientoPiezaPlan(idTratamientoPiezaPlan, idPlanTratamiento, idTratamiento, pieza, valor, fechaRealizado, estado);
             }
             else{
                 tratamientoPiezaPlan = null;
@@ -136,11 +138,8 @@ public class TratamientoPiezaPlanDB {
             con.close();
             return tratamientoPiezaPlan;
         }
-
         catch ( SQLException e) {
             return null;
         }
-    }     
-    
-    
+    }
 }

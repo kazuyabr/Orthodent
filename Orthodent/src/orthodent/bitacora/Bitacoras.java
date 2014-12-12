@@ -12,7 +12,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -20,10 +19,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -34,11 +34,10 @@ import javax.swing.table.TableModel;
 import modelo.Bitacora;
 import modelo.Paciente;
 import modelo.Usuario;
-import orthodent.JVentana;
+import orthodent.db.Autenticacion;
 import orthodent.db.BitacoraDB;
 import orthodent.db.PacienteDB;
 import orthodent.pacientes.MostrarInfoPaciente;
-import orthodent.pacientes.NuevoPaciente;
 
 /**
  *
@@ -57,7 +56,7 @@ public class Bitacoras extends JPanel implements ActionListener
     private JPanel contenedorListarBitacoras;
     private boolean isListarBitacoras;
     
-    public Bitacoras(){
+    public Bitacoras() throws Exception{
         
         this.setBackground(new Color(243,242,243));
         this.setPreferredSize(new Dimension(1073, 561));
@@ -83,7 +82,7 @@ public class Bitacoras extends JPanel implements ActionListener
         return this.infoPaciente;
     }
     
-    private void initComponents(){
+    private void initComponents() throws Exception{
         
         this.contenedorListarBitacoras = new JPanel();
         this.contenedorListarBitacoras.setLayout(new BorderLayout());
@@ -96,7 +95,11 @@ public class Bitacoras extends JPanel implements ActionListener
         this.buscador.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent evt) {
-                buscadorKeyTyped(evt);
+                try {
+                    buscadorKeyTyped(evt);
+                } catch (Exception ex) {
+                    Logger.getLogger(Bitacoras.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         
@@ -111,36 +114,12 @@ public class Bitacoras extends JPanel implements ActionListener
         this.botonBuscar.addActionListener(this);
         this.tabla = new JTable();
         this.tabla.setFont(new Font("Georgia", 0, 11));
-        this.columnasNombre = new String [] {"ID", "Accion", "Usuario", "Tabla", "Fecha "};
+        this.columnasNombre = new String [] {"Fecha", "Accion", "Tabla", "Usuario"};
         this.updateModelo();
         this.tabla.getTableHeader().setReorderingAllowed(false);
         
         this.tabla.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
-                JTable table =(JTable) me.getSource();
-                Point p = me.getPoint();
-                int row = table.rowAtPoint(p);
-                if (me.getClickCount() == 2) {
-                    Object [] fila = getRowAt(row);
-                    String idAux = (String)(fila[0]);
-                    int idAuxasd = Integer.parseInt(idAux);
-                    try {
-                        
-                        Bitacora bitacora = BitacoraDB.getBitacora((idAuxasd));
-                        //Paciente paciente = PacienteDB.getPaciente((String)fila[3]);
-                        
-                        if(bitacora!=null){
-                            
-                            //infoPaciente = new MostrarInfoPaciente(paciente, actual);
-                            
-                            remove(contenedorListarBitacoras);
-                            //add(infoPaciente, BorderLayout.CENTER);
-                            isListarBitacoras = false;
-                            updateUI();
-                        }
-                    } catch (Exception ex) {
-                    }
-                }
             }
         });
     }
@@ -171,7 +150,7 @@ public class Bitacoras extends JPanel implements ActionListener
         return fecha;
     }
     
-    public void updateModelo(){
+    public void updateModelo() throws Exception{
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
         ArrayList<Bitacora> bitacoras = null;
         
@@ -190,11 +169,18 @@ public class Bitacoras extends JPanel implements ActionListener
         
         for(Bitacora bitacora : bitacoras){
             
+                String[] fecha = bitacora.getFecha().split(" ");
+                String fechaBitacora = fecha[0];
                 
-                String fechaNacimiento = this.girarFecha(bitacora.getFecha());
+                Usuario usuario = Autenticacion.getUsuario(bitacora.getId_usuario());
+                            
+                String nombre = usuario.getNombre();
+                if(nombre.contains(" ")){
+                    nombre = nombre.substring(0,nombre.indexOf(" "));
+                }
+                nombre = nombre + " " + usuario.getApellido_pat();
                 
-                Object [] fila = new Object [] {bitacora.getIdBitacora(), bitacora.getAccion(),bitacora.getId_usuario(),
-                                            bitacora.getTabla(), bitacora.getFecha()};
+                Object [] fila = new Object [] {fechaBitacora, bitacora.getAccion(), bitacora.getTabla(),nombre};
                 
                 objetos.add(fila);
             
@@ -209,10 +195,10 @@ public class Bitacoras extends JPanel implements ActionListener
         
         this.modelo = new DefaultTableModel(this.filas, this.columnasNombre) {
             Class[] types = new Class [] {
-                String.class, String.class, String.class, String.class, String.class, String.class, String.class
+                String.class, String.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -313,7 +299,7 @@ public class Bitacoras extends JPanel implements ActionListener
         }
     }
     
-    private void buscadorKeyTyped(KeyEvent evt) {
+    private void buscadorKeyTyped(KeyEvent evt) throws Exception {
         char c = evt.getKeyChar();
         
         if(c==KeyEvent.VK_ENTER){

@@ -10,19 +10,22 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import modelo.Comuna;
+import modelo.Region;
 import orthodent.JVentana;
+import orthodent.db.ComunaDB;
 import orthodent.db.PacienteDB;
+import orthodent.db.RegionDB;
 
 /**
  *
  * @author Mary
  */
 public class NuevoPaciente extends javax.swing.JDialog {
-
+    ArrayList<Region> regiones;
     /**
      * Creates new form NuevoUsuario
      */
@@ -37,6 +40,22 @@ public class NuevoPaciente extends javax.swing.JDialog {
         this.setLocation((screenSize.width - this.getSize().width) / 2 ,
                 (screenSize.height - this.getSize().height) / 2);
         
+        
+        this.setTitle("Nuevo Paciente");
+        regiones = RegionDB.listarRegiones();
+        for(int i=0; i<regiones.size(); i++){
+            this.ciudad.addItem(regiones.get(i).getNombre());
+        }
+        
+    }
+    
+    public int buscarIdRegion(String regionSeleccionada){
+        for(int i=0; i<regiones.size(); i++){
+            if(regiones.get(i).getNombre().equals(regionSeleccionada)){
+                return regiones.get(i).getCodigo();
+            }
+        }
+        return 0;
     }
 
     /**
@@ -172,13 +191,21 @@ public class NuevoPaciente extends javax.swing.JDialog {
 
         labelCiudad.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         labelCiudad.setForeground(new java.awt.Color(255, 255, 255));
-        labelCiudad.setText("Ciudad");
+        labelCiudad.setText("Región");
 
         ciudad.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        ciudad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Curico", "Talca", "Linares" }));
+        ciudad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ciudadActionPerformed(evt);
+            }
+        });
 
         comuna.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        comuna.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "Curico", "Talca", "Linares" }));
+        comuna.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comunaActionPerformed(evt);
+            }
+        });
 
         labelComuna.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         labelComuna.setForeground(new java.awt.Color(255, 255, 255));
@@ -462,8 +489,6 @@ public class NuevoPaciente extends javax.swing.JDialog {
         
         String fechaNacimiento = getFechaString(date);
         
-        int edad = this.calculaEdad(this.girarFecha(fechaNacimiento));
-        
         String email = this.email.getText();
         
         String telefono = this.telefono.getText();
@@ -481,6 +506,7 @@ public class NuevoPaciente extends javax.swing.JDialog {
                     boolean valida = PacienteDB.validaRut(rut);
                     if(valida){
                         try {
+                            int edad = this.calculaEdad(this.girarFecha(fechaNacimiento));
                             boolean respuesta = PacienteDB.crearPaciente(nombre,apellidoPat,apellidoMat,rut,email,fechaNacimiento,edad,
                                                                         sexo,"",telefono,ciudad,comuna,direccion);
 
@@ -692,6 +718,22 @@ public class NuevoPaciente extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_direccionKeyTyped
+
+    private void ciudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ciudadActionPerformed
+        int id = buscarIdRegion(ciudad.getSelectedItem().toString());
+        if(id != 0){
+            ArrayList<Comuna> comunas = ComunaDB.listarComunasPorRegion(id);
+            this.comuna.removeAllItems();
+            for(int i=0; i<comunas.size(); i++){
+                this.comuna.addItem(comunas.get(i).getNombre());
+            }
+        }        
+        
+    }//GEN-LAST:event_ciudadActionPerformed
+
+    private void comunaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comunaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comunaActionPerformed
     
     private boolean validarCamposObligatorios(String nombre, String apellidoPat, String rut, String fechaNacimiento, String telefono){
         

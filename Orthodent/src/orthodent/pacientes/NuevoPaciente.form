@@ -425,7 +425,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Ciudad"/>
+                <Property name="text" type="java.lang.String" value="Regi&#xf3;n"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JComboBox" name="ciudad">
@@ -434,14 +434,12 @@
                   <Font name="Georgia" size="12" style="0"/>
                 </Property>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
-                    <StringItem index="0" value=" "/>
-                    <StringItem index="1" value="Curico"/>
-                    <StringItem index="2" value="Talca"/>
-                    <StringItem index="3" value="Linares"/>
-                  </StringArray>
+                  <StringArray count="0"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ciudadActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JComboBox" name="comuna">
               <Properties>
@@ -449,14 +447,12 @@
                   <Font name="Georgia" size="12" style="0"/>
                 </Property>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
-                    <StringItem index="0" value=" "/>
-                    <StringItem index="1" value="Curico"/>
-                    <StringItem index="2" value="Talca"/>
-                    <StringItem index="3" value="Linares"/>
-                  </StringArray>
+                  <StringArray count="0"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="comunaActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="labelComuna">
               <Properties>

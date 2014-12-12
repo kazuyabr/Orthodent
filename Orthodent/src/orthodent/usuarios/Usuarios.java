@@ -4,6 +4,7 @@
  */
 package orthodent.usuarios;
 
+import modelo.ClinicaInterna;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import modelo.Rol;
 import modelo.Usuario;
 import orthodent.JVentana;
 import orthodent.db.Autenticacion;
+import orthodent.db.ClinicaInternaDB;
 import orthodent.db.RolDB;
 
 /**
@@ -25,7 +27,9 @@ public class Usuarios extends JPanel implements ActionListener{
     private Image bannerFondo;
     private Image bannerClinicas;
     private JTextField buscador;
+    private JTextField buscadorClinicas;
     private JButton botonBuscar;
+    private JButton botonBuscarClinicas;
     private JButton nuevoUsuario;
     private JButton nuevaClinica;
     private JTable tabla;
@@ -54,7 +58,9 @@ public class Usuarios extends JPanel implements ActionListener{
         this.addComponents();
         this.mostrandoClinica = false;
         this.botonBuscar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.botonBuscarClinicas.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.nuevoUsuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.nuevaClinica.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
     public boolean isIsListarUsuarios() {
@@ -312,9 +318,14 @@ public class Usuarios extends JPanel implements ActionListener{
         if(e.getSource() == this.botonBuscar){
             this.buscar();
         }
+        
         if(e.getSource() == this.nuevaClinica){
             new NuevaClinica(((JVentana)this.getTopLevelAncestor()),true).setVisible(true);
         }
+        
+        if(e.getSource() == this.botonBuscarClinicas){
+            this.buscarClinica();
+        }        
     }
     
     private void buscadorKeyTyped(KeyEvent evt) {
@@ -336,6 +347,26 @@ public class Usuarios extends JPanel implements ActionListener{
             }
         }
     }
+    
+    private void buscadorClinicasKeyTyped(KeyEvent evt) {
+        char c = evt.getKeyChar();
+        
+        if(c==KeyEvent.VK_ENTER){
+            evt.consume();
+            
+            if(this.buscadorClinicas.getText().equals("")){
+                this.updateModeloClinica();
+            }
+            else{
+                this.buscarClinica();
+            }
+        }
+        else if(c==KeyEvent.VK_BACK_SPACE){
+            if(this.buscadorClinicas.getText().equals("")){
+                this.updateModeloClinica();
+            }
+        }
+    }    
     
     private void buscar(){
         String value = this.buscador.getText();
@@ -397,6 +428,64 @@ public class Usuarios extends JPanel implements ActionListener{
         
         this.tabla.setModel(modelo);
     }
+    
+    
+    private void buscarClinica(){
+        String value = this.buscadorClinicas.getText();
+        
+        ArrayList<ClinicaInterna> clinicas = ClinicaInternaDB.listarClinicas();
+        
+        int m = this.columnasNombre.length;
+        
+        ArrayList<Object []> objetos = new ArrayList<Object []>();
+        
+        for(ClinicaInterna clinica : clinicas){
+
+                Object [] fila = new Object [] {clinica.getNombre()};
+                
+                boolean aux = false;
+                
+                for(Object o : fila){
+                    String obj = (String) o;
+                    obj = obj.toLowerCase();
+                    if(obj.contains(value)){
+                        aux = true;
+                        break;
+                    }
+                }
+                
+                if(aux){
+                    objetos.add(fila);
+                }
+            
+        }
+        
+        this.filasClinicas = new Object [objetos.size()][m];
+        int i = 0;
+        for(Object [] o : objetos){
+            this.filasClinicas[i] = o;
+            i++;
+        }
+        
+        this.modeloClinicas = new DefaultTableModel(this.filasClinicas, this.columnasNombreClinicas) {
+            Class[] types = new Class [] {
+                String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
+        
+        this.tablaClinicas.setModel(modeloClinicas);
+    }    
 
     private void initComponentsClinicas() {
         
@@ -404,6 +493,25 @@ public class Usuarios extends JPanel implements ActionListener{
         this.contenedorListarClinicas.setLayout(new BorderLayout());
         
         this.bannerClinicas = new ImageIcon("src/imagenes/directorioClinicas.png").getImage();
+        
+        this.buscadorClinicas = new JTextField();
+        
+        this.buscadorClinicas.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent evt) {
+                buscadorClinicasKeyTyped(evt);
+            }
+        });
+        
+        this.botonBuscarClinicas = new JButton();
+        this.botonBuscarClinicas.setForeground(new Color(11, 146, 181));
+        this.botonBuscarClinicas.setFont(new Font("Georgia", 1, 12));
+        this.botonBuscarClinicas.setIcon(new ImageIcon("src/imagenes/lupa_mini.png"));
+        this.botonBuscarClinicas.setText("Buscar");
+        this.botonBuscarClinicas.setBorder(null);
+        this.botonBuscarClinicas.setBorderPainted(false);
+        this.botonBuscarClinicas.setContentAreaFilled(false);
+        this.botonBuscarClinicas.addActionListener(this);        
         
         this.nuevaClinica = new JButton();
         this.nuevaClinica.setForeground(new Color(11, 146, 181));
@@ -429,7 +537,7 @@ public class Usuarios extends JPanel implements ActionListener{
                 if (me.getClickCount() == 2) {
                     Object [] fila = getRowAtClinicas(row);
                     try {
-                        ClinicaInterna clinica = Autenticacion.getClinica((String)fila[0]);
+                        ClinicaInterna clinica = ClinicaInternaDB.getClinica((String)fila[0]);
                         System.out.println(fila[0]);
                         if(clinica!=null){
                             
@@ -450,8 +558,8 @@ public class Usuarios extends JPanel implements ActionListener{
         
     }
 
-    private void updateModeloClinica() {
-        ArrayList<ClinicaInterna> clinicas = Autenticacion.listarClinicas();
+    public void updateModeloClinica() {
+        ArrayList<ClinicaInterna> clinicas = ClinicaInternaDB.listarClinicas();
         
         int m = this.columnasNombreClinicas.length;
         
@@ -527,27 +635,30 @@ public class Usuarios extends JPanel implements ActionListener{
     }
 
     private void addComponentPanel2(JPanel panel1) {
-        panel1.setLayout(new BorderLayout());
-        panel1.add(this.nuevaClinica, BorderLayout.EAST);
-        /*
         GroupLayout groupLayout = new GroupLayout(panel1);
         panel1.setLayout(groupLayout);
         groupLayout.setHorizontalGroup(
-            groupLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+            groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(groupLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(this.buscadorClinicas, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(this.botonBuscarClinicas)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(this.nuevaClinica)
                 .addContainerGap())
         );
         
         groupLayout.setVerticalGroup(
-            groupLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+            groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(groupLayout.createSequentialGroup()
                 .addContainerGap(15, Short.MAX_VALUE)
-                .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(this.buscadorClinicas, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(this.botonBuscarClinicas)
                     .addComponent(this.nuevaClinica))
                 .addContainerGap(13, Short.MAX_VALUE))
-        );*/
+        );
     }
 
     public boolean isMostrandoClinica() {

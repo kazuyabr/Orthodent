@@ -215,7 +215,7 @@ public class EditarValorUco extends javax.swing.JDialog {
             try {
                 valorUco.setValor(valor);
                 valorUco.setPorcentaje(porcentaje);
-                boolean respuesta = ValorUcoDB.editarPresupuesto(valorUco);
+                boolean respuesta = ValorUcoDB.editarValorUco(valorUco);
             } catch (Exception ex) {
             }
 //            ((JVentana)this.getParent()).getTratamientos().updateModelo();

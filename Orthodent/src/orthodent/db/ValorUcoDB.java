@@ -63,7 +63,7 @@ public class ValorUcoDB {
         }
     }    
 
-    public static boolean editarPresupuesto(ValorUco valorUco){
+    public static boolean editarValorUco(ValorUco valorUco){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
