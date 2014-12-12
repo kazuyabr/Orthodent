@@ -9,15 +9,19 @@ import com.thirdnf.ResourceScheduler.Resource;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import modelo.Paciente;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import orthodent.Item;
 import orthodent.db.AgendaDB;
+import orthodent.db.FichaEvolucionDB;
 import orthodent.db.PacienteDB;
+import orthodent.pacientes.FichasClinicas;
 
 /**
  *
@@ -303,8 +307,22 @@ public abstract class EditarCita extends javax.swing.JDialog {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        eliminarCita(this.cita);
-        dispose();
+            Object[] options = {"Sí","No"};
+
+                    int n = JOptionPane.showOptionDialog(this,
+                                "¿Esta seguro que desea eliminar la cita?",
+                                "Orthodent",
+                                JOptionPane.YES_NO_CANCEL_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                options,
+                                options[1]);
+            if(n==0){
+                    eliminarCita(this.cita);
+                    dispose();                
+            }
+        
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
