@@ -4,6 +4,7 @@
  */
 package orthodent.pacientes;
 
+import java.awt.ComponentOrientation;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Point;
@@ -86,6 +87,7 @@ public class Presupuestos extends JPanel{
         
         this.addInfo();
         this.guardar.setEnabled(false);
+        this.imprimir.setEnabled(false);
         this.tablaPresupuestos.getTableHeader().setReorderingAllowed(false);
         this.tablaPiezaTratamiento.getTableHeader().setReorderingAllowed(false);
     }
@@ -97,6 +99,7 @@ public class Presupuestos extends JPanel{
         this.guardar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.add.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.remove.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.imprimir.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
     public boolean getCambios(){
@@ -334,6 +337,7 @@ public class Presupuestos extends JPanel{
                             add.setEnabled(true);
                             addLab.setEnabled(true);
                             removeLab.setEnabled(true);
+                            imprimir.setEnabled(true);
                             
                             if(actual.getId_rol()==3){
                                 //Profesional
@@ -565,7 +569,7 @@ public class Presupuestos extends JPanel{
         removeLab = new javax.swing.JButton();
         nuevoPresupuesto = new javax.swing.JButton();
         aprobar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        imprimir = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(850, 551));
@@ -908,10 +912,11 @@ public class Presupuestos extends JPanel{
             }
         });
 
-        jButton1.setText("Imprimir");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        imprimir.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        imprimir.setText("Imprimir");
+        imprimir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                imprimirActionPerformed(evt);
             }
         });
 
@@ -926,7 +931,7 @@ public class Presupuestos extends JPanel{
                 .addGap(54, 54, 54)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(imprimir)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(nuevoPresupuesto))
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -937,7 +942,7 @@ public class Presupuestos extends JPanel{
                         .addComponent(guardar))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
-                .addContainerGap(125, Short.MAX_VALUE))
+                .addContainerGap(124, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -948,7 +953,7 @@ public class Presupuestos extends JPanel{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nuevoPresupuesto)
-                    .addComponent(jButton1))
+                    .addComponent(imprimir))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1391,6 +1396,7 @@ public class Presupuestos extends JPanel{
                         this.add.setEnabled(false);
                         this.addLab.setEnabled(false);
                         this.removeLab.setEnabled(false);
+                        this.imprimir.setEnabled(false);
                     } catch (Exception ex) {
                     }
                 }
@@ -1603,6 +1609,7 @@ public class Presupuestos extends JPanel{
         this.guardar.setEnabled(true);
         this.addLab.setEnabled(true);
         this.removeLab.setEnabled(true);
+        this.imprimir.setEnabled(false);
         
         if(actual.getId_rol()==3){
             //Profesional
@@ -1702,7 +1709,7 @@ public class Presupuestos extends JPanel{
         habilitarBoton();
     }//GEN-LAST:event_removeLabActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void imprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imprimirActionPerformed
         int row = tablaPresupuestos.getSelectedRow();
         if(row >= 0) {
             try {
@@ -1722,7 +1729,7 @@ public class Presupuestos extends JPanel{
             }
         } else
             System.out.println("Ningun reporte seleccionado");
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_imprimirActionPerformed
     
     private void habilitarBoton(){
         this.cambios = true;
@@ -1738,7 +1745,7 @@ public class Presupuestos extends JPanel{
     private javax.swing.JButton eliminar;
     private javax.swing.JComboBox estado;
     private javax.swing.JButton guardar;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton imprimir;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
