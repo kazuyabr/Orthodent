@@ -20,12 +20,13 @@ import orthodent.db.RolDB;
 public class ConfigurarCuenta extends JPanel{
 
     private Usuario usuario;
+    private Usuario usuarioActual;
     private boolean cambios;
     private boolean cambioContraseña;
     
-    public ConfigurarCuenta(Usuario usuario) {
+    public ConfigurarCuenta(Usuario usuario, Usuario usuarioActual) {
         initComponents();
-        
+        this.usuarioActual = usuarioActual;
         this.usuario = usuario;
         this.cambios = false;
         this.cambioContraseña = false;

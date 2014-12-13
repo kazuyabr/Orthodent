@@ -162,7 +162,7 @@ public class JVentana extends JFrame{
     
     private void crearUsuarios() throws Exception{
         this.contenedorUsuarios.setLayout(new BorderLayout());
-        this.usuarios = new Usuarios();
+        this.usuarios = new Usuarios(usuario);
         
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());

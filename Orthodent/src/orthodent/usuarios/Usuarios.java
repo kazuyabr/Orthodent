@@ -46,8 +46,10 @@ public class Usuarios extends JPanel implements ActionListener{
     private JPanel contenedorListarClinicas;
     private boolean isListarUsuarios;
     private boolean mostrandoClinica;
+    private Usuario usuarioActual;
     
-    public Usuarios(){
+    public Usuarios(Usuario usuario){
+        this.usuarioActual = usuario;
         this.setBackground(new Color(243,242,243));
         this.setPreferredSize(new Dimension(1073, 561));
         
@@ -132,10 +134,10 @@ public class Usuarios extends JPanel implements ActionListener{
                             Usuario actual = ((JVentana)getTopLevelAncestor()).getUsuario();
                             
                             if(actual.getId_usuario()==usuario.getId_usuario()){
-                                infoUsuario = new MostrarInfoTratamiento(usuario, true, true);
+                                infoUsuario = new MostrarInfoTratamiento(usuario, usuarioActual, true, true);
                             }
                             else{
-                                infoUsuario = new MostrarInfoTratamiento(usuario, false, true);
+                                infoUsuario = new MostrarInfoTratamiento(usuario, usuarioActual, false, true);
                             }
                             
                             remove(contenedorListarUsuarios);
@@ -176,7 +178,13 @@ public class Usuarios extends JPanel implements ActionListener{
     
     public void updateModelo(){
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
-        ArrayList<Usuario> usuarios = Autenticacion.listarUsuarios();
+        ArrayList<Usuario> usuarios;
+        if(usuarioActual.getId_rol() == 1){
+            usuarios = Autenticacion.listarUsuarios();
+        }
+        else{
+            usuarios = Autenticacion.listarUsuariosActivos();
+        }
         
         int m = this.columnasNombre.length;
         
@@ -371,14 +379,20 @@ public class Usuarios extends JPanel implements ActionListener{
     private void buscar(){
         String value = this.buscador.getText();
         
-        ArrayList<Usuario> usuarios = Autenticacion.listarUsuarios();
+        ArrayList<Usuario> usuarios;
+        if(usuarioActual.getId_rol() == 1){
+            usuarios = Autenticacion.listarUsuarios();
+        }
+        else{
+            usuarios = Autenticacion.listarUsuariosActivos();
+        }
         
         int m = this.columnasNombre.length;
         
         ArrayList<Object []> objetos = new ArrayList<Object []>();
         
         for(Usuario usuario : usuarios){
-            if(usuario.isActivo()){
+//            if(usuario.isActivo()){
                 Rol rol = RolDB.getRol(usuario.getId_rol());
                 String activo = (usuario.isActivo())? "SI" : "NO";
                 Object [] fila = new Object [] {usuario.getNombre(), usuario.getApellido_pat(), usuario.getApellido_mat(),
@@ -398,7 +412,7 @@ public class Usuarios extends JPanel implements ActionListener{
                 if(aux){
                     objetos.add(fila);
                 }
-            }
+//            }
         }
         
         this.filas = new Object [objetos.size()][m];

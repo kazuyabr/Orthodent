@@ -26,13 +26,15 @@ import orthodent.db.RolDB;
 public class DatosPersonales extends JPanel{
 
     private Usuario usuario;
+    private Usuario usuarioActual;
     private boolean cambios;
     private boolean cambioContraseña;
     
-    public DatosPersonales(Usuario usuario) {
+    public DatosPersonales(Usuario usuario, Usuario usuarioActual) {
         initComponents();
         
         this.usuario = usuario;
+        this.usuarioActual = usuarioActual;
         this.cambios = false;
         this.cambioContraseña=false;
         this.addInfo();
@@ -43,12 +45,18 @@ public class DatosPersonales extends JPanel{
         if(usuario.getId_rol()==1 || usuario.getId_rol()==2){
             this.clinicas.setEnabled(false);
         }
-        if(usuario.isActivo() && usuario.getId_rol() == 1){ //si esta activo el usuario y es ADMIN
+        if(usuarioActual.getId_rol() != 1){ //si no es administrador
             habilitar.setVisible(false);
         }
         else{
-            eliminar.setVisible(false);
-            habilitar.setVisible(true);
+            if(usuario.isActivo()){
+                eliminar.setVisible(true);
+                habilitar.setVisible(false);
+            }
+            else{
+                eliminar.setVisible(false);
+                habilitar.setVisible(true);
+            }
         }
         this.clinicas.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {

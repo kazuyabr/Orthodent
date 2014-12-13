@@ -467,7 +467,7 @@ public class NuevoUsuario extends javax.swing.JDialog {
             idRol = 1;
             idClinica = 0;
         }
-        else if(this.asistenteAdministrativa.isSelected()){
+        else if(this.asistente.isSelected()){
             idRol = 2;
             idClinica = 0;
         }
