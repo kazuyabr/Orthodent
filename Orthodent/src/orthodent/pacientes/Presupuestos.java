@@ -126,8 +126,9 @@ public class Presupuestos extends JPanel{
                 int row = table.rowAtPoint(p);
                 if (me.getClickCount() == 1) {
                     int col = table.columnAtPoint(p);
+                    rowSelected = row;
                     if(col==1){
-                        rowSelected = row;
+                        System.out.println("aquiiiiiiiiiiiii");
                     }
                 }
                 if (me.getClickCount() == 2) {
