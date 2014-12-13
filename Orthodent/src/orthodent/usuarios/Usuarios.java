@@ -183,14 +183,14 @@ public class Usuarios extends JPanel implements ActionListener{
         ArrayList<Object []> objetos = new ArrayList<Object []>();
         
         for(Usuario usuario : usuarios){
-            if(usuario.isActivo()){
+//            if(usuario.isActivo()){
                 Rol rol = RolDB.getRol(usuario.getId_rol());
                 String activo = (usuario.isActivo())? "SI" : "NO";
                 Object [] fila = new Object [] {usuario.getNombre(), usuario.getApellido_pat(), usuario.getApellido_mat(),
                                             usuario.getEmail(), rol.getNombre().toLowerCase(), activo};
                 
                 objetos.add(fila);
-            }
+//            }
         }
         
         this.filas = new Object [objetos.size()][m];

@@ -632,10 +632,11 @@ public class DatosPersonales extends JPanel{
             
             if(resul){
                 try {
-                    
+                    habilitar.setVisible(false);
+                    eliminar.setVisible(true);
                     JPanel contenedor = (JPanel)this.getParent();
                     
-                    ((MostrarInfoTratamiento)contenedor.getParent()).volver();
+                    //((MostrarInfoTratamiento)contenedor.getParent()).volver();
                 } catch (Exception ex) {
                 }
             }
