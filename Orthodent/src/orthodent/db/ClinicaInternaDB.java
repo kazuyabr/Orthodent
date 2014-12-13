@@ -24,7 +24,7 @@ public static ArrayList<ClinicaInterna> listarClinicas(){
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM clinica WHERE activo="+1);
+            ResultSet rs = st.executeQuery("SELECT * FROM clinica WHERE activo="+1 + " ORDER BY nombre ASC");
             clinicas = new ArrayList<ClinicaInterna>();
             while (rs.next())
             {

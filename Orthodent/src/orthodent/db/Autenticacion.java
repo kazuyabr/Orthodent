@@ -141,7 +141,7 @@ public class Autenticacion {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM usuario");
+            ResultSet rs = st.executeQuery("SELECT * FROM usuario ORDER BY nombre ASC");
             usuarios = new ArrayList<Usuario>();
             while (rs.next())
             {
@@ -168,7 +168,7 @@ public class Autenticacion {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE id_clinica="+id_clinica);
+            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE id_clinica="+id_clinica + " ORDER BY nombre ASC");
             usuarios = new ArrayList<Usuario>();
             while (rs.next())
             {
@@ -195,7 +195,7 @@ public class Autenticacion {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE id_rol=3");
+            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE id_rol=3 ORDER BY nombre ASC");
             usuarios = new ArrayList<Usuario>();
             while (rs.next())
             {
@@ -222,7 +222,7 @@ public class Autenticacion {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE id_rol=3 AND id_clinica="+id_clinica);
+            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE id_rol=3 AND id_clinica="+id_clinica + " ORDER BY nombre ASC");
             usuarios = new ArrayList<Usuario>();
             while (rs.next())
             {
@@ -248,7 +248,7 @@ public class Autenticacion {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE id_rol=3 AND id_usuario="+id_profesional);
+            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE id_rol=3 AND id_usuario="+id_profesional + " ORDER BY nombre ASC");
             usuarios = new ArrayList<Usuario>();
             while (rs.next())
             {

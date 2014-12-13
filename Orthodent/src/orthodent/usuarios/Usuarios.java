@@ -114,7 +114,7 @@ public class Usuarios extends JPanel implements ActionListener{
         
         this.tabla = new JTable();
         this.tabla.setFont(new Font("Georgia", 0, 11));
-        this.columnasNombre = new String [] {"Nombre", "Apellido Paterno", "Apellido Materno", "Email", "Nombre de Usuario", "Rol"};
+        this.columnasNombre = new String [] {"Nombre", "Apellido Paterno", "Apellido Materno", "Email", "Rol", "Activo"};
         this.updateModelo();
         this.tabla.getTableHeader().setReorderingAllowed(false);
         
@@ -185,9 +185,9 @@ public class Usuarios extends JPanel implements ActionListener{
         for(Usuario usuario : usuarios){
             if(usuario.isActivo()){
                 Rol rol = RolDB.getRol(usuario.getId_rol());
-
+                String activo = (usuario.isActivo())? "SI" : "NO";
                 Object [] fila = new Object [] {usuario.getNombre(), usuario.getApellido_pat(), usuario.getApellido_mat(),
-                                            usuario.getEmail(), usuario.getNombreUsuario(), rol.getNombre().toLowerCase()};
+                                            usuario.getEmail(), rol.getNombre().toLowerCase(), activo};
                 
                 objetos.add(fila);
             }
@@ -380,9 +380,9 @@ public class Usuarios extends JPanel implements ActionListener{
         for(Usuario usuario : usuarios){
             if(usuario.isActivo()){
                 Rol rol = RolDB.getRol(usuario.getId_rol());
-
+                String activo = (usuario.isActivo())? "SI" : "NO";
                 Object [] fila = new Object [] {usuario.getNombre(), usuario.getApellido_pat(), usuario.getApellido_mat(),
-                                            usuario.getEmail(), usuario.getNombreUsuario(), rol.getNombre().toLowerCase()};
+                                            usuario.getEmail(), rol.getNombre().toLowerCase(), activo};
                 
                 boolean aux = false;
                 

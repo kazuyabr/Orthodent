@@ -43,6 +43,13 @@ public class DatosPersonales extends JPanel{
         if(usuario.getId_rol()==1 || usuario.getId_rol()==2){
             this.clinicas.setEnabled(false);
         }
+        if(usuario.isActivo() && usuario.getId_rol() == 1){ //si esta activo el usuario y es ADMIN
+            habilitar.setVisible(false);
+        }
+        else{
+            eliminar.setVisible(false);
+            habilitar.setVisible(true);
+        }
         this.clinicas.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 habilitarBoton();
@@ -105,6 +112,7 @@ public class DatosPersonales extends JPanel{
         eliminar = new javax.swing.JButton();
         labelTelefono1 = new javax.swing.JLabel();
         clinicas = new javax.swing.JComboBox();
+        habilitar = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(850, 551));
@@ -261,6 +269,14 @@ public class DatosPersonales extends JPanel{
             }
         });
 
+        habilitar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        habilitar.setText("Habilitar");
+        habilitar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                habilitarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -270,6 +286,8 @@ public class DatosPersonales extends JPanel{
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(habilitar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(eliminar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(guardar)
@@ -342,7 +360,8 @@ public class DatosPersonales extends JPanel{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(guardar)
-                    .addComponent(eliminar))
+                    .addComponent(eliminar)
+                    .addComponent(habilitar))
                 .addContainerGap())
         );
 
@@ -596,6 +615,33 @@ public class DatosPersonales extends JPanel{
         
     }//GEN-LAST:event_clinicasMouseClicked
 
+    private void habilitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_habilitarActionPerformed
+                Object[] options = {"Sí","No"};
+        
+        int n = JOptionPane.showOptionDialog(this,
+                    "¿Esta seguro que desea habilitar nuevamente al usuario?",
+                    "Orthodent",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[1]);
+        
+        if(n==0){
+            boolean resul = Autenticacion.habilitarUsuario(this.usuario.getId_usuario());
+            
+            if(resul){
+                try {
+                    
+                    JPanel contenedor = (JPanel)this.getParent();
+                    
+                    ((MostrarInfoTratamiento)contenedor.getParent()).volver();
+                } catch (Exception ex) {
+                }
+            }
+        }// TODO add your handling code here:
+    }//GEN-LAST:event_habilitarActionPerformed
+
     private void initClinicas() {
         ArrayList<ClinicaInterna> clinicas = ClinicaInternaDB.listarClinicas();
         if(clinicas!=null && clinicas.size()>0){
@@ -621,6 +667,7 @@ public class DatosPersonales extends JPanel{
     private javax.swing.JButton eliminar;
     private javax.swing.JTextField email;
     private javax.swing.JButton guardar;
+    private javax.swing.JButton habilitar;
     private javax.swing.JButton imagenProfesional;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel labelApellidoMat;
