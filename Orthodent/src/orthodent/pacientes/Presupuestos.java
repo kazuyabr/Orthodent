@@ -5,10 +5,12 @@
 package orthodent.pacientes;
 
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Point;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -16,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -32,8 +36,11 @@ import modelo.Presupuesto;
 import modelo.Tratamiento;
 import modelo.TratamientoPiezaPresupuesto;
 import modelo.Usuario;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import orthodent.Item;
 import orthodent.db.Autenticacion;
+import orthodent.db.DbConnection;
 import orthodent.db.LaboratorioPiezaPlanDB;
 import orthodent.db.LaboratorioPiezaPresupuestoDB;
 import orthodent.db.PlanTratamientoDB;
@@ -41,7 +48,7 @@ import orthodent.db.PresupuestoDB;
 import orthodent.db.TratamientoDB;
 import orthodent.db.TratamientoPiezaPlanDB;
 import orthodent.db.TratamientoPiezaPresupuestoDB;
-
+import orthodent.reportes.Reportes;
 /**
  *
  * @author Mary
@@ -320,6 +327,7 @@ public class Presupuestos extends JPanel{
                     Object [] fila = getRowAt(row);
                     try {
                         presupuestoSelected = PresupuestoDB.getPresupuesto((String)fila[4], paciente.getId_paciente());
+                        
                         if(presupuestoSelected!=null){
                             eliminar.setEnabled(true);
                             remove.setEnabled(true);
@@ -557,6 +565,7 @@ public class Presupuestos extends JPanel{
         removeLab = new javax.swing.JButton();
         nuevoPresupuesto = new javax.swing.JButton();
         aprobar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(850, 551));
@@ -899,6 +908,13 @@ public class Presupuestos extends JPanel{
             }
         });
 
+        jButton1.setText("Imprimir");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -909,7 +925,10 @@ public class Presupuestos extends JPanel{
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(54, 54, 54)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(nuevoPresupuesto)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(nuevoPresupuesto))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(eliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -918,7 +937,7 @@ public class Presupuestos extends JPanel{
                         .addComponent(guardar))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
-                .addContainerGap(124, Short.MAX_VALUE))
+                .addContainerGap(125, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -927,7 +946,9 @@ public class Presupuestos extends JPanel{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nuevoPresupuesto)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nuevoPresupuesto)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1680,6 +1701,28 @@ public class Presupuestos extends JPanel{
         costoTotalLaboratorio.setText("$"+total);
         habilitarBoton();
     }//GEN-LAST:event_removeLabActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int row = tablaPresupuestos.getSelectedRow();
+        if(row >= 0) {
+            try {
+                Object [] fila = getRowAt(row);
+                // No uso presupuestoSelected pq no es seguro 
+                Presupuesto p = PresupuestoDB.getPresupuesto((String)fila[4], paciente.getId_paciente());
+                DbConnection db = new DbConnection();
+                
+                JasperPrint reporte = Reportes.generarPresupuesto(p.getIdPresupuesto(), db);
+                db.desconectar();
+                File tempPdf;
+                tempPdf = File.createTempFile("orthodent_reporte", ".pdf");
+                JasperExportManager.exportReportToPdfFile(reporte, tempPdf.getPath());
+                Desktop.getDesktop().open(tempPdf);
+            } catch (Exception ex) {
+                Logger.getLogger(Presupuestos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else
+            System.out.println("Ningun reporte seleccionado");
+    }//GEN-LAST:event_jButton1ActionPerformed
     
     private void habilitarBoton(){
         this.cambios = true;
@@ -1695,6 +1738,7 @@ public class Presupuestos extends JPanel{
     private javax.swing.JButton eliminar;
     private javax.swing.JComboBox estado;
     private javax.swing.JButton guardar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

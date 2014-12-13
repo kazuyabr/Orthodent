@@ -20,7 +20,7 @@ import orthodent.db.DbConnection;
  * @author felipe
  */
 public class Reportes {
-    static JasperPrint generarPresupuesto(int id_presupuesto, DbConnection db) throws JRException {
+    public static JasperPrint generarPresupuesto(int id_presupuesto, DbConnection db) throws JRException {
             InputStream in;
 
             in = Reportes.class.getClassLoader().getResourceAsStream("orthodent/reportes/presupuesto.jrxml");     
