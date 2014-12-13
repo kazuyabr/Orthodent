@@ -58,6 +58,7 @@ public class Tablas extends javax.swing.JPanel {
         this.eliminar1.setEnabled(false);
         this.eliminar2.setEnabled(false);
         this.eliminar3.setEnabled(false);
+                
     }
     
     public void setCursor(){
@@ -204,6 +205,7 @@ public class Tablas extends javax.swing.JPanel {
         }
       
         int m = this.columnasNombreTratamientos.length;
+        
         
         ArrayList<Object []> objetos = new ArrayList<Object []>();
         
