@@ -100,7 +100,7 @@
                                           <Component id="labelSexo" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="labelFechaNacimiento" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace pref="16" max="32767" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="103" alignment="1" groupAlignment="0" attributes="0">
                                               <Component id="fechaNacimiento" min="-2" pref="155" max="-2" attributes="0"/>
@@ -120,34 +120,35 @@
                                       <EmptySpace max="32767" attributes="0"/>
                                       <Component id="direccion" min="-2" pref="197" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                          <Group type="102" attributes="0">
-                                              <Component id="labelComuna" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="32767" attributes="0"/>
-                                              <Component id="comuna" min="-2" pref="155" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="labelApellidoMat" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="labelApellidoPat" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="labelNombre" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <Component id="labelCiudad" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace min="-2" pref="115" max="-2" attributes="0"/>
-                                                  <Component id="ciudad" min="-2" pref="155" max="-2" attributes="0"/>
-                                              </Group>
-                                          </Group>
-                                      </Group>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="labelTelefono" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="telefono" min="-2" pref="197" max="-2" attributes="0"/>
-                                  </Group>
                                   <Group type="102" alignment="1" attributes="0">
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                       <Component id="camposObligatorios" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="labelTelefono" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="32767" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="labelApellidoMat" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="labelApellidoPat" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="labelNombre" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="labelCiudad" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="labelComuna" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="32767" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="comuna" min="-2" pref="155" max="-2" attributes="0"/>
+                                          <Component id="ciudad" min="-2" pref="155" max="-2" attributes="0"/>
+                                          <Component id="telefono" min="-2" pref="197" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
