@@ -6,7 +6,6 @@ package orthodent.pacientes;
 
 import java.awt.Cursor;
 import java.awt.Point;
-import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -15,33 +14,23 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
-import modelo.FichaEvolucion;
 import modelo.Pago;
 import modelo.Paciente;
 import modelo.PlanTratamiento;
-import modelo.Rol;
 import modelo.Tratamiento;
 import modelo.Usuario;
 import orthodent.Item;
 import orthodent.JVentana;
 import orthodent.db.Autenticacion;
-import orthodent.db.FichaEvolucionDB;
 import orthodent.db.PagoDB;
 import orthodent.db.PlanTratamientoDB;
-import orthodent.db.RolDB;
-import orthodent.db.TratamientoDB;
 
 /**
  *
@@ -58,14 +47,17 @@ public class Recaudacion extends JPanel{
     private String [] columnasNombrePagoAbono;
     private Object [][] filasPagoAbono;
     private DefaultTableModel modeloPagoAbono;
+    private String [] columnasNombrePagoLab;
+    private Object [][] filasPagoLab;
+    private DefaultTableModel modeloPagoLab;
     private String profesionalSelected;
     private String estadoSelected;
     private Paciente pacienteSelected;
     private PlanTratamiento tratamientotoSelected;
     private Pago pagoAbonoSelected;
+    private Pago pagoLabSelected;
     private ArrayList<Tratamiento> auxiliar;
     private int rowSelected;
-    private boolean nuevoPresupuestoSel;
     
     public Recaudacion(Paciente paciente, Usuario actual) throws Exception {
         initComponents();
@@ -74,11 +66,11 @@ public class Recaudacion extends JPanel{
         this.paciente = paciente;
         this.actual = actual;
         this.cambios = false;
-        this.nuevoPresupuestoSel = false;
         
         this.addInfo();
         this.tablaTratamiento.getTableHeader().setReorderingAllowed(false);
         this.tablaPagoAbono.getTableHeader().setReorderingAllowed(false);
+        this.tablaPagoLaboratorio.getTableHeader().setReorderingAllowed(false);
     }
     
     private void setCursor(){
@@ -99,8 +91,8 @@ public class Recaudacion extends JPanel{
     }
     
     public void iniciarTablaPagoAbono() throws Exception{
-        this.columnasNombrePagoAbono = new String [] {"Fecha", "Cantidad"};
-        //this.updateTablaPiezaTratamiento();
+        this.columnasNombrePagoAbono = new String [] {"Tipo de Pago", "Detalle", "Fecha", "Valor", "Num. Boleta"};
+        this.updateTablaPagoAbono();
         this.tablaPagoAbono.getTableHeader().setReorderingAllowed(false);
         
         this.tablaPagoAbono.addMouseListener(new MouseAdapter() {
@@ -111,20 +103,54 @@ public class Recaudacion extends JPanel{
                 Object [] fila = getRowAt2(row);
                 if (me.getClickCount() == 1) { 
                     try {
-                        pagoAbonoSelected = PagoDB.getPago(((Item)fila[1]).getId());
+                        pagoAbonoSelected = PagoDB.getPago(((Item)fila[0]).getId());
                         if(pagoAbonoSelected != null){
                             habilitarBtnRemove();
                         }
-
                     } catch (Exception ex) {
                     }
                 }
                 else if(me.getClickCount() == 2){
                     try {
-                        pagoAbonoSelected = PagoDB.getPago(((Item)fila[1]).getId());
+                        pagoAbonoSelected = PagoDB.getPago(((Item)fila[0]).getId());
                         if(pagoAbonoSelected != null){
                             habilitarBtnRemove();
                             editarPagoAbono();
+                        }                        
+                    } catch (Exception ex) {
+                        Logger.getLogger(Recaudacion.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+    }
+    
+    public void iniciarTablaPagoLab() throws Exception{
+        this.columnasNombrePagoLab = new String [] {"Tipo de Pago", "Detalle", "Fecha", "Valor", "Num. Boleta"};
+        this.updateTablaPagoLab();
+        this.tablaPagoLaboratorio.getTableHeader().setReorderingAllowed(false);
+        
+        this.tablaPagoLaboratorio.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                JTable table =(JTable) me.getSource();
+                Point p = me.getPoint();
+                int row = table.rowAtPoint(p);
+                Object [] fila = getRowAt2(row);
+                if (me.getClickCount() == 1) { 
+                    try {
+                        pagoLabSelected = PagoDB.getPago(((Item)fila[0]).getId());
+                        if(pagoLabSelected != null){
+                            habilitarBtnRemove2();
+                        }
+                    } catch (Exception ex) {
+                    }
+                }
+                else if(me.getClickCount() == 2){
+                    try {
+                        pagoLabSelected = PagoDB.getPago(((Item)fila[0]).getId());
+                        if(pagoLabSelected != null){
+                            habilitarBtnRemove();
+                            editarPagoAbono2();
                         }                        
                     } catch (Exception ex) {
                         Logger.getLogger(Recaudacion.class.getName()).log(Level.SEVERE, null, ex);
@@ -140,6 +166,12 @@ public class Recaudacion extends JPanel{
                 tratamientotoSelected.getIdPlanTratamiento(), this, false, pagoAbonoSelected).setVisible(true);
     }
     
+    public void editarPagoAbono2(){
+        //System.out.println("problem");
+        new VentanaAbono(((JVentana)this.getTopLevelAncestor()),true, 
+                tratamientotoSelected.getIdPlanTratamiento(), this, false, pagoLabSelected).setVisible(true);
+    }
+    
     public void updateTablaPagoAbono() throws Exception{
 
         ArrayList<Pago> pagoAbono = new ArrayList<Pago>();
@@ -149,14 +181,15 @@ public class Recaudacion extends JPanel{
         int m = this.columnasNombrePagoAbono.length;
         
         ArrayList<Object []> objetos = new ArrayList<Object []>();
-        int total=0;
+        int total = 0;
         for(Pago pagAbn : pagoAbono){
+            String tipoPago = pagAbn.getTipoPago();
+            String detalle = pagAbn.getDetalle();
             String fecha = girarFecha(pagAbn.getFecha());
-            String descripcion = pagAbn.getAbono()+"";
+            String valor = pagAbn.getAbono()+"";
+            int numBoleta = pagAbn.getNumBoleta();
             total = total + pagAbn.getAbono();
-            Object [] fila = new Object [] {fecha, 
-                new Item(descripcion,pagAbn.getIdPago()), "hora", "fecha"};
-
+            Object [] fila = new Object [] {new Item (tipoPago,pagAbn.getIdPago()), detalle, fecha, "$"+valor, numBoleta+""};
             objetos.add(fila);
         }
         this.filasPagoAbono = new Object [objetos.size()][m];
@@ -168,10 +201,10 @@ public class Recaudacion extends JPanel{
         
         this.modeloPagoAbono = new DefaultTableModel(this.filasPagoAbono, this.columnasNombrePagoAbono) {
             Class[] types = new Class [] {
-                String.class, Item.class, String.class, String.class
+                Item.class, String.class, String.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -184,17 +217,70 @@ public class Recaudacion extends JPanel{
         };
         
         costoAbono.setText("$"+total);
-        int id = tratamientotoSelected.getIdPlanTratamiento();
+        
+        /*int id = tratamientotoSelected.getIdPlanTratamiento();
         PlanTratamiento planTrat = PlanTratamientoDB.getPlanTratamiento(id);
         planTrat.setTotalAbonos(total);
         //calculando el porcentaje de abance
         int cosTotal=tratamientotoSelected.getCostoTotal();
         int avance= total*100/cosTotal;
         planTrat.setAvance(avance);
-        PlanTratamientoDB.editarPlanTratamiento(planTrat);
+        PlanTratamientoDB.editarPlanTratamiento(planTrat);*/
+        
         //System.out.println("total 2:"+total+"id:"+id);
         this.tablaPagoAbono.setModel(modeloPagoAbono);
-        this.iniciarTablaPlanesTratamientos();
+        //this.iniciarTablaPlanesTratamientos();
+    }
+    
+    public void updateTablaPagoLab() throws Exception{
+
+        ArrayList<Pago> pagoAbono = new ArrayList<Pago>();
+
+        pagoAbono = PagoDB.listarPagosDePlanTratamientoLab(tratamientotoSelected.getIdPlanTratamiento());
+
+        int m = this.columnasNombrePagoLab.length;
+        
+        ArrayList<Object []> objetos = new ArrayList<Object []>();
+        int total = 0;
+        for(Pago pagAbn : pagoAbono){
+            String tipoPago = pagAbn.getTipoPago();
+            String detalle = pagAbn.getDetalle();
+            String fecha = girarFecha(pagAbn.getFecha());
+            String valor = pagAbn.getAbono()+"";
+            int numBoleta = pagAbn.getNumBoleta();
+            total = total + pagAbn.getAbono();
+            Object [] fila = new Object [] {new Item (tipoPago,pagAbn.getIdPago()), detalle, fecha, "$"+valor, numBoleta+""};
+            objetos.add(fila);
+        }
+        this.filasPagoLab = new Object [objetos.size()][m];
+        int i = 0;
+        for(Object [] o : objetos){
+            this.filasPagoLab[i] = o;
+            i++;
+        }
+        
+        this.modeloPagoLab = new DefaultTableModel(this.filasPagoLab, this.columnasNombrePagoLab) {
+            Class[] types = new Class [] {
+                Item.class, String.class, String.class, String.class, String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
+        
+        String aux = costoAbono.getText();
+        total = Integer.parseInt(aux.substring(1, aux.length())) + total;
+        costoAbono.setText("$"+total);
+        
+        this.tablaPagoLaboratorio.setModel(modeloPagoLab);
     }
     
     public void habilitarBtnAdd(){
@@ -205,12 +291,19 @@ public class Recaudacion extends JPanel{
         this.remove.setEnabled(true);
     }  
     
+    public void habilitarBtnRemove2(){
+        this.remove1.setEnabled(true);
+    }  
+    
     public void deshabilitarBtnRemove(){
         this.remove.setEnabled(false);
     }
     
+    public void deshabilitarBtnRemove2(){
+        this.remove1.setEnabled(false);
+    }
+    
      public void iniciarTablaPlanesTratamientos() throws Exception{
-        
         this.columnasPlanesTratamiento = new String [] {"Profesional",  "Costo Total", "Total Abonos", "Avance"};
         this.updateTablaPlanesTratamientos();
         this.tablaTratamiento.getTableHeader().setReorderingAllowed(false);//paque no se menee papi! la columna
@@ -231,7 +324,7 @@ public class Recaudacion extends JPanel{
                         if(tratamientotoSelected!=null){
                             tablaPagoAbono.setEnabled(true);
                             iniciarTablaPagoAbono();
-                            updateTablaPagoAbono();
+                            iniciarTablaPagoLab();
                         }
                         costoTotal.setText("$"+tratamientotoSelected.getCostoTotal());
                     } catch (Exception ex) {
@@ -365,7 +458,7 @@ public class Recaudacion extends JPanel{
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaTratamiento = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        labelProfesional = new javax.swing.JLabel();
+        labelAbonos = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaPagoAbono = new javax.swing.JTable();
         add = new javax.swing.JButton();
@@ -374,6 +467,10 @@ public class Recaudacion extends JPanel{
         labelAbono = new javax.swing.JLabel();
         costoTotal = new javax.swing.JTextField();
         labelTotal = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tablaPagoLaboratorio = new javax.swing.JTable();
+        labelLaboratorio = new javax.swing.JLabel();
+        remove1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(850, 551));
@@ -434,9 +531,10 @@ public class Recaudacion extends JPanel{
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel1.setPreferredSize(new java.awt.Dimension(663, 293));
 
-        labelProfesional.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
-        labelProfesional.setText("Abonos");
+        labelAbonos.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelAbonos.setText("Abonos");
 
         tablaPagoAbono.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         tablaPagoAbono.setModel(new javax.swing.table.DefaultTableModel(
@@ -444,15 +542,22 @@ public class Recaudacion extends JPanel{
 
             },
             new String [] {
-                "Fecha", "Cantidad"
+                "Tipo de Pago", "Detalle", "Fecha", "Valor", "Num. Boleta"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         tablaPagoAbono.setEnabled(false);
@@ -504,55 +609,112 @@ public class Recaudacion extends JPanel{
         labelTotal.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
         labelTotal.setText("Total");
 
+        tablaPagoLaboratorio.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        tablaPagoLaboratorio.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Tipo de Pago", "Detalle", "Fecha", "Valor", "Num. Boleta"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaPagoLaboratorio.setEnabled(false);
+        jScrollPane3.setViewportView(tablaPagoLaboratorio);
+
+        labelLaboratorio.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
+        labelLaboratorio.setText("Laboratorio");
+
+        remove1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/delete_mini.png"))); // NOI18N
+        remove1.setBorder(null);
+        remove1.setBorderPainted(false);
+        remove1.setContentAreaFilled(false);
+        remove1.setEnabled(false);
+        remove1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                remove1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(labelProfesional)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(add))
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(labelTotal)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(labelAbono)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(costoAbono, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(remove)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(remove1))
+                    .addComponent(labelLaboratorio)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(labelAbonos)
+                                .addGap(402, 402, 402)
+                                .addComponent(add))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(labelTotal)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(labelAbono)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(costoAbono, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(remove)))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelAbonos)
+                    .addComponent(add))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelProfesional)
-                            .addComponent(add))
-                        .addGap(13, 13, 13)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(remove))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                        .addComponent(costoAbono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(42, 42, 42)
+                        .addComponent(remove))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(labelAbono)))
-                .addGap(18, 18, 18)
+                        .addGap(13, 13, 13)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelLaboratorio)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(remove1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(costoAbono, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelAbono, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelTotal))
-                .addGap(36, 36, 36))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -565,19 +727,19 @@ public class Recaudacion extends JPanel{
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(54, 54, 54)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(157, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
+                .addContainerGap(124, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(panelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -732,6 +894,10 @@ public class Recaudacion extends JPanel{
     private void costoTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costoTotalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_costoTotalActionPerformed
+
+    private void remove1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remove1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_remove1ActionPerformed
 //     public void guardar(){
 //        this.guardarActionPerformed(null);
 //    }
@@ -744,13 +910,17 @@ public class Recaudacion extends JPanel{
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel labelAbono;
-    private javax.swing.JLabel labelProfesional;
+    private javax.swing.JLabel labelAbonos;
+    private javax.swing.JLabel labelLaboratorio;
     private javax.swing.JLabel labelTitulo;
     private javax.swing.JLabel labelTotal;
     private javax.swing.JPanel panelTitulo;
     private javax.swing.JButton remove;
+    private javax.swing.JButton remove1;
     private javax.swing.JTable tablaPagoAbono;
+    private javax.swing.JTable tablaPagoLaboratorio;
     private javax.swing.JTable tablaTratamiento;
     // End of variables declaration//GEN-END:variables
 }

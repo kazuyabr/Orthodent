@@ -16,14 +16,15 @@ import modelo.Pago;
  */
 public class PagoDB {
     
-    public static boolean crearPago(int idPlanTratamiento, String fecha, int abono){
+    public static boolean crearPago(int idPlanTratamiento, String tipoPago, String detalle, String fecha, int abono, int numBoleta, boolean isLab){
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
             
             java.sql.Statement st = con.createStatement();
-            int aux = st.executeUpdate("INSERT INTO pago (id_plantratamiento, fecha, abono)\n" +
-                                        "VALUES ("+idPlanTratamiento+",'"+fecha+"',"+abono+")");
+            int aux = st.executeUpdate("INSERT INTO pago (id_plantratamiento, tipo_pago, detalle, fecha, abono, num_boleta, is_lab)\n" +
+                                        "VALUES ("+idPlanTratamiento+",'"+tipoPago+"','"+detalle+"','"+fecha+"',"+abono+
+                                                 ","+numBoleta+","+isLab+")");
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
@@ -42,8 +43,12 @@ public class PagoDB {
             java.sql.Statement st = con.createStatement();
             int aux = st.executeUpdate("UPDATE pago\n" +
                                             "SET id_plantratamiento = "+pago.getIdPlanTratamiento()+"\n" +
+                                            "tipo_pago='"+pago.getTipoPago()+"'\n" +
+                                            "detalle='"+pago.getDetalle()+"'\n" +
                                             "fecha='"+pago.getFecha()+"'\n" +
                                             ",abono="+pago.getAbono()+"\n" +
+                                            ",num_boleta="+pago.getNumBoleta()+"\n" +
+                                            ",is_lab="+pago.getIsLab()+"\n" +
                                             "WHERE id_pago="+pago.getIdPago());
             boolean resultado = (aux == 1)? true : false;
             st.close();
@@ -67,7 +72,9 @@ public class PagoDB {
             pagos = new ArrayList<Pago>();
             while (rs.next())
             {
-                Pago p = new Pago(rs.getInt("id_pago"), rs.getInt("id_plantratamiento"), rs.getString("fecha"), rs.getInt("abono"));
+                Pago p = new Pago(rs.getInt("id_pago"), rs.getInt("id_plantratamiento"), rs.getString("tipo_pago"),
+                                  rs.getString("detalle"), rs.getString("fecha"), rs.getInt("abono"),
+                                  rs.getInt("num_boleta"), rs.getBoolean("is_lab"));
                 pagos.add(p);
             }
             rs.close();
@@ -87,11 +94,39 @@ public class PagoDB {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM pago where id_plantratamiento=" + idPlanTratamiento);
+            ResultSet rs = st.executeQuery("SELECT * FROM pago where is_lab=0 AND id_plantratamiento=" + idPlanTratamiento);
             pagos = new ArrayList<Pago>();
             while (rs.next())
             {
-                Pago p = new Pago(rs.getInt("id_pago"), rs.getInt("id_plantratamiento"), rs.getString("fecha"), rs.getInt("abono"));
+                Pago p = new Pago(rs.getInt("id_pago"), rs.getInt("id_plantratamiento"), rs.getString("tipo_pago"),
+                                  rs.getString("detalle"), rs.getString("fecha"), rs.getInt("abono"),
+                                  rs.getInt("num_boleta"), rs.getBoolean("is_lab"));
+                pagos.add(p);
+            }
+            rs.close();
+            con.close();
+            return pagos;
+        }
+        catch ( SQLException e) {
+            return null;
+        }
+    }
+    
+    public static ArrayList<Pago> listarPagosDePlanTratamientoLab(int idPlanTratamiento){
+        ArrayList<Pago> pagos = null;        
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * FROM pago where is_lab=1 AND id_plantratamiento=" + idPlanTratamiento);
+            pagos = new ArrayList<Pago>();
+            while (rs.next())
+            {
+                Pago p = new Pago(rs.getInt("id_pago"), rs.getInt("id_plantratamiento"), rs.getString("tipo_pago"),
+                                  rs.getString("detalle"), rs.getString("fecha"), rs.getInt("abono"),
+                                  rs.getInt("num_boleta"), rs.getBoolean("is_lab"));
                 pagos.add(p);
             }
             rs.close();
@@ -115,10 +150,14 @@ public class PagoDB {
             if (rs.next())
             {
                 int idPlanTratamiento = rs.getInt("id_plantratamiento");
+                String tipoPago = rs.getString("tipo_pago");
+                String detalle = rs.getString("detalle");
                 String fecha = rs.getString("fecha");
                 int abono = rs.getInt("abono");
+                int numBoleta = rs.getInt("num_boleta");
+                boolean isLab = rs.getBoolean("is_lab");
 
-                pago = new Pago(idPago, idPlanTratamiento, fecha, abono);
+                pago = new Pago(idPago, idPlanTratamiento, tipoPago, detalle, fecha, abono, numBoleta, isLab);
             }
             else{
                 pago = null;
