@@ -32,7 +32,8 @@ public class DatosPersonales extends JPanel{
     
     public DatosPersonales(Usuario usuario, Usuario usuarioActual) {
         initComponents();
-        
+        System.out.println(usuario.getNombre());
+        System.out.println(usuarioActual.getNombre());
         this.usuario = usuario;
         this.usuarioActual = usuarioActual;
         this.cambios = false;
