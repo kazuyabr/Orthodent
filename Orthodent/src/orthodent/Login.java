@@ -86,7 +86,7 @@ public class Login extends javax.swing.JDialog implements WindowListener{
 
         nombreUsuario.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         nombreUsuario.setForeground(new java.awt.Color(255, 255, 255));
-        nombreUsuario.setText("Nombre de Usuario");
+        nombreUsuario.setText("Email");
 
         campoNombreUsuario.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         campoNombreUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -172,8 +172,8 @@ public class Login extends javax.swing.JDialog implements WindowListener{
                             .addComponent(contraseña))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(campoNombreUsuario)
-                            .addComponent(campoContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(campoNombreUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                            .addComponent(campoContraseña))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(

@@ -487,9 +487,9 @@ public class NuevoUsuario extends javax.swing.JDialog {
         
         String nombreUsuario = null;
         
-        if(email.contains("@")){
-            nombreUsuario = email.substring(0, email.indexOf("@"));
-        }
+//        if(email.contains("@")){
+        nombreUsuario = email;
+//        }
         
         String contraseña1 = this.contrasena1.getText();
         String contraseña2 = this.contrasena2.getText();

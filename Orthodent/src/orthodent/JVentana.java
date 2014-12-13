@@ -204,7 +204,7 @@ public class JVentana extends JFrame{
     
     private void crearConfigurarCuenta(){
         this.contenedorConfigurarCuenta.setLayout(new BorderLayout());
-        this.configurarCuenta = new MostrarInfoTratamiento(this.usuario, true, false);
+        this.configurarCuenta = new MostrarInfoTratamiento(this.usuario, this.usuario, true, false);
         
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
