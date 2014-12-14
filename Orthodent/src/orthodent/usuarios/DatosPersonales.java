@@ -653,7 +653,7 @@ public class DatosPersonales extends JPanel{
     }//GEN-LAST:event_habilitarActionPerformed
 
     private void initClinicas() {
-        ArrayList<ClinicaInterna> clinicas = ClinicaInternaDB.listarClinicas();
+        ArrayList<ClinicaInterna> clinicas = ClinicaInternaDB.listarClinicasActivas();
         if(clinicas!=null && clinicas.size()>0){
             Vector model = new Vector();
             Item item = null;
