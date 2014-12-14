@@ -325,6 +325,9 @@ public class Login extends javax.swing.JDialog implements WindowListener{
     }//GEN-LAST:event_campoNombreUsuarioKeyReleased
 
     private void botonOlvidoContraseña1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonOlvidoContraseña1ActionPerformed
+        String correo = (String) JOptionPane.showInputDialog(this,"\nIngrese contraseña Admin BD: \n",
+                "Orthodent",
+                JOptionPane.PLAIN_MESSAGE,null,null,"");
         VentanaConfiguracionDB v = new VentanaConfiguracionDB(null, true);
     }//GEN-LAST:event_botonOlvidoContraseña1ActionPerformed
     
