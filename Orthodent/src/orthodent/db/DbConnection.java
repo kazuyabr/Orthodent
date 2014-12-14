@@ -7,6 +7,7 @@ package orthodent.db;
 import com.mysql.jdbc.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 /**
  *
@@ -18,20 +19,27 @@ import java.sql.SQLException;
  */
 public class DbConnection {
    /**Parametros de conexion*/
-   static String bd = "clinica";
-   static String login = "root";
-   static String password = "";
-   static String url = "jdbc:mysql://localhost:8080/"+bd;
+   static String bd;
+   static String login;
+   static String password;
+   static String url;
  
    Connection connection = null;
  
    /** Constructor de DbConnection */
    public DbConnection() {
+        Properties mispropiedades = new jcProperties().getProperties();
+        url = "jdbc:mysql://" + (mispropiedades.getProperty("url")) + "/";
+        bd = (mispropiedades.getProperty("bd"));
+        login = (mispropiedades.getProperty("login"));
+        password = (mispropiedades.getProperty("password"));       
+       
       try{
          //obtenemos el driver de para mysql
          Class.forName("com.mysql.jdbc.Driver");
          //obtenemos la conexión
-         connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/clinica","root", "");
+         //connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/clinica","root", "");
+         connection = (Connection) DriverManager.getConnection(url+bd,login,password);
          
          /*if (connection!=null){
             System.out.println("Conexión a base de datos " + bd + " OK\n");
