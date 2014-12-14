@@ -2,6 +2,7 @@ package orthodent.agenda;
 
 import com.thirdnf.ResourceScheduler.Appointment;
 import com.thirdnf.ResourceScheduler.Resource;
+import com.thirdnf.ResourceScheduler.Scheduler;
 import com.thirdnf.ResourceScheduler.components.BasicAppointmentComponent;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -31,7 +32,7 @@ public class Cita implements Appointment
     private int id;
     private boolean confirmada;
     private Color color;
-
+    private Agenda ag;
     public Cita(@NotNull String title)
     {
         _title = title;
@@ -172,6 +173,14 @@ public class Cita implements Appointment
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public Agenda getAg() {
+        return ag;
+    }
+
+    public void setAg(Agenda ag) {
+        this.ag = ag;
     }
     
 }

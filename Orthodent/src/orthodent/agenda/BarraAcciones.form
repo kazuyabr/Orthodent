@@ -105,7 +105,11 @@
           <Color blue="b5" green="92" red="b" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Fecha"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel2MouseEntered"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="hoy">
       <Properties>

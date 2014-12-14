@@ -11,6 +11,9 @@ import javax.swing.*;
 import java.awt.*;
 
 import com.thirdnf.ResourceScheduler.Scheduler;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import orthodent.JVentana;
 import orthodent.db.AgendaDB;
 
 /**
@@ -63,15 +67,36 @@ public class Agenda extends JPanel{
         });
         this.setLayout(new BorderLayout());
         AgendaComponentFactory cf = new AgendaComponentFactory();
-        scheduler.setComponentFactory(cf);
-        add(scheduler, BorderLayout.CENTER);
+        //this.scheduler.setAutoscrolls(true);
+        this.scheduler.setComponentFactory(cf);
+        this.setSize(1045, 1200);
+        
+       /* MiPanel paux = new MiPanel();
+        paux.setSize(1043, 1200);
+        paux.setPreferredSize(new Dimension(1043,1200));
+        paux.setLayout(new BorderLayout());
+        paux.add(this.scheduler,BorderLayout.CENTER);
+        //sp.setLayout(new BorderLayout());
+        JScrollPane sp = new JScrollPane(paux);
+        sp.setVerticalScrollBar(sp.createVerticalScrollBar());
+        sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        paux.updateUI();
+        sp.updateUI();
+        add(sp,BorderLayout.CENTER);
+        updateUI();
+        */
+        
+        
+        //this.scheduler.setSize(1043, 900);
+        add(this.scheduler, BorderLayout.CENTER);
         
         this.barraAcciones.setFechaAgenda(new Date());
         //this.cargarAgendainicial();
         this.add(barraAcciones, BorderLayout.NORTH);
+        //this.add(barraAcciones, BorderLayout.SOUTH);
     }
     
-    private void handleAddAppointment(@Nullable Resource resource, @NotNull DateTime dateTime) {
+    public void handleAddAppointment(@Nullable Resource resource, @NotNull DateTime dateTime) {
         
         if(this.usuarioActual.getId_rol()==3 || this.usuarioActual.getId_rol()==4) return;
         boolean clickEnHorarioDeAtencion = false;
@@ -111,6 +136,7 @@ public class Agenda extends JPanel{
                     cita.setFecha(cita.getRealDateTime().toString("y-M-d"));
                     cita.setSemana(obtenerSemana(cita.getRealDateTime().toDate()));
                     cita.setConfirmada(false);
+                    cita.setAg(((JVentana)super.getParent()).getAgenda());
                     if(validarBloques(cita) && validarTopeHora(cita)){
                         modelo.agregarCita(cita);
                         if(!citasDeLaSemana.containsKey(cita.getSemana())){
@@ -142,18 +168,16 @@ public class Agenda extends JPanel{
                     cita.setProfesionalId(barraAcciones.getIdProfesional());
                     cita.setFecha(cita.getRealDateTime().toString("y-M-d"));
                     cita.setSemana(obtenerSemana(cita.getRealDateTime().toDate()));
-                    
+                    cita.setAg(((JVentana)super.getParent()).getAgenda());
                     if(validarBloques(cita) && validarTopeHora(cita)){
                         if(AgendaDB.actualizarCita(cita)){
                             citasDeLaSemana.get(cita.getSemana()).remove(citaVieja);
                             citasDeLaSemana.get(cita.getSemana()).add(cita);
                             modelo.eliminarCita(citaVieja);
                             modelo.agregarCita(cita);
-                            System.out.println("ADASASADADASS");
                             updateUI();
                             return true;
                         }
-                        System.out.println("QWQWQWQWQWQW");
                         return false;
                     }
                     if(!validarBloques(cita)) System.out.println("ValidarBloques");
@@ -184,6 +208,7 @@ public class Agenda extends JPanel{
             this.citasDeLaSemana.put(semana, citas);
             for(Cita c: citas){
                 modelo.agregarCita(c);
+                c.setAg(this);
             }
             updateUI();
         }
@@ -202,6 +227,7 @@ public class Agenda extends JPanel{
                 for(Cita c : citas){
                     System.out.println(c.getTitle());
                     modelo.agregarCita(c);
+                    c.setAg(this);
                 }
             }
             else{
@@ -228,6 +254,7 @@ public class Agenda extends JPanel{
                     modelo.agregarCita(c);
                     this.semanasCargadas.put(semana, Boolean.TRUE);
                     this.citasDeLaSemana.put(semana, citas);
+                    c.setAg(this);
                 }
             }
             else{

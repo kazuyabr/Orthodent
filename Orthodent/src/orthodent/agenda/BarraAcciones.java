@@ -77,6 +77,12 @@ public class BarraAcciones extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(11, 146, 181));
         jLabel2.setText("Fecha");
+        jLabel2.setToolTipText("");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel2MouseEntered(evt);
+            }
+        });
 
         hoy.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         hoy.setText("Actual");
@@ -141,6 +147,10 @@ public class BarraAcciones extends javax.swing.JPanel {
         if(this.fechaAgenda.getDate()!=null)
             this.contenedor.cambiarProfesional(this.fechaAgenda.getDate());
     }//GEN-LAST:event_profesionalesItemStateChanged
+
+    private void jLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel2MouseEntered
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

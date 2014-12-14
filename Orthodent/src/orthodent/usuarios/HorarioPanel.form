@@ -410,6 +410,7 @@
           </Properties>
           <Events>
             <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="inicioHoraLunesItemStateChanged"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="inicioHoraLunesActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JComboBox" name="inicioMinLunes">
@@ -418,7 +419,7 @@
               <Font name="Georgia" size="11" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="13">
+              <StringArray count="12">
                 <StringItem index="0" value="00"/>
                 <StringItem index="1" value="05"/>
                 <StringItem index="2" value="10"/>
@@ -431,7 +432,6 @@
                 <StringItem index="9" value="45"/>
                 <StringItem index="10" value="50"/>
                 <StringItem index="11" value="55"/>
-                <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
@@ -472,7 +472,7 @@
               <Font name="Georgia" size="11" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="13">
+              <StringArray count="12">
                 <StringItem index="0" value="00"/>
                 <StringItem index="1" value="05"/>
                 <StringItem index="2" value="10"/>
@@ -485,7 +485,6 @@
                 <StringItem index="9" value="45"/>
                 <StringItem index="10" value="50"/>
                 <StringItem index="11" value="55"/>
-                <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
@@ -526,7 +525,7 @@
               <Font name="Georgia" size="11" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="13">
+              <StringArray count="12">
                 <StringItem index="0" value="00"/>
                 <StringItem index="1" value="05"/>
                 <StringItem index="2" value="10"/>
@@ -539,7 +538,6 @@
                 <StringItem index="9" value="45"/>
                 <StringItem index="10" value="50"/>
                 <StringItem index="11" value="55"/>
-                <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
@@ -580,7 +578,7 @@
               <Font name="Georgia" size="11" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="13">
+              <StringArray count="12">
                 <StringItem index="0" value="00"/>
                 <StringItem index="1" value="05"/>
                 <StringItem index="2" value="10"/>
@@ -593,7 +591,6 @@
                 <StringItem index="9" value="45"/>
                 <StringItem index="10" value="50"/>
                 <StringItem index="11" value="55"/>
-                <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
@@ -634,7 +631,7 @@
               <Font name="Georgia" size="11" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="13">
+              <StringArray count="12">
                 <StringItem index="0" value="00"/>
                 <StringItem index="1" value="05"/>
                 <StringItem index="2" value="10"/>
@@ -647,7 +644,6 @@
                 <StringItem index="9" value="45"/>
                 <StringItem index="10" value="50"/>
                 <StringItem index="11" value="55"/>
-                <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
@@ -688,7 +684,7 @@
               <Font name="Georgia" size="11" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="13">
+              <StringArray count="12">
                 <StringItem index="0" value="00"/>
                 <StringItem index="1" value="05"/>
                 <StringItem index="2" value="10"/>
@@ -701,7 +697,6 @@
                 <StringItem index="9" value="45"/>
                 <StringItem index="10" value="50"/>
                 <StringItem index="11" value="55"/>
-                <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
@@ -742,7 +737,7 @@
               <Font name="Georgia" size="11" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="13">
+              <StringArray count="12">
                 <StringItem index="0" value="00"/>
                 <StringItem index="1" value="05"/>
                 <StringItem index="2" value="10"/>
@@ -755,7 +750,6 @@
                 <StringItem index="9" value="45"/>
                 <StringItem index="10" value="50"/>
                 <StringItem index="11" value="55"/>
-                <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
@@ -796,7 +790,7 @@
               <Font name="Georgia" size="11" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="13">
+              <StringArray count="12">
                 <StringItem index="0" value="00"/>
                 <StringItem index="1" value="05"/>
                 <StringItem index="2" value="10"/>
@@ -809,7 +803,6 @@
                 <StringItem index="9" value="45"/>
                 <StringItem index="10" value="50"/>
                 <StringItem index="11" value="55"/>
-                <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
@@ -851,7 +844,7 @@
               <Font name="Georgia" size="11" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="13">
+              <StringArray count="12">
                 <StringItem index="0" value="00"/>
                 <StringItem index="1" value="05"/>
                 <StringItem index="2" value="10"/>
@@ -864,7 +857,6 @@
                 <StringItem index="9" value="45"/>
                 <StringItem index="10" value="50"/>
                 <StringItem index="11" value="55"/>
-                <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
@@ -905,7 +897,7 @@
               <Font name="Georgia" size="11" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="13">
+              <StringArray count="12">
                 <StringItem index="0" value="00"/>
                 <StringItem index="1" value="05"/>
                 <StringItem index="2" value="10"/>
@@ -918,7 +910,6 @@
                 <StringItem index="9" value="45"/>
                 <StringItem index="10" value="50"/>
                 <StringItem index="11" value="55"/>
-                <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
@@ -953,7 +944,7 @@
               <Font name="Georgia" size="11" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="13">
+              <StringArray count="12">
                 <StringItem index="0" value="00"/>
                 <StringItem index="1" value="05"/>
                 <StringItem index="2" value="10"/>
@@ -966,7 +957,6 @@
                 <StringItem index="9" value="45"/>
                 <StringItem index="10" value="50"/>
                 <StringItem index="11" value="55"/>
-                <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
@@ -1001,7 +991,7 @@
               <Font name="Georgia" size="11" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="13">
+              <StringArray count="12">
                 <StringItem index="0" value="00"/>
                 <StringItem index="1" value="05"/>
                 <StringItem index="2" value="10"/>
@@ -1014,7 +1004,6 @@
                 <StringItem index="9" value="45"/>
                 <StringItem index="10" value="50"/>
                 <StringItem index="11" value="55"/>
-                <StringItem index="12" value=" "/>
               </StringArray>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
