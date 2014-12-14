@@ -6,6 +6,8 @@
 package orthodent.reportes;
 
 import java.io.InputStream;
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import net.sf.jasperreports.engine.JRException;

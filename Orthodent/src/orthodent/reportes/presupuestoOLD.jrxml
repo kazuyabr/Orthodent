@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="presupuesto" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="24b36cd3-5989-4e88-8a07-a3df2b85fa5e">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="291"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -108,6 +108,7 @@ WHERE
 		<field name="laboratorio_piezapresupuesto_prestacion" class="java.lang.String"/>
 		<field name="laboratorio_piezapresupuesto_valor" class="java.lang.Integer"/>
 	</subDataset>
+	<subDataset name="New Dataset 1" uuid="57c3828b-4ee6-403d-afc3-63c559416812"/>
 	<parameter name="ID_PRESUPUESTO" class="java.lang.Integer"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["/Users/felipe/Devel/Orthodent/Orthodent/src/orthodent/reportes/"]]></defaultValueExpression>
@@ -153,12 +154,24 @@ WHERE
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="35" splitType="Stretch"/>
+		<band height="116" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="143" height="70" uuid="51eef452-1da9-4f54-97f2-32853eb974f6"/>
+				<imageExpression><![CDATA["/Users/felipe/Devel/Orthodent/Orthodent/src/orthodent/reportes/logoOrthodent.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="206" y="70" width="139" height="26" uuid="24b4e83e-37ea-49ba-baf1-8314d16dfe86"/>
+				<textElement>
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Presupuesto]]></text>
+			</staticText>
+		</band>
 	</pageHeader>
 	<detail>
-		<band height="201" splitType="Stretch">
+		<band height="330" splitType="Stretch">
 			<componentElement>
-				<reportElement key="table 1" style="table 1" x="106" y="111" width="360" height="50" uuid="5aa6a46d-439c-4147-8c62-56dd7d056706"/>
+				<reportElement key="table 1" style="table 1" x="106" y="222" width="360" height="50" uuid="5aa6a46d-439c-4147-8c62-56dd7d056706"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="tratamientos" uuid="3902ef44-8704-4b69-8791-b5c0bdd50494">
 						<datasetParameter name="ID_PRESUPUESTO">
@@ -197,7 +210,7 @@ WHERE
 					<jr:column width="90" uuid="4ad40a22-08fb-4b2a-b562-847279ea78c3">
 						<jr:columnHeader style="table 1_CH" height="38" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="10" width="90" height="19" uuid="e98cc0d4-6e6b-4ae0-9879-c90770044ce9"/>
+								<reportElement x="16" y="10" width="65" height="19" uuid="e98cc0d4-6e6b-4ae0-9879-c90770044ce9"/>
 								<text><![CDATA[Valor clinica]]></text>
 							</staticText>
 						</jr:columnHeader>
@@ -211,48 +224,65 @@ WHERE
 				</jr:table>
 			</componentElement>
 			<staticText>
-				<reportElement x="26" y="0" width="54" height="20" uuid="2478a6c0-3940-43a9-901b-8d1f87340b6b"/>
+				<reportElement x="26" y="0" width="125" height="20" uuid="2478a6c0-3940-43a9-901b-8d1f87340b6b"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Paciente: ]]></text>
+				<text><![CDATA[Nombre:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="13" y="31" width="67" height="20" uuid="3f7c316e-87c6-4762-991f-74325535e481"/>
+				<reportElement x="26" y="80" width="125" height="20" uuid="3f7c316e-87c6-4762-991f-74325535e481"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Profesional:]]></text>
+				<text><![CDATA[Antecedentes médicos:]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="64" width="555" height="1" uuid="27364112-a03d-4f89-9144-92ecd80e0ffb"/>
+				<reportElement x="0" y="175" width="555" height="1" uuid="27364112-a03d-4f89-9144-92ecd80e0ffb"/>
 			</line>
 			<textField>
-				<reportElement x="80" y="0" width="187" height="20" uuid="58931115-6293-4eec-a876-ca7b985b1309"/>
+				<reportElement x="151" y="0" width="187" height="20" uuid="58931115-6293-4eec-a876-ca7b985b1309"/>
 				<textFieldExpression><![CDATA[$V{paciente_nombre_completo}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="80" y="31" width="187" height="20" uuid="98b0a3c6-a716-434b-b6e8-03093b0c5218"/>
-				<textFieldExpression><![CDATA[$V{profesional_nombre_completo}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="218" y="79" width="157" height="20" uuid="587d37ba-7edc-476d-87a7-af92e2b87cb6"/>
+				<reportElement x="218" y="190" width="157" height="20" uuid="587d37ba-7edc-476d-87a7-af92e2b87cb6"/>
 				<textElement>
 					<font size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Tratamientos]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="357" y="181" width="37" height="20" uuid="c0e704dd-a4ee-4e7d-9d15-e5fb5fb4d8b9"/>
+				<reportElement x="357" y="292" width="37" height="20" uuid="c0e704dd-a4ee-4e7d-9d15-e5fb5fb4d8b9"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Costo:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="394" y="181" width="61" height="20" uuid="98d65847-0feb-4c53-8534-b7484033dd83"/>
+				<reportElement x="394" y="292" width="61" height="20" uuid="98d65847-0feb-4c53-8534-b7484033dd83"/>
 				<textFieldExpression><![CDATA[$F{presupuesto_costo_total}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="26" y="20" width="125" height="20" uuid="41d8b9fe-6833-439b-86e1-27ffcd18535c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RUT:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="40" width="125" height="20" uuid="968b1d58-3a57-401b-a450-34a9129705b1"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Nacimiento:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="60" width="125" height="20" uuid="54524d11-9090-4976-9900-0448abf9d815"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Domicilio:]]></text>
+			</staticText>
 		</band>
 		<band height="197">
 			<staticText>
