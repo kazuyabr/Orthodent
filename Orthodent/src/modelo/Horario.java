@@ -32,7 +32,7 @@ public class Horario {
         this.dia = dia;
     }
 
-    private int getHora_fin() {
+    public int getHora_fin() {
         return hora_fin;
     }
 
@@ -40,7 +40,7 @@ public class Horario {
         this.hora_fin = hora_fin;
     }
 
-    private int getHora_inicio() {
+    public int getHora_inicio() {
         return hora_inicio;
     }
 

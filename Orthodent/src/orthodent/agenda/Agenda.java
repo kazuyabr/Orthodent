@@ -38,7 +38,10 @@ public class Agenda extends JPanel{
     
     public Agenda(Usuario actual){
         this.usuarioActual = actual;
-        this.modelo = new AgendaSchedulerModel();
+        this.barraAcciones = new BarraAcciones(this.usuarioActual,this);
+        //this.cambiarSemanaDeAgenda(new Date());
+        
+        this.modelo = new AgendaSchedulerModel(this.barraAcciones);
         //Introducir código aquí
         this.setBackground(new Color(255,255,255));
         this.setPreferredSize(new Dimension(1073, 561));
@@ -63,8 +66,6 @@ public class Agenda extends JPanel{
         scheduler.setComponentFactory(cf);
         add(scheduler, BorderLayout.CENTER);
         
-        this.barraAcciones = new BarraAcciones(this.usuarioActual,this);
-        //this.cambiarSemanaDeAgenda(new Date());
         this.barraAcciones.setFechaAgenda(new Date());
         //this.cargarAgendainicial();
         this.add(barraAcciones, BorderLayout.NORTH);
@@ -73,6 +74,18 @@ public class Agenda extends JPanel{
     private void handleAddAppointment(@Nullable Resource resource, @NotNull DateTime dateTime) {
         
         if(this.usuarioActual.getId_rol()==3 || this.usuarioActual.getId_rol()==4) return;
+        boolean clickEnHorarioDeAtencion = false;
+        Iterator<Availability> av = resource.getAvailability(dateTime.toLocalDate());
+        while(av.hasNext()){
+            Availability a = av.next();
+            DateTime inicioBloque = new DateTime(dateTime.getYear(),dateTime.getMonthOfYear(),dateTime.getDayOfMonth(),a.getTime().getHourOfDay(),a.getTime().getMinuteOfHour(),0,0);
+            DateTime finBloque = inicioBloque.plusMinutes(a.getDuration().toStandardSeconds().toStandardMinutes().getMinutes());
+            if(dateTime.isAfter(inicioBloque) && dateTime.isBefore(finBloque)){
+                clickEnHorarioDeAtencion = true;
+            }
+        }
+        
+        if(!clickEnHorarioDeAtencion) return;
         
         
         int semana = obtenerSemana(dateTime.toDate());
@@ -202,6 +215,8 @@ public class Agenda extends JPanel{
         int semana = this.obtenerSemana(fecha);
         LocalDate ld = new LocalDate(obtenerLunes(fecha));
         this.scheduler.showDate(ld);
+        this.modelo = new AgendaSchedulerModel(this.barraAcciones);
+        this.scheduler.setModel(modelo);
         this.citasDeLaSemana.clear();
         this.semanasCargadas.clear();
         this.modelo.citas.clear();

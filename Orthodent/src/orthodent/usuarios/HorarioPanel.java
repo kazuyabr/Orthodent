@@ -967,6 +967,22 @@ public class HorarioPanel extends JPanel{
     }//GEN-LAST:event_inicioMinLunesItemStateChanged
 
     private void finHoraLunesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finHoraLunesItemStateChanged
+        if(Integer.parseInt(this.finHoraLunes.getSelectedItem().toString())==19){
+            this.finMinLunes.removeAllItems();
+            int i = 0;
+            while(i<=30){
+                this.finMinLunes.addItem(""+i);
+                i+=5;
+            }
+        }
+        else{
+            this.finMinLunes.removeAllItems();
+            int i = 0;
+            while(i<=55){
+                this.finMinLunes.addItem(""+i);
+                i+=5;
+            }
+        }
         this.habilitarBoton();
     }//GEN-LAST:event_finHoraLunesItemStateChanged
 
@@ -983,6 +999,22 @@ public class HorarioPanel extends JPanel{
     }//GEN-LAST:event_inicioMinMartesItemStateChanged
 
     private void finHoraMartesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finHoraMartesItemStateChanged
+        if(Integer.parseInt(this.finHoraMartes.getSelectedItem().toString())==19){
+            this.finMinMartes.removeAllItems();
+            int i = 0;
+            while(i<=30){
+                this.finMinMartes.addItem(""+i);
+                i+=5;
+            }
+        }
+        else{
+            this.finMinMartes.removeAllItems();
+            int i = 0;
+            while(i<=55){
+                this.finMinMartes.addItem(""+i);
+                i+=5;
+            }
+        }
         this.habilitarBoton();
     }//GEN-LAST:event_finHoraMartesItemStateChanged
 
@@ -999,7 +1031,22 @@ public class HorarioPanel extends JPanel{
     }//GEN-LAST:event_inicioMinMiercolesItemStateChanged
 
     private void finHoraMiercolesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finHoraMiercolesItemStateChanged
-        this.habilitarBoton();
+        if(Integer.parseInt(this.finHoraMiercoles.getSelectedItem().toString())==19){
+            this.finMinMiercoles.removeAllItems();
+            int i = 0;
+            while(i<=30){
+                this.finMinMiercoles.addItem(""+i);
+                i+=5;
+            }
+        }
+        else{
+            this.finMinMiercoles.removeAllItems();
+            int i = 0;
+            while(i<=55){
+                this.finMinMiercoles.addItem(""+i);
+                i+=5;
+            }
+        }this.habilitarBoton();
     }//GEN-LAST:event_finHoraMiercolesItemStateChanged
 
     private void finMinMiercolesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finMinMiercolesItemStateChanged
@@ -1015,6 +1062,22 @@ public class HorarioPanel extends JPanel{
     }//GEN-LAST:event_inicioMinJuevesItemStateChanged
 
     private void finHoraJuevesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finHoraJuevesItemStateChanged
+        if(Integer.parseInt(this.finHoraJueves.getSelectedItem().toString())==19){
+            this.finMinJueves.removeAllItems();
+            int i = 0;
+            while(i<=30){
+                this.finMinJueves.addItem(""+i);
+                i+=5;
+            }
+        }
+        else{
+            this.finMinJueves.removeAllItems();
+            int i = 0;
+            while(i<=55){
+                this.finMinJueves.addItem(""+i);
+                i+=5;
+            }
+        }
         this.habilitarBoton();
     }//GEN-LAST:event_finHoraJuevesItemStateChanged
 
@@ -1031,6 +1094,22 @@ public class HorarioPanel extends JPanel{
     }//GEN-LAST:event_inicioMinViernesItemStateChanged
 
     private void finHoraViernesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finHoraViernesItemStateChanged
+        if(Integer.parseInt(this.finHoraViernes.getSelectedItem().toString())==19){
+            this.finMinViernes.removeAllItems();
+            int i = 0;
+            while(i<=30){
+                this.finMinViernes.addItem(""+i);
+                i+=5;
+            }
+        }
+        else{
+            this.finMinViernes.removeAllItems();
+            int i = 0;
+            while(i<=55){
+                this.finMinViernes.addItem(""+i);
+                i+=5;
+            }
+        }
         this.habilitarBoton();
     }//GEN-LAST:event_finHoraViernesItemStateChanged
 

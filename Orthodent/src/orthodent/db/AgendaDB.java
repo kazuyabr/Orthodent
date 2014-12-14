@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modelo.Horario;
 import modelo.Paciente;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -158,6 +159,31 @@ public class AgendaDB {
             Logger.getLogger(AgendaDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return resultado;
+    }
+    
+    public static ArrayList<Horario> obtenerHorario(String dia, int id_profesional){
+        ArrayList<Horario> hor = null;
+        try{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            int inicio, fin, id;
+            java.sql.Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM horario WHERE dia='"+dia+"' AND id_usuario="+id_profesional);
+            hor = new ArrayList<Horario>();
+            while(rs.next()){
+                id = rs.getInt("id_horario");
+                inicio = rs.getInt("hora_inicio");
+                fin = rs.getInt("hora_fin");
+                Horario h = new Horario(id,id_profesional,dia,inicio,fin);
+                hor.add(h);
+            }
+            rs.close();
+            con.close();
+        }
+        catch(SQLException ex){
+            Logger.getLogger(AgendaDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return hor;
     }
         
 }
