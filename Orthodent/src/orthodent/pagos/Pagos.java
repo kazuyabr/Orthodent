@@ -22,6 +22,8 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
@@ -35,10 +37,12 @@ import javax.swing.LayoutStyle;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import modelo.Pago;
+import modelo.PlanTratamiento;
 import modelo.Usuario;
 import orthodent.Item;
 import orthodent.db.Autenticacion;
 import orthodent.db.PagoDB;
+import orthodent.db.PlanTratamientoDB;
 
 /**
  *
@@ -86,9 +90,26 @@ public class Pagos extends JPanel implements ActionListener
         
         this.profesionales = new JComboBox(){
             public void fireItemStateChanged(ItemEvent evt){
-                for(Usuario prof : auxiliar){
-                    if(((Item)evt.getItem()).getId()==prof.getId_usuario()){
-                        System.out.println("=)");
+                int id = ((Item)evt.getItem()).getId();
+                if(id==-1){
+                    //TODOS
+                    ArrayList<Pago> pagos = PagoDB.listarPagos();
+
+                    try {
+                        updateModelo(pagos);
+                    } catch (Exception ex) {
+                    }
+                }
+                else{
+                    for(Usuario prof : auxiliar){
+                        if(id==prof.getId_usuario()){
+                            //algún profesional en particular
+                            ArrayList<Pago> pagos = PagoDB.listarPagos(id);
+                            try {
+                                updateModelo(pagos);
+                            } catch (Exception ex) {
+                            }
+                        }
                     }
                 }
             }
@@ -145,7 +166,7 @@ public class Pagos extends JPanel implements ActionListener
         
         this.tabla = new JTable();
         this.tabla.setFont(new Font("Georgia", 0, 11));
-        this.columnasNombre = new String [] {"Fecha", "Tipo de Pago", "Detalle", "Valor", "Numero de Boleta", "Laboratorio"};
+        this.columnasNombre = new String [] {"Fecha", "Profesional", "Tipo de Pago", "Detalle", "Valor", "Numero de Boleta", "Laboratorio"};
         ArrayList<Pago> pagos = PagoDB.listarPagos();
         this.updateModelo(pagos);
         this.tabla.getTableHeader().setReorderingAllowed(false);
@@ -198,8 +219,20 @@ public class Pagos extends JPanel implements ActionListener
             String valor = "$"+pago.getAbono();
             String numBoleta = pago.getNumBoleta()+"";
             Boolean lab = pago.getIsLab();
+            
+            PlanTratamiento plan = PlanTratamientoDB.getPlanTratamiento(pago.getIdPlanTratamiento());
+            
+            Usuario profes = Autenticacion.getUsuario(plan.getIdProfesional());
+            
+            String nombre = profes.getNombre();
+        
+            if(nombre.contains(" ")){
+                nombre = nombre.substring(0,nombre.indexOf(" "));
+            }
+            
+            nombre = nombre+" "+profes.getApellido_pat();
 
-            Object [] fila = new Object [] {new Item(fechaBitacora, pago.getIdPago()), tipoPago, detalle, valor,
+            Object [] fila = new Object [] {new Item(fechaBitacora, pago.getIdPago()), nombre, tipoPago, detalle, valor,
                                             numBoleta, lab};
             
             this.filas[i] = fila;
@@ -208,10 +241,10 @@ public class Pagos extends JPanel implements ActionListener
         
         this.modelo = new DefaultTableModel(this.filas, this.columnasNombre) {
             Class[] types = new Class [] {
-                Item.class, String.class, String.class, String.class, String.class, Boolean.class
+                Item.class, String.class, String.class, String.class, String.class, String.class, Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
