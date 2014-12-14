@@ -12,6 +12,7 @@ import java.awt.event.WindowListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import modelo.Usuario;
 import orthodent.db.VentanaConfiguracionDB;
@@ -325,10 +326,23 @@ public class Login extends javax.swing.JDialog implements WindowListener{
     }//GEN-LAST:event_campoNombreUsuarioKeyReleased
 
     private void botonOlvidoContraseña1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonOlvidoContraseña1ActionPerformed
-        String correo = (String) JOptionPane.showInputDialog(this,"\nIngrese contraseña Admin BD: \n",
-                "Orthodent",
-                JOptionPane.PLAIN_MESSAGE,null,null,"");
-        VentanaConfiguracionDB v = new VentanaConfiguracionDB(null, true);
+    JPasswordField pf = new JPasswordField();
+    int okCxl = JOptionPane.showConfirmDialog(null, pf, "Ingrese Contraseña Admin BD", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+    if (okCxl == JOptionPane.OK_OPTION) {
+      String password = new String(pf.getPassword());
+      String pass = "bdorthodent123";
+      if(pass.equals(password)){
+            VentanaConfiguracionDB v = new VentanaConfiguracionDB(null, true);
+      }
+      else{
+            JOptionPane.showMessageDialog(this,
+                    "La contraseña ingresada es incorrecta.",
+                    "Orthodent",
+                    JOptionPane.INFORMATION_MESSAGE);
+      }
+    }        
+        
     }//GEN-LAST:event_botonOlvidoContraseña1ActionPerformed
     
     

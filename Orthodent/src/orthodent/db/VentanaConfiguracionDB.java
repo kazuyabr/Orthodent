@@ -286,7 +286,7 @@ public class VentanaConfiguracionDB extends javax.swing.JDialog {
                 }
 
                 JOptionPane.showMessageDialog(this,
-                        "Para que los cambios hagan efecto la aplicación se cerrará",
+                        "Para que los cambios surtan efecto, la aplicación se cerrará",
                         "Orthodent",
                         JOptionPane.INFORMATION_MESSAGE);
                 System.exit(0);
