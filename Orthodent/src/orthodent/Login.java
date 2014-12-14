@@ -273,9 +273,11 @@ public class Login extends javax.swing.JDialog implements WindowListener{
 
     private void botonOlvidoContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonOlvidoContraseñaActionPerformed
         //Aqui hacer la llamada para cambiar la contraseña
-        String correo = (String) JOptionPane.showInputDialog(this,"\nIngrese su correo: \n",
-                "Orthodent",
-                JOptionPane.PLAIN_MESSAGE,null,null,"");
+    TextField tf = new TextField();
+    int okCxl = JOptionPane.showConfirmDialog(null, tf, "\nIngrese su correo: \n", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);        
+    String correo = tf.getText().toString();
+
+    if(okCxl == JOptionPane.OK_OPTION){
         
         if(correo!=null && correo.length()>0){
             if(!validarEmail(correo)){
@@ -303,6 +305,7 @@ public class Login extends javax.swing.JDialog implements WindowListener{
             JOptionPane.showMessageDialog(this,
                         "Debe ingresar un correo válido.");
         }
+    }
     }//GEN-LAST:event_botonOlvidoContraseñaActionPerformed
 
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
