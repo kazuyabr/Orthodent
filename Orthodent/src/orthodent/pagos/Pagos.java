@@ -5,6 +5,7 @@
  */
 package orthodent.pagos;
 
+import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -15,52 +16,50 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import modelo.Paciente;
 import modelo.Pago;
 import modelo.Usuario;
 import orthodent.Item;
 import orthodent.db.Autenticacion;
-import orthodent.db.PacienteDB;
 import orthodent.db.PagoDB;
-import orthodent.pacientes.MostrarInfoPaciente;
 
 /**
  *
- * @author felipe
+ * @author Mary
  */
 public class Pagos extends JPanel implements ActionListener
 {  
     private Image bannerFondo;
+    private JLabel labelProfesionales;
     private JComboBox profesionales;
+    private JLabel desde;
+    private JDateChooser fechaDesde;
+    private JLabel hasta;
+    private JDateChooser fechaHasta;
+    private JButton imprimir;
     private JTable tabla;
     private TableModel modelo;
     private Object [][] filas;
     private String [] columnasNombre;
     private ArrayList<Usuario> auxiliar;
-    
-    private MostrarInfoPaciente infoPaciente;
     private JPanel contenedorListarPagos;
-    private boolean isListarBitacoras;
     
     public Pagos() throws Exception{
         
@@ -69,22 +68,9 @@ public class Pagos extends JPanel implements ActionListener
         
         this.setLayout(new BorderLayout());
         
-        this.isListarBitacoras = true;
         this.initComponents();
         this.addComponents();
-     
-    }
-
-    public boolean isIsListarBitacoras() {
-        return isListarBitacoras;
-    }
-
-    public void setIsListarBitacoras(boolean isListarBitacoras) {
-        this.isListarBitacoras = isListarBitacoras;
-    }
-    
-    public MostrarInfoPaciente getInfoPaciente(){
-        return this.infoPaciente;
+        this.imprimir.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
     private void initComponents() throws Exception{
@@ -92,8 +78,11 @@ public class Pagos extends JPanel implements ActionListener
         this.contenedorListarPagos = new JPanel();
         this.contenedorListarPagos.setLayout(new BorderLayout());
         
-        this.infoPaciente = null;
         this.bannerFondo = new ImageIcon("src/imagenes/directorioPagos.png").getImage();
+        
+        this.labelProfesionales = new JLabel("Profesional");
+        this.labelProfesionales.setFont(new Font("Georgia", 1, 12));
+        this.labelProfesionales.setForeground(new Color(11, 146, 181));
         
         this.profesionales = new JComboBox(){
             public void fireItemStateChanged(ItemEvent evt){
@@ -104,6 +93,32 @@ public class Pagos extends JPanel implements ActionListener
                 }
             }
         };
+        
+        this.desde = new JLabel("Desde");
+        this.desde.setFont(new Font("Georgia", 1, 12));
+        this.desde.setForeground(new Color(11, 146, 181));
+        
+        this.fechaDesde = new JDateChooser();
+        this.fechaDesde.setBackground(new Color(255, 255, 255));
+        this.fechaDesde.setFont(new Font("Georgia", 0, 12));
+        this.fechaDesde.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                fechaDesdePropertyChange(evt);
+            }
+        });
+        
+        this.hasta = new JLabel("Hasta");
+        this.hasta.setFont(new Font("Georgia", 1, 12));
+        this.hasta.setForeground(new Color(11, 146, 181));
+        
+        this.fechaHasta = new JDateChooser();
+        this.fechaHasta.setBackground(new Color(255, 255, 255));
+        this.fechaHasta.setFont(new Font("Georgia", 0, 12));
+        this.fechaHasta.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                fechaHastaPropertyChange(evt);
+            }
+        });
         
         Vector model = new Vector();
         this.auxiliar = Autenticacion.listarProfesionales();
@@ -121,6 +136,12 @@ public class Pagos extends JPanel implements ActionListener
             }
         }
         this.profesionales.setModel(new DefaultComboBoxModel(model));
+        this.profesionales.setFont(new Font("Georgia", 0, 12)); // NOI18N
+        
+        this.imprimir = new JButton();
+        this.imprimir.setFont(new Font("Georgia", 1, 12));
+        this.imprimir.setText("Imprimir");
+        this.imprimir.addActionListener(this);
         
         this.tabla = new JTable();
         this.tabla.setFont(new Font("Georgia", 0, 11));
@@ -205,17 +226,6 @@ public class Pagos extends JPanel implements ActionListener
         this.tabla.setModel(modelo);
     }
     
-    public void volverPacientes() throws Exception{
-        if(!this.isListarBitacoras){
-            this.remove(this.infoPaciente);
-            this.add(this.contenedorListarPagos, BorderLayout.CENTER);
-            this.isListarBitacoras = true;
-            ArrayList<Pago> pagos = PagoDB.listarPagos();
-            this.updateModelo(pagos);
-            this.updateUI();
-        }
-    }
-    
     private void addComponents(){
         JPanel auxiliar = new JPanel();
         auxiliar.setLayout(new BorderLayout());
@@ -261,11 +271,17 @@ public class Pagos extends JPanel implements ActionListener
             groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(groupLayout.createSequentialGroup()
                 .addContainerGap()
-                //.addComponent(this.buscador, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+                .addComponent(this.labelProfesionales, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                //.addComponent(this.botonBuscar)
+                .addComponent(this.profesionales, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(this.desde, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+                .addComponent(this.fechaDesde, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(this.hasta, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+                .addComponent(this.fechaHasta, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                //.addComponent(this.nuevoPaciente)
+                .addComponent(this.imprimir)
                 .addContainerGap())
         );
         
@@ -273,16 +289,31 @@ public class Pagos extends JPanel implements ActionListener
             groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(groupLayout.createSequentialGroup()
                 .addContainerGap(15, Short.MAX_VALUE)
-                .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE))
-                    //.addComponent(this.buscador, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    //.addComponent(this.botonBuscar))
+                .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(this.labelProfesionales, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(this.profesionales)
+                    .addComponent(this.desde, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(this.fechaDesde)
+                    .addComponent(this.hasta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(this.fechaHasta)
+                    .addComponent(this.imprimir))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
+        if(e.getSource() == this.imprimir){
+            //ACA TIENES QUE AGREGAR EL CODIGO ASTROZA!!
+        }
+    }
+    
+    public void fechaDesdePropertyChange(PropertyChangeEvent evt) {
+    
+    }
+    
+    public void fechaHastaPropertyChange(PropertyChangeEvent evt) {
+    
     }
     
     private void buscadorKeyTyped(KeyEvent evt) throws Exception {

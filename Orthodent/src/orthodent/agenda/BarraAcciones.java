@@ -49,7 +49,8 @@ public class BarraAcciones extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(11, 146, 181));
         jLabel1.setText("Profesional");
 
         profesionales.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
@@ -73,7 +74,8 @@ public class BarraAcciones extends javax.swing.JPanel {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(11, 146, 181));
         jLabel2.setText("Fecha");
 
         hoy.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
@@ -89,17 +91,17 @@ public class BarraAcciones extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
+                .addContainerGap(22, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(50, 50, 50)
                 .addComponent(profesionales, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 45, Short.MAX_VALUE)
+                .addGap(18, 38, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(50, 50, 50)
                 .addComponent(fechaAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(hoy)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
