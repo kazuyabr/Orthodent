@@ -20,7 +20,7 @@ public class DbConnection {
    /**Parametros de conexion*/
    static String bd = "clinica";
    static String login = "root";
-   static String password = "";
+   static String password = "root";
    static String url = "jdbc:mysql://localhost:8080/"+bd;
  
    Connection connection = null;
@@ -31,7 +31,7 @@ public class DbConnection {
          //obtenemos el driver de para mysql
          Class.forName("com.mysql.jdbc.Driver");
          //obtenemos la conexión
-         connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/clinica","root", "");
+         connection = (Connection) DriverManager.getConnection("jdbc:mysql://10.37.129.3/clinica","root", "root");
          
          /*if (connection!=null){
             System.out.println("Conexión a base de datos " + bd + " OK\n");
