@@ -112,7 +112,7 @@ public class JVentana extends JFrame{
         panel.add(borde2,BorderLayout.EAST);
         panel.setSize(1043, 1200);
         
-        this.contenedorAgenda.add(panel,BorderLayout.CENTER);
+        this.contenedorAgenda.add(panel,BorderLayout.NORTH);
     }
     
     private void crearPacientes() throws Exception{
