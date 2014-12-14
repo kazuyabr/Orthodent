@@ -25,12 +25,27 @@ public class DatosClinica extends javax.swing.JPanel {
      */
     private ClinicaInterna clinica;
     private boolean cambios;
+    private Usuario usuarioActual;
     
-    public DatosClinica(ClinicaInterna clinica) {
+    public DatosClinica(ClinicaInterna clinica, Usuario usuarioActual) {
         this.clinica = clinica;
         this.cambios=false;
+        this.usuarioActual = usuarioActual;
         initComponents();
         this.nombres.setText(clinica.getNombre());
+        if(usuarioActual.getId_rol() != 1){ //si no es administrador
+            habilitar.setVisible(false);
+        }
+        else{
+            if(clinica.isActivo()){
+                eliminar.setVisible(true);
+                habilitar.setVisible(false);
+            }
+            else{
+                eliminar.setVisible(false);
+                habilitar.setVisible(true);
+            }
+        }        
         nombres.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 habilitarBoton();
@@ -55,6 +70,7 @@ public class DatosClinica extends javax.swing.JPanel {
         nombres = new javax.swing.JTextField();
         guardar = new javax.swing.JButton();
         eliminar = new javax.swing.JButton();
+        habilitar = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -120,6 +136,14 @@ public class DatosClinica extends javax.swing.JPanel {
             }
         });
 
+        habilitar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        habilitar.setText("Habilitar");
+        habilitar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                habilitarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -129,6 +153,8 @@ public class DatosClinica extends javax.swing.JPanel {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(habilitar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(eliminar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(guardar)
@@ -148,7 +174,8 @@ public class DatosClinica extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(guardar)
-                    .addComponent(eliminar))
+                    .addComponent(eliminar)
+                    .addComponent(habilitar))
                 .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -259,6 +286,34 @@ public class DatosClinica extends javax.swing.JPanel {
 
     }//GEN-LAST:event_nombresKeyReleased
 
+    private void habilitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_habilitarActionPerformed
+                Object[] options = {"Sí","No"};
+        
+        int n = JOptionPane.showOptionDialog(this,
+                    "¿Esta seguro que desea habilitar nuevamente la Clínica?",
+                    "Orthodent",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[1]);
+        
+        if(n==0){
+            boolean resul = ClinicaInternaDB.habilitarClinica(this.clinica);
+            
+            if(resul){
+                try {
+                    habilitar.setVisible(false);
+                    eliminar.setVisible(true);
+                    JPanel contenedor = (JPanel)this.getParent();
+                    
+                    //((MostrarInfoTratamiento)contenedor.getParent()).volver();
+                } catch (Exception ex) {
+                }
+            }
+        }
+    }//GEN-LAST:event_habilitarActionPerformed
+
      private void habilitarBoton(){
         this.cambios = true;
         this.guardar.setEnabled(true);
@@ -267,6 +322,7 @@ public class DatosClinica extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton eliminar;
     private javax.swing.JButton guardar;
+    private javax.swing.JButton habilitar;
     private javax.swing.JButton imagenProfesional;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel labelNombres;
