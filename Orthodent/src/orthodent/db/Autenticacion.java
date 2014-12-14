@@ -382,6 +382,29 @@ public class Autenticacion {
         }
     }
     
+    static public boolean existeUsuario(String nombreUsuario) throws Exception{
+        boolean aux = true;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * from usuario where nombre_usuario=" + nombreUsuario);
+            if (rs.next())
+            {
+                aux = false;
+            }
+            rs.close();
+            con.close();
+            return aux;
+        }
+
+        catch ( SQLException e) {
+            return false;
+        }
+    }    
+    
     public static boolean editarUsuario(Usuario usuario, boolean cambioContraseña) throws Exception{
         try{
             DbConnection db = new DbConnection();

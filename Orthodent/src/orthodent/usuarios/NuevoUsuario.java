@@ -17,6 +17,7 @@ import orthodent.Item;
 import orthodent.JVentana;
 import orthodent.db.Autenticacion;
 import orthodent.db.ClinicaInternaDB;
+import orthodent.db.PacienteDB;
 
 /**
  *
@@ -503,21 +504,25 @@ public class NuevoUsuario extends javax.swing.JDialog {
         if(aux){
             if(contraseña1.equals(contraseña2)){
                 try {
-                    boolean respuesta = Autenticacion.crearUsuario(idRol, nombre, apellidoPat, apellidoMat, 
-                                                            nombreUsuario, contraseña1, email, telefono, idClinica);
-                    
-                    /*if(respuesta){
-                        System.out.println("Agregado :)");
+                    boolean existe = Autenticacion.existeUsuario(nombreUsuario);
+                    if(existe){
+                        boolean respuesta = Autenticacion.crearUsuario(idRol, nombre, apellidoPat, apellidoMat, 
+                                                                nombreUsuario, contraseña1, email, telefono, idClinica);
+                        ((JVentana)this.getParent()).getUsuarios().updateModelo();
+                        ((JVentana)this.getParent()).getUsuarios().updateUI();
+                        this.dispose();                        
                     }
-                    else{
-                        System.out.println("Algo ocurrio mal =/");
-                    }*/
+                    else{ // si existe
+                        JOptionPane.showMessageDialog(this,
+                            "Ya existe un usuario con el correo ingresado.",
+                            "Orthodent",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    
                 } catch (Exception ex) {
                 }
                 
-                ((JVentana)this.getParent()).getUsuarios().updateModelo();
-                ((JVentana)this.getParent()).getUsuarios().updateUI();
-                this.dispose();
+
             }
             else{
                 JOptionPane.showMessageDialog(this,
