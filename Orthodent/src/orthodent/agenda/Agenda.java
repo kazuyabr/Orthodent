@@ -16,6 +16,10 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import orthodent.JVentana;
 import orthodent.db.AgendaDB;
 
@@ -60,7 +65,7 @@ public class Agenda extends JPanel{
         this.scheduler.setModel(modelo);
         this.scheduler.showDate(new LocalDate());
         this.scheduler.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
+        this.scheduler.setBackground(Color.WHITE);
         scheduler.addScheduleListener(new ScheduleListener()
         {
             @Override
@@ -72,11 +77,10 @@ public class Agenda extends JPanel{
         this.setLayout(new BorderLayout());
         AgendaComponentFactory cf = new AgendaComponentFactory();
         this.scheduler.setComponentFactory(cf);
-        //((DaySchedule)this.scheduler.getComponent(0)).setFont(new Font("Georgia",Font.PLAIN,12));
         add(this.scheduler, BorderLayout.CENTER);
         this.barraAcciones.setFechaAgenda(new Date());
         this.add(barraAcciones, BorderLayout.NORTH);
-        //this.semanaActual = this.obtenerSemana(new LocalDate());
+        updateUI();
     }
     
     public void handleAddAppointment(@Nullable Resource resource, @NotNull DateTime dateTime) {
@@ -337,6 +341,36 @@ public class Agenda extends JPanel{
             }
         }
         return sePuede;
+    }
+    
+    public void printComponenet(){
+
+        PrinterJob pj = PrinterJob.getPrinterJob();
+        pj.setJobName(" Print Component ");
+
+        pj.setPrintable (new Printable() {    
+            @Override
+            public int print(Graphics pg, PageFormat pf, int pageNum){
+                if (pageNum > 0){
+                    return Printable.NO_SUCH_PAGE;
+                }
+
+                Graphics2D g2 = (Graphics2D) pg;
+                g2.scale(0.7,0.7);
+                g2.translate(pf.getImageableX(), pf.getImageableY());
+                scheduler.paint(g2);
+                return Printable.PAGE_EXISTS;
+            }
+        });
+        if (pj.printDialog() == false)
+            return;
+
+        try {
+            pj.print();
+        }
+        catch (PrinterException ex) {
+                // handle exception
+        }
     }
     
 }

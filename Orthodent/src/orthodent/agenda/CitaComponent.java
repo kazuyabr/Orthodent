@@ -7,6 +7,7 @@ package orthodent.agenda;
 
 import com.thirdnf.ResourceScheduler.Appointment;
 import com.thirdnf.ResourceScheduler.components.BasicAppointmentComponent;
+import java.awt.ComponentOrientation;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
@@ -65,6 +66,7 @@ public class CitaComponent extends BasicAppointmentComponent {
                 if(agrandao){
                     setSize(ancho,alto);
                     updateUI();
+                    agrandao=false;
                 }
             }
             
@@ -75,6 +77,8 @@ public class CitaComponent extends BasicAppointmentComponent {
     @Override
     public void paintComponent(Graphics g){
         setBackground(this.cita.getColor());
+        this.setAlignmentY(TOP_ALIGNMENT);
+        
         //int altura = this.cita.getDuration().toStandardSeconds().toStandardMinutes().getMinutes();
         //this.setSize(161, 11);
         super.paintComponent(g);
