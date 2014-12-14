@@ -15,7 +15,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.*;
 import modelo.Usuario;
-import orthodent.bitacora.Bitacoras;
+import orthodent.pagos.Pagos;
 import orthodent.usuarios.MostrarInfoTratamiento;
 
 public class JVentana extends JFrame{
@@ -25,15 +25,15 @@ public class JVentana extends JFrame{
     private PanelOpciones panelOpciones;
     private JPanel contenedorAgenda;
     private JPanel contenedorPacientes;
+    private JPanel contenedorPagos;
     private JPanel contenedorTratamiento;
     private JPanel contenedorUsuarios;
-    private JPanel contenedorBitacora;
     private JPanel contenedorConfigurarCuenta;
     private Agenda agenda;
     private Pacientes pacientes;
+    private Pagos pagos;
     private Tratamientos tratamientos;
     private Usuarios usuarios;
-    private Bitacoras bitacoras;
     private MostrarInfoTratamiento configurarCuenta;
     
     private int opActual;
@@ -80,7 +80,7 @@ public class JVentana extends JFrame{
         this.contenedorPacientes = new JPanel();
         this.contenedorTratamiento = new JPanel();
         this.contenedorUsuarios = new JPanel();
-        this.contenedorBitacora = new JPanel();
+        this.contenedorPagos = new JPanel();
         this.contenedorConfigurarCuenta = new JPanel();
         
         this.crearAgenda();
@@ -89,7 +89,7 @@ public class JVentana extends JFrame{
         this.pacientes = null;
         this.tratamientos = null;
         this.usuarios = null;
-        this.bitacoras = null;
+        this.pagos = null;
         this.configurarCuenta = null;
     }
     
@@ -118,13 +118,9 @@ public class JVentana extends JFrame{
         this.contenedorPacientes.setLayout(new BorderLayout());
         this.pacientes = new Pacientes(this.usuario);
         
-        //Paciente paciente = PacienteDB.getPaciente("17157036-0");
-        //MostrarInfoPaciente infoPaciente = new MostrarInfoPaciente(paciente, this.usuario);
-        
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(this.pacientes,BorderLayout.CENTER);
-        //panel.add(infoPaciente,BorderLayout.CENTER);
         
         JPanel borde1 = new JPanel();
         borde1.setBackground(Color.white);
@@ -137,6 +133,27 @@ public class JVentana extends JFrame{
         panel.add(borde2,BorderLayout.EAST);
         
         this.contenedorPacientes.add(panel,BorderLayout.NORTH);
+    }
+    
+    private void crearPagos() throws Exception{
+        this.contenedorPagos.setLayout(new BorderLayout());
+        this.pagos = new Pagos();
+        
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(this.pagos,BorderLayout.CENTER);
+        
+        JPanel borde1 = new JPanel();
+        borde1.setBackground(Color.white);
+        borde1.setPreferredSize(new Dimension(130, 488));
+        JPanel borde2 = new JPanel();
+        borde2.setBackground(Color.white);
+        borde2.setPreferredSize(new Dimension(130, 488));
+        
+        panel.add(borde1,BorderLayout.WEST);
+        panel.add(borde2,BorderLayout.EAST);
+        
+        this.contenedorPagos.add(panel,BorderLayout.NORTH);
     }
     
     private void crearTratamientos(){
@@ -181,27 +198,6 @@ public class JVentana extends JFrame{
         this.contenedorUsuarios.add(panel,BorderLayout.NORTH);
     }
     
-    private void crearBitacora() throws Exception{
-        this.contenedorBitacora.setLayout(new BorderLayout());
-        this.bitacoras = new Bitacoras();
-        
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        panel.add(this.bitacoras,BorderLayout.CENTER);
-        
-        JPanel borde1 = new JPanel();
-        borde1.setBackground(Color.white);
-        borde1.setPreferredSize(new Dimension(130, 488));
-        JPanel borde2 = new JPanel();
-        borde2.setBackground(Color.white);
-        borde2.setPreferredSize(new Dimension(130, 488));
-        
-        panel.add(borde1,BorderLayout.WEST);
-        panel.add(borde2,BorderLayout.EAST);
-        
-        this.contenedorBitacora.add(panel,BorderLayout.NORTH);
-    }
-    
     private void crearConfigurarCuenta(){
         this.contenedorConfigurarCuenta.setLayout(new BorderLayout());
         this.configurarCuenta = new MostrarInfoTratamiento(this.usuario, this.usuario, true, false);
@@ -238,6 +234,12 @@ public class JVentana extends JFrame{
         }
         
         try{
+            this.remove(this.contenedorPagos);
+        }
+        catch(Exception e){
+        }
+        
+        try{
             this.remove(this.contenedorTratamiento);
         }
         catch(Exception e){
@@ -245,12 +247,6 @@ public class JVentana extends JFrame{
         
         try{
             this.remove(this.contenedorUsuarios);
-        }
-        catch(Exception e){
-        }
-        
-        try{
-            this.remove(this.contenedorBitacora);
         }
         catch(Exception e){
         }
@@ -289,10 +285,25 @@ public class JVentana extends JFrame{
         }
     }
     
-    public void cambiarTratamientos(){
+    public void cambiarPagos() throws Exception{
         if(opActual!=3){
             this.removeAncestor();
             this.panelOpciones.setIconButton(3);
+            
+            if(this.pagos==null){
+                this.crearPagos();
+            }
+            
+            this.add(this.contenedorPagos,BorderLayout.CENTER);
+            this.contenedorPagos.updateUI();
+            this.opActual = 3;
+        }
+    }
+    
+    public void cambiarTratamientos(){
+        if(opActual!=4){
+            this.removeAncestor();
+            this.panelOpciones.setIconButton(4);
             
             if(this.tratamientos==null){
                 this.crearTratamientos();
@@ -301,15 +312,14 @@ public class JVentana extends JFrame{
             this.getTratamientos().getTablas().updateTablas();
             this.contenedorTratamiento.updateUI();
             //this.getTratamientos().updateModelo(); //actualiza el modelo cuando se cambia de pestañas
-            this.opActual = 3;
+            this.opActual = 4;
         }
     }
     
-    
     public void cambiarUsuarios() throws Exception{
-        if(opActual!=4){
+        if(opActual!=5){
             this.removeAncestor();
-            this.panelOpciones.setIconButton(4);
+            this.panelOpciones.setIconButton(5);
             
             if(this.usuarios==null){
                 this.crearUsuarios();
@@ -320,21 +330,6 @@ public class JVentana extends JFrame{
             this.getUsuarios().updateModeloClinica();
             this.contenedorUsuarios.updateUI();
             
-            this.opActual = 4;
-        }
-    }
-    
-    public void cambiarBitacora() throws Exception{
-        if(opActual!=5){
-            this.removeAncestor();
-            this.panelOpciones.setIconButton(5);
-            
-            if(this.bitacoras==null){
-                this.crearBitacora();
-            }
-            
-            this.add(this.contenedorBitacora,BorderLayout.CENTER);
-            this.contenedorBitacora.updateUI();
             this.opActual = 5;
         }
     }
@@ -362,16 +357,16 @@ public class JVentana extends JFrame{
         return this.pacientes;
     }
     
+    public Pagos getPagos(){
+        return this.pagos;
+    }
+    
     public Tratamientos getTratamientos(){
         return this.tratamientos;
     }
     
     public Usuarios getUsuarios(){
         return this.usuarios;
-    }
-    
-    public Bitacoras getBitacora(){
-        return this.bitacoras;
     }
     
     public JPanel getContenedorUsuarios(){
