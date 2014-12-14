@@ -39,7 +39,7 @@ public class CitaComponent extends BasicAppointmentComponent {
 
             @Override
             public void mouseClicked(MouseEvent me) {
-                cita.getAg().handleAddAppointment(a.getResource(), a.getDateTime());
+                cita.getAg().handleAddAppointment(a.getResource(), a.getDateTime().plusMillis(100));
             }
 
             @Override

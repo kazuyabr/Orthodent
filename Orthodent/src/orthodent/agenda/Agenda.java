@@ -80,6 +80,7 @@ public class Agenda extends JPanel{
         add(this.scheduler, BorderLayout.CENTER);
         this.barraAcciones.setFechaAgenda(new Date());
         this.add(barraAcciones, BorderLayout.NORTH);
+        ((DaySchedule)(this.scheduler.getComponent(0))).setBackground(new Color(11,146,181));
         updateUI();
     }
     
