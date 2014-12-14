@@ -68,7 +68,7 @@ public class PagoDB {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM pago");
+            ResultSet rs = st.executeQuery("SELECT * FROM pago ORDER BY fecha DESC");
             pagos = new ArrayList<Pago>();
             while (rs.next())
             {
