@@ -30,7 +30,7 @@ public class CitaComponent extends BasicAppointmentComponent {
         super(a);
         this.cita = (Cita) a;
         this.setFont(new Font("Georgia", Font.BOLD,10));
-        this.alto = 11;
+        this.alto = (int) Math.floor(cita.getDuration().toStandardSeconds().toStandardMinutes().getMinutes() * 0.73);
         this.ancho = 161;
         this.agrandao = false;
         //this.setToolTipText(a.getTitle());
@@ -53,7 +53,7 @@ public class CitaComponent extends BasicAppointmentComponent {
 
             @Override
             public void mouseEntered(MouseEvent me) {
-                if(cita.getDuration().toStandardSeconds().toStandardMinutes().getMinutes()<=15){
+                if(cita.getDuration().toStandardSeconds().toStandardMinutes().getMinutes()<=20){
                     setSize(161,20);
                     agrandao=true;
                     updateUI();

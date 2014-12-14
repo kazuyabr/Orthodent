@@ -5,12 +5,14 @@
 package orthodent.agenda;
 
 import com.thirdnf.ResourceScheduler.Availability;
+import com.thirdnf.ResourceScheduler.DaySchedule;
 import com.thirdnf.ResourceScheduler.Resource;
 import com.thirdnf.ResourceScheduler.ScheduleListener;
 import javax.swing.*;
 import java.awt.*;
 
 import com.thirdnf.ResourceScheduler.Scheduler;
+import com.toedter.calendar.JDateChooser;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -39,6 +41,7 @@ public class Agenda extends JPanel{
     public Scheduler scheduler;
     private HashMap<Integer,Boolean> semanasCargadas;
     private HashMap<Integer,ArrayList<Cita>> citasDeLaSemana;
+    private int semanaActual;
     
     public Agenda(Usuario actual){
         this.usuarioActual = actual;
@@ -57,6 +60,7 @@ public class Agenda extends JPanel{
         this.scheduler.setModel(modelo);
         this.scheduler.showDate(new LocalDate());
         this.scheduler.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
         scheduler.addScheduleListener(new ScheduleListener()
         {
             @Override
@@ -67,33 +71,12 @@ public class Agenda extends JPanel{
         });
         this.setLayout(new BorderLayout());
         AgendaComponentFactory cf = new AgendaComponentFactory();
-        //this.scheduler.setAutoscrolls(true);
         this.scheduler.setComponentFactory(cf);
-        this.setSize(1045, 1200);
-        
-       /* MiPanel paux = new MiPanel();
-        paux.setSize(1043, 1200);
-        paux.setPreferredSize(new Dimension(1043,1200));
-        paux.setLayout(new BorderLayout());
-        paux.add(this.scheduler,BorderLayout.CENTER);
-        //sp.setLayout(new BorderLayout());
-        JScrollPane sp = new JScrollPane(paux);
-        sp.setVerticalScrollBar(sp.createVerticalScrollBar());
-        sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        paux.updateUI();
-        sp.updateUI();
-        add(sp,BorderLayout.CENTER);
-        updateUI();
-        */
-        
-        
-        //this.scheduler.setSize(1043, 900);
+        //((DaySchedule)this.scheduler.getComponent(0)).setFont(new Font("Georgia",Font.PLAIN,12));
         add(this.scheduler, BorderLayout.CENTER);
-        
         this.barraAcciones.setFechaAgenda(new Date());
-        //this.cargarAgendainicial();
         this.add(barraAcciones, BorderLayout.NORTH);
-        //this.add(barraAcciones, BorderLayout.SOUTH);
+        //this.semanaActual = this.obtenerSemana(new LocalDate());
     }
     
     public void handleAddAppointment(@Nullable Resource resource, @NotNull DateTime dateTime) {
@@ -202,6 +185,7 @@ public class Agenda extends JPanel{
     
     public void cargarAgendainicial(){
         int semana = this.obtenerSemana(new Date());
+        this.semanaActual = semana;
         ArrayList<Cita> citas = AgendaDB.obtenerCitas(semana, barraAcciones.getIdProfesional(),modelo);
         if(citas!=null){
             this.semanasCargadas.put(semana, Boolean.TRUE);
@@ -217,6 +201,7 @@ public class Agenda extends JPanel{
     
     public void cambiarSemanaDeAgenda(Date fecha){
         int semana = this.obtenerSemana(fecha);
+        this.semanaActual = semana;
         LocalDate ld = new LocalDate(obtenerLunes(fecha));
         this.scheduler.showDate(ld);
         if(!this.semanasCargadas.containsKey(semana)){
@@ -239,6 +224,7 @@ public class Agenda extends JPanel{
     
     public void cambiarProfesional(Date fecha){
         int semana = this.obtenerSemana(fecha);
+        this.semanaActual = semana;
         LocalDate ld = new LocalDate(obtenerLunes(fecha));
         this.scheduler.showDate(ld);
         this.modelo = new AgendaSchedulerModel(this.barraAcciones);
@@ -263,6 +249,30 @@ public class Agenda extends JPanel{
         }
     }
     
+    public void avanzarSemana(){
+        Date fecha = this.barraAcciones.getFechaAgenda();
+        Date fechaNueva = this.addDaysToDate(fecha, 7);
+        this.barraAcciones.setFechaAgenda(fechaNueva);
+        //this.cambiarSemanaDeAgenda(fechaNueva);
+    }
+    
+    public void retrocederSemana(){
+        Date fecha = this.barraAcciones.getFechaAgenda();
+        Date fechaNueva = this.addDaysToDate(fecha, -7);
+        this.barraAcciones.setFechaAgenda(fechaNueva);
+        //this.cambiarSemanaDeAgenda(fechaNueva);
+    }
+    
+    public Date addDaysToDate(Date date, int noOfDays) {
+        Date newDate = new Date(date.getTime());
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(newDate);
+        calendar.add(Calendar.DATE, noOfDays);
+        newDate.setTime(calendar.getTime().getTime());
+
+        return newDate;
+}
     
     public int obtenerSemana(Date fecha){
         int semana=0;
