@@ -13,14 +13,22 @@ public class Pago {
     
     private int idPago;
     private int idPlanTratamiento;
+    private String tipoPago;
+    private String detalle;
     private String fecha;
     private int abono;   
+    private int numBoleta;
+    private boolean isLab;
     
-    public Pago(int idPago, int idPlanTratamiento, String fecha, int abono) {
+    public Pago(int idPago, int idPlanTratamiento, String tipoPago, String detalle, String fecha, int abono, int numBoleta, boolean isLab) {
         this.idPago = idPago;
         this.idPlanTratamiento = idPlanTratamiento;
+        this.tipoPago = tipoPago;
+        this.detalle = detalle;
         this.fecha = fecha;
         this.abono = abono;
+        this.numBoleta = numBoleta;
+        this.isLab = isLab;
     }
 
     public int getIdPago() {
@@ -53,5 +61,37 @@ public class Pago {
 
     public void setAbono(int abono) {
         this.abono = abono;
+    }
+
+    public String getTipoPago() {
+        return tipoPago;
+    }
+
+    public void setTipoPago(String tipoPago) {
+        this.tipoPago = tipoPago;
+    }
+
+    public String getDetalle() {
+        return detalle;
+    }
+
+    public void setDetalle(String detalle) {
+        this.detalle = detalle;
+    }
+
+    public int getNumBoleta() {
+        return numBoleta;
+    }
+
+    public void setNumBoleta(int numBoleta) {
+        this.numBoleta = numBoleta;
+    }
+
+    public boolean getIsLab() {
+        return isLab;
+    }
+
+    public void setIsLab(boolean isLab) {
+        this.isLab = isLab;
     }
 }

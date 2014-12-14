@@ -507,7 +507,7 @@ public class PlanesTratamiento extends JPanel{
 
         labelTitulo.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
         labelTitulo.setForeground(new java.awt.Color(163, 159, 164));
-        labelTitulo.setText("Plan de Tratamiento!!");
+        labelTitulo.setText("Plan de Tratamiento");
 
         javax.swing.GroupLayout panelTituloLayout = new javax.swing.GroupLayout(panelTitulo);
         panelTitulo.setLayout(panelTituloLayout);

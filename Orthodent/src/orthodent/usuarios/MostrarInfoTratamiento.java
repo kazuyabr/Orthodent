@@ -23,6 +23,7 @@ public class MostrarInfoTratamiento extends JPanel implements ActionListener{
     private JButton datosProfesionales;
     private JButton horario;
     private Usuario usuario;
+    private Usuario usuarioActual;
     private int opActual;
     private JPanel datosPersonalesPanel;
     private DatosProfesional datosProfesionalPanel;
@@ -31,8 +32,9 @@ public class MostrarInfoTratamiento extends JPanel implements ActionListener{
     private boolean configurarCuenta;
     private boolean desdeUsuario;
     
-    public MostrarInfoTratamiento(Usuario usuario, boolean configurarCuenta, boolean desdeUsuario){
+    public MostrarInfoTratamiento(Usuario usuario, Usuario usuarioActual, boolean configurarCuenta, boolean desdeUsuario){
         this.usuario = usuario;
+        this.usuarioActual = usuarioActual;
         this.configurarCuenta = configurarCuenta;
         this.desdeUsuario = desdeUsuario;
         this.setBackground(new Color(255,255,255));
@@ -126,10 +128,10 @@ public class MostrarInfoTratamiento extends JPanel implements ActionListener{
         this.horario.addActionListener(this);
         
         if(!this.configurarCuenta){
-            this.datosPersonalesPanel = new DatosPersonales(this.usuario);
+            this.datosPersonalesPanel = new DatosPersonales(this.usuario, this.usuarioActual);
         }
         else{
-            this.datosPersonalesPanel = new ConfigurarCuenta(this.usuario);
+            this.datosPersonalesPanel = new ConfigurarCuenta(this.usuario, this.usuarioActual);
         }
         
         this.datosProfesionalPanel = null;
@@ -202,7 +204,7 @@ public class MostrarInfoTratamiento extends JPanel implements ActionListener{
         if(opActual!=1){
             this.removeAncestor();
             
-            this.datosPersonalesPanel = new DatosPersonales(this.usuario);
+            this.datosPersonalesPanel = new DatosPersonales(this.usuario, this.usuarioActual);
             
             this.contenedor.add(this.datosPersonalesPanel,BorderLayout.CENTER);
             this.updateUI();

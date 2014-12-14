@@ -10,16 +10,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
 import modelo.Rol;
 import orthodent.db.RolDB;
 import orthodent.pacientes.MostrarInfoPaciente;
-import orthodent.usuarios.ConfigurarCuenta;
-import orthodent.usuarios.DatosPersonales;
 import orthodent.usuarios.MostrarInfoTratamiento;
 
 /**
@@ -31,8 +27,8 @@ public class PanelOpciones extends JPanel implements ActionListener{
     private JVentana ventana;
     private JButton agenda;
     private JButton pacientes;
+    private JButton tratamientos;
     private JButton pagos;
-    private JButton historial;
     private JButton usuarios;
     private JButton diente1;
     private JButton diente2;
@@ -64,8 +60,8 @@ public class PanelOpciones extends JPanel implements ActionListener{
     private void setCursor(){
         this.agenda.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.pacientes.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.tratamientos.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.pagos.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        this.historial.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.usuarios.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.miniUsuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.menuUsuario.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -78,8 +74,8 @@ public class PanelOpciones extends JPanel implements ActionListener{
         
         this.agenda = new JButton();
         this.pacientes = new JButton();
+        this.tratamientos = new JButton();
         this.pagos = new JButton();
-        this.historial = new JButton();
         this.usuarios = new JButton();
         this.diente1 = new JButton();
         this.diente2 = new JButton();
@@ -96,15 +92,15 @@ public class PanelOpciones extends JPanel implements ActionListener{
         this.pacientes.setBorderPainted(false);
         this.pacientes.setContentAreaFilled(false);
         
+        this.tratamientos.setForeground(new Color(255, 255, 255));
+        this.tratamientos.setBorder(null);
+        this.tratamientos.setBorderPainted(false);
+        this.tratamientos.setContentAreaFilled(false);
+        
         this.pagos.setForeground(new Color(255, 255, 255));
         this.pagos.setBorder(null);
         this.pagos.setBorderPainted(false);
         this.pagos.setContentAreaFilled(false);
-        
-        this.historial.setForeground(new Color(255, 255, 255));
-        this.historial.setBorder(null);
-        this.historial.setBorderPainted(false);
-        this.historial.setContentAreaFilled(false);
         
         this.usuarios.setForeground(new Color(255, 255, 255));
         this.usuarios.setBorder(null);
@@ -153,9 +149,9 @@ public class PanelOpciones extends JPanel implements ActionListener{
         
         this.agenda.setIcon(new ImageIcon("src/imagenes/agenda.png"));
         this.pacientes.setIcon(new ImageIcon("src/imagenes/pacientes.png"));
-        this.pagos.setIcon(new ImageIcon("src/imagenes/tratamientos.png"));
+        this.pagos.setIcon(new ImageIcon("src/imagenes/pagos.png"));
+        this.tratamientos.setIcon(new ImageIcon("src/imagenes/tratamientos.png"));
         this.usuarios.setIcon(new ImageIcon("src/imagenes/usuarios.png"));
-        this.historial.setIcon(new ImageIcon("src/imagenes/historial.png"));
         
         switch(value){
             case 1:
@@ -165,13 +161,13 @@ public class PanelOpciones extends JPanel implements ActionListener{
                 this.pacientes.setIcon(new ImageIcon("src/imagenes/pacientesSelec.png"));
                 break;
             case 3:
-                this.pagos.setIcon(new ImageIcon("src/imagenes/tratamientosSelec.png"));
+                this.pagos.setIcon(new ImageIcon("src/imagenes/pagosSelec.png"));
                 break;
             case 4:
-                this.usuarios.setIcon(new ImageIcon("src/imagenes/usuariosSelec.png"));
+                this.tratamientos.setIcon(new ImageIcon("src/imagenes/tratamientosSelec.png"));
                 break;
             case 5:
-                this.historial.setIcon(new ImageIcon("src/imagenes/historialSelec.png"));
+                this.usuarios.setIcon(new ImageIcon("src/imagenes/usuariosSelec.png"));
                 break;
         }
     }
@@ -198,8 +194,6 @@ public class PanelOpciones extends JPanel implements ActionListener{
         
         this.miniUsuario.addActionListener( new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                //miniUsuario.getWidth()/2
-                //miniUsuario.getX()-menuUsuario.getWidth()
                 menuUsuario.show(miniUsuario, miniUsuario.getWidth()/2, miniUsuario.getHeight());
             }
         } );
@@ -208,9 +202,9 @@ public class PanelOpciones extends JPanel implements ActionListener{
     private void addListeners(){
         this.agenda.addActionListener(this);
         this.pacientes.addActionListener(this);
-        this.pagos.addActionListener(this);
+        this.tratamientos.addActionListener(this);
         this.usuarios.addActionListener(this);
-        this.historial.addActionListener(this);
+        this.pagos.addActionListener(this);
     }
     
     private void addOpcionesPanel(){
@@ -228,15 +222,26 @@ public class PanelOpciones extends JPanel implements ActionListener{
             horizontalGroup.addGap(18, 18, 18);
             horizontalGroup.addComponent(this.pagos);
             horizontalGroup.addGap(18, 18, 18);
-            horizontalGroup.addComponent(this.usuarios);
+            horizontalGroup.addComponent(this.tratamientos);
             horizontalGroup.addGap(18, 18, 18);
-            horizontalGroup.addComponent(this.historial);
+            horizontalGroup.addComponent(this.usuarios);
             
             verticalGroup.addComponent(this.agenda);
             verticalGroup.addComponent(this.pacientes);
             verticalGroup.addComponent(this.pagos);
+            verticalGroup.addComponent(this.tratamientos);
             verticalGroup.addComponent(this.usuarios);
-            verticalGroup.addComponent(this.historial);
+        }
+        else if(rol.getNombre().equals("ASISTENTE ADMINISTRATIVA")){
+            horizontalGroup.addComponent(this.agenda);
+            horizontalGroup.addGap(18,18,18);
+            horizontalGroup.addComponent(this.pacientes);
+            horizontalGroup.addGap(18, 18, 18);
+            horizontalGroup.addComponent(this.pagos);
+            
+            verticalGroup.addComponent(this.agenda);
+            verticalGroup.addComponent(this.pacientes);
+            verticalGroup.addComponent(this.pagos);
         }
         else if(rol.getNombre().equals("ASISTENTE")){
             horizontalGroup.addComponent(this.agenda);
@@ -346,6 +351,13 @@ public class PanelOpciones extends JPanel implements ActionListener{
         if (e.getSource() == this.pagos){
             try {
                 int op = this.revisarCambios();
+                ((JVentana)this.getTopLevelAncestor()).cambiarPagos();
+            } catch (Exception ex) {
+            }
+        }
+        if (e.getSource() == this.tratamientos){
+            try {
+                int op = this.revisarCambios();
                 ((JVentana)this.getTopLevelAncestor()).cambiarTratamientos();
             } catch (Exception ex) {
             }
@@ -354,7 +366,7 @@ public class PanelOpciones extends JPanel implements ActionListener{
             try {
                 int op = this.revisarCambios();
                 
-                if(op!=4){
+                if(op!=5){
                     if(((JVentana)this.getTopLevelAncestor()).getUsuarios()!=null){
                         boolean aux = ((JVentana)this.getTopLevelAncestor()).getUsuarios().isIsListarUsuarios();
 
@@ -389,13 +401,6 @@ public class PanelOpciones extends JPanel implements ActionListener{
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
-            }
-        }
-        if (e.getSource() == this.historial){
-            try {
-                int op = this.revisarCambios();
-                ((JVentana)this.getTopLevelAncestor()).cambiarBitacora();
-            } catch (Exception ex) {
             }
         }
         
@@ -435,7 +440,7 @@ public class PanelOpciones extends JPanel implements ActionListener{
                 infoPaciente.guardarAntes();
             }
         }
-        if(opVentana==4){//Revisar cambios en usuarios
+        if(opVentana==5){//Revisar cambios en usuarios
             boolean aux = ((JVentana)this.getTopLevelAncestor()).getUsuarios().isIsListarUsuarios();
             boolean queHace = ((JVentana)this.getTopLevelAncestor()).getUsuarios().isMostrandoClinica();
             if(!aux && !queHace){

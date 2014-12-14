@@ -22,4 +22,5 @@ public class AgendaComponentFactory  extends BasicComponentFactory{
         return component;
     }
     
+    
 }

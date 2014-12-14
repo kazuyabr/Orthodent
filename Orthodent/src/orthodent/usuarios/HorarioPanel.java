@@ -341,9 +341,14 @@ public class HorarioPanel extends JPanel{
                 inicioHoraLunesItemStateChanged(evt);
             }
         });
+        inicioHoraLunes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inicioHoraLunesActionPerformed(evt);
+            }
+        });
 
         inicioMinLunes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
-        inicioMinLunes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        inicioMinLunes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55" }));
         inicioMinLunes.setEnabled(false);
         inicioMinLunes.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -361,7 +366,7 @@ public class HorarioPanel extends JPanel{
         });
 
         finMinLunes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
-        finMinLunes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        finMinLunes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55" }));
         finMinLunes.setEnabled(false);
         finMinLunes.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -379,7 +384,7 @@ public class HorarioPanel extends JPanel{
         });
 
         inicioMinMartes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
-        inicioMinMartes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        inicioMinMartes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55" }));
         inicioMinMartes.setEnabled(false);
         inicioMinMartes.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -397,7 +402,7 @@ public class HorarioPanel extends JPanel{
         });
 
         finMinMartes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
-        finMinMartes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        finMinMartes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55" }));
         finMinMartes.setEnabled(false);
         finMinMartes.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -415,7 +420,7 @@ public class HorarioPanel extends JPanel{
         });
 
         inicioMinMiercoles.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
-        inicioMinMiercoles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        inicioMinMiercoles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55" }));
         inicioMinMiercoles.setEnabled(false);
         inicioMinMiercoles.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -433,7 +438,7 @@ public class HorarioPanel extends JPanel{
         });
 
         finMinMiercoles.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
-        finMinMiercoles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        finMinMiercoles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55" }));
         finMinMiercoles.setEnabled(false);
         finMinMiercoles.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -451,7 +456,7 @@ public class HorarioPanel extends JPanel{
         });
 
         inicioMinJueves.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
-        inicioMinJueves.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        inicioMinJueves.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55" }));
         inicioMinJueves.setEnabled(false);
         inicioMinJueves.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -469,7 +474,7 @@ public class HorarioPanel extends JPanel{
         });
 
         finMinJueves.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
-        finMinJueves.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        finMinJueves.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55" }));
         finMinJueves.setEnabled(false);
         finMinJueves.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -492,7 +497,7 @@ public class HorarioPanel extends JPanel{
         });
 
         inicioMinViernes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
-        inicioMinViernes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        inicioMinViernes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55" }));
         inicioMinViernes.setEnabled(false);
         inicioMinViernes.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -510,7 +515,7 @@ public class HorarioPanel extends JPanel{
         });
 
         finMinViernes.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
-        finMinViernes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        finMinViernes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55" }));
         finMinViernes.setEnabled(false);
         finMinViernes.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -533,7 +538,7 @@ public class HorarioPanel extends JPanel{
         });
 
         inicioMinSabado.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
-        inicioMinSabado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        inicioMinSabado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55" }));
         inicioMinSabado.setEnabled(false);
         inicioMinSabado.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -556,7 +561,7 @@ public class HorarioPanel extends JPanel{
         });
 
         finMinSabado.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
-        finMinSabado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", " " }));
+        finMinSabado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55" }));
         finMinSabado.setEnabled(false);
         finMinSabado.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -955,18 +960,48 @@ public class HorarioPanel extends JPanel{
     }//GEN-LAST:event_inicioHoraViernesActionPerformed
 
     private void inicioHoraSabadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioHoraSabadoItemStateChanged
+        this.finHoraSabado.setSelectedIndex(this.inicioHoraSabado.getSelectedIndex());
+        this.finMinSabado.setSelectedIndex(1);
         this.habilitarBoton();
     }//GEN-LAST:event_inicioHoraSabadoItemStateChanged
 
     private void inicioHoraLunesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioHoraLunesItemStateChanged
+        this.finHoraLunes.setSelectedIndex(this.inicioHoraLunes.getSelectedIndex());
+        this.finMinLunes.setSelectedIndex(1);
         this.habilitarBoton();
     }//GEN-LAST:event_inicioHoraLunesItemStateChanged
 
     private void inicioMinLunesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioMinLunesItemStateChanged
+        if(this.inicioMinLunes.getSelectedIndex() >= 11){
+            this.finHoraLunes.setSelectedIndex(this.inicioHoraLunes.getSelectedIndex()+1);
+            this.finMinLunes.setSelectedIndex(0);        
+        }
+        else{
+            this.finHoraLunes.setSelectedIndex(this.inicioHoraLunes.getSelectedIndex());
+            this.finMinLunes.setSelectedIndex(this.inicioMinLunes.getSelectedIndex()+1);
+        }
         this.habilitarBoton();
     }//GEN-LAST:event_inicioMinLunesItemStateChanged
 
     private void finHoraLunesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finHoraLunesItemStateChanged
+        if(Integer.parseInt(this.finHoraLunes.getSelectedItem().toString())==19){
+            this.finMinLunes.removeAllItems();
+            int i = 0;
+            while(i<=30){
+                if(i<10) this.finMinLunes.addItem("0"+i);
+                else this.finMinLunes.addItem(""+i);
+                i+=5;
+            }
+        }
+        else{
+            this.finMinLunes.removeAllItems();
+            int i = 0;
+            while(i<=55){
+                if(i<10) this.finMinLunes.addItem("0"+i);
+                else this.finMinLunes.addItem(""+i);
+                i+=5;
+            }
+        }
         this.habilitarBoton();
     }//GEN-LAST:event_finHoraLunesItemStateChanged
 
@@ -975,14 +1010,42 @@ public class HorarioPanel extends JPanel{
     }//GEN-LAST:event_finMinLunesItemStateChanged
 
     private void inicioHoraMartesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioHoraMartesItemStateChanged
+        this.finHoraMartes.setSelectedIndex(this.inicioHoraMartes.getSelectedIndex());
+        this.finMinMartes.setSelectedIndex(1);
         this.habilitarBoton();
     }//GEN-LAST:event_inicioHoraMartesItemStateChanged
 
     private void inicioMinMartesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioMinMartesItemStateChanged
+        if(this.inicioMinMartes.getSelectedIndex() >= 11){
+            this.finHoraMartes.setSelectedIndex(this.inicioHoraMartes.getSelectedIndex()+1);
+            this.finMinMartes.setSelectedIndex(0);        
+        }
+        else{
+            this.finHoraMartes.setSelectedIndex(this.inicioHoraMartes.getSelectedIndex());
+            this.finMinMartes.setSelectedIndex(this.inicioMinMartes.getSelectedIndex()+1);
+        }
         this.habilitarBoton();
     }//GEN-LAST:event_inicioMinMartesItemStateChanged
 
     private void finHoraMartesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finHoraMartesItemStateChanged
+        if(Integer.parseInt(this.finHoraMartes.getSelectedItem().toString())==19){
+            this.finMinMartes.removeAllItems();
+            int i = 0;
+            while(i<=30){
+                if(i<10) this.finMinMartes.addItem("0"+i);
+                else this.finMinMartes.addItem(""+i);
+                i+=5;
+            }
+        }
+        else{
+            this.finMinMartes.removeAllItems();
+            int i = 0;
+            while(i<=55){
+                if(i<10) this.finMinMartes.addItem("0"+i);
+                else this.finMinMartes.addItem(""+i);
+                i+=5;
+            }
+        }
         this.habilitarBoton();
     }//GEN-LAST:event_finHoraMartesItemStateChanged
 
@@ -991,15 +1054,42 @@ public class HorarioPanel extends JPanel{
     }//GEN-LAST:event_finMinMartesItemStateChanged
 
     private void inicioHoraMiercolesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioHoraMiercolesItemStateChanged
+        this.finHoraMiercoles.setSelectedIndex(this.inicioHoraMiercoles.getSelectedIndex());
+        this.finMinMiercoles.setSelectedIndex(1);
         this.habilitarBoton();
     }//GEN-LAST:event_inicioHoraMiercolesItemStateChanged
 
     private void inicioMinMiercolesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioMinMiercolesItemStateChanged
+        if(this.inicioMinMiercoles.getSelectedIndex() >= 11){
+            this.finHoraMiercoles.setSelectedIndex(this.inicioHoraMiercoles.getSelectedIndex()+1);
+            this.finMinMiercoles.setSelectedIndex(0);        
+        }
+        else{
+            this.finHoraMiercoles.setSelectedIndex(this.inicioHoraMiercoles.getSelectedIndex());
+            this.finMinMiercoles.setSelectedIndex(this.inicioMinMiercoles.getSelectedIndex()+1);
+        }
         this.habilitarBoton();
     }//GEN-LAST:event_inicioMinMiercolesItemStateChanged
 
     private void finHoraMiercolesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finHoraMiercolesItemStateChanged
-        this.habilitarBoton();
+        if(Integer.parseInt(this.finHoraMiercoles.getSelectedItem().toString())==19){
+            this.finMinMiercoles.removeAllItems();
+            int i = 0;
+            while(i<=30){
+                if(i<10) this.finMinMiercoles.addItem("0"+i);
+                else this.finMinMiercoles.addItem(""+i);
+                i+=5;
+            }
+        }
+        else{
+            this.finMinMiercoles.removeAllItems();
+            int i = 0;
+            while(i<=55){
+                if(i<10) this.finMinMiercoles.addItem("0"+i);
+                else this.finMinMiercoles.addItem(""+i);
+                i+=5;
+            }
+        }this.habilitarBoton();
     }//GEN-LAST:event_finHoraMiercolesItemStateChanged
 
     private void finMinMiercolesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finMinMiercolesItemStateChanged
@@ -1007,14 +1097,42 @@ public class HorarioPanel extends JPanel{
     }//GEN-LAST:event_finMinMiercolesItemStateChanged
 
     private void inicioHoraJuevesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioHoraJuevesItemStateChanged
+        this.finHoraJueves.setSelectedIndex(this.inicioHoraJueves.getSelectedIndex());
+        this.finMinJueves.setSelectedIndex(1);
         this.habilitarBoton();
     }//GEN-LAST:event_inicioHoraJuevesItemStateChanged
 
     private void inicioMinJuevesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioMinJuevesItemStateChanged
+        if(this.inicioMinJueves.getSelectedIndex() >= 11){
+            this.finHoraJueves.setSelectedIndex(this.inicioHoraJueves.getSelectedIndex()+1);
+            this.finMinJueves.setSelectedIndex(0);        
+        }
+        else{
+            this.finHoraJueves.setSelectedIndex(this.inicioHoraJueves.getSelectedIndex());
+            this.finMinJueves.setSelectedIndex(this.inicioMinJueves.getSelectedIndex()+1);
+        }
         this.habilitarBoton();
     }//GEN-LAST:event_inicioMinJuevesItemStateChanged
 
     private void finHoraJuevesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finHoraJuevesItemStateChanged
+        if(Integer.parseInt(this.finHoraJueves.getSelectedItem().toString())==19){
+            this.finMinJueves.removeAllItems();
+            int i = 0;
+            while(i<=30){
+                if(i<10) this.finMinJueves.addItem("0"+i);
+                else this.finMinJueves.addItem(""+i);
+                i+=5;
+            }
+        }
+        else{
+            this.finMinJueves.removeAllItems();
+            int i = 0;
+            while(i<=55){
+                if(i<10) this.finMinJueves.addItem("0"+i);
+                else this.finMinJueves.addItem(""+i);
+                i+=5;
+            }
+        }
         this.habilitarBoton();
     }//GEN-LAST:event_finHoraJuevesItemStateChanged
 
@@ -1023,14 +1141,42 @@ public class HorarioPanel extends JPanel{
     }//GEN-LAST:event_finMinJuevesItemStateChanged
 
     private void inicioHoraViernesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioHoraViernesItemStateChanged
+        this.finHoraViernes.setSelectedIndex(this.inicioHoraViernes.getSelectedIndex());
+        this.finMinViernes.setSelectedIndex(1);
         this.habilitarBoton();
     }//GEN-LAST:event_inicioHoraViernesItemStateChanged
 
     private void inicioMinViernesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioMinViernesItemStateChanged
+        if(this.inicioMinViernes.getSelectedIndex() >= 11){
+            this.finHoraViernes.setSelectedIndex(this.inicioHoraViernes.getSelectedIndex()+1);
+            this.finMinViernes.setSelectedIndex(0);        
+        }
+        else{
+            this.finHoraViernes.setSelectedIndex(this.inicioHoraViernes.getSelectedIndex());
+            this.finMinViernes.setSelectedIndex(this.inicioMinViernes.getSelectedIndex()+1);
+        }
         this.habilitarBoton();
     }//GEN-LAST:event_inicioMinViernesItemStateChanged
 
     private void finHoraViernesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finHoraViernesItemStateChanged
+        if(Integer.parseInt(this.finHoraViernes.getSelectedItem().toString())==19){
+            this.finMinViernes.removeAllItems();
+            int i = 0;
+            while(i<=30){
+                if(i<10) this.finMinViernes.addItem("0"+i);
+                else this.finMinViernes.addItem(""+i);
+                i+=5;
+            }
+        }
+        else{
+            this.finMinViernes.removeAllItems();
+            int i = 0;
+            while(i<=55){
+                if(i<10) this.finMinViernes.addItem("0"+i);
+                else this.finMinViernes.addItem(""+i);
+                i+=5;
+            }
+        }
         this.habilitarBoton();
     }//GEN-LAST:event_finHoraViernesItemStateChanged
 
@@ -1039,6 +1185,14 @@ public class HorarioPanel extends JPanel{
     }//GEN-LAST:event_finMinViernesItemStateChanged
 
     private void inicioMinSabadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inicioMinSabadoItemStateChanged
+        if(this.inicioMinSabado.getSelectedIndex() >= 11){
+            this.finHoraSabado.setSelectedIndex(this.inicioHoraSabado.getSelectedIndex()+1);
+            this.finMinSabado.setSelectedIndex(0);        
+        }
+        else{
+            this.finHoraSabado.setSelectedIndex(this.inicioHoraSabado.getSelectedIndex());
+            this.finMinSabado.setSelectedIndex(this.inicioMinSabado.getSelectedIndex()+1);
+        }
         this.habilitarBoton();
     }//GEN-LAST:event_inicioMinSabadoItemStateChanged
 
@@ -1049,6 +1203,10 @@ public class HorarioPanel extends JPanel{
     private void finMinSabadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_finMinSabadoItemStateChanged
         this.habilitarBoton();
     }//GEN-LAST:event_finMinSabadoItemStateChanged
+
+    private void inicioHoraLunesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inicioHoraLunesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inicioHoraLunesActionPerformed
         
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox finHoraJueves;

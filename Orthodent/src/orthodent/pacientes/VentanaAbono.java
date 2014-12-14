@@ -52,20 +52,32 @@ public class VentanaAbono extends javax.swing.JDialog {
             if(crearNuevo){
                 this.setTitle("Nuevo Abono");
                 this.titulo.setText("Nuevo Abono");
+                this.no.setSelected(true);
             }
             else{
                 this.setTitle("Editar Abono");
                 this.titulo.setText("Editar Abono");
                 this.calendarioFecha.setDate(this.getFecha(pagoAbono.getFecha()));
-                this.jTextField1.setText(pagoAbono.getAbono()+"");
+                this.valor.setText(pagoAbono.getAbono()+"");
+                this.tipoPago.setSelectedItem(pagoAbono.getTipoPago());
+                this.detalle.setText(pagoAbono.getDetalle());
+                this.numBoleta.setText(pagoAbono.getNumBoleta()+"");
+                
+                if(pagoAbono.getIsLab()){
+                    this.si.setSelected(true);
+                    this.no.setSelected(false);
+                }
+                else{
+                    this.si.setSelected(false);
+                    this.no.setSelected(true);
+                }
             }
         } catch (Exception ex) {
             Logger.getLogger(VentanaAbono.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
     
-        private Date getFecha(String fechaNacimiento){
+    private Date getFecha(String fechaNacimiento){
         
         if(fechaNacimiento!=null){
             int año = Integer.parseInt(fechaNacimiento.substring(0, fechaNacimiento.indexOf("-")))-1900;
@@ -94,13 +106,24 @@ public class VentanaAbono extends javax.swing.JDialog {
 
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        labelDescripcion = new javax.swing.JLabel();
+        labelValor = new javax.swing.JLabel();
         titulo = new javax.swing.JLabel();
         calendarioFecha = new com.toedter.calendar.JDateChooser();
         labelFecha = new javax.swing.JLabel();
+        valor = new javax.swing.JTextField();
+        labelTipoPago = new javax.swing.JLabel();
+        tipoPago = new javax.swing.JComboBox();
+        labelDetalle = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        detalle = new javax.swing.JTextArea();
+        labelNumBoleta = new javax.swing.JLabel();
+        numBoleta = new javax.swing.JTextField();
+        labelValor2 = new javax.swing.JLabel();
+        labelPagoLab = new javax.swing.JLabel();
+        si = new javax.swing.JRadioButton();
+        no = new javax.swing.JRadioButton();
         cancelar = new javax.swing.JButton();
         aceptar = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nueva Ficha Clínica");
@@ -109,9 +132,9 @@ public class VentanaAbono extends javax.swing.JDialog {
 
         jPanel3.setBackground(new java.awt.Color(9, 133, 179));
 
-        labelDescripcion.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
-        labelDescripcion.setForeground(new java.awt.Color(255, 255, 255));
-        labelDescripcion.setText("Cantidad");
+        labelValor.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        labelValor.setForeground(new java.awt.Color(255, 255, 255));
+        labelValor.setText("Valor (*)");
 
         titulo.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
         titulo.setForeground(new java.awt.Color(255, 255, 255));
@@ -119,7 +142,78 @@ public class VentanaAbono extends javax.swing.JDialog {
 
         labelFecha.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         labelFecha.setForeground(new java.awt.Color(255, 255, 255));
-        labelFecha.setText("Fecha");
+        labelFecha.setText("Fecha (*)");
+
+        valor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                valorActionPerformed(evt);
+            }
+        });
+        valor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                valorKeyTyped(evt);
+            }
+        });
+
+        labelTipoPago.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        labelTipoPago.setForeground(new java.awt.Color(255, 255, 255));
+        labelTipoPago.setText("Tipo de Pago (*)");
+
+        tipoPago.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        tipoPago.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Documento", "Efectivo" }));
+
+        labelDetalle.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        labelDetalle.setForeground(new java.awt.Color(255, 255, 255));
+        labelDetalle.setText("Detalle");
+
+        detalle.setColumns(20);
+        detalle.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        detalle.setRows(5);
+        detalle.setPreferredSize(new java.awt.Dimension(231, 80));
+        jScrollPane1.setViewportView(detalle);
+
+        labelNumBoleta.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        labelNumBoleta.setForeground(new java.awt.Color(255, 255, 255));
+        labelNumBoleta.setText("Num. Boleta (*)");
+
+        numBoleta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                numBoletaActionPerformed(evt);
+            }
+        });
+        numBoleta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                numBoletaKeyTyped(evt);
+            }
+        });
+
+        labelValor2.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        labelValor2.setForeground(new java.awt.Color(255, 255, 255));
+        labelValor2.setText("(*) Campos Obligatorios");
+
+        labelPagoLab.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        labelPagoLab.setForeground(new java.awt.Color(255, 255, 255));
+        labelPagoLab.setText("Es pago de laboratorio? (*)");
+
+        si.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        si.setForeground(new java.awt.Color(255, 255, 255));
+        si.setText("Sí");
+        si.setContentAreaFilled(false);
+        si.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                siActionPerformed(evt);
+            }
+        });
+
+        no.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        no.setForeground(new java.awt.Color(255, 255, 255));
+        no.setText("No");
+        no.setContentAreaFilled(false);
+        no.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noActionPerformed(evt);
+            }
+        });
 
         cancelar.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         cancelar.setText("Cancelar");
@@ -137,37 +231,54 @@ public class VentanaAbono extends javax.swing.JDialog {
             }
         });
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(78, 78, 78)
-                .addComponent(titulo)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelFecha)
-                            .addComponent(labelDescripcion))
-                        .addGap(30, 30, 30)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(calendarioFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelFecha)
+                                    .addComponent(labelValor)
+                                    .addComponent(labelNumBoleta))
+                                .addGap(16, 16, 16)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(valor)
+                                    .addComponent(calendarioFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(numBoleta)))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelTipoPago)
+                                    .addComponent(labelDetalle))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(titulo)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(tipoPago, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelPagoLab))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(si)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(no))
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGap(24, 24, 24)
+                                        .addComponent(aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 63, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(labelValor2)))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,34 +286,54 @@ public class VentanaAbono extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(titulo)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(labelFecha)
-                    .addComponent(calendarioFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelTipoPago)
+                    .addComponent(tipoPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelDetalle)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(calendarioFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(valor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelValor)))
+                    .addComponent(labelFecha))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(numBoleta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelNumBoleta))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelDescripcion))
-                .addGap(18, 18, 18)
+                    .addComponent(labelPagoLab)
+                    .addComponent(si)
+                    .addComponent(no))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelValor2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(aceptar)
-                    .addComponent(cancelar))
-                .addContainerGap(25, Short.MAX_VALUE))
+                    .addComponent(cancelar)
+                    .addComponent(aceptar))
+                .addGap(129, 129, 129))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -243,21 +374,29 @@ public class VentanaAbono extends javax.swing.JDialog {
             return fechaNacimiento;
         }
         return null;
-    }    
-    
-
+    }
     
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
+        String tipoPago1 = (String)this.tipoPago.getSelectedItem();
+        String detalle1 = this.detalle.getText();
         Date date = this.calendarioFecha.getDate();
         String fechaCita = getFechaString(date);
-        String descripcion = this.jTextField1.getText();
-        int abono=Integer.parseInt(descripcion);
+        String valor1 = this.valor.getText();
+        String numBol = this.numBoleta.getText();
         if(validarCampos()){
+            int abono = Integer.parseInt(valor1);
+            int boleta = Integer.parseInt(numBol);
             if(abono > 0 && totalTrat >= (totalAbono+abono)){
                 System.out.println("tTrat:"+totalTrat);
                 System.out.println("tAbono:"+totalAbono);
                 if(crearNuevo){ //crear
-                    boolean respuesta = PagoDB.crearPago(this.idPlanTratamiento, fechaCita, abono);            
+                    boolean respuesta = false;
+                    if(this.si.isSelected()){
+                        respuesta = PagoDB.crearPago(this.idPlanTratamiento, tipoPago1, detalle1, fechaCita, abono, boleta, true);
+                    }
+                    else{
+                        respuesta = PagoDB.crearPago(this.idPlanTratamiento, tipoPago1, detalle1, fechaCita, abono, boleta, false);
+                    }
                     try {
                         this.recaudacionPadre.updateModeloPagoAbono();
                     } catch (Exception ex) {
@@ -293,28 +432,52 @@ public class VentanaAbono extends javax.swing.JDialog {
                 else{
                     JOptionPane.showMessageDialog(null,"El abono es mayor al costo total del tratamiento. " );
                 }
-                
-
             }
-            
         }
         else{
-                        JOptionPane.showMessageDialog(this,
-                    "Faltan campos por completar",
-                    "Orthodent",
-                    JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                "Faltan campos por completar",
+                "Orthodent",
+                JOptionPane.INFORMATION_MESSAGE);
         }
-       
     }//GEN-LAST:event_aceptarActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void valorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valorActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_valorActionPerformed
+
+    private void numBoletaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numBoletaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_numBoletaActionPerformed
+
+    private void valorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_valorKeyTyped
+        char c = evt.getKeyChar();
+        if (!(c>='0' && c<='9')){
+            evt.consume();
+        }
+    }//GEN-LAST:event_valorKeyTyped
+
+    private void numBoletaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_numBoletaKeyTyped
+        char c = evt.getKeyChar();
+        if (!(c>='0' && c<='9')){
+            evt.consume();
+        }
+    }//GEN-LAST:event_numBoletaKeyTyped
+
+    private void siActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siActionPerformed
+        this.no.setSelected(false);
+        this.si.setSelected(true);
+    }//GEN-LAST:event_siActionPerformed
+
+    private void noActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noActionPerformed
+        this.no.setSelected(true);
+        this.si.setSelected(false);
+    }//GEN-LAST:event_noActionPerformed
 
     public boolean verificarCambios(){
         Date date = this.calendarioFecha.getDate();
         String fechaCita = getFechaString(date);
-        String descripcion = this.jTextField1.getText();
+        String descripcion = this.valor.getText();
         if(fechaCita.equals(pagoAbono.getFecha()) && descripcion.equals(pagoAbono.getAbono())){
             return false;
         }
@@ -323,11 +486,20 @@ public class VentanaAbono extends javax.swing.JDialog {
     
     public boolean validarCampos(){
         String fechaCita = this.calendarioFecha.getDateFormatString();
-        String descripcion = this.jTextField1.getText();        
-        if(!fechaCita.equals("") && !descripcion.equals("")){
-            return true;
+        String descripcion = this.valor.getText();
+        String numBol = this.numBoleta.getText();
+        
+        if(fechaCita.equals("")){
+            return false;
         }
-        return false;
+        if(descripcion.equals("")){
+            return false;
+        }
+        if(numBol.equals("")){
+            return false;
+        }
+        
+        return true;
     }
     
         
@@ -337,11 +509,22 @@ public class VentanaAbono extends javax.swing.JDialog {
     private javax.swing.JButton aceptar;
     private com.toedter.calendar.JDateChooser calendarioFecha;
     private javax.swing.JButton cancelar;
+    private javax.swing.JTextArea detalle;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JLabel labelDescripcion;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelDetalle;
     private javax.swing.JLabel labelFecha;
+    private javax.swing.JLabel labelNumBoleta;
+    private javax.swing.JLabel labelPagoLab;
+    private javax.swing.JLabel labelTipoPago;
+    private javax.swing.JLabel labelValor;
+    private javax.swing.JLabel labelValor2;
+    private javax.swing.JRadioButton no;
+    private javax.swing.JTextField numBoleta;
+    private javax.swing.JRadioButton si;
+    private javax.swing.JComboBox tipoPago;
     private javax.swing.JLabel titulo;
+    private javax.swing.JTextField valor;
     // End of variables declaration//GEN-END:variables
 }

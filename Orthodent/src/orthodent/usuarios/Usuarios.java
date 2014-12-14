@@ -46,8 +46,10 @@ public class Usuarios extends JPanel implements ActionListener{
     private JPanel contenedorListarClinicas;
     private boolean isListarUsuarios;
     private boolean mostrandoClinica;
+    private Usuario usuarioActual;
     
-    public Usuarios(){
+    public Usuarios(Usuario usuario){
+        this.usuarioActual = usuario;
         this.setBackground(new Color(243,242,243));
         this.setPreferredSize(new Dimension(1073, 561));
         
@@ -114,7 +116,7 @@ public class Usuarios extends JPanel implements ActionListener{
         
         this.tabla = new JTable();
         this.tabla.setFont(new Font("Georgia", 0, 11));
-        this.columnasNombre = new String [] {"Nombre", "Apellido Paterno", "Apellido Materno", "Email", "Nombre de Usuario", "Rol"};
+        this.columnasNombre = new String [] {"Nombre", "Apellido Paterno", "Apellido Materno", "Email", "Rol", "Activo"};
         this.updateModelo();
         this.tabla.getTableHeader().setReorderingAllowed(false);
         
@@ -132,10 +134,10 @@ public class Usuarios extends JPanel implements ActionListener{
                             Usuario actual = ((JVentana)getTopLevelAncestor()).getUsuario();
                             
                             if(actual.getId_usuario()==usuario.getId_usuario()){
-                                infoUsuario = new MostrarInfoTratamiento(usuario, true, true);
+                                infoUsuario = new MostrarInfoTratamiento(usuario, usuarioActual, true, true);
                             }
                             else{
-                                infoUsuario = new MostrarInfoTratamiento(usuario, false, true);
+                                infoUsuario = new MostrarInfoTratamiento(usuario, usuarioActual, false, true);
                             }
                             
                             remove(contenedorListarUsuarios);
@@ -176,21 +178,27 @@ public class Usuarios extends JPanel implements ActionListener{
     
     public void updateModelo(){
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
-        ArrayList<Usuario> usuarios = Autenticacion.listarUsuarios();
+        ArrayList<Usuario> usuarios;
+        if(usuarioActual.getId_rol() == 1){
+            usuarios = Autenticacion.listarUsuarios();
+        }
+        else{
+            usuarios = Autenticacion.listarUsuariosActivos();
+        }
         
         int m = this.columnasNombre.length;
         
         ArrayList<Object []> objetos = new ArrayList<Object []>();
         
         for(Usuario usuario : usuarios){
-            if(usuario.isActivo()){
+//            if(usuario.isActivo()){
                 Rol rol = RolDB.getRol(usuario.getId_rol());
-
+                String activo = (usuario.isActivo())? "SI" : "NO";
                 Object [] fila = new Object [] {usuario.getNombre(), usuario.getApellido_pat(), usuario.getApellido_mat(),
-                                            usuario.getEmail(), usuario.getNombreUsuario(), rol.getNombre().toLowerCase()};
+                                            usuario.getEmail(), rol.getNombre().toLowerCase(), activo};
                 
                 objetos.add(fila);
-            }
+//            }
         }
         
         this.filas = new Object [objetos.size()][m];
@@ -371,18 +379,24 @@ public class Usuarios extends JPanel implements ActionListener{
     private void buscar(){
         String value = this.buscador.getText();
         
-        ArrayList<Usuario> usuarios = Autenticacion.listarUsuarios();
+        ArrayList<Usuario> usuarios;
+        if(usuarioActual.getId_rol() == 1){
+            usuarios = Autenticacion.listarUsuarios();
+        }
+        else{
+            usuarios = Autenticacion.listarUsuariosActivos();
+        }
         
         int m = this.columnasNombre.length;
         
         ArrayList<Object []> objetos = new ArrayList<Object []>();
         
         for(Usuario usuario : usuarios){
-            if(usuario.isActivo()){
+//            if(usuario.isActivo()){
                 Rol rol = RolDB.getRol(usuario.getId_rol());
-
+                String activo = (usuario.isActivo())? "SI" : "NO";
                 Object [] fila = new Object [] {usuario.getNombre(), usuario.getApellido_pat(), usuario.getApellido_mat(),
-                                            usuario.getEmail(), usuario.getNombreUsuario(), rol.getNombre().toLowerCase()};
+                                            usuario.getEmail(), rol.getNombre().toLowerCase(), activo};
                 
                 boolean aux = false;
                 
@@ -398,7 +412,7 @@ public class Usuarios extends JPanel implements ActionListener{
                 if(aux){
                     objetos.add(fila);
                 }
-            }
+//            }
         }
         
         this.filas = new Object [objetos.size()][m];
@@ -433,15 +447,22 @@ public class Usuarios extends JPanel implements ActionListener{
     private void buscarClinica(){
         String value = this.buscadorClinicas.getText();
         
-        ArrayList<ClinicaInterna> clinicas = ClinicaInternaDB.listarClinicas();
+        //Podria ser ordenado!! -> una opcion es que la consulta ordene
+        ArrayList<ClinicaInterna> clinicas;
+        if(usuarioActual.getId_rol() == 1){
+            clinicas = ClinicaInternaDB.listarClinicas();
+        }
+        else{
+            clinicas = ClinicaInternaDB.listarClinicasActivas();
+        }
         
         int m = this.columnasNombre.length;
         
         ArrayList<Object []> objetos = new ArrayList<Object []>();
         
         for(ClinicaInterna clinica : clinicas){
-
-                Object [] fila = new Object [] {clinica.getNombre()};
+                String activo = (clinica.isActivo())? "SI" : "NO";
+                Object [] fila = new Object [] {clinica.getNombre(), activo};
                 
                 boolean aux = false;
                 
@@ -469,10 +490,10 @@ public class Usuarios extends JPanel implements ActionListener{
         
         this.modeloClinicas = new DefaultTableModel(this.filasClinicas, this.columnasNombreClinicas) {
             Class[] types = new Class [] {
-                String.class
+                String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
-                false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -525,7 +546,7 @@ public class Usuarios extends JPanel implements ActionListener{
         
         this.tablaClinicas = new JTable();
         this.tablaClinicas.setFont(new Font("Georgia", 0, 11));
-        this.columnasNombreClinicas = new String [] {"Nombre"};
+        this.columnasNombreClinicas = new String [] {"Nombre", "Activo"};
         this.updateModeloClinica();
         this.tablaClinicas.getTableHeader().setReorderingAllowed(false);
         
@@ -541,7 +562,7 @@ public class Usuarios extends JPanel implements ActionListener{
                         System.out.println(fila[0]);
                         if(clinica!=null){
                             
-                            infoClinica = new DatosClinica(clinica);
+                            infoClinica = new DatosClinica(clinica, usuarioActual);
                             
                             remove(contenedorListarUsuarios);
                             remove(contenedorListarClinicas);
@@ -559,14 +580,22 @@ public class Usuarios extends JPanel implements ActionListener{
     }
 
     public void updateModeloClinica() {
-        ArrayList<ClinicaInterna> clinicas = ClinicaInternaDB.listarClinicas();
+        
+        ArrayList<ClinicaInterna> clinicas;
+        if(usuarioActual.getId_rol() == 1){
+            clinicas = ClinicaInternaDB.listarClinicas();
+        }
+        else{
+            clinicas = ClinicaInternaDB.listarClinicasActivas();
+        }
         
         int m = this.columnasNombreClinicas.length;
         
         ArrayList<Object []> objetos = new ArrayList<Object []>();
         
         for(ClinicaInterna clinica : clinicas){
-            Object [] fila = new Object [] {clinica.getNombre()};
+            String activo = (clinica.isActivo())? "SI" : "NO";
+            Object [] fila = new Object [] {clinica.getNombre(), activo};
             objetos.add(fila);
         }
         
@@ -579,10 +608,10 @@ public class Usuarios extends JPanel implements ActionListener{
         
         this.modeloClinicas = new DefaultTableModel(this.filasClinicas, this.columnasNombreClinicas) {
             Class[] types = new Class [] {
-                String.class
+                String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
-                false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {

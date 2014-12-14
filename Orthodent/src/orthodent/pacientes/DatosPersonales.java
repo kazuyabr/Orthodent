@@ -87,6 +87,7 @@ public class DatosPersonales extends JPanel{
         }  
         comuna.setSelectedItem(this.paciente.getComuna());
         this.direccion.setText(this.paciente.getDireccion());
+        this.cambios = false;
     }
     
     public int buscarIdRegion(String regionSeleccionada){

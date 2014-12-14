@@ -28,7 +28,6 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
     private JButton fichasClinicas;
     private JButton facturacion;
     private JButton recaudacion;
-    private JButton pagosRecibidos;
     private Paciente paciente;
     private Usuario actual;
     private int opActual;
@@ -37,7 +36,6 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
     private Presupuestos presupuestoPanel;
     private FichasClinicas fichasClinicasPanel;
     private Recaudacion recaudacionPanel;
-    private PagosRecibidos pagosRecibidosPanel;
     private JPanel contenedor;
     
     public MostrarInfoPaciente(Paciente paciente, Usuario actual){
@@ -60,7 +58,6 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         this.presupuesto.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.fichasClinicas.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.recaudacion.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        this.pagosRecibidos.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
     private void initComponents(){
@@ -130,20 +127,12 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         this.recaudacion.setContentAreaFilled(false);
         this.recaudacion.addActionListener(this);
         
-        this.pagosRecibidos = new JButton();
-        this.pagosRecibidos.setIcon(new ImageIcon("src/imagenes/pagosRecibidos.png"));
-        this.pagosRecibidos.setBorder(null);
-        this.pagosRecibidos.setBorderPainted(false);
-        this.pagosRecibidos.setContentAreaFilled(false);
-        this.pagosRecibidos.addActionListener(this);
-        
         this.datosPersonalesPanel = new DatosPersonales(this.paciente);
         
         this.planesTratamientoPanel = null;
         this.presupuestoPanel = null;
         this.fichasClinicasPanel = null;
         this.recaudacionPanel = null;
-        this.pagosRecibidosPanel = null;
         
         this.contenedor = new JPanel();
         this.contenedor.setBackground(new Color(255,255,255));
@@ -216,11 +205,6 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         }
         catch(Exception e){
         }
-        try{
-            this.contenedor.remove(this.pagosRecibidosPanel);
-        }
-        catch(Exception e){
-        }
     }
     
     public void cambiarDatosPersonales(){
@@ -283,18 +267,6 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         }
     }
     
-    public void cambiarPagosRecibidos() throws Exception{
-        if(opActual!=6){
-            this.removeAncestor();
-            
-            this.pagosRecibidosPanel = new PagosRecibidos(this.paciente, this.actual);
-            
-            this.contenedor.add(this.pagosRecibidosPanel,BorderLayout.CENTER);
-            this.updateUI();
-            this.opActual = 6;
-        }
-    }
-    
     private JPanel panelLateral(){
         
         JPanel panelIzq = new JPanel();
@@ -315,7 +287,6 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         horizontalGroup.addComponent(this.fichasClinicas);
         horizontalGroup.addComponent(this.facturacion);
         horizontalGroup.addComponent(this.recaudacion);
-        horizontalGroup.addComponent(this.pagosRecibidos);
         
         verticalGroup.addContainerGap();
         verticalGroup.addComponent(panel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
@@ -326,7 +297,6 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         verticalGroup.addComponent(this.fichasClinicas);
         verticalGroup.addComponent(this.facturacion);
         verticalGroup.addComponent(this.recaudacion);
-        verticalGroup.addComponent(this.pagosRecibidos);
         
         verticalGroup.addContainerGap(411, Short.MAX_VALUE);
         
@@ -387,7 +357,6 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         this.presupuesto.setIcon(new ImageIcon("src/imagenes/presupuesto.png"));
         this.fichasClinicas.setIcon(new ImageIcon("src/imagenes/fichasClinicas.png"));
         this.recaudacion.setIcon(new ImageIcon("src/imagenes/recaudacion.png"));
-        this.pagosRecibidos.setIcon(new ImageIcon("src/imagenes/pagosRecibidos.png"));
         
         switch(value){
             case 1:
@@ -404,9 +373,6 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
                 break;
             case 5:
                 this.recaudacion.setIcon(new ImageIcon("src/imagenes/recaudacionSelec.png"));
-                break;
-            case 6:
-                this.pagosRecibidos.setIcon(new ImageIcon("src/imagenes/pagosRecibidosSelec.png"));
                 break;
         }
     }
@@ -562,14 +528,6 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
                 this.cambiarRecaudacion();
             } catch (Exception ex) {
                 Logger.getLogger(MostrarInfoPaciente.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        if(e.getSource() == this.pagosRecibidos){
-            this.guardarAntes();
-            this.setIconButton(6);
-            try {
-                this.cambiarPagosRecibidos();
-            } catch (Exception ex) {
             }
         }
     }

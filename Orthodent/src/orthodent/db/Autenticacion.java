@@ -141,7 +141,7 @@ public class Autenticacion {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM usuario");
+            ResultSet rs = st.executeQuery("SELECT * FROM usuario ORDER BY nombre ASC");
             usuarios = new ArrayList<Usuario>();
             while (rs.next())
             {
@@ -160,6 +160,33 @@ public class Autenticacion {
         }
     }
     
+    public static ArrayList<Usuario> listarUsuariosActivos(){
+        ArrayList<Usuario> usuarios = null;        
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE activo=1 ORDER BY nombre ASC");
+            usuarios = new ArrayList<Usuario>();
+            while (rs.next())
+            {
+                Usuario u = new Usuario(rs.getInt("id_usuario"), rs.getInt("id_rol"), rs.getString("nombre"),
+                        rs.getString("apellido_pat"), rs.getString("apellido_mat"), rs.getString("nombre_usuario"),
+                        rs.getString("contrasena"), rs.getString("email"), rs.getString("telefono"),
+                        rs.getString("especialidad"),rs.getInt("tiempo_cita"), rs.getBoolean("activo"), rs.getInt("id_clinica"));
+                usuarios.add(u);
+            }
+            rs.close();
+            con.close();
+            return usuarios;
+        }
+        catch ( SQLException e) {
+            return null;
+        }
+    }    
+    
     public static ArrayList<Usuario> listarUsuarios(int id_clinica){
         ArrayList<Usuario> usuarios = null;        
         try {
@@ -168,7 +195,7 @@ public class Autenticacion {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE id_clinica="+id_clinica);
+            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE id_clinica="+id_clinica + " ORDER BY nombre ASC");
             usuarios = new ArrayList<Usuario>();
             while (rs.next())
             {
@@ -195,7 +222,7 @@ public class Autenticacion {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE id_rol=3");
+            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE id_rol=3 AND activo=1 ORDER BY nombre ASC");
             usuarios = new ArrayList<Usuario>();
             while (rs.next())
             {
@@ -222,7 +249,7 @@ public class Autenticacion {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE id_rol=3 AND id_clinica="+id_clinica);
+            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE id_rol=3 AND id_clinica="+id_clinica + " ORDER BY nombre ASC");
             usuarios = new ArrayList<Usuario>();
             while (rs.next())
             {
@@ -248,7 +275,7 @@ public class Autenticacion {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE id_rol=3 AND id_usuario="+id_profesional);
+            ResultSet rs = st.executeQuery("SELECT * FROM usuario WHERE id_rol=3 AND id_usuario="+id_profesional + " ORDER BY nombre ASC");
             usuarios = new ArrayList<Usuario>();
             while (rs.next())
             {
@@ -354,6 +381,29 @@ public class Autenticacion {
             return false;
         }
     }
+    
+    static public boolean existeUsuario(String nombreUsuario) throws Exception{
+        boolean aux = true;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * from usuario where nombre_usuario=" + nombreUsuario);
+            if (rs.next())
+            {
+                aux = false;
+            }
+            rs.close();
+            con.close();
+            return aux;
+        }
+
+        catch ( SQLException e) {
+            return false;
+        }
+    }    
     
     public static boolean editarUsuario(Usuario usuario, boolean cambioContraseña) throws Exception{
         try{

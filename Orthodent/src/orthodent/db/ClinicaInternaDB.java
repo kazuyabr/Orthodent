@@ -24,7 +24,31 @@ public static ArrayList<ClinicaInterna> listarClinicas(){
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM clinica WHERE activo="+1);
+            ResultSet rs = st.executeQuery("SELECT * FROM clinica ORDER BY nombre ASC");
+            clinicas = new ArrayList<ClinicaInterna>();
+            while (rs.next())
+            {
+                ClinicaInterna u = new ClinicaInterna(rs.getString("nombre"), rs.getInt("id"), rs.getBoolean("activo"));
+                clinicas.add(u);
+            }
+            rs.close();
+            con.close();
+            return clinicas;
+        }
+        catch ( SQLException e) {
+            return null;
+        }
+    }
+
+public static ArrayList<ClinicaInterna> listarClinicasActivas(){
+        ArrayList<ClinicaInterna> clinicas = null;        
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT * FROM clinica WHERE activo="+1 + " ORDER BY nombre ASC");
             clinicas = new ArrayList<ClinicaInterna>();
             while (rs.next())
             {
@@ -84,7 +108,26 @@ public static ArrayList<ClinicaInterna> listarClinicas(){
         catch ( SQLException e) {
             return false;
         }
-    }     
+    } 
+    
+        public static boolean habilitarClinica(ClinicaInterna clinica){
+        try{
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            
+            java.sql.Statement st = con.createStatement();
+            int aux = st.executeUpdate("UPDATE clinica\n" +
+                                        "SET activo='"+1+"'\n" +
+                                        "WHERE id="+clinica.getId());
+            boolean resultado = (aux == 1)? true : false;
+            st.close();
+            con.close();
+            return resultado;
+        }
+        catch ( SQLException e) {
+            return false;
+        }
+    } 
     
     public static boolean actualizarClinica(ClinicaInterna clinica){
         boolean resultado = false;
