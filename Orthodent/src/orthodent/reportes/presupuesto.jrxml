@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c4804cab-98dd-45b9-9217-7207aa4435cd">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="104"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -209,7 +209,7 @@ WHERE
 		<band height="107" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="-3" width="143" height="70" uuid="33fdd4d0-8920-4d23-9361-fb841fafca4e"/>
-				<imageExpression><![CDATA["logoOrthodent.jpg"]]></imageExpression> 
+				<imageExpression><![CDATA[System.getProperty("user.dir")+ File.separator + "src" + File.separator+ "orthodent"+File.separator+"reportes"+File.separator+"logoOrthodent.jpg"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="221" y="67" width="157" height="29" uuid="6757b8fb-8acd-4b57-a0a3-1ee4018ab082"/>
@@ -382,18 +382,18 @@ WHERE
 				<text><![CDATA[Tratamientos]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="405" y="249" width="52" height="20" uuid="e80f42ce-d0fc-405a-a05b-dc81d7fe225e"/>
+				<reportElement positionType="FixRelativeToBottom" x="405" y="249" width="52" height="20" uuid="e80f42ce-d0fc-405a-a05b-dc81d7fe225e"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[TOTAL:  $]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="457" y="249" width="98" height="15" uuid="f8a2fc14-f8ab-4e70-b53f-072a0cca354b"/>
+				<reportElement positionType="FixRelativeToBottom" x="457" y="249" width="98" height="15" uuid="f8a2fc14-f8ab-4e70-b53f-072a0cca354b"/>
 				<textFieldExpression><![CDATA[$F{presupuesto_costo_total}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="446" y="264" width="109" height="1" uuid="5b8ed4d5-436a-4a30-b7c8-46c6d2bceabe"/>
+				<reportElement positionType="FixRelativeToBottom" x="446" y="264" width="109" height="1" uuid="5b8ed4d5-436a-4a30-b7c8-46c6d2bceabe"/>
 			</line>
 		</band>
 		<band height="177">
