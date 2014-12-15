@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.print.PageFormat;
+import java.awt.print.Paper;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
@@ -25,6 +26,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.OrientationRequested;
 import modelo.Usuario;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -367,11 +371,43 @@ public class Agenda extends JPanel{
             return;
 
         try {
-            pj.print();
+            PageFormat pf = pj.defaultPage();  
+            Paper paper = new Paper();  
+            double margin = 4.5;   
+            paper.setImageableArea(margin, margin, paper.getWidth() - margin * 2, paper.getHeight()  
+                - margin * 2);  
+            pf.setPaper(paper);
+            pj.setPrintable(new MyPrintable(scheduler), pf);
+            PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
+            attributes.add(OrientationRequested.LANDSCAPE);
+            
+            pj.print(attributes);
         }
         catch (PrinterException ex) {
                 // handle exception
         }
     }
+    
+    class MyPrintable implements Printable {  
+        Scheduler str;  
+        public MyPrintable(Scheduler getStr)  
+        {  
+            str = getStr;  
+        }  
+        public int print(Graphics g, PageFormat pf, int pageIndex) {  
+            if (pageIndex != 0)  
+              return NO_SUCH_PAGE;  
+            Graphics2D g2 = (Graphics2D) g;  
+            g2.translate(pf.getImageableX(), pf.getImageableY());  
+            Rectangle componentBounds = str.getBounds(null);  
+            g2.translate(componentBounds.x, componentBounds.y);  
+            g2.scale(0.7, 0.7);  
+            boolean wasBuffered = str.isDoubleBuffered();  
+            str.paint(g2);  
+            str.setDoubleBuffered(wasBuffered);  
+            return PAGE_EXISTS;  
+        }  
+          
+      }  
     
 }
