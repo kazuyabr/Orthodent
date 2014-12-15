@@ -209,7 +209,7 @@ WHERE
 		<band height="107" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="-3" width="143" height="70" uuid="33fdd4d0-8920-4d23-9361-fb841fafca4e"/>
-				<imageExpression><![CDATA["/Users/felipe/Devel/Orthodent/Orthodent/src/orthodent/reportes/logoOrthodent.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["logoOrthodent.jpg"]]></imageExpression> 
 			</image>
 			<staticText>
 				<reportElement x="221" y="67" width="157" height="29" uuid="6757b8fb-8acd-4b57-a0a3-1ee4018ab082"/>
