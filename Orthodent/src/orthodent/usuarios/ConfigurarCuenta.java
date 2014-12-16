@@ -57,7 +57,7 @@ public class ConfigurarCuenta extends JPanel{
         this.apellidoPat.setText(this.usuario.getApellido_pat());
         this.apellidoMat.setText(this.usuario.getApellido_mat());
         this.email.setText(this.usuario.getEmail());
-        this.contraseña.setText(this.usuario.getContraseña());
+        this.contraseña.setText("");
         this.telefono.setText(this.usuario.getTelefono());
     }
 
@@ -327,10 +327,12 @@ public class ConfigurarCuenta extends JPanel{
                 this.usuario.setNombre(nombre);
                 this.usuario.setApellido_pat(apellidoPat);
                 this.usuario.setApellido_mat(apellidoMat);
-                if(this.cambioContraseña)
+                if(!this.contraseña.getText().toString().isEmpty()){
                     this.usuario.setContraseña(contraseña);
+                    this.cambioContraseña = true;
+                }
                 this.usuario.setTelefono(telefono);
-                boolean respuesta = Autenticacion.editarUsuario(usuario,this.cambioContraseña);
+                boolean respuesta = Autenticacion.editarUsuario(this.usuario,this.cambioContraseña);
 
                 if(respuesta){
                     this.cambios = false;
