@@ -16,7 +16,6 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -42,18 +41,21 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import modelo.Pago;
 import modelo.PlanTratamiento;
+import modelo.Rol;
 import modelo.Usuario;
 import orthodent.Item;
 import orthodent.db.Autenticacion;
 import orthodent.db.PagoDB;
 import orthodent.db.PlanTratamientoDB;
+import orthodent.db.RolDB;
 
 /**
  *
  * @author Mary
  */
-public class Pagos extends JPanel implements ActionListener
-{  
+public class Pagos extends JPanel implements ActionListener{
+    private Usuario usuarioActual;
+    private Rol rol;
     private Image bannerFondo;
     private JLabel labelProfesionales;
     private JComboBox profesionales;
@@ -69,8 +71,9 @@ public class Pagos extends JPanel implements ActionListener
     private ArrayList<Usuario> auxiliar;
     private JPanel contenedorListarPagos;
     
-    public Pagos() throws Exception{
-        
+    public Pagos(Usuario usuarioActual) throws Exception{
+        this.usuarioActual = usuarioActual;
+        this.rol = RolDB.getRol(this.usuarioActual.getId_rol());
         this.setBackground(new Color(243,242,243));
         this.setPreferredSize(new Dimension(1073, 561));
         
@@ -209,13 +212,21 @@ public class Pagos extends JPanel implements ActionListener
         this.fechaDesde.setDate(inicio);
         this.fechaHasta.setDate(fin);
         
-        this.profesionales.setSelectedIndex(0);
-        
         String fecha1 = getFechaString(inicio);
         String fecha2 = getFechaString(fin);
         
-        ArrayList<Pago> pagos = PagoDB.listarPagos(-1, fecha1, fecha2);
-        this.updateModelo(pagos);
+        if(rol.getNombre().equals("ADMINISTRADOR") || rol.getNombre().equals("ASISTENTE ADMINISTRATIVA")){
+            this.profesionales.setSelectedIndex(0);
+            
+            System.out.println("fecha1: "+fecha1);
+            
+            ArrayList<Pago> pagos = PagoDB.listarPagos(-1, fecha1, fecha2);
+            this.updateModelo(pagos);
+        }
+        if(rol.getNombre().equals("PROFESIONAL")){
+            ArrayList<Pago> pagos = PagoDB.listarPagos(this.usuarioActual.getId_usuario(), fecha1, fecha2);
+            this.updateModelo(pagos);
+        }
     }
     
     private String getFechaString(Date date){
@@ -357,76 +368,148 @@ public class Pagos extends JPanel implements ActionListener
     }
     
     private void addComponentPanel1(JPanel panel1){
+        if(rol.getNombre().equals("ADMINISTRADOR") || rol.getNombre().equals("ASISTENTE ADMINISTRATIVA")){
+            GroupLayout groupLayout = new GroupLayout(panel1);
+            panel1.setLayout(groupLayout);
+            groupLayout.setHorizontalGroup(
+                groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(groupLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(this.labelProfesionales, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(this.profesionales, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+                    .addGap(28, 28, 28)
+                    .addComponent(this.desde, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(this.fechaDesde, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+                    .addGap(28, 28, 28)
+                    .addComponent(this.hasta, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(this.fechaHasta, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(this.imprimir)
+                    .addContainerGap())
+            );
+
+            groupLayout.setVerticalGroup(
+                groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(groupLayout.createSequentialGroup()
+                    .addContainerGap(15, Short.MAX_VALUE)
+                    .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(this.labelProfesionales, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(this.profesionales)
+                        .addComponent(this.desde, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(this.fechaDesde)
+                        .addComponent(this.hasta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(this.fechaHasta)
+                        .addComponent(this.imprimir))
+                    .addContainerGap(13, Short.MAX_VALUE))
+            );
+        }
+        if(rol.getNombre().equals("PROFESIONAL")){
+            GroupLayout groupLayout = new GroupLayout(panel1);
+            panel1.setLayout(groupLayout);
+            groupLayout.setHorizontalGroup(
+                groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(groupLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(this.desde, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(this.fechaDesde, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+                    .addGap(28, 28, 28)
+                    .addComponent(this.hasta, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(this.fechaHasta, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(this.imprimir)
+                    .addContainerGap())
+            );
+
+            groupLayout.setVerticalGroup(
+                groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(groupLayout.createSequentialGroup()
+                    .addContainerGap(15, Short.MAX_VALUE)
+                    .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(this.desde, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(this.fechaDesde)
+                        .addComponent(this.hasta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(this.fechaHasta)
+                        .addComponent(this.imprimir))
+                    .addContainerGap(13, Short.MAX_VALUE))
+            );
+        }
         
-        GroupLayout groupLayout = new GroupLayout(panel1);
-        panel1.setLayout(groupLayout);
-        groupLayout.setHorizontalGroup(
-            groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(groupLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(this.labelProfesionales, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(this.profesionales, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(this.desde, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
-                .addComponent(this.fechaDesde, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(this.hasta, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
-                .addComponent(this.fechaHasta, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(this.imprimir)
-                .addContainerGap())
-        );
-        
-        groupLayout.setVerticalGroup(
-            groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(groupLayout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
-                .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(this.labelProfesionales, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(this.profesionales)
-                    .addComponent(this.desde, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(this.fechaDesde)
-                    .addComponent(this.hasta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(this.fechaHasta)
-                    .addComponent(this.imprimir))
-                .addContainerGap(13, Short.MAX_VALUE))
-        );
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == this.imprimir){
+            int idProf = ((Item)this.profesionales.getSelectedItem()).getId();
+            String prof = "";
+            
+            if(idProf==-1){
+                prof = "(";
+                int i=0;
+                for(Usuario user : this.auxiliar){
+                    if(i==0){
+                        prof = prof + user.getId_usuario();
+                    }
+                    else{
+                        prof = prof + "," +user.getId_usuario();
+                    }
+                    i++;
+                }
+                prof = prof + ")";
+            }
+            else{
+                prof = "("+idProf+")";
+            }
+            
+            Date date1 = fechaDesde.getDate();
+            Date date2 = fechaHasta.getDate();
+            String fecha1 = getFechaString(date1);
+            String fecha2 = getFechaString(date2);
+            
             //ACA TIENES QUE AGREGAR EL CODIGO ASTROZA!!
         }
     }
     
-    public void fechaDesdePropertyChange(PropertyChangeEvent evt) {
-        Date date1 = fechaDesde.getDate();
-        Date date2 = fechaHasta.getDate();
-        String fecha1 = getFechaString(date1);
-        String fecha2 = getFechaString(date2);
-
-        int id = ((Item)this.profesionales.getSelectedItem()).getId();
-
-        ArrayList<Pago> pagos = PagoDB.listarPagos(id, fecha1, fecha2);
-        try {
-            updateModelo(pagos);
-        } catch (Exception ex) {
-        }
-    }
-    
-    public void fechaHastaPropertyChange(PropertyChangeEvent evt) {
+    public void fechaDesdePropertyChange(PropertyChangeEvent evt){
         Date date1 = fechaDesde.getDate();
         Date date2 = fechaHasta.getDate();
         String fecha1 = getFechaString(date1);
         String fecha2 = getFechaString(date2);
         
-        int id = ((Item)this.profesionales.getSelectedItem()).getId();
-
-        ArrayList<Pago> pagos = PagoDB.listarPagos(id, fecha1, fecha2);
+        ArrayList<Pago> pagos = null;
+        
+        if(rol.getNombre().equals("ADMINISTRADOR") || rol.getNombre().equals("ASISTENTE ADMINISTRATIVA")){
+            int id = ((Item)this.profesionales.getSelectedItem()).getId();
+            pagos = PagoDB.listarPagos(id, fecha1, fecha2);
+        }
+        if(rol.getNombre().equals("PROFESIONAL")){
+            pagos = PagoDB.listarPagos(this.usuarioActual.getId_usuario(), fecha1, fecha2);
+        }
+        
         try {
-            updateModelo(pagos);
+            this.updateModelo(pagos);
+        } catch (Exception ex) {
+        }
+    }
+    
+    public void fechaHastaPropertyChange(PropertyChangeEvent evt){
+        Date date1 = fechaDesde.getDate();
+        Date date2 = fechaHasta.getDate();
+        String fecha1 = getFechaString(date1);
+        String fecha2 = getFechaString(date2);
+        
+        ArrayList<Pago> pagos = null;
+        
+        if(rol.getNombre().equals("ADMINISTRADOR") || rol.getNombre().equals("ASISTENTE ADMINISTRATIVA")){
+            int id = ((Item)this.profesionales.getSelectedItem()).getId();
+            pagos = PagoDB.listarPagos(id, fecha1, fecha2);
+        }
+        if(rol.getNombre().equals("PROFESIONAL")){
+            pagos = PagoDB.listarPagos(this.usuarioActual.getId_usuario(), fecha1, fecha2);
+        }
+        
+        try {
+            this.updateModelo(pagos);
         } catch (Exception ex) {
         }
     }

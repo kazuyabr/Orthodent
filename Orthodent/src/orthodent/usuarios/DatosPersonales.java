@@ -36,8 +36,6 @@ public class DatosPersonales extends JPanel{
         System.out.println(usuarioActual.getNombre());
         this.usuario = usuario;
         this.usuarioActual = usuarioActual;
-        this.cambios = false;
-        this.cambioContraseña=false;
         this.addInfo();
         this.guardar.setEnabled(false);
         this.guardar.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -59,6 +57,8 @@ public class DatosPersonales extends JPanel{
                 habilitar.setVisible(true);
             }
         }
+        this.cambios = false;
+        this.cambioContraseña=false;
         this.clinicas.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 habilitarBoton();

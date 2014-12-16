@@ -55,13 +55,20 @@ public class Agenda extends JPanel{
     private HashMap<Integer,Boolean> semanasCargadas;
     private HashMap<Integer,ArrayList<Cita>> citasDeLaSemana;
     private int semanaActual;
+    public boolean iniciado;
     
     public Agenda(Usuario actual){
+        this.iniciado = false;
         this.usuarioActual = actual;
         this.barraAcciones = new BarraAcciones(this.usuarioActual,this);
+        //
+        if(this.barraAcciones.getProfesionales().getItemCount()==0){
+            this.modelo = new AgendaSchedulerModel(this.barraAcciones, false);
+        }
+        else{
+            this.modelo = new AgendaSchedulerModel(this.barraAcciones, true);
+        }
         //this.cambiarSemanaDeAgenda(new Date());
-        
-        this.modelo = new AgendaSchedulerModel(this.barraAcciones);
         //Introducir código aquí
         this.setBackground(new Color(255,255,255));
         this.setPreferredSize(new Dimension(1073, 561));
@@ -89,6 +96,7 @@ public class Agenda extends JPanel{
         this.barraAcciones.setFechaAgenda(new Date());
         this.add(barraAcciones, BorderLayout.NORTH);
         ((DaySchedule)(this.scheduler.getComponent(0))).setBackground(new Color(11,146,181));
+        //this.iniciado=true;
         updateUI();
     }
     
@@ -199,66 +207,83 @@ public class Agenda extends JPanel{
     public void cargarAgendainicial(){
         int semana = this.obtenerSemana(new Date());
         this.semanaActual = semana;
-        ArrayList<Cita> citas = AgendaDB.obtenerCitas(semana, barraAcciones.getIdProfesional(),modelo);
-        if(citas!=null){
-            this.semanasCargadas.put(semana, Boolean.TRUE);
-            this.citasDeLaSemana.put(semana, citas);
-            for(Cita c: citas){
-                modelo.agregarCita(c);
-                c.setAg(this);
+        if(this.barraAcciones.getProfesionales().getItemCount()>0){
+            ArrayList<Cita> citas = AgendaDB.obtenerCitas(semana, barraAcciones.getIdProfesional(),modelo);
+            if(citas!=null){
+                this.semanasCargadas.put(semana, Boolean.TRUE);
+                this.citasDeLaSemana.put(semana, citas);
+                for(Cita c: citas){
+                    modelo.agregarCita(c);
+                    c.setAg(this);
+                }
+                updateUI();
             }
-            updateUI();
+        }
+        else{
+            if(this.iniciado)
+                JOptionPane.showMessageDialog(this, "No hay Profesionales asociados a su Clínica", "Orthodent", JOptionPane.ERROR_MESSAGE);
         }
     }
     
     
     public void cambiarSemanaDeAgenda(Date fecha){
-        int semana = this.obtenerSemana(fecha);
-        this.semanaActual = semana;
-        LocalDate ld = new LocalDate(obtenerLunes(fecha));
-        this.scheduler.showDate(ld);
-        if(!this.semanasCargadas.containsKey(semana)){
-            ArrayList<Cita> citas = AgendaDB.obtenerCitas(semana, barraAcciones.getIdProfesional(),modelo);
-            if(citas!=null){
-                this.citasDeLaSemana.put(semana, citas);
-                this.semanasCargadas.put(semana, Boolean.TRUE);
-                for(Cita c : citas){
-                    System.out.println(c.getTitle());
-                    modelo.agregarCita(c);
-                    c.setAg(this);
+        if(this.barraAcciones.getProfesionales().getItemCount()>0){
+            int semana = this.obtenerSemana(fecha);
+            this.semanaActual = semana;
+            LocalDate ld = new LocalDate(obtenerLunes(fecha));
+            this.scheduler.showDate(ld);
+            if(!this.semanasCargadas.containsKey(semana)){
+                ArrayList<Cita> citas = AgendaDB.obtenerCitas(semana, barraAcciones.getIdProfesional(),modelo);
+                if(citas!=null){
+                    this.citasDeLaSemana.put(semana, citas);
+                    this.semanasCargadas.put(semana, Boolean.TRUE);
+                    for(Cita c : citas){
+                        System.out.println(c.getTitle());
+                        modelo.agregarCita(c);
+                        c.setAg(this);
+                    }
+                }
+                else{
+                    System.out.println("Retorno NULO");
                 }
             }
-            else{
-                System.out.println("Retorno NULO");
-            }
         }
-        
+        else{
+            if(this.iniciado)
+                JOptionPane.showMessageDialog(this, "No hay Profesionales asociados a su Clínica", "Orthodent", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     public void cambiarProfesional(Date fecha){
-        int semana = this.obtenerSemana(fecha);
-        this.semanaActual = semana;
-        LocalDate ld = new LocalDate(obtenerLunes(fecha));
-        this.scheduler.showDate(ld);
-        this.modelo = new AgendaSchedulerModel(this.barraAcciones);
-        this.scheduler.setModel(modelo);
-        this.citasDeLaSemana.clear();
-        this.semanasCargadas.clear();
-        this.modelo.citas.clear();
-        if(!this.semanasCargadas.containsKey(semana)){
-            ArrayList<Cita> citas = AgendaDB.obtenerCitas(semana, barraAcciones.getIdProfesional(),modelo);
-            if(citas!=null){
-                for(Cita c : citas){
-                    System.out.println(c.getTitle());
-                    modelo.agregarCita(c);
-                    this.semanasCargadas.put(semana, Boolean.TRUE);
-                    this.citasDeLaSemana.put(semana, citas);
-                    c.setAg(this);
+        if(this.barraAcciones.getProfesionales().getItemCount()>0){
+            int semana = this.obtenerSemana(fecha);
+            this.semanaActual = semana;
+            LocalDate ld = new LocalDate(obtenerLunes(fecha));
+            this.scheduler.showDate(ld);
+            this.modelo = new AgendaSchedulerModel(this.barraAcciones, true);
+            this.scheduler.setModel(modelo);
+            this.citasDeLaSemana.clear();
+            this.semanasCargadas.clear();
+            this.modelo.citas.clear();
+            if(!this.semanasCargadas.containsKey(semana)){
+                ArrayList<Cita> citas = AgendaDB.obtenerCitas(semana, barraAcciones.getIdProfesional(),modelo);
+                if(citas!=null){
+                    for(Cita c : citas){
+                        System.out.println(c.getTitle());
+                        modelo.agregarCita(c);
+                        this.semanasCargadas.put(semana, Boolean.TRUE);
+                        this.citasDeLaSemana.put(semana, citas);
+                        c.setAg(this);
+                    }
+                }
+                else{
+                    System.out.println("Retorno NULO");
                 }
             }
-            else{
-                System.out.println("Retorno NULO");
-            }
+        }
+        else{
+            if(this.iniciado)
+                JOptionPane.showMessageDialog(this, "No hay Profesionales asociados a su Clínica", "Orthodent", JOptionPane.ERROR_MESSAGE);
         }
     }
     

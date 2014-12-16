@@ -247,12 +247,9 @@ public class PanelOpciones extends JPanel implements ActionListener{
             horizontalGroup.addComponent(this.agenda);
             horizontalGroup.addGap(18,18,18);
             horizontalGroup.addComponent(this.pacientes);
-            horizontalGroup.addGap(18, 18, 18);
-            horizontalGroup.addComponent(this.pagos);
             
             verticalGroup.addComponent(this.agenda);
             verticalGroup.addComponent(this.pacientes);
-            verticalGroup.addComponent(this.pagos);
         }
         else{
             horizontalGroup.addComponent(this.agenda);

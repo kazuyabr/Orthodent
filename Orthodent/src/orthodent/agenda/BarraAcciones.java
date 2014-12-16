@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import modelo.Usuario;
 import orthodent.Item;
 import orthodent.db.Autenticacion;
@@ -32,6 +33,8 @@ public class BarraAcciones extends javax.swing.JPanel {
         initProfesionales();
         //this.fechaAgenda.setDate(new Date());
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -299,7 +302,12 @@ public class BarraAcciones extends javax.swing.JPanel {
                 //profesionales.setSelectedItem(item);
             }
         }
-
+        else{
+            Vector model = new Vector();
+            profesionales.setModel(new DefaultComboBoxModel(model));
+            //profesionales.setSelectedItem(item);
+            profesionales.setEnabled(false);
+        }
         
         
     }
@@ -320,4 +328,14 @@ public class BarraAcciones extends javax.swing.JPanel {
         return this.fechaAgenda;
     }
 
+    public JComboBox getProfesionales() {
+        return profesionales;
+    }
+
+    public void setProfesionales(JComboBox profesionales) {
+        this.profesionales = profesionales;
+    }
+
+    
+    
 }

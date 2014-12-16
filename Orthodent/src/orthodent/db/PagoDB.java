@@ -156,7 +156,7 @@ public class PagoDB {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM pago where is_lab=0 AND id_plantratamiento=" + idPlanTratamiento);
+            ResultSet rs = st.executeQuery("SELECT * FROM pago where is_lab=0 AND id_plantratamiento=" + idPlanTratamiento + "  ORDER BY fecha DESC");
             pagos = new ArrayList<Pago>();
             while (rs.next())
             {
@@ -182,7 +182,7 @@ public class PagoDB {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM pago where is_lab=1 AND id_plantratamiento=" + idPlanTratamiento);
+            ResultSet rs = st.executeQuery("SELECT * FROM pago where is_lab=1 AND id_plantratamiento=" + idPlanTratamiento + "  ORDER BY fecha DESC");
             pagos = new ArrayList<Pago>();
             while (rs.next())
             {
