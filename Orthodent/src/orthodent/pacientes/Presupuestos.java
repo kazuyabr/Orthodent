@@ -1606,7 +1606,7 @@ public class Presupuestos extends JPanel{
         this.profesional.setEnabled(true);
         this.remove.setEnabled(true);
         this.add.setEnabled(true);
-        this.estado.setEnabled(true);
+        this.estado.setEnabled(false);
         this.guardar.setEnabled(true);
         this.addLab.setEnabled(true);
         this.removeLab.setEnabled(true);

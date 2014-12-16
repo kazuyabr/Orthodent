@@ -217,6 +217,9 @@ public class Pagos extends JPanel implements ActionListener{
         
         if(rol.getNombre().equals("ADMINISTRADOR") || rol.getNombre().equals("ASISTENTE ADMINISTRATIVA")){
             this.profesionales.setSelectedIndex(0);
+            
+            System.out.println("fecha1: "+fecha1);
+            
             ArrayList<Pago> pagos = PagoDB.listarPagos(-1, fecha1, fecha2);
             this.updateModelo(pagos);
         }
@@ -437,6 +440,32 @@ public class Pagos extends JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == this.imprimir){
+            int idProf = ((Item)this.profesionales.getSelectedItem()).getId();
+            String prof = "";
+            
+            if(idProf==-1){
+                prof = "(";
+                int i=0;
+                for(Usuario user : this.auxiliar){
+                    if(i==0){
+                        prof = prof + user.getId_usuario();
+                    }
+                    else{
+                        prof = prof + "," +user.getId_usuario();
+                    }
+                    i++;
+                }
+                prof = prof + ")";
+            }
+            else{
+                prof = "("+idProf+")";
+            }
+            
+            Date date1 = fechaDesde.getDate();
+            Date date2 = fechaHasta.getDate();
+            String fecha1 = getFechaString(date1);
+            String fecha2 = getFechaString(date2);
+            
             //ACA TIENES QUE AGREGAR EL CODIGO ASTROZA!!
         }
     }
