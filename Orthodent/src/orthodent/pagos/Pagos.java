@@ -9,6 +9,7 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -19,6 +20,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,11 +45,16 @@ import modelo.Pago;
 import modelo.PlanTratamiento;
 import modelo.Rol;
 import modelo.Usuario;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import orthodent.Item;
 import orthodent.db.Autenticacion;
+import orthodent.db.DbConnection;
 import orthodent.db.PagoDB;
 import orthodent.db.PlanTratamientoDB;
 import orthodent.db.RolDB;
+import orthodent.reportes.Reportes;
 
 /**
  *
@@ -439,34 +446,42 @@ public class Pagos extends JPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == this.imprimir){
-            int idProf = ((Item)this.profesionales.getSelectedItem()).getId();
+        if (e.getSource() == this.imprimir) {
+
+            int idProf = ((Item) this.profesionales.getSelectedItem()).getId();
             String prof = "";
-            
-            if(idProf==-1){
+
+            if (idProf == -1) {
                 prof = "(";
-                int i=0;
-                for(Usuario user : this.auxiliar){
-                    if(i==0){
+                int i = 0;
+                for (Usuario user : this.auxiliar) {
+                    if (i == 0) {
                         prof = prof + user.getId_usuario();
-                    }
-                    else{
-                        prof = prof + "," +user.getId_usuario();
+                    } else {
+                        prof = prof + "," + user.getId_usuario();
                     }
                     i++;
                 }
                 prof = prof + ")";
+            } else {
+                prof = "(" + idProf + ")";
             }
-            else{
-                prof = "("+idProf+")";
-            }
-            
+
             Date date1 = fechaDesde.getDate();
             Date date2 = fechaHasta.getDate();
             String fecha1 = getFechaString(date1);
             String fecha2 = getFechaString(date2);
-            
-            //ACA TIENES QUE AGREGAR EL CODIGO ASTROZA!!
+            try {
+                DbConnection db = new DbConnection();
+                JasperPrint reporte = Reportes.generarPagos(prof, fecha1, fecha2, db);
+                db.desconectar();
+                File tempPdf;
+                tempPdf = File.createTempFile("orthodent_reporte", ".pdf");
+                JasperExportManager.exportReportToPdfFile(reporte, tempPdf.getPath());
+                Desktop.getDesktop().open(tempPdf);
+            } catch (Exception ex) {
+                Logger.getLogger(Pagos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
