@@ -1057,80 +1057,80 @@ public class Presupuestos extends JPanel{
                 costoLabs = Integer.parseInt(this.costoTotalLaboratorio.getText().substring(this.costoTotal.getText().indexOf("$")+1, this.costoTotalLaboratorio.getText().length()));
             }
             this.presupuestoSelected.setCostoLab(costoLabs);
+                
+            boolean error = false;
+            for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
+                try {
+                    int pieza = Integer.parseInt((String) this.tablaPiezaTratamiento.getValueAt(i, 0));
+
+                    if(this.tablaPiezaTratamiento.getValueAt(i, 1)==null){
+                        JOptionPane.showMessageDialog(this,
+                            "Hay cambios en la tabla sin completar!",
+                            "Orthodent",
+                            JOptionPane.INFORMATION_MESSAGE);
+                        error = true;
+                        break;
+                    }
+                    else{
+                        if(!(this.tablaPiezaTratamiento.getValueAt(i, 1) instanceof Item)){
+                            JOptionPane.showMessageDialog(this,
+                                "Hay cambios en la tabla sin completar!",
+                                "Orthodent",
+                                JOptionPane.INFORMATION_MESSAGE);
+                            error = true;
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this,
+                        "Hay datos incorrectos en la tabla o sin completar!",
+                        "Orthodent",
+                        JOptionPane.INFORMATION_MESSAGE);
+                    error = true;
+                    break;
+                }
+            }
+
+            for(int i=0; i<this.tablaLaboratorio.getRowCount(); i++){ //recorro las filas
+                try {
+                    int pieza = Integer.parseInt((String) this.tablaLaboratorio.getValueAt(i, 0));
+
+                    String a = (String)this.tablaLaboratorio.getValueAt(i, 1);
+
+                    if(a.equals("")){
+                        JOptionPane.showMessageDialog(this,
+                            "Hay cambios en la tabla sin completar!",
+                            "Orthodent",
+                            JOptionPane.INFORMATION_MESSAGE);
+                        error = true;
+                        break;
+                    }
+
+                    try{
+                        int val = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 2));
+                    }
+                    catch(Exception e){
+                        JOptionPane.showMessageDialog(this,
+                            "Hay datos incorrectos en la tabla o sin completar!",
+                            "Orthodent",
+                            JOptionPane.INFORMATION_MESSAGE);
+                        error = true;
+                        break;
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this,
+                        "Hay datos incorrectos en la tabla o sin completar!",
+                        "Orthodent",
+                        JOptionPane.INFORMATION_MESSAGE);
+                    error = true;
+                    break;
+                }
+            }
             
-            boolean respuesta = PresupuestoDB.editarPresupuesto(presupuestoSelected);
-            if(respuesta){
+            if(!error){
+                boolean respuesta = PresupuestoDB.editarPresupuesto(presupuestoSelected);
                 
-                boolean error = false;
-                for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
-                    try {
-                        int pieza = Integer.parseInt((String) this.tablaPiezaTratamiento.getValueAt(i, 0));
-                        
-                        if(this.tablaPiezaTratamiento.getValueAt(i, 1)==null){
-                            JOptionPane.showMessageDialog(this,
-                                "Hay cambios en la tabla sin completar!",
-                                "Orthodent",
-                                JOptionPane.INFORMATION_MESSAGE);
-                            error = true;
-                            break;
-                        }
-                        else{
-                            if(!(this.tablaPiezaTratamiento.getValueAt(i, 1) instanceof Item)){
-                                JOptionPane.showMessageDialog(this,
-                                    "Hay cambios en la tabla sin completar!",
-                                    "Orthodent",
-                                    JOptionPane.INFORMATION_MESSAGE);
-                                error = true;
-                                break;
-                            }
-                        }
-                    } catch (Exception e) {
-                        JOptionPane.showMessageDialog(this,
-                            "Hay cambios en la tabla sin completar!",
-                            "Orthodent",
-                            JOptionPane.INFORMATION_MESSAGE);
-                        error = true;
-                        break;
-                    }
-                }
-                
-                for(int i=0; i<this.tablaLaboratorio.getRowCount(); i++){ //recorro las filas
-                    try {
-                        int pieza = Integer.parseInt((String) this.tablaLaboratorio.getValueAt(i, 0));
-                        
-                        String a = (String)this.tablaLaboratorio.getValueAt(i, 1);
-                        
-                        if(a.equals("")){
-                            JOptionPane.showMessageDialog(this,
-                                "Hay cambios en la tabla sin completar!",
-                                "Orthodent",
-                                JOptionPane.INFORMATION_MESSAGE);
-                            error = true;
-                            break;
-                        }
-                        
-                        try{
-                            int val = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 2));
-                        }
-                        catch(Exception e){
-                            JOptionPane.showMessageDialog(this,
-                                "Hay cambios en la tabla sin completar!",
-                                "Orthodent",
-                                JOptionPane.INFORMATION_MESSAGE);
-                            error = true;
-                            break;
-                        }
-                    } catch (Exception e) {
-                        JOptionPane.showMessageDialog(this,
-                            "Hay cambios en la tabla sin completar!",
-                            "Orthodent",
-                            JOptionPane.INFORMATION_MESSAGE);
-                        error = true;
-                        break;
-                    }
-                }
-                
-                if(!error){
+                if(respuesta){
                     try {
                         boolean resp = TratamientoPiezaPresupuestoDB.eliminarTratamientoPieza(presupuestoSelected.getIdPresupuesto());
 
@@ -1197,16 +1197,21 @@ public class Presupuestos extends JPanel{
                 costoLabs = Integer.parseInt(this.costoTotalLaboratorio.getText().substring(this.costoTotal.getText().indexOf("$")+1, this.costoTotalLaboratorio.getText().length()));
             }
             
-            boolean respuesta = PresupuestoDB.crearPresupuesto(this.paciente.getId_paciente(), id_profesional, estado,
-                    costoTotal, cantidadTratamientos, costoLabs, true, fechaModificacion, fechaModificacion);
-            
-            if(respuesta){
-                boolean error = false;
-                for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
-                    try {
-                        int pieza = Integer.parseInt((String) this.tablaPiezaTratamiento.getValueAt(i, 0));
-                        
-                        if(this.tablaPiezaTratamiento.getValueAt(i, 1)==null){
+            boolean error = false;
+            for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
+                try {
+                    int pieza = Integer.parseInt((String) this.tablaPiezaTratamiento.getValueAt(i, 0));
+
+                    if(this.tablaPiezaTratamiento.getValueAt(i, 1)==null){
+                        JOptionPane.showMessageDialog(this,
+                            "Hay cambios en la tabla sin completar!",
+                            "Orthodent",
+                            JOptionPane.INFORMATION_MESSAGE);
+                        error = true;
+                        break;
+                    }
+                    else{
+                        if(((Item)this.tablaPiezaTratamiento.getValueAt(i, 1)).getId()==-1){
                             JOptionPane.showMessageDialog(this,
                                 "Hay cambios en la tabla sin completar!",
                                 "Orthodent",
@@ -1215,7 +1220,7 @@ public class Presupuestos extends JPanel{
                             break;
                         }
                         else{
-                            if(((Item)this.tablaPiezaTratamiento.getValueAt(i, 1)).getId()==-1){
+                            if(!(this.tablaPiezaTratamiento.getValueAt(i, 1) instanceof Item)){
                                 JOptionPane.showMessageDialog(this,
                                     "Hay cambios en la tabla sin completar!",
                                     "Orthodent",
@@ -1223,18 +1228,24 @@ public class Presupuestos extends JPanel{
                                 error = true;
                                 break;
                             }
-                            else{
-                                if(!(this.tablaPiezaTratamiento.getValueAt(i, 1) instanceof Item)){
-                                    JOptionPane.showMessageDialog(this,
-                                        "Hay cambios en la tabla sin completar!",
-                                        "Orthodent",
-                                        JOptionPane.INFORMATION_MESSAGE);
-                                    error = true;
-                                    break;
-                                }
-                            }
                         }
-                    } catch (Exception e) {
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this,
+                        "Hay datos incorrectos en la tabla o sin completar!",
+                        "Orthodent",
+                        JOptionPane.INFORMATION_MESSAGE);
+                    error = true;
+                    break;
+                }
+            }
+            for(int i=0; i<this.tablaLaboratorio.getRowCount(); i++){ //recorro las filas
+                try {
+                    int pieza = Integer.parseInt((String) this.tablaLaboratorio.getValueAt(i, 0));
+
+                    String a = (String)this.tablaLaboratorio.getValueAt(i, 1);
+
+                    if(a.equals("")){
                         JOptionPane.showMessageDialog(this,
                             "Hay cambios en la tabla sin completar!",
                             "Orthodent",
@@ -1242,44 +1253,33 @@ public class Presupuestos extends JPanel{
                         error = true;
                         break;
                     }
-                }
-                for(int i=0; i<this.tablaLaboratorio.getRowCount(); i++){ //recorro las filas
-                    try {
-                        int pieza = Integer.parseInt((String) this.tablaLaboratorio.getValueAt(i, 0));
-                        
-                        String a = (String)this.tablaLaboratorio.getValueAt(i, 1);
-                        
-                        if(a.equals("")){
-                            JOptionPane.showMessageDialog(this,
-                                "Hay cambios en la tabla sin completar!",
-                                "Orthodent",
-                                JOptionPane.INFORMATION_MESSAGE);
-                            error = true;
-                            break;
-                        }
-                        
-                        try{
-                            int val = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 2));
-                        }
-                        catch(Exception e){
-                            JOptionPane.showMessageDialog(this,
-                                "Hay cambios en la tabla sin completar!",
-                                "Orthodent",
-                                JOptionPane.INFORMATION_MESSAGE);
-                            error = true;
-                            break;
-                        }
-                    } catch (Exception e) {
+
+                    try{
+                        int val = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 2));
+                    }
+                    catch(Exception e){
                         JOptionPane.showMessageDialog(this,
-                            "Hay cambios en la tabla sin completar!",
+                            "Hay datos incorrectos en la tabla o sin completar!",
                             "Orthodent",
                             JOptionPane.INFORMATION_MESSAGE);
                         error = true;
                         break;
                     }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this,
+                        "Hay datos incorrectos en la tabla o sin completar!",
+                        "Orthodent",
+                        JOptionPane.INFORMATION_MESSAGE);
+                    error = true;
+                    break;
                 }
+            }
+            
+            if(!error){
+                boolean respuesta = PresupuestoDB.crearPresupuesto(this.paciente.getId_paciente(), id_profesional, estado,
+                            costoTotal, cantidadTratamientos, costoLabs, true, fechaModificacion, fechaModificacion);
                 
-                if(!error){
+                if(respuesta){   
                     try {
                         Presupuesto pre = PresupuestoDB.getPresupuesto(fechaModificacion, this.paciente.getId_paciente());
                         
