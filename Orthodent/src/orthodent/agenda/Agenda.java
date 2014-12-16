@@ -26,6 +26,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.OrientationRequested;
@@ -37,6 +39,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import orthodent.JVentana;
 import orthodent.db.AgendaDB;
+import orthodent.db.Autenticacion;
 
 /**
  *
@@ -48,6 +51,7 @@ public class Agenda extends JPanel{
     private BarraAcciones barraAcciones;
     private AgendaSchedulerModel modelo;
     public Scheduler scheduler;
+    public HeaderImpresionAgenda header;
     private HashMap<Integer,Boolean> semanasCargadas;
     private HashMap<Integer,ArrayList<Cita>> citasDeLaSemana;
     private int semanaActual;
@@ -281,7 +285,7 @@ public class Agenda extends JPanel{
         newDate.setTime(calendar.getTime().getTime());
 
         return newDate;
-}
+    }
     
     public int obtenerSemana(Date fecha){
         int semana=0;
@@ -352,21 +356,32 @@ public class Agenda extends JPanel{
 
         PrinterJob pj = PrinterJob.getPrinterJob();
         pj.setJobName(" Print Component ");
-
-        pj.setPrintable (new Printable() {    
-            @Override
-            public int print(Graphics pg, PageFormat pf, int pageNum){
-                if (pageNum > 0){
-                    return Printable.NO_SUCH_PAGE;
-                }
-
-                Graphics2D g2 = (Graphics2D) pg;
-                g2.scale(0.7,0.7);
-                g2.translate(pf.getImageableX(), pf.getImageableY());
-                scheduler.paint(g2);
-                return Printable.PAGE_EXISTS;
-            }
-        });
+        this.header = new HeaderImpresionAgenda();
+        
+        
+        Date lunes = this.obtenerLunes(this.barraAcciones.getFechaAgenda());
+        Date sabado = this.addDaysToDate(lunes, 5);
+        DateTime lun = new DateTime(lunes);
+        DateTime sab = new DateTime(sabado);
+        
+        //final ImpresionAgenda ia = new ImpresionAgenda(auxiliar);
+        
+        String rango = "Desde el "+lun.toString("d-M-y")+" hasta el "+sab.toString("d-M-y");
+        Usuario prof=null;
+        try {
+            prof = Autenticacion.getUsuario(this.barraAcciones.getIdProfesional());
+        } catch (Exception ex) {
+            Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String profesional = prof.getNombre()+" "+prof.getApellido_pat()+" "+prof.getApellido_mat();
+        String semana = ""+this.obtenerSemana(lunes);
+        String año = ""+lun.getYear();
+        
+        setDatosHeader(profesional, rango, año, semana);
+        
+        this.remove(this.barraAcciones);
+        this.add(header, BorderLayout.NORTH);
+        
         if (pj.printDialog() == false)
             return;
 
@@ -374,10 +389,9 @@ public class Agenda extends JPanel{
             PageFormat pf = pj.defaultPage();  
             Paper paper = new Paper();  
             double margin = 4.5;   
-            paper.setImageableArea(margin, margin, paper.getWidth() - margin * 2, paper.getHeight()  
-                - margin * 2);  
+            paper.setImageableArea(margin, margin, paper.getWidth(), paper.getHeight());
             pf.setPaper(paper);
-            pj.setPrintable(new MyPrintable(scheduler), pf);
+            pj.setPrintable(new MyPrintable(this), pf);
             PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
             attributes.add(OrientationRequested.LANDSCAPE);
             
@@ -386,11 +400,14 @@ public class Agenda extends JPanel{
         catch (PrinterException ex) {
                 // handle exception
         }
+        this.remove(this.header);
+        this.add(this.barraAcciones, BorderLayout.NORTH);
+        updateUI();
     }
     
     class MyPrintable implements Printable {  
-        Scheduler str;  
-        public MyPrintable(Scheduler getStr)  
+        Agenda str;  
+        public MyPrintable(Agenda getStr)  
         {  
             str = getStr;  
         }  
@@ -401,13 +418,20 @@ public class Agenda extends JPanel{
             g2.translate(pf.getImageableX(), pf.getImageableY());  
             Rectangle componentBounds = str.getBounds(null);  
             g2.translate(componentBounds.x, componentBounds.y);  
-            g2.scale(0.7, 0.7);  
+            g2.scale(0.6, 0.6);  
             boolean wasBuffered = str.isDoubleBuffered();  
             str.paint(g2);  
             str.setDoubleBuffered(wasBuffered);  
             return PAGE_EXISTS;  
         }  
           
-      }  
+    }  
+    
+    public void setDatosHeader(String prof, String rango, String año, String semana){
+        this.header.setNombreProfesional(prof);
+        this.header.setRangoFechas(rango);
+        this.header.setAño(año);
+        this.header.setNumeroSemana(semana);
+    }
     
 }
