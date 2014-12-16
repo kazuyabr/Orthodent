@@ -382,9 +382,12 @@ public class Agenda extends JPanel{
         this.remove(this.barraAcciones);
         this.add(header, BorderLayout.NORTH);
         
-        if (pj.printDialog() == false)
+        if (pj.printDialog() == false){
+            this.remove(this.header);
+            this.add(this.barraAcciones, BorderLayout.NORTH);
+            updateUI();
             return;
-
+        }
         try {
             PageFormat pf = pj.defaultPage();  
             Paper paper = new Paper();  

@@ -144,7 +144,7 @@ public class AgendaDB {
             java.sql.Statement st = con.createStatement();
             
             int duracion = cita.getDuration().toStandardSeconds().toStandardMinutes().getMinutes();
-            String horaInicio = cita.getRealDateTime().toString("h:m");
+            String horaInicio = cita.getRealDateTime().toString("H:m");
             
             String confirmada;
             if(cita.isConfirmada())
