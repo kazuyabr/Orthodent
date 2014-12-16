@@ -135,7 +135,7 @@ public class Recaudacion extends JPanel{
                 JTable table =(JTable) me.getSource();
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
-                Object [] fila = getRowAt2(row);
+                Object [] fila = getRowAt3(row);
                 if (me.getClickCount() == 1) { 
                     try {
                         pagoLabSelected = PagoDB.getPago(((Item)fila[0]).getId());
@@ -149,8 +149,8 @@ public class Recaudacion extends JPanel{
                     try {
                         pagoLabSelected = PagoDB.getPago(((Item)fila[0]).getId());
                         if(pagoLabSelected != null){
-                            habilitarBtnRemove();
-                            editarPagoAbono2();
+                            habilitarBtnRemove2();
+                            //editarPagoAbono2();
                         }                        
                     } catch (Exception ex) {
                         Logger.getLogger(Recaudacion.class.getName()).log(Level.SEVERE, null, ex);
@@ -323,6 +323,7 @@ public class Recaudacion extends JPanel{
                                                
                         if(tratamientotoSelected!=null){
                             tablaPagoAbono.setEnabled(true);
+                            tablaPagoLaboratorio.setEnabled(true);
                             iniciarTablaPagoAbono();
                             iniciarTablaPagoLab();
                         }
@@ -354,7 +355,18 @@ public class Recaudacion extends JPanel{
         }   
         
         return result;
+    }   
+     private Object[] getRowAt3(int row) {
+        Object[] result = new Object[this.columnasNombrePagoLab.length];
+        
+        for (int i = 0; i < this.columnasNombrePagoLab.length; i++) {
+            result[i] = this.tablaPagoLaboratorio.getModel().getValueAt(row, i);
+            
+        }   
+        
+        return result;
     }    
+    
     
     public void updateTablaPlanesTratamientos() throws Exception{
         ArrayList<PlanTratamiento> tratamientos = null;
@@ -801,7 +813,7 @@ public class Recaudacion extends JPanel{
             Object[] options = {"Sí","No"};
 
                     int n = JOptionPane.showOptionDialog(this,
-                                "¿Esta seguro que desea eliminar la ficha clínica?",
+                                "¿Esta seguro que desea eliminar el Abono?",
                                 "Orthodent",
                                 JOptionPane.YES_NO_CANCEL_OPTION,
                                 JOptionPane.QUESTION_MESSAGE,
@@ -878,7 +890,8 @@ public class Recaudacion extends JPanel{
         
         this.tablaPagoAbono.setModel(modeloPagoAbono);
       
-        this.iniciarTablaPlanesTratamientos();
+        //this.iniciarTablaPlanesTratamientos();
+        this.updateTablaPagoAbono();
         //habilitarBoton();
     }
     
@@ -896,7 +909,31 @@ public class Recaudacion extends JPanel{
     }//GEN-LAST:event_costoTotalActionPerformed
 
     private void remove1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remove1ActionPerformed
-        // TODO add your handling code here:
+        if(pagoLabSelected != null){
+            Object[] options = {"Sí","No"};
+
+                    int n = JOptionPane.showOptionDialog(this,
+                                "¿Esta seguro que desea eliminar el Laboratorio?",
+                                "Orthodent",
+                                JOptionPane.YES_NO_CANCEL_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                options,
+                                options[1]);
+            if(n==0){
+                try {
+                    boolean respuesta = PagoDB.eliminarPago(pagoLabSelected.getIdPago());
+                    updateModeloPagoLab();
+                    this.jPanel2.updateUI();
+                }
+                catch (SQLException ex){
+                    Logger.getLogger(Recaudacion.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(Recaudacion.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
     }//GEN-LAST:event_remove1ActionPerformed
 //     public void guardar(){
 //        this.guardarActionPerformed(null);
@@ -923,4 +960,64 @@ public class Recaudacion extends JPanel{
     private javax.swing.JTable tablaPagoLaboratorio;
     private javax.swing.JTable tablaTratamiento;
     // End of variables declaration//GEN-END:variables
+
+    public  void updateModeloPagoLab() throws Exception{
+        //Podria ser ordenado!! -> una opcion es que la consulta ordene
+        ArrayList<Pago> pgAbono = PagoDB.listarPagosDePlanTratamiento(tratamientotoSelected.getIdPlanTratamiento());
+        
+        
+        int m = this.columnasNombrePagoLab.length;
+        int total=0;
+        ArrayList<Object []> objetos = new ArrayList<Object []>();
+        for(Pago pgAbn : pgAbono){
+            String fecha = girarFecha(pgAbn.getFecha());
+            String descripcion = pgAbn.getAbono()+"";
+            total = total + pgAbn.getAbono();
+            Object [] fila = new Object [] {fecha, 
+                new Item(descripcion,pgAbn.getIdPago()), "hora", "fecha"};
+
+            objetos.add(fila);
+        }
+        costoAbono.setText("$"+total);
+        int id = tratamientotoSelected.getIdPlanTratamiento();
+        PlanTratamiento planTrat = PlanTratamientoDB.getPlanTratamiento(id);
+        planTrat.setTotalAbonos(total);
+        //calculando el porcentaje de abance
+        int cosTotal=tratamientotoSelected.getCostoTotal();
+        int avance= total*100/cosTotal;
+        planTrat.setAvance(avance);
+        
+        PlanTratamientoDB.editarPlanTratamiento(planTrat);
+        //System.out.println("total 1:"+total+"id:"+id);
+        
+        this.filasPagoLab = new Object [objetos.size()][m];
+        int i = 0;
+        for(Object [] o : objetos){
+            this.filasPagoLab[i] = o;
+            i++;
+        }
+        
+        this.modeloPagoLab = new DefaultTableModel(this.filasPagoLab, this.columnasNombrePagoLab) {
+            Class[] types = new Class [] {
+                String.class, Item.class, String.class, String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
+        
+        this.tablaPagoLaboratorio.setModel(modeloPagoLab);
+      
+        //this.iniciarTablaPlanesTratamientos();
+        this.updateTablaPagoLab();
+        //habilitarBoton();
+    }
 }
