@@ -31,7 +31,7 @@ public class Autenticacion {
                 java.sql.Statement st = con.createStatement();
                 contrasena = encripMd5(contrasena);
                 
-                ResultSet rs = st.executeQuery("SELECT * from usuario where nombre_usuario='" + nombreUsuario + "' AND contrasena='" + contrasena + "'");
+                ResultSet rs = st.executeQuery("SELECT * from usuario where nombre_usuario='" + nombreUsuario + "' AND contrasena='" + contrasena + "' AND activo=1");
                 if (rs.next())
                 {
                     int id_usuario = rs.getInt("id_usuario");
