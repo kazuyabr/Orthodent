@@ -180,7 +180,7 @@ WHERE
 		<band height="119" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="143" height="70" uuid="095315e3-bfbc-45af-8582-ecfaed7f70c5"/>
-				<imageExpression><![CDATA["logoOrthodent.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[System.getProperty("user.dir")+ File.separator + "src" + File.separator+ "orthodent"+File.separator+"reportes"+File.separator+"logoOrthodent.jpg"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="174" y="70" width="202" height="30" uuid="82b7e1db-c451-48ea-9828-4261e2eb569b"/>
