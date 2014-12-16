@@ -21,6 +21,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -370,4 +372,30 @@ public class Pagos extends JPanel implements ActionListener
             }
         }*/
     }
+    
+    public Date primerDiaDelMes(Date dia){
+        Date primero = null;
+        Calendar c = Calendar.getInstance();
+        c.setTime(dia);
+        int mes = c.get(Calendar.MONTH);
+        int año = c.get(Calendar.YEAR);
+        
+        Calendar cal = Calendar.getInstance();
+        cal.clear();
+        cal.set(Calendar.YEAR, año);
+        cal.set(Calendar.MONTH, mes);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        primero = new Date(cal.getTimeInMillis());
+        return primero;
+    }
+    
+    public Date ultimoDiaDelMes(Date dia){
+        Date ultimo = null;
+        Calendar c = Calendar.getInstance();
+        c.setTime(dia);
+        c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+        ultimo = new Date(c.getTimeInMillis());
+        return ultimo;
+    }
+    
 }
