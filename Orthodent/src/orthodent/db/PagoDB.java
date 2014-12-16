@@ -114,6 +114,40 @@ public class PagoDB {
         }
     }
     
+    public static ArrayList<Pago> listarPagos(int idProfesional, String fechaInicio, String fechaFin){
+        ArrayList<Pago> pagos = null;        
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.getConnection();
+            
+            java.sql.Statement st = con.createStatement();
+            
+            ResultSet rs;
+            
+            if(idProfesional==-1){//TODOS
+                rs = st.executeQuery("SELECT * FROM pago WHERE fecha>='"+fechaInicio+"' AND fecha<='"+fechaFin+"' ORDER BY fecha DESC");
+            }
+            else{//Profesional en Particular
+                rs = st.executeQuery("SELECT * FROM pago,plan_tratamiento WHERE pago.id_plantratamiento=plan_tratamiento.id_plantratamiento AND plan_tratamiento.id_profesional="+idProfesional+" AND fecha>='"+fechaInicio+"' AND fecha<='"+fechaFin+"' ORDER BY fecha DESC");
+            }
+            pagos = new ArrayList<Pago>();
+            while (rs.next())
+            {
+                Pago p = new Pago(rs.getInt("id_pago"), rs.getInt("id_plantratamiento"), rs.getString("tipo_pago"),
+                                  rs.getString("detalle"), rs.getString("fecha"), rs.getInt("abono"),
+                                  rs.getInt("num_boleta"), rs.getBoolean("is_lab"));
+                pagos.add(p);
+            }
+            rs.close();
+            con.close();
+            return pagos;
+        }
+        catch ( SQLException e) {
+            System.out.println("me fui a la B!!!"+e);
+            return null;
+        }
+    }
+    
     public static ArrayList<Pago> listarPagosDePlanTratamiento(int idPlanTratamiento){
         ArrayList<Pago> pagos = null;        
         try {

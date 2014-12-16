@@ -20,6 +20,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -77,6 +79,8 @@ public class Pagos extends JPanel implements ActionListener
         this.initComponents();
         this.addComponents();
         this.imprimir.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        this.updateFilter();
     }
     
     private void initComponents() throws Exception{
@@ -95,7 +99,12 @@ public class Pagos extends JPanel implements ActionListener
                 int id = ((Item)evt.getItem()).getId();
                 if(id==-1){
                     //TODOS
-                    ArrayList<Pago> pagos = PagoDB.listarPagos();
+                    Date date1 = fechaDesde.getDate();
+                    Date date2 = fechaHasta.getDate();
+                    String fecha1 = getFechaString(date1);
+                    String fecha2 = getFechaString(date2);
+
+                    ArrayList<Pago> pagos = PagoDB.listarPagos(-1, fecha1, fecha2);
 
                     try {
                         updateModelo(pagos);
@@ -106,7 +115,12 @@ public class Pagos extends JPanel implements ActionListener
                     for(Usuario prof : auxiliar){
                         if(id==prof.getId_usuario()){
                             //algún profesional en particular
-                            ArrayList<Pago> pagos = PagoDB.listarPagos(id);
+                            Date date1 = fechaDesde.getDate();
+                            Date date2 = fechaHasta.getDate();
+                            String fecha1 = getFechaString(date1);
+                            String fecha2 = getFechaString(date2);
+                            
+                            ArrayList<Pago> pagos = PagoDB.listarPagos(id, fecha1, fecha2);
                             try {
                                 updateModelo(pagos);
                             } catch (Exception ex) {
@@ -117,11 +131,18 @@ public class Pagos extends JPanel implements ActionListener
             }
         };
         
+        DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        
+        Date inicio = this.primerDiaDelMes(date);
+        Date fin = this.ultimoDiaDelMes(date);
+        
         this.desde = new JLabel("Desde");
         this.desde.setFont(new Font("Georgia", 1, 12));
         this.desde.setForeground(new Color(11, 146, 181));
         
-        this.fechaDesde = new JDateChooser();
+        this.fechaDesde = new JDateChooser(inicio);
         this.fechaDesde.setBackground(new Color(255, 255, 255));
         this.fechaDesde.setFont(new Font("Georgia", 0, 12));
         this.fechaDesde.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -134,7 +155,7 @@ public class Pagos extends JPanel implements ActionListener
         this.hasta.setFont(new Font("Georgia", 1, 12));
         this.hasta.setForeground(new Color(11, 146, 181));
         
-        this.fechaHasta = new JDateChooser();
+        this.fechaHasta = new JDateChooser(fin);
         this.fechaHasta.setBackground(new Color(255, 255, 255));
         this.fechaHasta.setFont(new Font("Georgia", 0, 12));
         this.fechaHasta.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -169,14 +190,51 @@ public class Pagos extends JPanel implements ActionListener
         this.tabla = new JTable();
         this.tabla.setFont(new Font("Georgia", 0, 11));
         this.columnasNombre = new String [] {"Fecha", "Profesional", "Tipo de Pago", "Detalle", "Valor", "Numero de Boleta", "Laboratorio"};
-        ArrayList<Pago> pagos = PagoDB.listarPagos();
-        this.updateModelo(pagos);
         this.tabla.getTableHeader().setReorderingAllowed(false);
         
         this.tabla.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
             }
         });
+    }
+    
+    public void updateFilter() throws Exception{
+        DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        
+        Date inicio = this.primerDiaDelMes(date);
+        Date fin = this.ultimoDiaDelMes(date);
+        
+        this.fechaDesde.setDate(inicio);
+        this.fechaHasta.setDate(fin);
+        
+        this.profesionales.setSelectedIndex(0);
+        
+        String fecha1 = getFechaString(inicio);
+        String fecha2 = getFechaString(fin);
+        
+        ArrayList<Pago> pagos = PagoDB.listarPagos(-1, fecha1, fecha2);
+        this.updateModelo(pagos);
+    }
+    
+    private String getFechaString(Date date){
+        
+        String fechaNacimiento = (date.getYear()+1900) + "-";
+        
+        if((date.getMonth()+1)<9){
+            fechaNacimiento = fechaNacimiento + "0";
+        }
+        
+        fechaNacimiento = fechaNacimiento +(date.getMonth()+1)+"-";
+        
+        if(date.getDate()<9){
+            fechaNacimiento = fechaNacimiento + "0";
+        }
+        
+        fechaNacimiento = fechaNacimiento + date.getDate();
+        
+        return fechaNacimiento;
     }
     
     private Object[] getRowAt(int row) {
@@ -344,33 +402,33 @@ public class Pagos extends JPanel implements ActionListener
     }
     
     public void fechaDesdePropertyChange(PropertyChangeEvent evt) {
-    
+        Date date1 = fechaDesde.getDate();
+        Date date2 = fechaHasta.getDate();
+        String fecha1 = getFechaString(date1);
+        String fecha2 = getFechaString(date2);
+
+        int id = ((Item)this.profesionales.getSelectedItem()).getId();
+
+        ArrayList<Pago> pagos = PagoDB.listarPagos(id, fecha1, fecha2);
+        try {
+            updateModelo(pagos);
+        } catch (Exception ex) {
+        }
     }
     
     public void fechaHastaPropertyChange(PropertyChangeEvent evt) {
-    
-    }
-    
-    private void buscadorKeyTyped(KeyEvent evt) throws Exception {
-        char c = evt.getKeyChar();
+        Date date1 = fechaDesde.getDate();
+        Date date2 = fechaHasta.getDate();
+        String fecha1 = getFechaString(date1);
+        String fecha2 = getFechaString(date2);
         
-        /*if(c==KeyEvent.VK_ENTER){
-            evt.consume();
-            
-            if(this.buscador.getText().equals("")){
-                ArrayList<Pago> pagos = PagoDB.listarPagos();
-                this.updateModelo(pagos);
-            }
-            else{
-                this.buscar();
-            }
+        int id = ((Item)this.profesionales.getSelectedItem()).getId();
+
+        ArrayList<Pago> pagos = PagoDB.listarPagos(id, fecha1, fecha2);
+        try {
+            updateModelo(pagos);
+        } catch (Exception ex) {
         }
-        else if(c==KeyEvent.VK_BACK_SPACE){
-            if(this.buscador.getText().equals("")){
-                ArrayList<Pago> pagos = PagoDB.listarPagos();
-                this.updateModelo(pagos);
-            }
-        }*/
     }
     
     public Date primerDiaDelMes(Date dia){

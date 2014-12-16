@@ -294,7 +294,7 @@ public class JVentana extends JFrame{
             if(this.pagos==null){
                 this.crearPagos();
             }
-            
+            this.pagos.updateFilter();
             this.add(this.contenedorPagos,BorderLayout.CENTER);
             this.contenedorPagos.updateUI();
             this.opActual = 3;
