@@ -26,11 +26,11 @@ public class HorarioPanel extends JPanel{
         initComponents();
         
         this.usuario = usuario;
-        this.cambios = false;
         
         this.addInfo();
         this.guardar.setEnabled(false);
         this.guardar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.cambios = false;
     }
     
     private void addInfo(){
