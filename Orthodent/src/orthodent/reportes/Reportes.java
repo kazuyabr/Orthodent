@@ -37,4 +37,21 @@ public class Reportes {
                 db.getConnection());
             return jasperPrint;
     }
+    public static JasperPrint generarPagos(String profIds, String fecha1, String fecha2, DbConnection db) throws JRException {
+            InputStream in;
+            
+            in = Reportes.class.getClassLoader().getResourceAsStream("orthodent/reportes/pagos.jrxml");     
+            
+            JasperReport report;
+            report = JasperCompileManager.compileReport(in);
+            
+            Map<String, Object> parameters = new HashMap<String, Object>();
+            parameters.put("ID_PROFESIONAL_LIST", profIds);
+            parameters.put("FECHA1", fecha1);
+            parameters.put("FECHA2", fecha2);
+            
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters,
+                db.getConnection());
+            return jasperPrint;
+    }
 }
