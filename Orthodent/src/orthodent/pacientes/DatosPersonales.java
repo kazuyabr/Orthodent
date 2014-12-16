@@ -317,7 +317,10 @@ public class DatosPersonales extends JPanel{
 
         antecedentesMedicos.setColumns(20);
         antecedentesMedicos.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
-        antecedentesMedicos.setRows(5);
+        antecedentesMedicos.setLineWrap(true);
+        antecedentesMedicos.setRows(4);
+        antecedentesMedicos.setMaximumSize(new java.awt.Dimension(244, 5000));
+        antecedentesMedicos.setName(""); // NOI18N
         antecedentesMedicos.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 antecedentesMedicosKeyTyped(evt);
@@ -463,8 +466,8 @@ public class DatosPersonales extends JPanel{
                                 .addComponent(rut)
                                 .addComponent(email)
                                 .addComponent(telefono)
-                                .addComponent(jScrollPane1)
-                                .addComponent(fechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(fechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane1))
                             .addComponent(edad, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(ciudad, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(comuna, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -501,8 +504,8 @@ public class DatosPersonales extends JPanel{
                     .addComponent(labelTelefono))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelAntecedentesMedicos))
+                    .addComponent(labelAntecedentesMedicos)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(sexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
