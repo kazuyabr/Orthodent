@@ -138,7 +138,7 @@ public class JVentana extends JFrame{
     
     private void crearPagos() throws Exception{
         this.contenedorPagos.setLayout(new BorderLayout());
-        this.pagos = new Pagos();
+        this.pagos = new Pagos(this.usuario);
         
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
