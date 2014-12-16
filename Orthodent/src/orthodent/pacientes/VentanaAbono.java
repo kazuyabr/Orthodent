@@ -399,6 +399,7 @@ public class VentanaAbono extends javax.swing.JDialog {
                     }
                     try {
                         this.recaudacionPadre.updateModeloPagoAbono();
+                        this.recaudacionPadre.updateModeloPagoLab();
                     } catch (Exception ex) {
                         Logger.getLogger(VentanaAbono.class.getName()).log(Level.SEVERE, null, ex);
                     }
