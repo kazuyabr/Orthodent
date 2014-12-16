@@ -387,10 +387,9 @@ public class Autenticacion {
         try {
             DbConnection db = new DbConnection();
             Connection con = db.getConnection();
-            
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * from usuario where nombre_usuario=" + nombreUsuario);
+            ResultSet rs = st.executeQuery("SELECT * from usuario where nombre_usuario='" + nombreUsuario+"'");
             if (rs.next())
             {
                 aux = false;
