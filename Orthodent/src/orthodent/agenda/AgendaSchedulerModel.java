@@ -73,16 +73,26 @@ public class AgendaSchedulerModel extends AbstractScheduleModel
         this.fireAppointmentUpdated(cita);
     }
     
-    public AgendaSchedulerModel(BarraAcciones barra) 
+    public AgendaSchedulerModel(BarraAcciones barra, boolean tieneProfesionales) 
     {
+        
         this.citas = new ArrayList<Cita>();
         this.resources = new ArrayList<AgendaResource>();
         this.barra = barra;
-        int i = 0;
-        for(String day : days) {
-            AgendaResource r = new AgendaResource(day, i++, barra.getIdProfesional());
-            this.resources.add(r);
-            
+        if(tieneProfesionales){
+            int i = 0;
+            for(String day : days) {
+                AgendaResource r = new AgendaResource(day, i++, barra.getIdProfesional());
+                this.resources.add(r);
+
+            }
+        }
+        else{
+            int i = 0;
+            for(String day : days) {
+                AgendaResource r = new AgendaResource(day, i++, -1);
+                this.resources.add(r);
+            }
         }
     }
     

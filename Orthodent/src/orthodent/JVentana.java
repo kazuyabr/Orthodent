@@ -85,7 +85,7 @@ public class JVentana extends JFrame{
         
         this.crearAgenda();
         this.add(this.contenedorAgenda,BorderLayout.CENTER);
-        
+        this.agenda.iniciado = true;
         this.pacientes = null;
         this.tratamientos = null;
         this.usuarios = null;
@@ -113,6 +113,7 @@ public class JVentana extends JFrame{
         panel.setSize(1043, 1200);
         
         this.contenedorAgenda.add(panel,BorderLayout.NORTH);
+        
     }
     
     private void crearPacientes() throws Exception{
