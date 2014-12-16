@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="271c1758-5007-4258-9e11-bb61f72766af">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="32"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#E6F3FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#E6F3FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#E6F3FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_CH" mode="Opaque" backcolor="#E6F3FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="pagos" uuid="e3916e63-83bd-4f23-9ffa-7508d33a1cde">
+		<parameter name="ID_PROFESIONAL" class="java.lang.Integer"/>
+		<parameter name="FECHA1" class="java.lang.String"/>
+		<parameter name="FECHA2" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[SELECT
+     pago.`id_plantratamiento` AS pago_id_plantratamiento,
+     pago.`tipo_pago` AS pago_tipo_pago,
+     pago.`detalle` AS pago_detalle,
+     pago.`fecha` AS pago_fecha,
+     pago.`abono` AS pago_abono,
+     pago.`num_boleta` AS pago_num_boleta,
+     pago.`is_lab` AS pago_is_lab,
+     plan_tratamiento.`id_plantratamiento` AS plan_tratamiento_id_plantratamiento,
+     plan_tratamiento.`id_paciente` AS plan_tratamiento_id_paciente,
+     plan_tratamiento.`id_profesional` AS plan_tratamiento_id_profesional,
+     plan_tratamiento.`fecha_creacion_presupuesto` AS plan_tratamiento_fecha_creacion_presupuesto,
+     plan_tratamiento.`fecha_modificacion_presupuesto` AS plan_tratamiento_fecha_modificacion_presupuesto,
+     plan_tratamiento.`costo_total` AS plan_tratamiento_costo_total,
+     plan_tratamiento.`total_abonos` AS plan_tratamiento_total_abonos,
+     plan_tratamiento.`avance` AS plan_tratamiento_avance,
+     plan_tratamiento.`activo` AS plan_tratamiento_activo,
+     plan_tratamiento.`created_at` AS plan_tratamiento_created_at,
+     plan_tratamiento.`update_at` AS plan_tratamiento_update_at
+FROM
+     `pago` pago INNER JOIN `plan_tratamiento` plan_tratamiento ON pago.`id_plantratamiento` = plan_tratamiento.`id_plantratamiento`
+WHERE
+     plan_tratamiento.id_profesional = $P{ID_PROFESIONAL}
+ AND pago.fecha >= $P{FECHA1}
+ AND pago.fecha <= $P{FECHA2}]]>
+		</queryString>
+		<field name="pago_id_plantratamiento" class="java.lang.Integer"/>
+		<field name="pago_tipo_pago" class="java.lang.String"/>
+		<field name="pago_detalle" class="java.lang.String"/>
+		<field name="pago_fecha" class="java.sql.Date"/>
+		<field name="pago_abono" class="java.lang.Integer"/>
+		<field name="pago_num_boleta" class="java.lang.Integer"/>
+		<field name="pago_is_lab" class="java.lang.Boolean"/>
+		<field name="plan_tratamiento_id_plantratamiento" class="java.lang.Integer"/>
+		<field name="plan_tratamiento_id_paciente" class="java.lang.Integer"/>
+		<field name="plan_tratamiento_id_profesional" class="java.lang.Integer"/>
+		<field name="plan_tratamiento_fecha_creacion_presupuesto" class="java.sql.Timestamp"/>
+		<field name="plan_tratamiento_fecha_modificacion_presupuesto" class="java.sql.Timestamp"/>
+		<field name="plan_tratamiento_costo_total" class="java.lang.Integer"/>
+		<field name="plan_tratamiento_total_abonos" class="java.lang.Integer"/>
+		<field name="plan_tratamiento_avance" class="java.lang.Integer"/>
+		<field name="plan_tratamiento_activo" class="java.lang.Boolean"/>
+		<field name="plan_tratamiento_created_at" class="java.sql.Timestamp"/>
+		<field name="plan_tratamiento_update_at" class="java.sql.Timestamp"/>
+		<variable name="es_lab" class="java.lang.String">
+			<variableExpression><![CDATA[$F{pago_is_lab} == 1? "Si" : "No"]]></variableExpression>
+		</variable>
+		<variable name="total" class="java.lang.Integer" calculation="Sum">
+			<variableExpression><![CDATA[$F{pago_abono}]]></variableExpression>
+		</variable>
+		<variable name="valor" class="java.lang.String">
+			<variableExpression><![CDATA["\$"+$F{pago_abono}]]></variableExpression>
+		</variable>
+		<variable name="total_string" class="java.lang.String">
+			<variableExpression><![CDATA["\$"+$V{total}]]></variableExpression>
+		</variable>
+		<variable name="fecha" class="java.lang.String">
+			<variableExpression><![CDATA[(new SimpleDateFormat("dd-MM-yyyy")).format($F{pago_fecha})]]></variableExpression>
+		</variable>
+	</subDataset>
+	<parameter name="ID_PROFESIONAL_LIST" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FECHA1" class="java.lang.String"/>
+	<parameter name="FECHA2" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     usuario.`id_usuario` AS usuario_id_usuario,
+     usuario.`nombre` AS usuario_nombre,
+     usuario.`apellido_pat` AS usuario_apellido_pat,
+     usuario.`apellido_mat` AS usuario_apellido_mat,
+     usuario.`email` AS usuario_email
+FROM
+     `usuario` usuario
+WHERE
+     id_usuario IN $P!{ID_PROFESIONAL_LIST}]]>
+	</queryString>
+	<field name="usuario_id_usuario" class="java.lang.Integer"/>
+	<field name="usuario_nombre" class="java.lang.String"/>
+	<field name="usuario_apellido_pat" class="java.lang.String"/>
+	<field name="usuario_apellido_mat" class="java.lang.String"/>
+	<field name="usuario_email" class="java.lang.String"/>
+	<variable name="nombre_profesional" class="java.lang.String">
+		<variableExpression><![CDATA[$F{usuario_nombre}+" "+$F{usuario_apellido_pat}+" "+$F{usuario_apellido_mat}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="119" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="143" height="70" uuid="095315e3-bfbc-45af-8582-ecfaed7f70c5"/>
+				<imageExpression><![CDATA[System.getProperty("user.dir")+ File.separator + "src" + File.separator+ "orthodent"+File.separator+"reportes"+File.separator+"logoOrthodent.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="174" y="70" width="202" height="30" uuid="82b7e1db-c451-48ea-9828-4261e2eb569b"/>
+				<textElement>
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Resumen de Pagos]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="174" height="20" uuid="f7d26785-c002-42f1-8a0e-b80d972eb7e6"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Profesional:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="174" y="0" width="381" height="20" uuid="d9a6cc08-6511-44f5-9e66-9499f47eec66"/>
+				<textFieldExpression><![CDATA[$V{nombre_profesional}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="115">
+			<componentElement>
+				<reportElement key="table 3" style="table 3" x="0" y="0" width="555" height="99" isRemoveLineWhenBlank="true" uuid="a8661b4f-00b1-4198-ac82-b685ed09ed20"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="pagos" uuid="b2dd200d-1ace-461b-a39a-d5d40c6080c8">
+						<datasetParameter name="ID_PROFESIONAL">
+							<datasetParameterExpression><![CDATA[$F{usuario_id_usuario}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="FECHA1">
+							<datasetParameterExpression><![CDATA[$P{FECHA1}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="FECHA2">
+							<datasetParameterExpression><![CDATA[$P{FECHA2}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="90" uuid="172d5b99-ae23-4d9e-8cd1-8b11b6e5295d">
+						<jr:tableFooter style="table 3_TH" height="30" rowSpan="1"/>
+						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="8" y="8" width="47" height="13" uuid="81854b74-766b-4cf5-be45-423f2c232a45"/>
+								<textElement>
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[Fecha]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="8" y="0" width="82" height="20" uuid="e79415f3-7e1f-4751-9b27-92c9908bae14"/>
+								<textFieldExpression><![CDATA[$V{fecha}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="c328f795-2cbe-452b-b471-e42557ccf7a5">
+						<jr:tableFooter style="table 3_TH" height="30" rowSpan="1"/>
+						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="8" y="8" width="70" height="21" uuid="39bef896-d033-4974-9277-7ee30de956bf"/>
+								<textElement>
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[Tipo de Pago]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="8" y="0" width="78" height="20" uuid="e512b7a1-1b60-437d-a67a-b7e971e60a30"/>
+								<textFieldExpression><![CDATA[$F{pago_tipo_pago}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="104" uuid="3e4e56ba-f7fb-4ab7-8e98-670c4174b904">
+						<jr:tableFooter style="table 3_TH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="8" y="8" width="64" height="22" uuid="d69da778-4157-4e27-acc8-81c5375e430b"/>
+								<textElement>
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[TOTAL:]]></text>
+							</staticText>
+						</jr:tableFooter>
+						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="8" y="8" width="64" height="21" uuid="6a0310fe-f062-4e61-93fd-242d2e4454e4"/>
+								<textElement>
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[Detalle]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="8" y="0" width="90" height="20" uuid="0e439440-c183-4aee-8199-f4ad03557065"/>
+								<textFieldExpression><![CDATA[$F{pago_detalle}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="be37d1c3-e4e4-4c0c-abe6-a1cbce7256fd">
+						<jr:tableFooter style="table 3_TH" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="8" y="8" width="65" height="17" uuid="437ba520-5951-41da-8b65-2f90079333f3"/>
+								<textFieldExpression><![CDATA[$V{total_string}]]></textFieldExpression>
+							</textField>
+						</jr:tableFooter>
+						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="8" y="8" width="57" height="22" uuid="147e29d5-0ad2-4a6d-ad03-b05739de5be8"/>
+								<textElement>
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[Valor]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="8" y="0" width="82" height="20" uuid="4f8bd585-1a36-4a9f-943a-b1c55bc414d8"/>
+								<textFieldExpression><![CDATA[$V{valor}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="aa035dfd-ac80-49bb-b842-c06f13a080a7">
+						<jr:tableFooter style="table 3_TH" height="30" rowSpan="1"/>
+						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="8" y="8" width="69" height="21" uuid="b2fb86dd-e5a8-47a9-b382-62d7f4c99d65"/>
+								<textElement>
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[Núm. Boleta]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="8" y="0" width="82" height="20" uuid="bf3f69cc-4809-4299-9a68-cc88a0ddbbb4"/>
+								<textFieldExpression><![CDATA[$F{pago_num_boleta}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="039c3fb4-b79b-4e9a-9df3-2623abba1a8d">
+						<jr:tableFooter style="table 3_TH" height="30" rowSpan="1"/>
+						<jr:columnHeader style="table 3_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="8" y="8" width="67" height="21" uuid="05f7a1a2-4568-4074-8a79-f159a37f4730"/>
+								<textElement>
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[Laboratorio]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="8" y="0" width="82" height="20" uuid="f27b11ee-5f64-48f0-b114-4b06683e4b18"/>
+								<textFieldExpression><![CDATA[$V{es_lab}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
