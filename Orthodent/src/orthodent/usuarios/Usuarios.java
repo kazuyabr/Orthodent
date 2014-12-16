@@ -154,6 +154,7 @@ public class Usuarios extends JPanel implements ActionListener{
 
         this.initComponentsClinicas();
         this.addComponentsClinicas();
+        this.updateUI();
     }
     
     private Object[] getRowAt(int row) {
