@@ -82,6 +82,7 @@ public abstract class NuevaCita extends javax.swing.JDialog {
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(425, 350));
 
         jButton1.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jButton1.setText("Crear cita");
@@ -137,8 +138,10 @@ public abstract class NuevaCita extends javax.swing.JDialog {
         jSpinner1.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jSpinner1.setModel(new javax.swing.SpinnerNumberModel(10, 10, 60, 5));
 
+        jLabel5.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jLabel5.setText("minutos");
 
+        jLabel6.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jLabel6.setText(" ");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -157,10 +160,10 @@ public abstract class NuevaCita extends javax.swing.JDialog {
                             .addComponent(jLabel4))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(pacientes, 0, 112, Short.MAX_VALUE)
-                            .addComponent(jTextField1)
-                            .addComponent(jComboBox1, 0, 112, Short.MAX_VALUE)
-                            .addComponent(jSpinner1))
+                            .addComponent(pacientes, 0, 232, Short.MAX_VALUE)
+                            .addComponent(jSpinner1)
+                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextField1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel5)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -182,11 +185,11 @@ public abstract class NuevaCita extends javax.swing.JDialog {
                     .addComponent(jLabel3)
                     .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(pacientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addContainerGap())
         );
@@ -198,7 +201,7 @@ public abstract class NuevaCita extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(164, Short.MAX_VALUE)
+                        .addContainerGap(216, Short.MAX_VALUE)
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1))
@@ -209,12 +212,12 @@ public abstract class NuevaCita extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addContainerGap())
+                .addGap(23, 23, 23))
         );
 
         pack();
@@ -239,14 +242,46 @@ public abstract class NuevaCita extends javax.swing.JDialog {
                 
                 if(n==0){
                     NuevoPaciente np = new NuevoPaciente(this.parent,true, this);
-                    if(nombreIngresado.contains(" ")){
-                        String[] nombres = nombreIngresado.split(" ");
-                        np.setNombresTextField(nombres[0]);
-                        np.setApelidoPaternoTextField(nombres[1]);
+                    String nombre="", nombreCompleto="", apellido="", rut="";
+                    if(nombreIngresado.contains("-") && nombreIngresado.contains(",")){
+                        String[] split = nombreIngresado.split(",");
+                        rut = split[0];
+                        nombreCompleto = split[1].substring(1);
+                        if(nombreCompleto.contains(" ")){
+                            String[] split2 = nombreCompleto.split(" ");
+                            nombre = split2[0];
+                            apellido = split2[1];
+                        }
+                        else{
+                            nombre = nombreCompleto;
+                            apellido = "";
+                        }
                     }
-                    else{
-                        np.setNombresTextField(nombreIngresado);
+                    else if(nombreIngresado.contains("-") && nombreIngresado.contains(" ")){
+                        String[] split3 = nombreIngresado.split(" ");
+                        if(split3.length>2){
+                            rut = split3[0];
+                            nombre = split3[1];
+                            apellido = split3[2];
+                        }
+                        else{
+                            rut = split3[0];
+                            nombre = split3[1];
+                            apellido = "";
+                        }
                     }
+                    else if(nombreIngresado.contains(" ")){
+                        String[] split4 = nombreIngresado.split(" ");
+                        nombre = split4[0];
+                        apellido = split4[1];
+                        rut = "";
+                    }
+                    else if(nombreIngresado.contains("-")){
+                        rut = nombreIngresado;
+                    }
+                    np.setNombresTextField(nombre);
+                    np.setApelidoPaternoTextField(apellido);
+                    np.setRutTextField(rut);
                    
                     np.setVisible(true);
                 }
@@ -384,12 +419,16 @@ public abstract class NuevaCita extends javax.swing.JDialog {
         Vector model = new Vector();
         Item primerItem = null;
         for(Paciente p : listaPacientes){
-            String nombre = p.getNombre() + " " + p.getApellido_pat();
+            String nombre = p.getRut()+", "+p.getNombre() + " " + p.getApellido_pat();
             model.addElement(new Item(nombre,p.getId_paciente()));
             if (primerItem==null) primerItem = new Item(nombre,p.getId_paciente());
         }
         this.pacientes.setModel(new DefaultComboBoxModel(model));
         //this.pacientes.setSelectedItem(primerItem);
         AutoCompleteDecorator.decorate(this.pacientes);
+    }
+    
+    public boolean isNumeric(String  inputData) {
+        return inputData.matches("[-+]?\\d+(\\.\\d+)?");
     }
 }

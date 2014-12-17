@@ -722,6 +722,11 @@ public class NuevoPaciente extends javax.swing.JDialog {
         this.apellidoPat.setText(apellido);
     }
     
+    public void setRutTextField(String rut){
+        this.rut.setText(rut);
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptar;
     private javax.swing.JTextField apellidoMat;
