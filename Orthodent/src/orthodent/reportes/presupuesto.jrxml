@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c4804cab-98dd-45b9-9217-7207aa4435cd">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="52"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -104,7 +104,10 @@
 		</box>
 	</style>
 	<subDataset name="tratamientos" uuid="e83c262c-aaba-432d-9d6a-b8eb50306cca">
-		<queryString language="SQL">
+		<parameter name="ID_PRESUPUESTO" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
 			<![CDATA[SELECT
      tratamiento_piezapresupuesto.`pieza` AS tratamiento_piezapresupuesto_pieza,
      tratamiento_piezapresupuesto.`valor_colegio` AS tratamiento_piezapresupuesto_valor_colegio,
@@ -115,16 +118,18 @@ FROM
      `tratamiento_piezapresupuesto` tratamiento_piezapresupuesto,
      `tratamiento` tratamiento
 WHERE
-     tratamiento_piezapresupuesto.id_presupuesto = 5
+     tratamiento_piezapresupuesto.id_presupuesto = $P{ID_PRESUPUESTO}
  AND tratamiento.id_tratamiento = tratamiento_piezapresupuesto.id_tratamiento]]>
 		</queryString>
 		<field name="tratamiento_piezapresupuesto_pieza" class="java.lang.Integer"/>
-		<field name="tratamiento_nombre" class="java.lang.String"/>
 		<field name="tratamiento_piezapresupuesto_valor_colegio" class="java.lang.Integer"/>
 		<field name="tratamiento_piezapresupuesto_valor_clinica" class="java.lang.Integer"/>
+		<field name="tratamiento_piezapresupuesto_id_tratamiento" class="java.lang.Integer"/>
+		<field name="tratamiento_nombre" class="java.lang.String"/>
 	</subDataset>
 	<subDataset name="laboratorio" uuid="2bbcd285-072d-4283-8cef-9e17cafb27f2">
-		<queryString language="SQL">
+		<parameter name="ID_PRESUPUESTO" class="java.lang.Integer"/>
+		<queryString>
 			<![CDATA[SELECT
      laboratorio_piezapresupuesto.`pieza` AS laboratorio_piezapresupuesto_pieza,
      laboratorio_piezapresupuesto.`prestacion` AS laboratorio_piezapresupuesto_prestacion,
@@ -132,13 +137,13 @@ WHERE
 FROM
      `laboratorio_piezapresupuesto` laboratorio_piezapresupuesto
 WHERE
-     id_presupuesto = 5]]>
+     id_presupuesto = $P{ID_PRESUPUESTO}]]>
 		</queryString>
 		<field name="laboratorio_piezapresupuesto_pieza" class="java.lang.Integer"/>
 		<field name="laboratorio_piezapresupuesto_prestacion" class="java.lang.String"/>
 		<field name="laboratorio_piezapresupuesto_valor" class="java.lang.Integer"/>
 	</subDataset>
-	<parameter name="ID_PRESUPUESTO" class="java.lang.String"/>
+	<parameter name="ID_PRESUPUESTO" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[SELECT
      presupuesto.`id_presupuesto` AS presupuesto_id_presupuesto,
@@ -313,7 +318,10 @@ WHERE
 			<componentElement>
 				<reportElement key="table 3" style="table 3" stretchType="RelativeToTallestObject" x="0" y="169" width="555" height="80" uuid="db01672d-1769-4b16-9ab5-79a4e60fc552"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="tratamientos" uuid="8cef753d-fd4a-4e40-a46a-8c88be262e81">
+					<datasetRun subDataset="tratamientos" uuid="f23c6458-43d3-45e9-8b12-79822bcbe48a">
+						<datasetParameter name="ID_PRESUPUESTO">
+							<datasetParameterExpression><![CDATA[$F{presupuesto_id_presupuesto}]]></datasetParameterExpression>
+						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
 					<jr:column width="65" uuid="3d9e16d7-c9ff-44c7-940a-a3699f528f88">
@@ -400,7 +408,10 @@ WHERE
 			<componentElement>
 				<reportElement key="table 4" style="table 4" x="0" y="20" width="555" height="80" uuid="15fa9f04-3c54-44cd-aa3e-3861ba60ebf3"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="laboratorio" uuid="544f5f98-5947-44d5-8972-fbb6c206ccfd">
+					<datasetRun subDataset="laboratorio" uuid="92478070-aae0-460d-aedc-ab927d5f54fc">
+						<datasetParameter name="ID_PRESUPUESTO">
+							<datasetParameterExpression><![CDATA[$F{presupuesto_id_presupuesto}]]></datasetParameterExpression>
+						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
 					<jr:column width="65" uuid="f85fc162-a097-44a1-a82f-9c1b0c93ad43">
