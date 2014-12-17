@@ -306,6 +306,7 @@ public class PanelOpciones extends JPanel implements ActionListener{
         if (e.getSource() == this.agenda){
             try {
                 int op = this.revisarCambios();
+                ((JVentana)this.getTopLevelAncestor()).getAgenda().getBarraAcciones().initProfesionales();
                 ((JVentana)this.getTopLevelAncestor()).cambiarAgenda();
             } catch (Exception ex) {
             }

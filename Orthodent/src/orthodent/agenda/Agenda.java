@@ -101,6 +101,10 @@ public class Agenda extends JPanel implements Printable{
         //this.iniciado=true;
         updateUI();
     }
+
+    public BarraAcciones getBarraAcciones() {
+        return barraAcciones;
+    }
     
     public void handleAddAppointment(@Nullable Resource resource, @NotNull DateTime dateTime) {
         

@@ -268,7 +268,7 @@ public class BarraAcciones extends javax.swing.JPanel {
     private javax.swing.JComboBox profesionales;
     // End of variables declaration//GEN-END:variables
 
-    private void initProfesionales() {
+    public void initProfesionales() {
         ArrayList<Usuario> usuarios = null;
         if(this.usuarioActual.getId_rol()==4)
             usuarios = Autenticacion.listarProfesionales(this.usuarioActual.getId_clinica());
