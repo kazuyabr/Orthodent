@@ -575,7 +575,8 @@ public class Recaudacion extends JPanel{
         tablaPagoAbono.setEnabled(false);
         jScrollPane2.setViewportView(tablaPagoAbono);
 
-        add.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        add.setFont(new java.awt.Font("Georgia", 1, 11)); // NOI18N
+        add.setForeground(new java.awt.Color(11, 146, 181));
         add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/add_mini.png"))); // NOI18N
         add.setText("Nuevo Abono");
         add.setBorder(null);
@@ -676,10 +677,6 @@ public class Recaudacion extends JPanel{
                     .addComponent(labelLaboratorio)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(labelAbonos)
-                                .addGap(402, 402, 402)
-                                .addComponent(add))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                     .addComponent(labelTotal)
@@ -689,7 +686,12 @@ public class Recaudacion extends JPanel{
                                     .addComponent(labelAbono)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(costoAbono, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(labelAbonos)
+                                    .addGap(394, 394, 394)
+                                    .addComponent(add))
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(remove)))
                 .addContainerGap(43, Short.MAX_VALUE))
@@ -698,9 +700,9 @@ public class Recaudacion extends JPanel{
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelAbonos)
-                    .addComponent(add))
+                    .addComponent(add, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(42, 42, 42)
