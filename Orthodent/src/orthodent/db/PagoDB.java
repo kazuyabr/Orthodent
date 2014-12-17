@@ -36,20 +36,21 @@ public class PagoDB {
     }
     
     public static boolean editarPago(Pago pago){
+        System.out.println("ID pago" + pago.getIdPago());
         try{
             DbConnection db = new DbConnection();
             Connection con = db.connection;
-            
             java.sql.Statement st = con.createStatement();
+            
             int aux = st.executeUpdate("UPDATE pago\n" +
-                                            "SET id_plantratamiento = "+pago.getIdPlanTratamiento()+"\n" +
-                                            "tipo_pago='"+pago.getTipoPago()+"'\n" +
-                                            "detalle='"+pago.getDetalle()+"'\n" +
-                                            "fecha='"+pago.getFecha()+"'\n" +
+                                            "SET id_plantratamiento="+pago.getIdPlanTratamiento()+"\n" +
+                                            ",tipo_pago='"+pago.getTipoPago()+"'\n" +
+                                            ",detalle='"+pago.getDetalle()+"'\n" +
+                                            ",fecha='"+pago.getFecha()+"'\n" +
                                             ",abono="+pago.getAbono()+"\n" +
                                             ",num_boleta="+pago.getNumBoleta()+"\n" +
                                             ",is_lab="+pago.getIsLab()+"\n" +
-                                            "WHERE id_pago="+pago.getIdPago());
+                                            " WHERE id_pago="+pago.getIdPago());
             boolean resultado = (aux == 1)? true : false;
             st.close();
             con.close();
@@ -235,17 +236,17 @@ public class PagoDB {
     }     
 
     public static boolean eliminarPago(int idPago)  throws SQLException{
-                try{
-            DbConnection db = new DbConnection();
-            Connection con = db.connection;
-            
-            java.sql.Statement st = con.createStatement();
-            int aux = st.executeUpdate("DELETE FROM pago\n" +
-                                            "WHERE id_pago="+idPago);
-            boolean resultado = (aux == 1)? true : false;
-            st.close();
-            con.close();
-            return resultado;
+        try{
+                DbConnection db = new DbConnection();
+                Connection con = db.connection;
+
+                java.sql.Statement st = con.createStatement();
+                int aux = st.executeUpdate("DELETE FROM pago\n" +
+                                                "WHERE id_pago="+idPago);
+                boolean resultado = (aux == 1)? true : false;
+                st.close();
+                con.close();
+                return resultado;
         }
         catch ( SQLException e) {
             return false;

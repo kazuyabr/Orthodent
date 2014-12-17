@@ -378,7 +378,7 @@ public class VentanaAbono extends javax.swing.JDialog {
     
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
         String tipoPago1 = (String)this.tipoPago.getSelectedItem();
-        String detalle1 = this.detalle.getText();
+        String detalle1 = this.detalle.getText().toString();
         Date date = this.calendarioFecha.getDate();
         String fechaCita = getFechaString(date);
         String valor1 = this.valor.getText();
@@ -386,10 +386,11 @@ public class VentanaAbono extends javax.swing.JDialog {
         if(validarCampos()){
             int abono = Integer.parseInt(valor1);
             int boleta = Integer.parseInt(numBol);
-            if(abono > 0 && totalTrat >= (totalAbono+abono)){
                 System.out.println("tTrat:"+totalTrat);
                 System.out.println("tAbono:"+totalAbono);
                 if(crearNuevo){ //crear
+                    if(abono > 0 && totalTrat >= (totalAbono+abono)){
+
                     boolean respuesta = false;
                     if(this.si.isSelected()){
                         respuesta = PagoDB.crearPago(this.idPlanTratamiento, tipoPago1, detalle1, fechaCita, abono, boleta, true);
@@ -398,42 +399,74 @@ public class VentanaAbono extends javax.swing.JDialog {
                         respuesta = PagoDB.crearPago(this.idPlanTratamiento, tipoPago1, detalle1, fechaCita, abono, boleta, false);
                     }
                     try {
-                        this.recaudacionPadre.updateModeloPagoAbono();
-                        this.recaudacionPadre.updateModeloPagoLab();
+                        this.recaudacionPadre.updateModeloPagoAbono(); 
+                        this.recaudacionPadre.updateModeloPagoLaboratorio();
+                        
+                        this.recaudacionPadre.setTotalAbonos();
+                        
+                        this.recaudacionPadre.updateTablaPlanesTratamientos();
                     } catch (Exception ex) {
                         Logger.getLogger(VentanaAbono.class.getName()).log(Level.SEVERE, null, ex);
                     }
+
                     this.recaudacionPadre.updateUI();
                     //this.dispose();
+                    }
+                    else{
+                        System.out.println("Ingresar un abono valido");
+                        if(totalTrat > (totalAbono+abono)){
+                            JOptionPane.showMessageDialog(null, "Ingresar un abono valido. ");
+                        }
+                        else if(totalTrat == totalAbono){
+                            JOptionPane.showMessageDialog(null,"El tratamiento esta cancelado, no necesita agregar abonos. " );
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null,"El abono es mayor al costo total del tratamiento. " );
+                        }
+                    }                    
                 }
                 else{ //editar
-                    if(verificarCambios()){
+                    if(abono > 0 && totalTrat >= (totalAbono-abono)){
+                        System.out.println("EDITAR");
+                        pagoAbono.setIdPlanTratamiento(idPlanTratamiento);
+                        pagoAbono.setDetalle(detalle1);
                         pagoAbono.setFecha(fechaCita);
                         pagoAbono.setAbono(abono);
+                        pagoAbono.setNumBoleta(boleta);
+                        System.out.println(pagoAbono.getIsLab()+" es lab");
+                        System.out.println(this.si.isSelected()+" cual selec");
+                        boolean isLab = (this.si.isSelected())? true : false;
+                        pagoAbono.setIsLab(isLab);
+                        
                         boolean respuesta = PagoDB.editarPago(pagoAbono);   
+                        System.out.println(respuesta);
                         try {
                             this.recaudacionPadre.updateModeloPagoAbono();
+                            this.recaudacionPadre.updateModeloPagoLaboratorio();
+                            this.recaudacionPadre.setTotalAbonos();
+                            this.recaudacionPadre.updateTablaPlanesTratamientos();
                         } catch (Exception ex) {
                             Logger.getLogger(VentanaAbono.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        this.recaudacionPadre.updateUI();                    
+                        this.recaudacionPadre.updateUI();  
                     }
+                    else{
+                        System.out.println("Ingresar un abono valido");
+                        if(totalTrat > (totalAbono+abono)){
+                            JOptionPane.showMessageDialog(null, "Ingresar un abono valido. ");
+                        }
+                        else if(totalTrat == totalAbono){
+                            JOptionPane.showMessageDialog(null,"El tratamiento esta cancelado, no necesita agregar abonos. " );
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null,"El abono es mayor al costo total del tratamiento. " );
+                        }
+                    }                    
+                    
 
                 }
                 this.dispose();
-            }
-            else{
-                System.out.println("Ingresar un abono valido");
-                if(totalTrat > (totalAbono+abono)){
-                    JOptionPane.showMessageDialog(null, "Ingresar un abono valido. ");
-                }
-                else if(totalTrat == totalAbono){
-                    JOptionPane.showMessageDialog(null,"El tratamiento esta cancelado, no necesita agregar abonos. " );
-                }
-                else{
-                    JOptionPane.showMessageDialog(null,"El abono es mayor al costo total del tratamiento. " );
-                }
-            }
+
         }
         else{
             JOptionPane.showMessageDialog(this,
