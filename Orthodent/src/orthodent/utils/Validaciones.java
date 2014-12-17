@@ -75,7 +75,7 @@ public class Validaciones {
     
     static public void validarNombre(java.awt.event.KeyEvent evt) {                                 
         char c = evt.getKeyChar();
-        if(!Character.isAlphabetic(c)) {
+        if(!(Character.isSpaceChar(c)||Character.isAlphabetic(c))) {
             evt.consume();
         }
     }

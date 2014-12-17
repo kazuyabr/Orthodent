@@ -248,11 +248,14 @@ public class DatosPersonales extends JPanel{
 
         nombres.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         nombres.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                nombresKeyReleased(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 nombresKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nombresKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                nombresKeyReleased(evt);
             }
         });
 
@@ -276,9 +279,19 @@ public class DatosPersonales extends JPanel{
         labelApellidoPat.setText("Apellido P.");
 
         apellidoPat.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        apellidoPat.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                apellidoPatInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+        });
         apellidoPat.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 apellidoPatKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                apellidoPatKeyPressed(evt);
             }
         });
 
@@ -286,6 +299,9 @@ public class DatosPersonales extends JPanel{
         apellidoMat.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 apellidoMatKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                apellidoMatKeyPressed(evt);
             }
         });
 
@@ -308,6 +324,9 @@ public class DatosPersonales extends JPanel{
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 emailKeyTyped(evt);
             }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                emailKeyPressed(evt);
+            }
         });
 
         labelEmail.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
@@ -326,14 +345,27 @@ public class DatosPersonales extends JPanel{
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 antecedentesMedicosKeyTyped(evt);
             }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                antecedentesMedicosKeyPressed(evt);
+            }
         });
         jScrollPane1.setViewportView(antecedentesMedicos);
 
         sexo.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         sexo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Femenino", "Masculino" }));
+        sexo.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                sexoItemStateChanged(evt);
+            }
+        });
         sexo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sexoActionPerformed(evt);
+            }
+        });
+        sexo.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                sexoPropertyChange(evt);
             }
         });
 
@@ -356,6 +388,9 @@ public class DatosPersonales extends JPanel{
         telefono.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 telefonoKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                telefonoKeyPressed(evt);
             }
         });
 
@@ -388,11 +423,14 @@ public class DatosPersonales extends JPanel{
 
         direccion.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         direccion.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                direccionKeyReleased(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 direccionKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                direccionKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                direccionKeyReleased(evt);
             }
         });
 
@@ -423,6 +461,14 @@ public class DatosPersonales extends JPanel{
                 edadActionPerformed(evt);
             }
         });
+        edad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                edadKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                edadKeyPressed(evt);
+            }
+        });
 
         labelEdad.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
         labelEdad.setText("Edad");
@@ -435,7 +481,7 @@ public class DatosPersonales extends JPanel{
                 .addComponent(panelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(74, Short.MAX_VALUE)
+                .addContainerGap(76, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(eliminar)
@@ -535,7 +581,7 @@ public class DatosPersonales extends JPanel{
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(guardar)
                     .addComponent(eliminar))
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -551,7 +597,7 @@ public class DatosPersonales extends JPanel{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 539, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -686,27 +732,8 @@ public class DatosPersonales extends JPanel{
     }//GEN-LAST:event_nombresKeyReleased
 
     private void nombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombresKeyTyped
-        char c = evt.getKeyChar();
-        
-        if(c==KeyEvent.VK_ENTER){
-            evt.consume();
-        }
-        else if(c==KeyEvent.VK_SPACE){
-            String antes = this.nombres.getText();
+            Validaciones.validarNombre(evt);
             
-            if(antes.equals("")){
-                evt.consume();
-            }
-            else{
-                this.habilitarBoton();
-            }
-        }
-        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
-            evt.consume();
-        }
-        else{
-            this.habilitarBoton();
-        }
     }//GEN-LAST:event_nombresKeyTyped
 
     private void apellidoPatKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoPatKeyTyped
@@ -734,27 +761,7 @@ public class DatosPersonales extends JPanel{
     }//GEN-LAST:event_apellidoPatKeyTyped
 
     private void apellidoMatKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoMatKeyTyped
-        char c = evt.getKeyChar();
-        
-        if(c==KeyEvent.VK_ENTER){
-            evt.consume();
-        }
-        else if(c==KeyEvent.VK_SPACE){
-            String antes = this.apellidoMat.getText();
-            
-            if(antes.equals("")){
-                evt.consume();
-            }
-            else{
-                this.habilitarBoton();
-            }
-        }
-        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
-            evt.consume();
-        }
-        else{
-            this.habilitarBoton();
-        }
+        Validaciones.validarNombre(evt);
     }//GEN-LAST:event_apellidoMatKeyTyped
 
     private void rutKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rutKeyTyped
@@ -874,6 +881,79 @@ public class DatosPersonales extends JPanel{
         this.cambios = true;
         this.guardar.setEnabled(true);
     }//GEN-LAST:event_comunaItemStateChanged
+
+    private void apellidoPatInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_apellidoPatInputMethodTextChanged
+
+    }//GEN-LAST:event_apellidoPatInputMethodTextChanged
+
+    private void apellidoPatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoPatKeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if(KeyEvent.VK_BACK_SPACE == c && !this.apellidoPat.getText().equals(""))
+            this.habilitarBoton();
+    }//GEN-LAST:event_apellidoPatKeyPressed
+
+    private void nombresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombresKeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if(KeyEvent.VK_BACK_SPACE == c && !this.nombres.getText().equals(""))
+            this.habilitarBoton();
+    }//GEN-LAST:event_nombresKeyPressed
+
+    private void apellidoMatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoMatKeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if(KeyEvent.VK_BACK_SPACE == c && !this.apellidoMat.getText().equals(""))
+            this.habilitarBoton();
+    }//GEN-LAST:event_apellidoMatKeyPressed
+
+    private void emailKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailKeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if(KeyEvent.VK_BACK_SPACE == c && !this.email.getText().equals(""))
+            this.habilitarBoton();
+    }//GEN-LAST:event_emailKeyPressed
+
+    private void telefonoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefonoKeyPressed
+
+        char c = evt.getKeyChar();
+        if(KeyEvent.VK_BACK_SPACE == c && !this.telefono.getText().equals(""))
+            this.habilitarBoton();
+    }//GEN-LAST:event_telefonoKeyPressed
+
+    private void antecedentesMedicosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_antecedentesMedicosKeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if(KeyEvent.VK_BACK_SPACE == c && !this.antecedentesMedicos.getText().equals(""))
+            this.habilitarBoton();
+    }//GEN-LAST:event_antecedentesMedicosKeyPressed
+
+    private void edadKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edadKeyPressed
+        char c = evt.getKeyChar();
+        if(KeyEvent.VK_BACK_SPACE == c && !this.apellidoPat.getText().equals(""))
+            this.habilitarBoton();
+    }//GEN-LAST:event_edadKeyPressed
+
+    private void edadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edadKeyTyped
+        char c = evt.getKeyChar();
+        if(!Character.isDigit(c))
+            evt.consume();
+    }//GEN-LAST:event_edadKeyTyped
+
+    private void direccionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_direccionKeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if(KeyEvent.VK_BACK_SPACE == c && !this.antecedentesMedicos.getText().equals(""))
+            this.habilitarBoton();
+    }//GEN-LAST:event_direccionKeyPressed
+
+    private void sexoPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_sexoPropertyChange
+ 
+    }//GEN-LAST:event_sexoPropertyChange
+
+    private void sexoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_sexoItemStateChanged
+        this.habilitarBoton();
+    }//GEN-LAST:event_sexoItemStateChanged
 
     private String getFechaString(Date date){
         
