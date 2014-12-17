@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.JOptionPane;
 import modelo.Horario;
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
@@ -88,6 +89,7 @@ public class AgendaSchedulerModel extends AbstractScheduleModel
             }
         }
         else{
+            JOptionPane.showMessageDialog(this.barra, "No hay Profesionales asociados a su Clínica", "Orthodent", JOptionPane.ERROR_MESSAGE);
             int i = 0;
             for(String day : days) {
                 AgendaResource r = new AgendaResource(day, i++, -1);

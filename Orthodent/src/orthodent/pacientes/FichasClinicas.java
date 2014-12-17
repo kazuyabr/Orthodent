@@ -441,7 +441,8 @@ public class FichasClinicas extends JPanel{
         tablaFichaEvolucion.setEnabled(false);
         jScrollPane2.setViewportView(tablaFichaEvolucion);
 
-        add.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        add.setFont(new java.awt.Font("Georgia", 1, 11)); // NOI18N
+        add.setForeground(new java.awt.Color(11, 146, 181));
         add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/add_mini.png"))); // NOI18N
         add.setText("Nueva Ficha Clínica");
         add.setBorder(null);
@@ -465,7 +466,8 @@ public class FichasClinicas extends JPanel{
             }
         });
 
-        edit.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        edit.setFont(new java.awt.Font("Georgia", 1, 11)); // NOI18N
+        edit.setForeground(new java.awt.Color(11, 146, 181));
         edit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/edit_mini.png"))); // NOI18N
         edit.setText("Editar Ficha Clínica");
         edit.setBorder(null);
@@ -484,15 +486,17 @@ public class FichasClinicas extends JPanel{
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(labelProfesional)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(add)
-                        .addGap(18, 18, 18)
-                        .addComponent(edit))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(edit)
+                        .addGap(6, 6, 6))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(remove)
                 .addContainerGap(43, Short.MAX_VALUE))
         );

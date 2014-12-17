@@ -16,6 +16,8 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
+import java.awt.print.Book;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.awt.print.Printable;
@@ -45,7 +47,7 @@ import orthodent.db.Autenticacion;
  *
  * @author Mary
  */
-public class Agenda extends JPanel{
+public class Agenda extends JPanel implements Printable{
     private Usuario usuarioActual;
         
     private BarraAcciones barraAcciones;
@@ -71,10 +73,10 @@ public class Agenda extends JPanel{
         //this.cambiarSemanaDeAgenda(new Date());
         //Introducir código aquí
         this.setBackground(new Color(255,255,255));
-        this.setPreferredSize(new Dimension(1073, 561));
+        this.setPreferredSize(new Dimension(1073, 600));
         this.semanasCargadas = new HashMap<Integer,Boolean>();
         this.citasDeLaSemana = new HashMap<Integer,ArrayList<Cita>>();
-        setSize(new Dimension(600, 600));
+        
 
         this.scheduler = new Scheduler();
         this.scheduler.setModel(modelo);
@@ -219,10 +221,6 @@ public class Agenda extends JPanel{
                 updateUI();
             }
         }
-        else{
-            if(this.iniciado)
-                JOptionPane.showMessageDialog(this, "No hay Profesionales asociados a su Clínica", "Orthodent", JOptionPane.ERROR_MESSAGE);
-        }
     }
     
     
@@ -247,10 +245,6 @@ public class Agenda extends JPanel{
                     System.out.println("Retorno NULO");
                 }
             }
-        }
-        else{
-            if(this.iniciado)
-                JOptionPane.showMessageDialog(this, "No hay Profesionales asociados a su Clínica", "Orthodent", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -280,10 +274,6 @@ public class Agenda extends JPanel{
                     System.out.println("Retorno NULO");
                 }
             }
-        }
-        else{
-            if(this.iniciado)
-                JOptionPane.showMessageDialog(this, "No hay Profesionales asociados a su Clínica", "Orthodent", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -377,24 +367,25 @@ public class Agenda extends JPanel{
         return sePuede;
     }
     
-    public void printComponenet(){
+    public void printComponent(){
 
         PrinterJob pj = PrinterJob.getPrinterJob();
-        pj.setJobName(" Print Component ");
+        pj.setJobName(" Impresion de Agenda ");
         this.header = new HeaderImpresionAgenda();
-        
-        
         Date lunes = this.obtenerLunes(this.barraAcciones.getFechaAgenda());
         Date sabado = this.addDaysToDate(lunes, 5);
         DateTime lun = new DateTime(lunes);
         DateTime sab = new DateTime(sabado);
         
-        //final ImpresionAgenda ia = new ImpresionAgenda(auxiliar);
-        
         String rango = "Desde el "+lun.toString("d-M-y")+" hasta el "+sab.toString("d-M-y");
         Usuario prof=null;
         try {
-            prof = Autenticacion.getUsuario(this.barraAcciones.getIdProfesional());
+            if(this.barraAcciones.getProfesionales().getItemCount()>0)
+                prof = Autenticacion.getUsuario(this.barraAcciones.getIdProfesional());
+            else{
+                JOptionPane.showMessageDialog(this, "No hay Profesionales asociados a su Clínica", "Orthodent", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
         } catch (Exception ex) {
             Logger.getLogger(Agenda.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -415,15 +406,14 @@ public class Agenda extends JPanel{
         }
         try {
             PageFormat pf = pj.defaultPage();  
-            Paper paper = new Paper();  
-            double margin = 4.5;   
-            paper.setImageableArea(margin, margin, paper.getWidth(), paper.getHeight());
+            Paper paper = pf.getPaper();
+            paper.setImageableArea(1.0, 1.0, paper.getWidth() - 2.0, paper.getHeight() - 2.0);
             pf.setPaper(paper);
-            pj.setPrintable(new MyPrintable(this), pf);
-            PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
-            attributes.add(OrientationRequested.LANDSCAPE);
-            
-            pj.print(attributes);
+            pf.setOrientation(PageFormat.LANDSCAPE);
+            Book book = new Book();
+            book.append(this, pf);
+            pj.setPageable(book);
+            pj.print();
         }
         catch (PrinterException ex) {
                 // handle exception
@@ -432,28 +422,25 @@ public class Agenda extends JPanel{
         this.add(this.barraAcciones, BorderLayout.NORTH);
         updateUI();
     }
-    
-    class MyPrintable implements Printable {  
-        Agenda str;  
-        public MyPrintable(Agenda getStr)  
-        {  
-            str = getStr;  
-        }  
-        public int print(Graphics g, PageFormat pf, int pageIndex) {  
-            if (pageIndex != 0)  
-              return NO_SUCH_PAGE;  
-            Graphics2D g2 = (Graphics2D) g;  
-            g2.translate(pf.getImageableX(), pf.getImageableY());  
-            Rectangle componentBounds = str.getBounds(null);  
-            g2.translate(componentBounds.x, componentBounds.y);  
-            g2.scale(0.6, 0.6);  
-            boolean wasBuffered = str.isDoubleBuffered();  
-            str.paint(g2);  
-            str.setDoubleBuffered(wasBuffered);  
-            return PAGE_EXISTS;  
-        }  
-          
-    }  
+
+    @Override
+    public int print(Graphics grphcs, PageFormat pf, int i) throws PrinterException {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (i > 0) {
+            return NO_SUCH_PAGE;
+        }
+
+        Graphics2D g2d = (Graphics2D) grphcs;
+        AffineTransform pOrigTransform = g2d.getTransform();
+
+        g2d.translate(pf.getImageableX(), pf.getImageableY());
+        g2d.scale(0.75, 0.75);
+        //g2d.draw(this, 0, 0, null);
+        this.paint(grphcs);
+        
+        g2d.setTransform(pOrigTransform);
+        return PAGE_EXISTS;
+    }
     
     public void setDatosHeader(String prof, String rango, String año, String semana){
         this.header.setNombreProfesional(prof);

@@ -13,6 +13,7 @@ import javax.swing.table.TableModel;
 import modelo.Paciente;
 import modelo.Usuario;
 import orthodent.JVentana;
+import orthodent.db.Autenticacion;
 import orthodent.db.PacienteDB;
 
 /**
@@ -164,6 +165,29 @@ public class Pacientes extends JPanel implements ActionListener{
             //Profesional
             pacientes = PacienteDB.listarPacientes(this.actual.getId_usuario());
         }
+        else if(this.actual.getId_rol()==4){
+            ArrayList<Usuario> usuarios = Autenticacion.listarProfesionales(this.actual.getId_clinica());
+            
+            String g1 = "(";
+            String g2 = "(";
+            int i=0;
+            for(Usuario user : usuarios){
+                if(i==0){
+                    g1 = g1 + "usuario.id_usuario="+user.getId_usuario();
+                    g2 = g2 + "cita.id_profesional="+user.getId_usuario();
+                }
+                else{
+                    g1 = g1 + " OR usuario.id_usuario="+user.getId_usuario();
+                    g2 = g2 + " OR cita.id_profesional="+user.getId_usuario();
+                }
+                i++;
+            }
+            
+            g1 = g1 + ")";
+            g2 = g2 + ")";
+            
+            pacientes = PacienteDB.listarPacientes(g1,g2);
+        }
         else{
             pacientes = PacienteDB.listarPacientes();
         }
@@ -290,7 +314,7 @@ public class Pacientes extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         
         if(e.getSource() == this.nuevoPaciente){
-            new NuevoPaciente(((JVentana)this.getTopLevelAncestor()),true).setVisible(true);
+            new NuevoPaciente(((JVentana)this.getTopLevelAncestor()),true,null).setVisible(true);
         }
         
         if(e.getSource() == this.botonBuscar){

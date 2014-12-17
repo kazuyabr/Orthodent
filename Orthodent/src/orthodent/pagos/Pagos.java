@@ -35,6 +35,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -76,6 +77,8 @@ public class Pagos extends JPanel implements ActionListener{
     private String [] columnasNombre;
     private ArrayList<Usuario> auxiliar;
     private JPanel contenedorListarPagos;
+    private Date fechaDesdeAnterior;
+    private Date fechaHastaAnterior;
     
     public Pagos(Usuario usuarioActual) throws Exception{
         this.usuarioActual = usuarioActual;
@@ -88,6 +91,9 @@ public class Pagos extends JPanel implements ActionListener{
         this.initComponents();
         this.addComponents();
         this.imprimir.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        fechaDesdeAnterior = fechaDesde.getDate();
+        fechaHastaAnterior = fechaHasta.getDate();
         
         this.updateFilter();
     }
@@ -513,26 +519,39 @@ public class Pagos extends JPanel implements ActionListener{
         Date date2 = fechaHasta.getDate();
         String fecha1 = getFechaString(date1);
         String fecha2 = getFechaString(date2);
-        
-        ArrayList<Pago> pagos = null;
-        
-        if(rol.getNombre().equals("ADMINISTRADOR") || rol.getNombre().equals("ASISTENTE ADMINISTRATIVA")){
-            int id = ((Item)this.profesionales.getSelectedItem()).getId();
-            pagos = PagoDB.listarPagos(id, fecha1, fecha2);
-        }
-        if(rol.getNombre().equals("PROFESIONAL")){
-            pagos = PagoDB.listarPagos(this.usuarioActual.getId_usuario(), fecha1, fecha2);
-        }
-        
-        try {
-            this.updateModelo(pagos);
-            if(tabla.getRowCount()>0){
-                imprimir.setEnabled(true);
+        if(date1.before(date2)){
+            
+            fechaDesdeAnterior = date1;
+            fechaHastaAnterior = date2;
+
+            ArrayList<Pago> pagos = null;
+
+            if(rol.getNombre().equals("ADMINISTRADOR") || rol.getNombre().equals("ASISTENTE ADMINISTRATIVA")){
+                int id = ((Item)this.profesionales.getSelectedItem()).getId();
+                pagos = PagoDB.listarPagos(id, fecha1, fecha2);
             }
-            else{
-                imprimir.setEnabled(false);
+            if(rol.getNombre().equals("PROFESIONAL")){
+                pagos = PagoDB.listarPagos(this.usuarioActual.getId_usuario(), fecha1, fecha2);
             }
-        } catch (Exception ex) {
+
+            try {
+                this.updateModelo(pagos);
+                if(tabla.getRowCount()>0){
+                    imprimir.setEnabled(true);
+                }
+                else{
+                    imprimir.setEnabled(false);
+                }
+            } catch (Exception ex) {
+            }
+        }
+        else{
+                fechaDesde.setDate(fechaDesdeAnterior);
+                fechaHasta.setDate(fechaHastaAnterior);
+                JOptionPane.showMessageDialog(this,
+                    "Error en la seleccion de fechas",
+                    "Orthodent",
+                    JOptionPane.ERROR_MESSAGE);            
         }
     }
     
@@ -541,26 +560,39 @@ public class Pagos extends JPanel implements ActionListener{
         Date date2 = fechaHasta.getDate();
         String fecha1 = getFechaString(date1);
         String fecha2 = getFechaString(date2);
-        
-        ArrayList<Pago> pagos = null;
-        
-        if(rol.getNombre().equals("ADMINISTRADOR") || rol.getNombre().equals("ASISTENTE ADMINISTRATIVA")){
-            int id = ((Item)this.profesionales.getSelectedItem()).getId();
-            pagos = PagoDB.listarPagos(id, fecha1, fecha2);
-        }
-        if(rol.getNombre().equals("PROFESIONAL")){
-            pagos = PagoDB.listarPagos(this.usuarioActual.getId_usuario(), fecha1, fecha2);
-        }
-        
-        try {
-            this.updateModelo(pagos);
-            if(tabla.getRowCount()>0){
-                imprimir.setEnabled(true);
+        if(date1.before(date2)){
+
+            fechaDesdeAnterior = date1;
+            fechaHastaAnterior = date2;
+            
+            ArrayList<Pago> pagos = null;
+
+            if(rol.getNombre().equals("ADMINISTRADOR") || rol.getNombre().equals("ASISTENTE ADMINISTRATIVA")){
+                int id = ((Item)this.profesionales.getSelectedItem()).getId();
+                pagos = PagoDB.listarPagos(id, fecha1, fecha2);
             }
-            else{
-                imprimir.setEnabled(false);
+            if(rol.getNombre().equals("PROFESIONAL")){
+                pagos = PagoDB.listarPagos(this.usuarioActual.getId_usuario(), fecha1, fecha2);
             }
-        } catch (Exception ex) {
+
+            try {
+                this.updateModelo(pagos);
+                if(tabla.getRowCount()>0){
+                    imprimir.setEnabled(true);
+                }
+                else{
+                    imprimir.setEnabled(false);
+                }
+            } catch (Exception ex) {
+            }
+        }
+        else{
+            fechaDesde.setDate(fechaDesdeAnterior);
+            fechaHasta.setDate(fechaHastaAnterior);
+            JOptionPane.showMessageDialog(this,
+                    "Error en la seleccion de fechas",
+                    "Orthodent",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
     

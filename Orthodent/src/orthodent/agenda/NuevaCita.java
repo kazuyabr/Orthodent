@@ -8,12 +8,14 @@ package orthodent.agenda;
 import com.thirdnf.ResourceScheduler.Resource;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import modelo.Paciente;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 //import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -21,6 +23,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import orthodent.Item;
 import orthodent.db.PacienteDB;
+import orthodent.pacientes.NuevoPaciente;
 
 /**
  *
@@ -35,8 +38,10 @@ public abstract class NuevaCita extends javax.swing.JDialog {
     DateTime inicioReal;
     boolean validar_horas = false;
     Resource _resource;
+    private Frame parent;
     public NuevaCita(java.awt.Frame parent, boolean modal, Resource resource, DateTime agenda_inicio) {
         super(parent, modal);
+        this.parent = parent;
         // Esto alinea la posicion de la cita en la agenda en saltos de 15 min
         agenda_inicio = agenda_inicio.plusMinutes(-agenda_inicio.getMinuteOfHour()%15);
         this.inicio = agenda_inicio;
@@ -218,7 +223,37 @@ public abstract class NuevaCita extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Paciente p = null;
         try {
-            p = PacienteDB.getPaciente(((Item)pacientes.getSelectedItem()).getId());
+            if(pacientes.getSelectedItem() instanceof Item)
+                p = PacienteDB.getPaciente(((Item)pacientes.getSelectedItem()).getId());
+            else if(pacientes.getSelectedItem() instanceof String){
+                Object[] options = {"Sí","No"};
+                String nombreIngresado = (String) pacientes.getSelectedItem();
+                int n = JOptionPane.showOptionDialog(this,
+                "El Paciente ingresado no existe. ¿Desea registrarlo?",
+                "Orthodent",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[1]);
+                
+                if(n==0){
+                    NuevoPaciente np = new NuevoPaciente(this.parent,true, this);
+                    if(nombreIngresado.contains(" ")){
+                        String[] nombres = nombreIngresado.split(" ");
+                        np.setNombresTextField(nombres[0]);
+                        np.setApelidoPaternoTextField(nombres[1]);
+                    }
+                    else{
+                        np.setNombresTextField(nombreIngresado);
+                    }
+                   
+                    np.setVisible(true);
+                }
+                
+                //System.out.println("ACA VA LA COSA");
+                return;
+            }
         } catch (Exception ex) {
             Logger.getLogger(NuevaCita.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -343,7 +378,7 @@ public abstract class NuevaCita extends javax.swing.JDialog {
     private javax.swing.JComboBox pacientes;
     // End of variables declaration//GEN-END:variables
 
-    private void initPacientes() {
+    public void initPacientes() {
         ArrayList<Paciente> listaPacientes = PacienteDB.listarPacientes();
         
         Vector model = new Vector();
