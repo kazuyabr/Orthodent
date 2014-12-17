@@ -19,6 +19,8 @@ import orthodent.JVentana;
 import orthodent.db.ComunaDB;
 import orthodent.db.PacienteDB;
 import orthodent.db.RegionDB;
+import orthodent.utils.Validaciones;
+import static orthodent.utils.Validaciones.calcularDigitoVerificador;
 
 /**
  *
@@ -135,6 +137,11 @@ public class NuevoPaciente extends javax.swing.JDialog {
         });
 
         nombres.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        nombres.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nombresActionPerformed(evt);
+            }
+        });
         nombres.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 nombresKeyTyped(evt);
@@ -259,9 +266,6 @@ public class NuevoPaciente extends javax.swing.JDialog {
                                 .addComponent(camposObligatorios))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(labelTelefono)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(labelApellidoMat)
@@ -270,7 +274,9 @@ public class NuevoPaciente extends javax.swing.JDialog {
                                             .addComponent(labelCiudad))
                                         .addGap(42, 42, 42))
                                     .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(labelComuna)
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(labelTelefono)
+                                            .addComponent(labelComuna))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(comuna, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -570,42 +576,8 @@ public class NuevoPaciente extends javax.swing.JDialog {
         }
     }
     
-    private String calcularDigitoVerificador(String rut){
-        int i = rut.length()-1;
-        int j = 7;
-        int suma = 0;
-        int array [] = {8,9,4,5,6,7,8,9};
-        
-        while(i>=0){
-            suma = suma + Integer.parseInt(rut.charAt(i)+"")*array[j];
-            i--;
-            j--;
-        }
-        
-        if(suma%11==10){
-            return "k";
-        }
-        else{
-            return (suma%11)+"";
-        }
-    }
-    
     private void nombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombresKeyTyped
-        char c = evt.getKeyChar();
-        
-        if(c==KeyEvent.VK_ENTER){
-            evt.consume();
-        }
-        else if(c==KeyEvent.VK_SPACE){
-            String antes = this.nombres.getText();
-            
-            if(antes.equals("")){
-                evt.consume();
-            }
-        }
-        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
-            evt.consume();
-        }
+       Validaciones.validarNombre(evt);
     }//GEN-LAST:event_nombresKeyTyped
 
     private void apellidoPatKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoPatKeyTyped
@@ -666,44 +638,7 @@ public class NuevoPaciente extends javax.swing.JDialog {
     }//GEN-LAST:event_telefonoKeyTyped
 
     private void rutKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rutKeyTyped
-        char c = evt.getKeyChar();
-        
-        if(c==KeyEvent.VK_ENTER){
-            evt.consume();
-        }
-        else if(!((c>='0' && c<='9') || (c=='-') || (c=='k') || (c=='K'))){
-            evt.consume();
-        }
-        else{
-            if(c=='k' || c=='K'){
-                String ultimo = this.rut.getText().charAt(this.rut.getText().length()-1)+"";
-                if(!ultimo.equals("-")){
-                    evt.consume();
-                }
-            }
-            if(c=='-'){
-                int largo = this.rut.getText().length();
-                String ultimo = this.rut.getText().charAt(this.rut.getText().length()-1)+"";
-                if(!(largo==7 || largo==8) || ultimo.equals("-")){
-                    evt.consume();
-                }
-            }
-            if(c>='0' && c<='9'){
-                int largo = this.rut.getText().length();
-                
-                if(!this.rut.getText().contains("-")){
-                    if(!(largo<8)){
-                        evt.consume();
-                    }
-                }
-                else{
-                    char ultimo = this.rut.getText().charAt(this.rut.getText().length()-1);
-                    if((ultimo>='0' && ultimo<='9') || ultimo=='k' || ultimo=='K'){
-                        evt.consume();
-                    }
-                }
-            }
-        }
+        Validaciones.validarRut(this.rut.getText(), evt);
     }//GEN-LAST:event_rutKeyTyped
 
     private void direccionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_direccionKeyTyped
@@ -736,6 +671,10 @@ public class NuevoPaciente extends javax.swing.JDialog {
     private void comunaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comunaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comunaActionPerformed
+
+    private void nombresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombresActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nombresActionPerformed
     
     private boolean validarCamposObligatorios(String nombre, String apellidoPat, String rut, String fechaNacimiento, String telefono){
         

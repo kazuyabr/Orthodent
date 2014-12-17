@@ -19,6 +19,7 @@ import modelo.Region;
 import orthodent.db.ComunaDB;
 import orthodent.db.PacienteDB;
 import orthodent.db.RegionDB;
+import orthodent.utils.Validaciones;
 
 /**
  *
@@ -757,17 +758,7 @@ public class DatosPersonales extends JPanel{
     }//GEN-LAST:event_apellidoMatKeyTyped
 
     private void rutKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rutKeyTyped
-        char c = evt.getKeyChar();
-        
-        if(c==KeyEvent.VK_ENTER){
-            evt.consume();
-        }
-        else if(!((c>='0' && c<='9') || (c=='-'))){
-            evt.consume();
-        }
-        else{
-            this.habilitarBoton();
-        }
+        Validaciones.validarRut(this.rut.getText(), evt);
     }//GEN-LAST:event_rutKeyTyped
 
     private void emailKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailKeyTyped
