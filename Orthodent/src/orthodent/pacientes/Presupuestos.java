@@ -38,6 +38,7 @@ import modelo.TratamientoPiezaPresupuesto;
 import modelo.Usuario;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import orthodent.Item;
 import orthodent.db.Autenticacion;
 import orthodent.db.DbConnection;
@@ -127,7 +128,7 @@ public class Presupuestos extends JPanel{
                     int col = table.columnAtPoint(p);
                     rowSelected = row;
                     if(col==1){
-                        System.out.println("aquiiiiiiiiiiiii");
+                        //System.out.println("aquiiiiiiiiiiiii");
                     }
                 }
                 if (me.getClickCount() == 2) {
@@ -216,6 +217,7 @@ public class Presupuestos extends JPanel{
             }
         }
         comboBox.setModel(new DefaultComboBoxModel(model));
+        //AutoCompleteDecorator.decorate(comboBox);
         tratamientos.setCellEditor(new DefaultCellEditor(comboBox));
     }
     

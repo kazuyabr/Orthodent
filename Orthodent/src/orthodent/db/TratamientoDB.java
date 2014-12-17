@@ -96,7 +96,7 @@ public class TratamientoDB {
             }
             ru.close();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM tratamiento where activo="+1);
+            ResultSet rs = st.executeQuery("SELECT * FROM tratamiento where activo="+1+" ORDER BY nombre");
             tratamientos = new ArrayList<Tratamiento>();
             
             while (rs.next())
@@ -117,6 +117,7 @@ public class TratamientoDB {
             return tratamientos;
         }
         catch ( SQLException e) {
+            System.out.println(""+e);
             return null;
         }
     }
