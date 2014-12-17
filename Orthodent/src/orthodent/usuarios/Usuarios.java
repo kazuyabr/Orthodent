@@ -321,7 +321,17 @@ public class Usuarios extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         
         if(e.getSource() == this.nuevoUsuario){
-            new NuevoUsuario(((JVentana)this.getTopLevelAncestor()),true).setVisible(true);
+            
+            ArrayList<ClinicaInterna> clinicas = ClinicaInternaDB.listarClinicas();
+            if(clinicas.isEmpty()){
+                JOptionPane.showMessageDialog(this,
+                    "No existen clinicas! Debe crear clinicas antes de crear usuarios.",
+                    "Orthodent",
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
+            else{
+                new NuevoUsuario(((JVentana)this.getTopLevelAncestor()),true).setVisible(true);
+            }
         }
         
         if(e.getSource() == this.botonBuscar){
