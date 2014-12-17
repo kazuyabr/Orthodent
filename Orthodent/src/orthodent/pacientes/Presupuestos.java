@@ -4,7 +4,6 @@
  */
 package orthodent.pacientes;
 
-import java.awt.ComponentOrientation;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Point;

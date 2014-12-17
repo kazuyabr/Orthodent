@@ -45,7 +45,6 @@ import modelo.Pago;
 import modelo.PlanTratamiento;
 import modelo.Rol;
 import modelo.Usuario;
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import orthodent.Item;
@@ -118,6 +117,12 @@ public class Pagos extends JPanel implements ActionListener{
 
                     try {
                         updateModelo(pagos);
+                        if(tabla.getRowCount()>0){
+                            imprimir.setEnabled(true);
+                        }
+                        else{
+                            imprimir.setEnabled(false);
+                        }
                     } catch (Exception ex) {
                     }
                 }
@@ -133,6 +138,12 @@ public class Pagos extends JPanel implements ActionListener{
                             ArrayList<Pago> pagos = PagoDB.listarPagos(id, fecha1, fecha2);
                             try {
                                 updateModelo(pagos);
+                                if(tabla.getRowCount()>0){
+                                    imprimir.setEnabled(true);
+                                }
+                                else{
+                                    imprimir.setEnabled(false);
+                                }
                             } catch (Exception ex) {
                             }
                         }
@@ -229,10 +240,22 @@ public class Pagos extends JPanel implements ActionListener{
             
             ArrayList<Pago> pagos = PagoDB.listarPagos(-1, fecha1, fecha2);
             this.updateModelo(pagos);
+            if(tabla.getRowCount()>0){
+                imprimir.setEnabled(true);
+            }
+            else{
+                imprimir.setEnabled(false);
+            }
         }
         if(rol.getNombre().equals("PROFESIONAL")){
             ArrayList<Pago> pagos = PagoDB.listarPagos(this.usuarioActual.getId_usuario(), fecha1, fecha2);
             this.updateModelo(pagos);
+            if(tabla.getRowCount()>0){
+                imprimir.setEnabled(true);
+            }
+            else{
+                imprimir.setEnabled(false);
+            }
         }
     }
     
@@ -503,6 +526,12 @@ public class Pagos extends JPanel implements ActionListener{
         
         try {
             this.updateModelo(pagos);
+            if(tabla.getRowCount()>0){
+                imprimir.setEnabled(true);
+            }
+            else{
+                imprimir.setEnabled(false);
+            }
         } catch (Exception ex) {
         }
     }
@@ -525,6 +554,12 @@ public class Pagos extends JPanel implements ActionListener{
         
         try {
             this.updateModelo(pagos);
+            if(tabla.getRowCount()>0){
+                imprimir.setEnabled(true);
+            }
+            else{
+                imprimir.setEnabled(false);
+            }
         } catch (Exception ex) {
         }
     }
