@@ -140,15 +140,15 @@ public class BarraAcciones extends javax.swing.JPanel {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(11, 146, 181));
         jLabel3.setText("Semanas");
 
-        jLabel4.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(11, 146, 181));
         jLabel4.setText("-");
 
-        jLabel5.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(11, 146, 181));
         jLabel5.setText("+");
 
