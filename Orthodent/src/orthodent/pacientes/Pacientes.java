@@ -164,6 +164,10 @@ public class Pacientes extends JPanel implements ActionListener{
             //Profesional
             pacientes = PacienteDB.listarPacientes(this.actual.getId_usuario());
         }
+        else if(this.actual.getId_rol()==4){
+            //Asistente ?????????¿¿¿¿¿¡??
+            pacientes = null;
+        }
         else{
             pacientes = PacienteDB.listarPacientes();
         }

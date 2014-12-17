@@ -66,7 +66,13 @@ public class PacienteDB {
                     + "paciente.direccion, paciente.activo FROM `paciente`, `usuario`, `plan_tratamiento` WHERE "
                     + "paciente.activo=1 AND plan_tratamiento.activo=1 AND "
                     + "usuario.id_usuario="+id_usuario+" AND plan_tratamiento.id_profesional=usuario.id_usuario AND "
-                    + "plan_tratamiento.id_paciente=paciente.id_paciente");
+                    + "plan_tratamiento.id_paciente=paciente.id_paciente UNION "
+                    + "SELECT paciente.id_paciente, paciente.nombre, paciente.apellido_pat,"
+                    + "paciente.apellido_mat, paciente.rut, paciente.email, paciente.fecha_nacimiento, paciente.edad,"
+                    + "paciente.sexo, paciente.antecedente_medico, paciente.telefono, paciente.ciudad, paciente.comuna, "
+                    + "paciente.direccion, paciente.activo FROM `paciente`, `cita` WHERE "
+                    + "cita.id_profesional="+id_usuario+" AND cita.id_paciente=paciente.id_paciente AND "
+                    + "paciente.activo=1");
             
             pacientes = new ArrayList<Paciente>();
             while (rs.next())
