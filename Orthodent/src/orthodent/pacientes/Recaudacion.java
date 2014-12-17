@@ -24,6 +24,7 @@ import javax.swing.table.TableModel;
 import modelo.Pago;
 import modelo.Paciente;
 import modelo.PlanTratamiento;
+import modelo.Rol;
 import modelo.Tratamiento;
 import modelo.Usuario;
 import orthodent.Item;
@@ -31,6 +32,7 @@ import orthodent.JVentana;
 import orthodent.db.Autenticacion;
 import orthodent.db.PagoDB;
 import orthodent.db.PlanTratamientoDB;
+import orthodent.db.RolDB;
 
 /**
  *
@@ -71,6 +73,17 @@ public class Recaudacion extends JPanel{
         this.tablaTratamiento.getTableHeader().setReorderingAllowed(false);
         this.tablaPagoAbono.getTableHeader().setReorderingAllowed(false);
         this.tablaPagoLaboratorio.getTableHeader().setReorderingAllowed(false);
+        
+        
+        Rol rol = RolDB.getRol(this.actual.getId_rol());
+        
+        if(rol.getNombre().equals("ASISTENTE") || rol.getNombre().equals("PROFESIONAL")){
+            this.add.setVisible(false);
+            this.editAbono.setVisible(false);
+            this.deleteAbono.setVisible(false);
+            this.editLaboratorio.setVisible(false);
+            this.deleteLaboratorio.setVisible(false);
+        }
     }
     
     private void setCursor(){
@@ -485,7 +498,6 @@ public class Recaudacion extends JPanel{
         labelAbonos = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaPagoAbono = new javax.swing.JTable();
-        add = new javax.swing.JButton();
         deleteAbono = new javax.swing.JButton();
         costoAbono = new javax.swing.JTextField();
         labelAbono = new javax.swing.JLabel();
@@ -497,6 +509,7 @@ public class Recaudacion extends JPanel{
         deleteLaboratorio = new javax.swing.JButton();
         editLaboratorio = new javax.swing.JButton();
         editAbono = new javax.swing.JButton();
+        add = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(850, 551));
@@ -588,20 +601,6 @@ public class Recaudacion extends JPanel{
         });
         tablaPagoAbono.setEnabled(false);
         jScrollPane2.setViewportView(tablaPagoAbono);
-
-        add.setFont(new java.awt.Font("Georgia", 1, 11)); // NOI18N
-        add.setForeground(new java.awt.Color(11, 146, 181));
-        add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/add_mini.png"))); // NOI18N
-        add.setText("Nuevo Abono");
-        add.setBorder(null);
-        add.setBorderPainted(false);
-        add.setContentAreaFilled(false);
-        add.setEnabled(false);
-        add.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addActionPerformed(evt);
-            }
-        });
 
         deleteAbono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/delete_mini.png"))); // NOI18N
         deleteAbono.setBorder(null);
@@ -699,6 +698,20 @@ public class Recaudacion extends JPanel{
             }
         });
 
+        add.setFont(new java.awt.Font("Georgia", 1, 11)); // NOI18N
+        add.setForeground(new java.awt.Color(11, 146, 181));
+        add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/add_mini.png"))); // NOI18N
+        add.setText("Nuevo Abono");
+        add.setBorder(null);
+        add.setBorderPainted(false);
+        add.setContentAreaFilled(false);
+        add.setEnabled(false);
+        add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -714,22 +727,22 @@ public class Recaudacion extends JPanel{
                             .addComponent(editLaboratorio)))
                     .addComponent(labelLaboratorio)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(labelTotal)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(labelAbono)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(costoAbono, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(labelAbonos)
-                                    .addGap(394, 394, 394)
-                                    .addComponent(add))
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(labelAbonos)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(add))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(labelTotal)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(costoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(labelAbono)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(costoAbono, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(deleteAbono)
@@ -740,10 +753,13 @@ public class Recaudacion extends JPanel{
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelAbonos)
-                    .addComponent(add))
-                .addGap(15, 15, 15)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(labelAbonos)
+                        .addGap(19, 19, 19))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(add)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(editAbono)
@@ -762,7 +778,7 @@ public class Recaudacion extends JPanel{
                         .addComponent(editLaboratorio)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deleteLaboratorio)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(costoAbono, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelAbono, javax.swing.GroupLayout.Alignment.TRAILING))
