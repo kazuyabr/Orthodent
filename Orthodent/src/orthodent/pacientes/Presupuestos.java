@@ -4,7 +4,6 @@
  */
 package orthodent.pacientes;
 
-import java.awt.ComponentOrientation;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Point;
@@ -193,8 +192,12 @@ public class Presupuestos extends JPanel{
                         for(int i=0; i<modeloPiezaTratamiento.getRowCount(); i++){
                             String valor = (String) modeloPiezaTratamiento.getValueAt(i, 3);
                             valor = valor.substring(valor.indexOf("$")+1, valor.length());
-                            int precio = Integer.parseInt(valor);
-                            total = total + precio;
+                            try{
+                                int precio = Integer.parseInt(valor);
+                                total = total + precio;
+                            }
+                            catch(Exception e){
+                            }
                         }
                         
                         costoTotal.setText("$"+total);

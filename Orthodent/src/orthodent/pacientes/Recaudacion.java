@@ -75,7 +75,10 @@ public class Recaudacion extends JPanel{
     
     private void setCursor(){
         this.add.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        this.remove.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.editAbono.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.deleteAbono.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.editLaboratorio.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.deleteLaboratorio.setCursor(new Cursor(Cursor.HAND_CURSOR));        
     }
     
     public boolean getCambios(){
@@ -104,21 +107,14 @@ public class Recaudacion extends JPanel{
                 if (me.getClickCount() == 1) { 
                     try {
                         pagoAbonoSelected = PagoDB.getPago(((Item)fila[0]).getId());
+                        System.out.println("PAGO ABONO "+pagoAbonoSelected);
                         if(pagoAbonoSelected != null){
-                            habilitarBtnRemove();
+                            habilitarBtnEditarAbono();
+                            habilitarBtnEliminarAbono();
+                            deshabilitarBtnEditarLaboratorio();
+                            deshabilitarBtnEliminarLaboratorio();
                         }
                     } catch (Exception ex) {
-                    }
-                }
-                else if(me.getClickCount() == 2){
-                    try {
-                        pagoAbonoSelected = PagoDB.getPago(((Item)fila[0]).getId());
-                        if(pagoAbonoSelected != null){
-                            habilitarBtnRemove();
-                            editarPagoAbono();
-                        }                        
-                    } catch (Exception ex) {
-                        Logger.getLogger(Recaudacion.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -139,21 +135,14 @@ public class Recaudacion extends JPanel{
                 if (me.getClickCount() == 1) { 
                     try {
                         pagoLabSelected = PagoDB.getPago(((Item)fila[0]).getId());
+                        System.out.println("PAGO LAB "+pagoLabSelected);
                         if(pagoLabSelected != null){
-                            habilitarBtnRemove2();
+                            habilitarBtnEditarlaboratorio();
+                            habilitarBtnEliminarLaboratorio();
+                            deshabilitarBtnEditarAbono();
+                            deshabilitarBtnEliminarAbono();
                         }
                     } catch (Exception ex) {
-                    }
-                }
-                else if(me.getClickCount() == 2){
-                    try {
-                        pagoLabSelected = PagoDB.getPago(((Item)fila[0]).getId());
-                        if(pagoLabSelected != null){
-                            habilitarBtnRemove2();
-                            //editarPagoAbono2();
-                        }                        
-                    } catch (Exception ex) {
-                        Logger.getLogger(Recaudacion.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -168,6 +157,7 @@ public class Recaudacion extends JPanel{
     
     public void editarPagoAbono2(){
         //System.out.println("problem");
+        System.out.println("seleccionado lab"+pagoLabSelected.getIdPago());
         new VentanaAbono(((JVentana)this.getTopLevelAncestor()),true, 
                 tratamientotoSelected.getIdPlanTratamiento(), this, false, pagoLabSelected).setVisible(true);
     }
@@ -232,6 +222,39 @@ public class Recaudacion extends JPanel{
         //this.iniciarTablaPlanesTratamientos();
     }
     
+    public void habilitarBtnEditarAbono(){
+        this.editAbono.setEnabled(true);
+    }
+    
+    public void deshabilitarBtnEditarAbono(){
+        this.editAbono.setEnabled(false);
+    }    
+    
+    public void habilitarBtnEliminarAbono(){
+        this.deleteAbono.setEnabled(true);
+    }  
+    
+    public void deshabilitarBtnEliminarAbono(){
+        this.deleteAbono.setEnabled(false);
+    }
+    
+    public void habilitarBtnEditarlaboratorio(){
+        this.editLaboratorio.setEnabled(true);
+    }
+    
+    public void deshabilitarBtnEditarLaboratorio(){
+        this.editLaboratorio.setEnabled(false);
+    }    
+    
+    public void habilitarBtnEliminarLaboratorio(){
+        this.deleteLaboratorio.setEnabled(true);
+    }  
+    
+    public void deshabilitarBtnEliminarLaboratorio(){
+        this.deleteLaboratorio.setEnabled(false);
+    }    
+    
+   
     public void updateTablaPagoLab() throws Exception{
 
         ArrayList<Pago> pagoAbono = new ArrayList<Pago>();
@@ -287,22 +310,7 @@ public class Recaudacion extends JPanel{
         this.add.setEnabled(true);
     }
     
-    public void habilitarBtnRemove(){
-        this.remove.setEnabled(true);
-    }  
-    
-    public void habilitarBtnRemove2(){
-        this.remove1.setEnabled(true);
-    }  
-    
-    public void deshabilitarBtnRemove(){
-        this.remove.setEnabled(false);
-    }
-    
-    public void deshabilitarBtnRemove2(){
-        this.remove1.setEnabled(false);
-    }
-    
+ 
      public void iniciarTablaPlanesTratamientos() throws Exception{
         this.columnasPlanesTratamiento = new String [] {"Profesional",  "Costo Total", "Total Abonos", "Avance"};
         this.updateTablaPlanesTratamientos();
@@ -317,9 +325,13 @@ public class Recaudacion extends JPanel{
                     Object [] fila = getRowAt(row);
                     try {
                         habilitarBtnAdd();
-                        deshabilitarBtnRemove();
+                        deshabilitarBtnEditarAbono();
+                        deshabilitarBtnEditarLaboratorio();
+                        deshabilitarBtnEliminarAbono();
+                        deshabilitarBtnEliminarLaboratorio();
                         
                         tratamientotoSelected = PlanTratamientoDB.getPlanTratamiento(((Item)fila[1]).getId());
+                        System.out.println("TRATAMIENTO SELECCIONADO "+tratamientotoSelected);
                                                
                         if(tratamientotoSelected!=null){
                             tablaPagoAbono.setEnabled(true);
@@ -355,8 +367,9 @@ public class Recaudacion extends JPanel{
         }   
         
         return result;
-    }   
-     private Object[] getRowAt3(int row) {
+    }    
+    
+    private Object[] getRowAt3(int row) {
         Object[] result = new Object[this.columnasNombrePagoLab.length];
         
         for (int i = 0; i < this.columnasNombrePagoLab.length; i++) {
@@ -365,8 +378,7 @@ public class Recaudacion extends JPanel{
         }   
         
         return result;
-    }    
-    
+    }      
     
     public void updateTablaPlanesTratamientos() throws Exception{
         ArrayList<PlanTratamiento> tratamientos = null;
@@ -474,7 +486,7 @@ public class Recaudacion extends JPanel{
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaPagoAbono = new javax.swing.JTable();
         add = new javax.swing.JButton();
-        remove = new javax.swing.JButton();
+        deleteAbono = new javax.swing.JButton();
         costoAbono = new javax.swing.JTextField();
         labelAbono = new javax.swing.JLabel();
         costoTotal = new javax.swing.JTextField();
@@ -482,7 +494,9 @@ public class Recaudacion extends JPanel{
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaPagoLaboratorio = new javax.swing.JTable();
         labelLaboratorio = new javax.swing.JLabel();
-        remove1 = new javax.swing.JButton();
+        deleteLaboratorio = new javax.swing.JButton();
+        editLaboratorio = new javax.swing.JButton();
+        editAbono = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(850, 551));
@@ -588,14 +602,14 @@ public class Recaudacion extends JPanel{
             }
         });
 
-        remove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/delete_mini.png"))); // NOI18N
-        remove.setBorder(null);
-        remove.setBorderPainted(false);
-        remove.setContentAreaFilled(false);
-        remove.setEnabled(false);
-        remove.addActionListener(new java.awt.event.ActionListener() {
+        deleteAbono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/delete_mini.png"))); // NOI18N
+        deleteAbono.setBorder(null);
+        deleteAbono.setBorderPainted(false);
+        deleteAbono.setContentAreaFilled(false);
+        deleteAbono.setEnabled(false);
+        deleteAbono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                removeActionPerformed(evt);
+                deleteAbonoActionPerformed(evt);
             }
         });
 
@@ -651,14 +665,36 @@ public class Recaudacion extends JPanel{
         labelLaboratorio.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
         labelLaboratorio.setText("Laboratorio");
 
-        remove1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/delete_mini.png"))); // NOI18N
-        remove1.setBorder(null);
-        remove1.setBorderPainted(false);
-        remove1.setContentAreaFilled(false);
-        remove1.setEnabled(false);
-        remove1.addActionListener(new java.awt.event.ActionListener() {
+        deleteLaboratorio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/delete_mini.png"))); // NOI18N
+        deleteLaboratorio.setBorder(null);
+        deleteLaboratorio.setBorderPainted(false);
+        deleteLaboratorio.setContentAreaFilled(false);
+        deleteLaboratorio.setEnabled(false);
+        deleteLaboratorio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                remove1ActionPerformed(evt);
+                deleteLaboratorioActionPerformed(evt);
+            }
+        });
+
+        editLaboratorio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/edit_mini.png"))); // NOI18N
+        editLaboratorio.setBorder(null);
+        editLaboratorio.setBorderPainted(false);
+        editLaboratorio.setContentAreaFilled(false);
+        editLaboratorio.setEnabled(false);
+        editLaboratorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editLaboratorioActionPerformed(evt);
+            }
+        });
+
+        editAbono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/edit_mini.png"))); // NOI18N
+        editAbono.setBorder(null);
+        editAbono.setBorderPainted(false);
+        editAbono.setContentAreaFilled(false);
+        editAbono.setEnabled(false);
+        editAbono.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editAbonoActionPerformed(evt);
             }
         });
 
@@ -672,7 +708,9 @@ public class Recaudacion extends JPanel{
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(remove1))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(deleteLaboratorio)
+                            .addComponent(editLaboratorio)))
                     .addComponent(labelLaboratorio)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -691,7 +729,9 @@ public class Recaudacion extends JPanel{
                                     .addComponent(costoAbono, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(remove)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(deleteAbono)
+                            .addComponent(editAbono))))
                 .addContainerGap(43, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -701,13 +741,13 @@ public class Recaudacion extends JPanel{
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelAbonos)
                     .addComponent(add))
+                .addGap(13, 13, 13)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(remove))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(editAbono)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteAbono))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelLaboratorio)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -716,8 +756,10 @@ public class Recaudacion extends JPanel{
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(remove1)
+                        .addGap(2, 2, 2)
+                        .addComponent(editLaboratorio)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteLaboratorio)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(costoAbono, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -808,12 +850,12 @@ public class Recaudacion extends JPanel{
         return fecha;
     }
         
-    private void removeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeActionPerformed
+    private void deleteAbonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteAbonoActionPerformed
         if(pagoAbonoSelected != null){
             Object[] options = {"Sí","No"};
 
                     int n = JOptionPane.showOptionDialog(this,
-                                "¿Esta seguro que desea eliminar el Abono?",
+                                "¿Esta seguro que desea eliminar el abono?",
                                 "Orthodent",
                                 JOptionPane.YES_NO_CANCEL_OPTION,
                                 JOptionPane.QUESTION_MESSAGE,
@@ -833,7 +875,7 @@ public class Recaudacion extends JPanel{
                 }
             }
         }
-    }//GEN-LAST:event_removeActionPerformed
+    }//GEN-LAST:event_deleteAbonoActionPerformed
 
         public void updateModeloPagoAbono() throws Exception{
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
@@ -841,15 +883,16 @@ public class Recaudacion extends JPanel{
         
         
         int m = this.columnasNombrePagoAbono.length;
-        int total=0;
         ArrayList<Object []> objetos = new ArrayList<Object []>();
-        for(Pago pgAbn : pgAbono){
-            String fecha = girarFecha(pgAbn.getFecha());
-            String descripcion = pgAbn.getAbono()+"";
-            total = total + pgAbn.getAbono();
-            Object [] fila = new Object [] {fecha, 
-                new Item(descripcion,pgAbn.getIdPago()), "hora", "fecha"};
-
+        int total = 0;
+        for(Pago pagAbn : pgAbono){
+            String tipoPago = pagAbn.getTipoPago();
+            String detalle = pagAbn.getDetalle();
+            String fecha = girarFecha(pagAbn.getFecha());
+            String valor = pagAbn.getAbono()+"";
+            int numBoleta = pagAbn.getNumBoleta();
+            total = total + pagAbn.getAbono();
+            Object [] fila = new Object [] {new Item (tipoPago,pagAbn.getIdPago()), detalle, fecha, "$"+valor, numBoleta+""};
             objetos.add(fila);
         }
         costoAbono.setText("$"+total);
@@ -873,10 +916,10 @@ public class Recaudacion extends JPanel{
         
         this.modeloPagoAbono = new DefaultTableModel(this.filasPagoAbono, this.columnasNombrePagoAbono) {
             Class[] types = new Class [] {
-                String.class, Item.class, String.class, String.class
+                String.class, Item.class, String.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -890,93 +933,30 @@ public class Recaudacion extends JPanel{
         
         this.tablaPagoAbono.setModel(modeloPagoAbono);
       
-        //this.iniciarTablaPlanesTratamientos();
-        this.updateTablaPagoAbono();
+        this.iniciarTablaPlanesTratamientos();
         //habilitarBoton();
     }
-    
-    private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
-      new VentanaAbono(((JVentana)this.getTopLevelAncestor()),true, 
-              tratamientotoSelected.getIdPlanTratamiento(), this, true, pagoAbonoSelected).setVisible(true);
-    }//GEN-LAST:event_addActionPerformed
-
-    private void costoAbonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costoAbonoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_costoAbonoActionPerformed
-
-    private void costoTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costoTotalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_costoTotalActionPerformed
-
-    private void remove1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remove1ActionPerformed
-        if(pagoLabSelected != null){
-            Object[] options = {"Sí","No"};
-
-                    int n = JOptionPane.showOptionDialog(this,
-                                "¿Esta seguro que desea eliminar el Laboratorio?",
-                                "Orthodent",
-                                JOptionPane.YES_NO_CANCEL_OPTION,
-                                JOptionPane.QUESTION_MESSAGE,
-                                null,
-                                options,
-                                options[1]);
-            if(n==0){
-                try {
-                    boolean respuesta = PagoDB.eliminarPago(pagoLabSelected.getIdPago());
-                    updateModeloPagoLab();
-                    this.jPanel2.updateUI();
-                }
-                catch (SQLException ex){
-                    Logger.getLogger(Recaudacion.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (Exception ex) {
-                    Logger.getLogger(Recaudacion.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
         
-    }//GEN-LAST:event_remove1ActionPerformed
-//     public void guardar(){
-//        this.guardarActionPerformed(null);
-//    }
-    
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton add;
-    private javax.swing.JTextField costoAbono;
-    private javax.swing.JTextField costoTotal;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JLabel labelAbono;
-    private javax.swing.JLabel labelAbonos;
-    private javax.swing.JLabel labelLaboratorio;
-    private javax.swing.JLabel labelTitulo;
-    private javax.swing.JLabel labelTotal;
-    private javax.swing.JPanel panelTitulo;
-    private javax.swing.JButton remove;
-    private javax.swing.JButton remove1;
-    private javax.swing.JTable tablaPagoAbono;
-    private javax.swing.JTable tablaPagoLaboratorio;
-    private javax.swing.JTable tablaTratamiento;
-    // End of variables declaration//GEN-END:variables
-
-    public  void updateModeloPagoLab() throws Exception{
+        public void updateModeloPagoLaboratorio() throws Exception{
         //Podria ser ordenado!! -> una opcion es que la consulta ordene
-        ArrayList<Pago> pgAbono = PagoDB.listarPagosDePlanTratamiento(tratamientotoSelected.getIdPlanTratamiento());
+        ArrayList<Pago> pgAbono = PagoDB.listarPagosDePlanTratamientoLab(tratamientotoSelected.getIdPlanTratamiento());
         
         
         int m = this.columnasNombrePagoLab.length;
-        int total=0;
         ArrayList<Object []> objetos = new ArrayList<Object []>();
-        for(Pago pgAbn : pgAbono){
-            String fecha = girarFecha(pgAbn.getFecha());
-            String descripcion = pgAbn.getAbono()+"";
-            total = total + pgAbn.getAbono();
-            Object [] fila = new Object [] {fecha, 
-                new Item(descripcion,pgAbn.getIdPago()), "hora", "fecha"};
+        String aux = this.costoAbono.getText();
+        int total = Integer.parseInt(aux.substring(1, aux.length()));
+        for(Pago pagAbn : pgAbono){
 
+            String tipoPago = pagAbn.getTipoPago();
+            String detalle = pagAbn.getDetalle();
+            String fecha = girarFecha(pagAbn.getFecha());
+            String valor = pagAbn.getAbono()+"";
+            int numBoleta = pagAbn.getNumBoleta();
+            total = total + pagAbn.getAbono();
+            Object [] fila = new Object [] {new Item (tipoPago,pagAbn.getIdPago()), detalle, fecha, "$"+valor, numBoleta+""};
             objetos.add(fila);
+            
         }
         costoAbono.setText("$"+total);
         int id = tratamientotoSelected.getIdPlanTratamiento();
@@ -999,10 +979,10 @@ public class Recaudacion extends JPanel{
         
         this.modeloPagoLab = new DefaultTableModel(this.filasPagoLab, this.columnasNombrePagoLab) {
             Class[] types = new Class [] {
-                String.class, Item.class, String.class, String.class
+                String.class, Item.class, String.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1016,8 +996,95 @@ public class Recaudacion extends JPanel{
         
         this.tablaPagoLaboratorio.setModel(modeloPagoLab);
       
-        //this.iniciarTablaPlanesTratamientos();
-        this.updateTablaPagoLab();
+        this.iniciarTablaPlanesTratamientos();
         //habilitarBoton();
+    }        
+        
+        
+    
+    private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
+      new VentanaAbono(((JVentana)this.getTopLevelAncestor()),true, 
+              tratamientotoSelected.getIdPlanTratamiento(), this, true, pagoAbonoSelected).setVisible(true);
+      
+    }//GEN-LAST:event_addActionPerformed
+
+    private void costoAbonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costoAbonoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_costoAbonoActionPerformed
+
+    private void costoTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_costoTotalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_costoTotalActionPerformed
+
+    private void deleteLaboratorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteLaboratorioActionPerformed
+        System.out.println("LAB eliminacion " + pagoLabSelected.getIdPago());
+        if(pagoLabSelected != null){
+            Object[] options = {"Sí","No"};
+
+                    int n = JOptionPane.showOptionDialog(this,
+                                "¿Esta seguro que desea eliminar el abono laboratorio?",
+                                "Orthodent",
+                                JOptionPane.YES_NO_CANCEL_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                options,
+                                options[1]);
+            if(n==0){
+                try {
+                    boolean respuesta = PagoDB.eliminarPago(pagoLabSelected.getIdPago());
+                    updateModeloPagoAbono();
+                    updateModeloPagoLaboratorio();
+                    this.jPanel1.updateUI();
+                }
+                catch (SQLException ex){
+                    Logger.getLogger(Recaudacion.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(Recaudacion.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }//GEN-LAST:event_deleteLaboratorioActionPerformed
+
+    private void editLaboratorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editLaboratorioActionPerformed
+        editarPagoAbono2();
+    }//GEN-LAST:event_editLaboratorioActionPerformed
+
+    private void editAbonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editAbonoActionPerformed
+        editarPagoAbono();
+    }//GEN-LAST:event_editAbonoActionPerformed
+//     public void guardar(){
+//        this.guardarActionPerformed(null);
+//    }
+    
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton add;
+    private javax.swing.JTextField costoAbono;
+    private javax.swing.JTextField costoTotal;
+    private javax.swing.JButton deleteAbono;
+    private javax.swing.JButton deleteLaboratorio;
+    private javax.swing.JButton editAbono;
+    private javax.swing.JButton editLaboratorio;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel labelAbono;
+    private javax.swing.JLabel labelAbonos;
+    private javax.swing.JLabel labelLaboratorio;
+    private javax.swing.JLabel labelTitulo;
+    private javax.swing.JLabel labelTotal;
+    private javax.swing.JPanel panelTitulo;
+    private javax.swing.JTable tablaPagoAbono;
+    private javax.swing.JTable tablaPagoLaboratorio;
+    private javax.swing.JTable tablaTratamiento;
+    // End of variables declaration//GEN-END:variables
+
+    public void setTotalAbonos() {
+        String totalAbonos = this.costoAbono.getText();
+        int total = Integer.parseInt(totalAbonos.substring(1,totalAbonos.length()));
+        this.tratamientotoSelected.setTotalAbonos(total);
+        
+        PlanTratamientoDB.editarPlanTratamiento(tratamientotoSelected);
     }
 }
