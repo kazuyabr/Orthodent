@@ -13,6 +13,7 @@ import javax.swing.table.TableModel;
 import modelo.Paciente;
 import modelo.Usuario;
 import orthodent.JVentana;
+import orthodent.db.Autenticacion;
 import orthodent.db.PacienteDB;
 
 /**
@@ -165,8 +166,27 @@ public class Pacientes extends JPanel implements ActionListener{
             pacientes = PacienteDB.listarPacientes(this.actual.getId_usuario());
         }
         else if(this.actual.getId_rol()==4){
-            //Asistente ?????????¿¿¿¿¿¡??
-            pacientes = null;
+            ArrayList<Usuario> usuarios = Autenticacion.listarProfesionales(this.actual.getId_clinica());
+            
+            String g1 = "(";
+            String g2 = "(";
+            int i=0;
+            for(Usuario user : usuarios){
+                if(i==0){
+                    g1 = g1 + "usuario.id_usuario="+user.getId_usuario();
+                    g2 = g2 + "cita.id_profesional="+user.getId_usuario();
+                }
+                else{
+                    g1 = g1 + " OR usuario.id_usuario="+user.getId_usuario();
+                    g2 = g2 + " OR cita.id_profesional="+user.getId_usuario();
+                }
+                i++;
+            }
+            
+            g1 = g1 + ")";
+            g2 = g2 + ")";
+            
+            pacientes = PacienteDB.listarPacientes(g1,g2);
         }
         else{
             pacientes = PacienteDB.listarPacientes();
