@@ -110,7 +110,7 @@ public class JVentana extends JFrame{
         
         panel.add(borde1,BorderLayout.WEST);
         panel.add(borde2,BorderLayout.EAST);
-        panel.setSize(1043, 1200);
+        //panel.setSize(1043, 1200);
         
         this.contenedorAgenda.add(panel,BorderLayout.NORTH);
         

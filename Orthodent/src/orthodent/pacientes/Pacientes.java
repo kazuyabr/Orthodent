@@ -290,7 +290,7 @@ public class Pacientes extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         
         if(e.getSource() == this.nuevoPaciente){
-            new NuevoPaciente(((JVentana)this.getTopLevelAncestor()),true).setVisible(true);
+            new NuevoPaciente(((JVentana)this.getTopLevelAncestor()),true,null).setVisible(true);
         }
         
         if(e.getSource() == this.botonBuscar){

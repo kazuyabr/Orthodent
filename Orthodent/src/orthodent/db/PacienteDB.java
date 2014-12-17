@@ -26,7 +26,7 @@ public class PacienteDB {
             
             java.sql.Statement st = con.createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT * FROM paciente");
+            ResultSet rs = st.executeQuery("SELECT * FROM paciente WHERE activo=1");
             pacientes = new ArrayList<Paciente>();
             while (rs.next())
             {

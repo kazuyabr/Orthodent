@@ -13,9 +13,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import modelo.Comuna;
 import modelo.Region;
 import orthodent.JVentana;
+import orthodent.agenda.Agenda;
+import orthodent.agenda.NuevaCita;
 import orthodent.db.ComunaDB;
 import orthodent.db.PacienteDB;
 import orthodent.db.RegionDB;
@@ -29,10 +32,11 @@ public class NuevoPaciente extends javax.swing.JDialog {
     /**
      * Creates new form NuevoUsuario
      */
-    public NuevoPaciente(java.awt.Frame parent, boolean modal) {
+    private NuevaCita nuevaCita;
+    public NuevoPaciente(java.awt.Frame parent, boolean modal, NuevaCita nuevaCita) {
         super(parent, modal);
         initComponents();
-        
+        this.nuevaCita = nuevaCita;
         this.aceptar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.cancelar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
@@ -520,9 +524,17 @@ public class NuevoPaciente extends javax.swing.JDialog {
                             }*/
                         } catch (Exception ex) {
                         }
-
-                        ((JVentana)this.getParent()).getPacientes().updateModelo();
-                        ((JVentana)this.getParent()).getPacientes().updateUI();
+                        
+                        Pacientes pacientesPanel = ((JVentana)this.getParent()).getPacientes();
+                        if(pacientesPanel!=null){
+                            pacientesPanel.updateModelo();
+                            pacientesPanel.updateUI();
+                        }
+                        else if(this.nuevaCita!=null){
+                            this.nuevaCita.initPacientes();
+                        }
+                        
+                        
                         this.dispose();
                     }
                     else{
@@ -760,6 +772,15 @@ public class NuevoPaciente extends javax.swing.JDialog {
         }
         
         return true;
+    }
+    
+    
+    public void setNombresTextField(String nombres){
+        this.nombres.setText(nombres);
+    }
+    
+    public void setApelidoPaternoTextField(String apellido){
+        this.apellidoPat.setText(apellido);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
