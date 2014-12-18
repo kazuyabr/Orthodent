@@ -12,6 +12,7 @@ import modelo.Rol;
 import modelo.Usuario;
 import orthodent.db.Autenticacion;
 import orthodent.db.RolDB;
+import orthodent.utils.Validaciones;
 
 /**
  *
@@ -89,6 +90,7 @@ public class ConfigurarCuenta extends JPanel{
         contraseña = new javax.swing.JPasswordField();
         telefono = new javax.swing.JTextField();
         guardar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(850, 551));
@@ -125,10 +127,10 @@ public class ConfigurarCuenta extends JPanel{
         labelRol.setText("Rol");
 
         labelNombres.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
-        labelNombres.setText("Nombre");
+        labelNombres.setText("Nombre (*)");
 
         labelApellidoPat.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
-        labelApellidoPat.setText("Apellido P.");
+        labelApellidoPat.setText("Apellido P. (*)");
 
         labelApellidoMat.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
         labelApellidoMat.setText("Apellido M.");
@@ -152,36 +154,50 @@ public class ConfigurarCuenta extends JPanel{
 
         nombres.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         nombres.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                nombresKeyReleased(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 nombresKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nombresKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                nombresKeyReleased(evt);
             }
         });
 
         apellidoPat.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         apellidoPat.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                apellidoPatKeyReleased(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 apellidoPatKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                apellidoPatKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                apellidoPatKeyReleased(evt);
             }
         });
 
         apellidoMat.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         apellidoMat.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                apellidoMatKeyReleased(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 apellidoMatKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                apellidoMatKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                apellidoMatKeyReleased(evt);
             }
         });
 
         email.setEditable(false);
         email.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
+        email.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                emailKeyPressed(evt);
+            }
+        });
 
         contraseña.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         contraseña.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -195,11 +211,14 @@ public class ConfigurarCuenta extends JPanel{
 
         telefono.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         telefono.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                telefonoKeyReleased(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 telefonoKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                telefonoKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                telefonoKeyReleased(evt);
             }
         });
 
@@ -211,6 +230,9 @@ public class ConfigurarCuenta extends JPanel{
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel1.setText("(*) Campos Obligatorios");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -218,33 +240,42 @@ public class ConfigurarCuenta extends JPanel{
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(panelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(61, 61, 61)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelTelefono)
-                    .addComponent(labelContraseña)
-                    .addComponent(labelEmail)
-                    .addComponent(labelApellidoPat)
-                    .addComponent(labelNombres)
-                    .addComponent(labelRol)
-                    .addComponent(labelApellidoMat))
-                .addGap(34, 34, 34)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(apellidoMat, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(apellidoPat, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(rol)
-                        .addComponent(nombres, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(telefono, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(contraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
-                .addComponent(imagenProfesional)
-                .addGap(239, 239, 239))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(guardar)
                 .addGap(83, 83, 83))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(61, 61, 61)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelTelefono)
+                            .addComponent(labelContraseña)
+                            .addComponent(labelEmail)
+                            .addComponent(labelApellidoPat)
+                            .addComponent(labelRol)
+                            .addComponent(labelApellidoMat))
+                        .addGap(34, 34, 34))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(labelNombres, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(59, 59, 59)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(apellidoMat, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(apellidoPat, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(rol)
+                                .addComponent(nombres, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(telefono, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(contraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
+                        .addComponent(imagenProfesional)
+                        .addGap(239, 239, 239))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -278,7 +309,9 @@ public class ConfigurarCuenta extends JPanel{
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(telefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelTelefono))
-                .addGap(0, 227, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addGap(0, 174, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(imagenProfesional)
@@ -300,7 +333,7 @@ public class ConfigurarCuenta extends JPanel{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 539, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -393,75 +426,18 @@ public class ConfigurarCuenta extends JPanel{
     }//GEN-LAST:event_telefonoKeyReleased
 
     private void nombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombresKeyTyped
-        char c = evt.getKeyChar();
-        
-        if(c==KeyEvent.VK_ENTER){
-            evt.consume();
-        }
-        else if(c==KeyEvent.VK_SPACE){
-            String antes = this.nombres.getText();
-            
-            if(antes.equals("")){
-                evt.consume();
-            }
-            else{
-                this.habilitarBoton();
-            }
-        }
-        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
-            evt.consume();
-        }
-        else{
+        if(Validaciones.validarNombre(evt))
             this.habilitarBoton();
-        }
     }//GEN-LAST:event_nombresKeyTyped
 
     private void apellidoPatKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoPatKeyTyped
-        char c = evt.getKeyChar();
-        
-        if(c==KeyEvent.VK_ENTER){
-            evt.consume();
-        }
-        else if(c==KeyEvent.VK_SPACE){
-            String antes = this.apellidoPat.getText();
-            
-            if(antes.equals("")){
-                evt.consume();
-            }
-            else{
-                this.habilitarBoton();
-            }
-        }
-        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
-            evt.consume();
-        }
-        else{
+        if(Validaciones.validarNombre(evt))
             this.habilitarBoton();
-        }
     }//GEN-LAST:event_apellidoPatKeyTyped
 
     private void apellidoMatKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoMatKeyTyped
-        char c = evt.getKeyChar();
-        
-        if(c==KeyEvent.VK_ENTER){
-            evt.consume();
-        }
-        else if(c==KeyEvent.VK_SPACE){
-            String antes = this.apellidoMat.getText();
-            
-            if(antes.equals("")){
-                evt.consume();
-            }
-            else{
-                this.habilitarBoton();
-            }
-        }
-        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
-            evt.consume();
-        }
-        else{
+        if(Validaciones.validarNombre(evt))
             this.habilitarBoton();
-        }
     }//GEN-LAST:event_apellidoMatKeyTyped
 
     private void contraseñaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contraseñaKeyTyped
@@ -485,6 +461,44 @@ public class ConfigurarCuenta extends JPanel{
         }
     }//GEN-LAST:event_telefonoKeyTyped
 
+    private void nombresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombresKeyPressed
+                // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if(KeyEvent.VK_BACK_SPACE == c && !this.nombres.getText().equals(""))
+            this.habilitarBoton();
+    }//GEN-LAST:event_nombresKeyPressed
+
+    private void apellidoPatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoPatKeyPressed
+              // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if(KeyEvent.VK_BACK_SPACE == c && !this.nombres.getText().equals(""))
+            this.habilitarBoton();
+    }//GEN-LAST:event_apellidoPatKeyPressed
+
+    private void apellidoMatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoMatKeyPressed
+        // TODO add your handling code here:
+                // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if(KeyEvent.VK_BACK_SPACE == c && !this.nombres.getText().equals(""))
+            this.habilitarBoton();
+    }//GEN-LAST:event_apellidoMatKeyPressed
+
+    private void emailKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailKeyPressed
+        // TODO add your handling code here:
+                // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if(KeyEvent.VK_BACK_SPACE == c && !this.nombres.getText().equals(""))
+            this.habilitarBoton();
+    }//GEN-LAST:event_emailKeyPressed
+
+    private void telefonoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefonoKeyPressed
+        // TODO add your handling code here:
+                // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if(KeyEvent.VK_BACK_SPACE == c && !this.nombres.getText().equals(""))
+            this.habilitarBoton();
+    }//GEN-LAST:event_telefonoKeyPressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField apellidoMat;
     private javax.swing.JTextField apellidoPat;
@@ -492,6 +506,7 @@ public class ConfigurarCuenta extends JPanel{
     private javax.swing.JTextField email;
     private javax.swing.JButton guardar;
     private javax.swing.JButton imagenProfesional;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel labelApellidoMat;
     private javax.swing.JLabel labelApellidoPat;

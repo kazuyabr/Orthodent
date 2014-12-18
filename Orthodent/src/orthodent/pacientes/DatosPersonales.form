@@ -67,29 +67,30 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace pref="76" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="labelNombres" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelAntecedentesMedicos" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelSexo" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelFechaNacimiento" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelApellidoPat" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelApellidoMat" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelRut" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelEmail" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelTelefono" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelEdad" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelCiudad" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelComuna" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelDireccion" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="eliminar" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="guardar" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="labelNombres" min="-2" max="-2" attributes="0"/>
-                              <Component id="labelAntecedentesMedicos" min="-2" max="-2" attributes="0"/>
-                              <Component id="labelSexo" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="labelFechaNacimiento" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="labelApellidoPat" min="-2" max="-2" attributes="0"/>
-                              <Component id="labelApellidoMat" min="-2" max="-2" attributes="0"/>
-                              <Component id="labelRut" min="-2" max="-2" attributes="0"/>
-                              <Component id="labelEmail" min="-2" max="-2" attributes="0"/>
-                              <Component id="labelTelefono" min="-2" max="-2" attributes="0"/>
-                              <Component id="labelEdad" min="-2" max="-2" attributes="0"/>
-                              <Component id="labelCiudad" min="-2" max="-2" attributes="0"/>
-                              <Component id="labelComuna" min="-2" max="-2" attributes="0"/>
-                              <Component id="labelDireccion" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="sexo" min="-2" pref="99" max="-2" attributes="0"/>
@@ -107,9 +108,11 @@
                               <Component id="comuna" alignment="0" min="-2" pref="172" max="-2" attributes="0"/>
                               <Component id="direccion" alignment="0" min="-2" pref="246" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="319" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="139" max="-2" attributes="0"/>
                       </Group>
                   </Group>
+                  <Component id="guardar" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -186,6 +189,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="guardar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="eliminar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -246,7 +250,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Georgia" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Nombres"/>
+            <Property name="text" type="java.lang.String" value="Nombres (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="nombres">
@@ -288,7 +292,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Georgia" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Apellido P."/>
+            <Property name="text" type="java.lang.String" value="Apellido P. (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="apellidoPat">
@@ -469,7 +473,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Georgia" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Telefono"/>
+            <Property name="text" type="java.lang.String" value="Telefono (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="ciudad">
@@ -517,6 +521,7 @@
             <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="fechaNacimientoFocusLost"/>
             <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="fechaNacimientoPropertyChange"/>
             <EventHandler event="ancestorAdded" listener="javax.swing.event.AncestorListener" parameters="javax.swing.event.AncestorEvent" handler="fechaNacimientoAncestorAdded"/>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="fechaNacimientoKeyPressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="edad">
@@ -538,6 +543,14 @@
               <Font name="Georgia" size="14" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Edad"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Lucida Grande" size="13" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="(*) Campos Obligatorio"/>
           </Properties>
         </Component>
       </SubComponents>

@@ -211,6 +211,7 @@ public class DatosPersonales extends JPanel{
         fechaNacimiento = new com.toedter.calendar.JDateChooser();
         edad = new javax.swing.JTextField();
         labelEdad = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(850, 551));
@@ -244,7 +245,7 @@ public class DatosPersonales extends JPanel{
         );
 
         labelNombres.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
-        labelNombres.setText("Nombres");
+        labelNombres.setText("Nombres (*)");
 
         nombres.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         nombres.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -276,7 +277,7 @@ public class DatosPersonales extends JPanel{
         });
 
         labelApellidoPat.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
-        labelApellidoPat.setText("Apellido P.");
+        labelApellidoPat.setText("Apellido P. (*)");
 
         apellidoPat.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         apellidoPat.addInputMethodListener(new java.awt.event.InputMethodListener() {
@@ -395,7 +396,7 @@ public class DatosPersonales extends JPanel{
         });
 
         labelTelefono.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
-        labelTelefono.setText("Telefono");
+        labelTelefono.setText("Telefono (*)");
 
         ciudad.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         ciudad.addItemListener(new java.awt.event.ItemListener() {
@@ -453,6 +454,11 @@ public class DatosPersonales extends JPanel{
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
         });
+        fechaNacimiento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                fechaNacimientoKeyPressed(evt);
+            }
+        });
 
         edad.setFont(new java.awt.Font("Georgia", 0, 11)); // NOI18N
         edad.setEnabled(false);
@@ -473,6 +479,9 @@ public class DatosPersonales extends JPanel{
         labelEdad.setFont(new java.awt.Font("Georgia", 1, 14)); // NOI18N
         labelEdad.setText("Edad");
 
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel1.setText("(*) Campos Obligatorio");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -483,27 +492,28 @@ public class DatosPersonales extends JPanel{
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(76, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelNombres)
+                    .addComponent(labelAntecedentesMedicos)
+                    .addComponent(labelSexo)
+                    .addComponent(labelFechaNacimiento)
+                    .addComponent(labelApellidoPat)
+                    .addComponent(labelApellidoMat)
+                    .addComponent(labelRut)
+                    .addComponent(labelEmail)
+                    .addComponent(labelTelefono)
+                    .addComponent(labelEdad)
+                    .addComponent(labelCiudad)
+                    .addComponent(labelComuna)
+                    .addComponent(labelDireccion))
+                .addGap(39, 39, 39)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(eliminar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(guardar)
-                        .addGap(41, 41, 41))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelNombres)
-                            .addComponent(labelAntecedentesMedicos)
-                            .addComponent(labelSexo)
-                            .addComponent(labelFechaNacimiento)
-                            .addComponent(labelApellidoPat)
-                            .addComponent(labelApellidoMat)
-                            .addComponent(labelRut)
-                            .addComponent(labelEmail)
-                            .addComponent(labelTelefono)
-                            .addComponent(labelEdad)
-                            .addComponent(labelCiudad)
-                            .addComponent(labelComuna)
-                            .addComponent(labelDireccion))
-                        .addGap(39, 39, 39)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(sexo, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -519,7 +529,9 @@ public class DatosPersonales extends JPanel{
                             .addComponent(ciudad, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(comuna, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(direccion, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(319, 319, 319))))
+                        .addGap(139, 139, 139)))
+                .addComponent(guardar)
+                .addGap(41, 41, 41))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -580,7 +592,8 @@ public class DatosPersonales extends JPanel{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(guardar)
-                    .addComponent(eliminar))
+                    .addComponent(eliminar)
+                    .addComponent(jLabel1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -732,7 +745,8 @@ public class DatosPersonales extends JPanel{
     }//GEN-LAST:event_nombresKeyReleased
 
     private void nombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombresKeyTyped
-            Validaciones.validarNombre(evt);
+        if(Validaciones.validarNombre(evt))
+            this.habilitarBoton();
             
     }//GEN-LAST:event_nombresKeyTyped
 
@@ -761,11 +775,13 @@ public class DatosPersonales extends JPanel{
     }//GEN-LAST:event_apellidoPatKeyTyped
 
     private void apellidoMatKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoMatKeyTyped
-        Validaciones.validarNombre(evt);
+                if(Validaciones.validarNombre(evt))
+            this.habilitarBoton();
     }//GEN-LAST:event_apellidoMatKeyTyped
 
     private void rutKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rutKeyTyped
-        Validaciones.validarRut(this.rut.getText(), evt);
+        if(Validaciones.validarRut(this.rut.getText(), evt))
+            this.habilitarBoton();
     }//GEN-LAST:event_rutKeyTyped
 
     private void emailKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailKeyTyped
@@ -955,6 +971,13 @@ public class DatosPersonales extends JPanel{
         this.habilitarBoton();
     }//GEN-LAST:event_sexoItemStateChanged
 
+    private void fechaNacimientoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fechaNacimientoKeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if(KeyEvent.VK_BACK_SPACE == c && this.fechaNacimiento.isValid())
+            this.habilitarBoton();
+    }//GEN-LAST:event_fechaNacimientoKeyPressed
+
     private String getFechaString(Date date){
         
         String fechaNacimiento = (date.getYear()+1900) + "-";
@@ -986,6 +1009,7 @@ public class DatosPersonales extends JPanel{
     private javax.swing.JTextField email;
     private com.toedter.calendar.JDateChooser fechaNacimiento;
     private javax.swing.JButton guardar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelAntecedentesMedicos;

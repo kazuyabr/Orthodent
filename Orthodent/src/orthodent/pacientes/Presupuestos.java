@@ -1067,7 +1067,10 @@ public class Presupuestos extends JPanel{
             for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
                 try {
                     int pieza = Integer.parseInt((String) this.tablaPiezaTratamiento.getValueAt(i, 0));
-
+                    
+                    if(pieza < 0)
+                        throw new Exception();
+                    
                     if(this.tablaPiezaTratamiento.getValueAt(i, 1)==null){
                         JOptionPane.showMessageDialog(this,
                             "Hay cambios en la tabla sin completar!",
@@ -1113,6 +1116,8 @@ public class Presupuestos extends JPanel{
 
                     try{
                         int val = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 2));
+                        if(pieza < 0)
+                            throw new Exception();
                     }
                     catch(Exception e){
                         JOptionPane.showMessageDialog(this,
@@ -1206,7 +1211,8 @@ public class Presupuestos extends JPanel{
             for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
                 try {
                     int pieza = Integer.parseInt((String) this.tablaPiezaTratamiento.getValueAt(i, 0));
-
+                    if(pieza < 0)
+                        throw new Exception();
                     if(this.tablaPiezaTratamiento.getValueAt(i, 1)==null){
                         JOptionPane.showMessageDialog(this,
                             "Hay cambios en la tabla sin completar!",

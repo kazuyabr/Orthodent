@@ -35,7 +35,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel2" pref="529" max="32767" attributes="0"/>
+              <Component id="jPanel2" pref="539" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -64,37 +64,52 @@
                   <Component id="panelTitulo" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="labelTelefono" min="-2" max="-2" attributes="0"/>
-                      <Component id="labelContraseña" min="-2" max="-2" attributes="0"/>
-                      <Component id="labelEmail" min="-2" max="-2" attributes="0"/>
-                      <Component id="labelApellidoPat" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="labelNombres" min="-2" max="-2" attributes="0"/>
-                      <Component id="labelRol" min="-2" max="-2" attributes="0"/>
-                      <Component id="labelApellidoMat" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="apellidoMat" alignment="0" min="-2" pref="188" max="-2" attributes="0"/>
-                      <Component id="apellidoPat" min="-2" pref="188" max="-2" attributes="0"/>
-                      <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="rol" max="32767" attributes="0"/>
-                          <Component id="nombres" min="-2" pref="188" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="telefono" min="-2" pref="188" max="-2" attributes="0"/>
-                      <Component id="contraseña" min="-2" pref="188" max="-2" attributes="0"/>
-                      <Component id="email" min="-2" pref="188" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace pref="106" max="32767" attributes="0"/>
-                  <Component id="imagenProfesional" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="239" max="-2" attributes="0"/>
-              </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="guardar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="83" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="labelTelefono" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelContraseña" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelEmail" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelApellidoPat" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelRol" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelApellidoMat" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="labelNombres" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="apellidoMat" alignment="0" min="-2" pref="188" max="-2" attributes="0"/>
+                              <Component id="apellidoPat" min="-2" pref="188" max="-2" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="rol" max="32767" attributes="0"/>
+                                  <Component id="nombres" min="-2" pref="188" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="telefono" min="-2" pref="188" max="-2" attributes="0"/>
+                              <Component id="contraseña" min="-2" pref="188" max="-2" attributes="0"/>
+                              <Component id="email" min="-2" pref="188" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="84" max="32767" attributes="0"/>
+                          <Component id="imagenProfesional" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="239" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
@@ -137,7 +152,9 @@
                       <Component id="telefono" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="labelTelefono" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="0" pref="235" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="174" max="32767" attributes="0"/>
               </Group>
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
@@ -211,7 +228,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Georgia" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Nombre"/>
+            <Property name="text" type="java.lang.String" value="Nombre (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="labelApellidoPat">
@@ -219,7 +236,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Georgia" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Apellido P."/>
+            <Property name="text" type="java.lang.String" value="Apellido P. (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="labelApellidoMat">
@@ -281,8 +298,9 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="nombresKeyReleased"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="nombresKeyTyped"/>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="nombresKeyPressed"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="nombresKeyReleased"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="apellidoPat">
@@ -292,8 +310,9 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="apellidoPatKeyReleased"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="apellidoPatKeyTyped"/>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="apellidoPatKeyPressed"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="apellidoPatKeyReleased"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="apellidoMat">
@@ -303,8 +322,9 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="apellidoMatKeyReleased"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="apellidoMatKeyTyped"/>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="apellidoMatKeyPressed"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="apellidoMatKeyReleased"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="email">
@@ -314,6 +334,9 @@
               <Font name="Georgia" size="11" style="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="emailKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JPasswordField" name="contrase&#xf1;a">
           <Properties>
@@ -333,8 +356,9 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="telefonoKeyReleased"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="telefonoKeyTyped"/>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="telefonoKeyPressed"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="telefonoKeyReleased"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="guardar">
@@ -347,6 +371,14 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="guardarActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Lucida Grande" size="13" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="(*) Campos Obligatorios"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

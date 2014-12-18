@@ -12,20 +12,23 @@ import java.awt.event.KeyEvent;
  * @author felipe
  */
 public class Validaciones {
-    public static void validarRut(String prev_rut, java.awt.event.KeyEvent evt) {
+    public static boolean validarRut(String prev_rut, java.awt.event.KeyEvent evt) {
         char c = evt.getKeyChar();
         
         if(c==KeyEvent.VK_ENTER){
             evt.consume();
+            return false;
         }
         else if(!((c>='0' && c<='9') || (c=='-') || (c=='k') || (c=='K'))){
             evt.consume();
+            return false;
         }
         else {
             if(c=='k' || c=='K'){
                 String ultimo = prev_rut.length() > 0? prev_rut.charAt(prev_rut.length()-1)+"" : "";
                 if(!ultimo.equals("-")){
                     evt.consume();
+                    return false;
                 }
             }
             if(c=='-'){
@@ -33,6 +36,7 @@ public class Validaciones {
                 String ultimo = prev_rut.length() > 0? prev_rut.charAt(prev_rut.length()-1)+"" : "";
                 if(!(largo==7 || largo==8) || ultimo.equals("-")){
                     evt.consume();
+                    return false;
                 }
             }
             if(c>='0' && c<='9'){
@@ -41,16 +45,19 @@ public class Validaciones {
                 if(!prev_rut.contains("-")){
                     if(!(largo<8)){
                         evt.consume();
+                        return false;
                     }
                 }
                 else{
                     char ultimo = prev_rut.length() > 0? prev_rut.charAt(prev_rut.length()-1) : '|';
                     if((ultimo>='0' && ultimo<='9') || ultimo=='k' || ultimo=='K'){
                         evt.consume();
+                        return false;
                     }
                 }
             }
         }
+        return true;
     }
     
     static public String calcularDigitoVerificador(String rut){
@@ -73,10 +80,12 @@ public class Validaciones {
         }
     }
     
-    static public void validarNombre(java.awt.event.KeyEvent evt) {                                 
+    static public boolean validarNombre(java.awt.event.KeyEvent evt) {                                 
         char c = evt.getKeyChar();
         if(!(Character.isSpaceChar(c)||Character.isAlphabetic(c))) {
             evt.consume();
+            return false;
         }
+        return true;
     }
 }

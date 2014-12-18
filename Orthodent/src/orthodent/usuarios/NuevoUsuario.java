@@ -18,6 +18,7 @@ import orthodent.JVentana;
 import orthodent.db.Autenticacion;
 import orthodent.db.ClinicaInternaDB;
 import orthodent.db.PacienteDB;
+import orthodent.utils.Validaciones;
 
 /**
  *
@@ -537,57 +538,15 @@ public class NuevoUsuario extends javax.swing.JDialog {
     }//GEN-LAST:event_aceptarActionPerformed
 
     private void nombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombresKeyTyped
-        char c = evt.getKeyChar();
-        
-        if(c==KeyEvent.VK_ENTER){
-            evt.consume();
-        }
-        else if(c==KeyEvent.VK_SPACE){
-            String antes = this.nombres.getText();
-            
-            if(antes.equals("")){
-                evt.consume();
-            }
-        }
-        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
-            evt.consume();
-        }
+        Validaciones.validarNombre(evt);
     }//GEN-LAST:event_nombresKeyTyped
 
     private void apellidoPatKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoPatKeyTyped
-        char c = evt.getKeyChar();
-        
-        if(c==KeyEvent.VK_ENTER){
-            evt.consume();
-        }
-        else if(c==KeyEvent.VK_SPACE){
-            String antes = this.apellidoPat.getText();
-            
-            if(antes.equals("")){
-                evt.consume();
-            }
-        }
-        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
-            evt.consume();
-        }
+        Validaciones.validarNombre(evt);
     }//GEN-LAST:event_apellidoPatKeyTyped
 
     private void apellidoMatKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoMatKeyTyped
-        char c = evt.getKeyChar();
-        
-        if(c==KeyEvent.VK_ENTER){
-            evt.consume();
-        }
-        else if(c==KeyEvent.VK_SPACE){
-            String antes = this.nombres.getText();
-            
-            if(antes.equals("")){
-                evt.consume();
-            }
-        }
-        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
-            evt.consume();
-        }
+        Validaciones.validarNombre(evt);
     }//GEN-LAST:event_apellidoMatKeyTyped
 
     private void emailKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailKeyTyped
