@@ -31,7 +31,7 @@ public class VentanaAbono extends javax.swing.JDialog {
     public static Pago pagoAbono;
     public static int totalAbono;
     public static int totalTrat;
-    
+
     public VentanaAbono(java.awt.Frame parent, boolean modal, int idPlanTratamiento, Recaudacion rc, boolean crear, Pago pgAbono) {
         super(parent, modal);
         try {
@@ -46,28 +46,26 @@ public class VentanaAbono extends javax.swing.JDialog {
             totalAbono = pln.getTotalAbonos();
             totalTrat = pln.getCostoTotal();
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            this.setLocation((screenSize.width - this.getSize().width) / 2 ,
+            this.setLocation((screenSize.width - this.getSize().width) / 2,
                     (screenSize.height - this.getSize().height) / 2);
-            
-            if(crearNuevo){
+
+            if (crearNuevo) {
                 this.setTitle("Nuevo Abono");
                 this.titulo.setText("Nuevo Abono");
                 this.no.setSelected(true);
-            }
-            else{
+            } else {
                 this.setTitle("Editar Abono");
                 this.titulo.setText("Editar Abono");
                 this.calendarioFecha.setDate(this.getFecha(pagoAbono.getFecha()));
-                this.valor.setText(pagoAbono.getAbono()+"");
+                this.valor.setText(pagoAbono.getAbono() + "");
                 this.tipoPago.setSelectedItem(pagoAbono.getTipoPago());
                 this.detalle.setText(pagoAbono.getDetalle());
-                this.numBoleta.setText(pagoAbono.getNumBoleta()+"");
-                
-                if(pagoAbono.getIsLab()){
+                this.numBoleta.setText(pagoAbono.getNumBoleta() + "");
+
+                if (pagoAbono.getIsLab()) {
                     this.si.setSelected(true);
                     this.no.setSelected(false);
-                }
-                else{
+                } else {
                     this.si.setSelected(false);
                     this.no.setSelected(true);
                 }
@@ -76,21 +74,20 @@ public class VentanaAbono extends javax.swing.JDialog {
             Logger.getLogger(VentanaAbono.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private Date getFecha(String fechaNacimiento){
-        
-        if(fechaNacimiento!=null){
-            int año = Integer.parseInt(fechaNacimiento.substring(0, fechaNacimiento.indexOf("-")))-1900;
-            fechaNacimiento = fechaNacimiento.substring(fechaNacimiento.indexOf("-")+1, fechaNacimiento.length());
 
-            int mes = Integer.parseInt(fechaNacimiento.substring(0, fechaNacimiento.indexOf("-")))-1;
-            fechaNacimiento = fechaNacimiento.substring(fechaNacimiento.indexOf("-")+1, fechaNacimiento.length());
+    private Date getFecha(String fechaNacimiento) {
+
+        if (fechaNacimiento != null) {
+            int año = Integer.parseInt(fechaNacimiento.substring(0, fechaNacimiento.indexOf("-"))) - 1900;
+            fechaNacimiento = fechaNacimiento.substring(fechaNacimiento.indexOf("-") + 1, fechaNacimiento.length());
+
+            int mes = Integer.parseInt(fechaNacimiento.substring(0, fechaNacimiento.indexOf("-"))) - 1;
+            fechaNacimiento = fechaNacimiento.substring(fechaNacimiento.indexOf("-") + 1, fechaNacimiento.length());
 
             int dia = Integer.parseInt(fechaNacimiento);
-            
+
             return new Date(año, mes, dia);
-        }
-        else{
+        } else {
             return null;
         }
     }
@@ -355,17 +352,17 @@ public class VentanaAbono extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_cancelarActionPerformed
 
-    private String getFechaString(Date date){
-        if(date!=null){
-            String fechaNacimiento = (date.getYear()+1900) + "-";
+    private String getFechaString(Date date) {
+        if (date != null) {
+            String fechaNacimiento = (date.getYear() + 1900) + "-";
 
-            if((date.getMonth()+1)<9){
+            if ((date.getMonth() + 1) < 9) {
                 fechaNacimiento = fechaNacimiento + "0";
             }
 
-            fechaNacimiento = fechaNacimiento +(date.getMonth()+1)+"-";
+            fechaNacimiento = fechaNacimiento + (date.getMonth() + 1) + "-";
 
-            if(date.getDate()<9){
+            if (date.getDate() < 9) {
                 fechaNacimiento = fechaNacimiento + "0";
             }
 
@@ -375,104 +372,99 @@ public class VentanaAbono extends javax.swing.JDialog {
         }
         return null;
     }
-    
+
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
-        String tipoPago1 = (String)this.tipoPago.getSelectedItem();
+        String tipoPago1 = (String) this.tipoPago.getSelectedItem();
         String detalle1 = this.detalle.getText().toString();
         Date date = this.calendarioFecha.getDate();
         String fechaCita = getFechaString(date);
         String valor1 = this.valor.getText();
         String numBol = this.numBoleta.getText();
-        if(validarCampos()){
-            int abono = Integer.parseInt(valor1);
+        int abono;
+        if (validarCampos()) {
+            try {
+                abono = Integer.parseInt(valor1);
+            } catch (Exception e) {
+                abono = Integer.MAX_VALUE;
+            }
             int boleta = Integer.parseInt(numBol);
-                System.out.println("tTrat:"+totalTrat);
-                System.out.println("tAbono:"+totalAbono);
-                if(crearNuevo){ //crear
-                    if(abono > 0 && totalTrat >= (totalAbono+abono)){
+            System.out.println("tTrat:" + totalTrat);
+            System.out.println("tAbono:" + totalAbono);
+            if (crearNuevo) { //crear                                // Overflow case
+                if (abono > 0 && totalTrat >= (totalAbono + abono) && abono + totalAbono > 0) {
 
                     boolean respuesta = false;
-                    if(this.si.isSelected()){
+                    if (this.si.isSelected()) {
                         respuesta = PagoDB.crearPago(this.idPlanTratamiento, tipoPago1, detalle1, fechaCita, abono, boleta, true);
-                    }
-                    else{
+                    } else {
                         respuesta = PagoDB.crearPago(this.idPlanTratamiento, tipoPago1, detalle1, fechaCita, abono, boleta, false);
                     }
                     try {
-                        this.recaudacionPadre.updateModeloPagoAbono(); 
+                        this.recaudacionPadre.updateModeloPagoAbono();
                         this.recaudacionPadre.updateModeloPagoLaboratorio();
-                        
+
                         this.recaudacionPadre.setTotalAbonos();
-                        
+
                         this.recaudacionPadre.updateTablaPlanesTratamientos();
                     } catch (Exception ex) {
                         Logger.getLogger(VentanaAbono.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
                     this.recaudacionPadre.updateUI();
-                    //this.dispose();
+                    this.dispose();
+                } else {
+                    System.out.println("Ingresar un abono valido");
+                    if (totalTrat > (totalAbono + abono)) {
+                        JOptionPane.showMessageDialog(null, "Ingresar un abono valido. ");
+                    } else if (totalTrat == totalAbono) {
+                        JOptionPane.showMessageDialog(null, "El tratamiento esta cancelado, no necesita agregar abonos. ");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "El abono es mayor al costo total del tratamiento. ");
                     }
-                    else{
-                        System.out.println("Ingresar un abono valido");
-                        if(totalTrat > (totalAbono+abono)){
-                            JOptionPane.showMessageDialog(null, "Ingresar un abono valido. ");
-                        }
-                        else if(totalTrat == totalAbono){
-                            JOptionPane.showMessageDialog(null,"El tratamiento esta cancelado, no necesita agregar abonos. " );
-                        }
-                        else{
-                            JOptionPane.showMessageDialog(null,"El abono es mayor al costo total del tratamiento. " );
-                        }
-                    }                    
-                }
-                else{ //editar
-                    if(abono > 0 && totalTrat >= (totalAbono-abono)){
-                        System.out.println("EDITAR");
-                        pagoAbono.setIdPlanTratamiento(idPlanTratamiento);
-                        pagoAbono.setDetalle(detalle1);
-                        pagoAbono.setFecha(fechaCita);
-                        pagoAbono.setAbono(abono);
-                        pagoAbono.setNumBoleta(boleta);
-                        System.out.println(pagoAbono.getIsLab()+" es lab");
-                        System.out.println(this.si.isSelected()+" cual selec");
-                        boolean isLab = (this.si.isSelected())? true : false;
-                        pagoAbono.setIsLab(isLab);
-                        
-                        boolean respuesta = PagoDB.editarPago(pagoAbono);   
-                        System.out.println(respuesta);
-                        try {
-                            this.recaudacionPadre.updateModeloPagoAbono();
-                            this.recaudacionPadre.updateModeloPagoLaboratorio();
-                            this.recaudacionPadre.setTotalAbonos();
-                            this.recaudacionPadre.updateTablaPlanesTratamientos();
-                        } catch (Exception ex) {
-                            Logger.getLogger(VentanaAbono.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        this.recaudacionPadre.updateUI();  
-                    }
-                    else{
-                        System.out.println("Ingresar un abono valido");
-                        if(totalTrat > (totalAbono+abono)){
-                            JOptionPane.showMessageDialog(null, "Ingresar un abono valido. ");
-                        }
-                        else if(totalTrat == totalAbono){
-                            JOptionPane.showMessageDialog(null,"El tratamiento esta cancelado, no necesita agregar abonos. " );
-                        }
-                        else{
-                            JOptionPane.showMessageDialog(null,"El abono es mayor al costo total del tratamiento. " );
-                        }
-                    }                    
                     
-
                 }
-                this.dispose();
+            } else { //editar
+                if (abono > 0 && totalTrat >= (totalAbono - abono)) {
+                    System.out.println("EDITAR");
+                    pagoAbono.setIdPlanTratamiento(idPlanTratamiento);
+                    pagoAbono.setDetalle(detalle1);
+                    pagoAbono.setFecha(fechaCita);
+                    pagoAbono.setAbono(abono);
+                    pagoAbono.setNumBoleta(boleta);
+                    System.out.println(pagoAbono.getIsLab() + " es lab");
+                    System.out.println(this.si.isSelected() + " cual selec");
+                    boolean isLab = (this.si.isSelected()) ? true : false;
+                    pagoAbono.setIsLab(isLab);
 
-        }
-        else{
+                    boolean respuesta = PagoDB.editarPago(pagoAbono);
+                    System.out.println(respuesta);
+                    try {
+                        this.recaudacionPadre.updateModeloPagoAbono();
+                        this.recaudacionPadre.updateModeloPagoLaboratorio();
+                        this.recaudacionPadre.setTotalAbonos();
+                        this.recaudacionPadre.updateTablaPlanesTratamientos();
+                    } catch (Exception ex) {
+                        Logger.getLogger(VentanaAbono.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    this.recaudacionPadre.updateUI();
+                    this.dispose();
+                } else {
+                    System.out.println("Ingresar un abono valido");
+                    if (totalTrat > (totalAbono + abono)) {
+                        JOptionPane.showMessageDialog(null, "Ingresar un abono valido. ");
+                    } else if (totalTrat == totalAbono) {
+                        JOptionPane.showMessageDialog(null, "El tratamiento esta cancelado, no necesita agregar abonos. ");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "El abono es mayor al costo total del tratamiento. ");
+                    }
+                }
+            }
+
+        } else {
             JOptionPane.showMessageDialog(this,
-                "Faltan campos por completar",
-                "Orthodent",
-                JOptionPane.INFORMATION_MESSAGE);
+                    "Faltan campos por completar",
+                    "Orthodent",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_aceptarActionPerformed
 
@@ -486,14 +478,14 @@ public class VentanaAbono extends javax.swing.JDialog {
 
     private void valorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_valorKeyTyped
         char c = evt.getKeyChar();
-        if (!(c>='0' && c<='9')){
+        if (!(c >= '0' && c <= '9')) {
             evt.consume();
         }
     }//GEN-LAST:event_valorKeyTyped
 
     private void numBoletaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_numBoletaKeyTyped
         char c = evt.getKeyChar();
-        if (!(c>='0' && c<='9')){
+        if (!(c >= '0' && c <= '9')) {
             evt.consume();
         }
     }//GEN-LAST:event_numBoletaKeyTyped
@@ -508,37 +500,35 @@ public class VentanaAbono extends javax.swing.JDialog {
         this.si.setSelected(false);
     }//GEN-LAST:event_noActionPerformed
 
-    public boolean verificarCambios(){
+    public boolean verificarCambios() {
         Date date = this.calendarioFecha.getDate();
         String fechaCita = getFechaString(date);
         String descripcion = this.valor.getText();
-        if(fechaCita.equals(pagoAbono.getFecha()) && descripcion.equals(pagoAbono.getAbono())){
+        if (fechaCita.equals(pagoAbono.getFecha()) && descripcion.equals(pagoAbono.getAbono())) {
             return false;
         }
         return true;
     }
-    
-    public boolean validarCampos(){
+
+    public boolean validarCampos() {
         String fechaCita = this.calendarioFecha.getDateFormatString();
         String descripcion = this.valor.getText();
         String numBol = this.numBoleta.getText();
-        
-        if(fechaCita.equals("")){
+
+        if (fechaCita.equals("")) {
             return false;
         }
-        if(descripcion.equals("")){
+        if (descripcion.equals("")) {
             return false;
         }
-        if(numBol.equals("")){
+        if (numBol.equals("")) {
             return false;
         }
-        
+
         return true;
     }
-    
-        
-   
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptar;
     private com.toedter.calendar.JDateChooser calendarioFecha;

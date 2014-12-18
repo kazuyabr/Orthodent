@@ -150,6 +150,9 @@ public class NuevoPaciente extends javax.swing.JDialog {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 nombresKeyTyped(evt);
             }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nombresKeyPressed(evt);
+            }
         });
 
         labelNombre.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
@@ -593,39 +596,11 @@ public class NuevoPaciente extends javax.swing.JDialog {
     }//GEN-LAST:event_nombresKeyTyped
 
     private void apellidoPatKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoPatKeyTyped
-        char c = evt.getKeyChar();
-        
-        if(c==KeyEvent.VK_ENTER){
-            evt.consume();
-        }
-        else if(c==KeyEvent.VK_SPACE){
-            String antes = this.apellidoPat.getText();
-            
-            if(antes.equals("")){
-                evt.consume();
-            }
-        }
-        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
-            evt.consume();
-        }
+      Validaciones.validarNombre(evt);
     }//GEN-LAST:event_apellidoPatKeyTyped
 
     private void apellidoMatKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellidoMatKeyTyped
-        char c = evt.getKeyChar();
-        
-        if(c==KeyEvent.VK_ENTER){
-            evt.consume();
-        }
-        else if(c==KeyEvent.VK_SPACE){
-            String antes = this.nombres.getText();
-            
-            if(antes.equals("")){
-                evt.consume();
-            }
-        }
-        else if(!((c>='a' && c<='z') || (c>='A' && c<='Z'))){
-            evt.consume();
-        }
+        Validaciones.validarNombre(evt);
     }//GEN-LAST:event_apellidoMatKeyTyped
 
     private void emailKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailKeyTyped
@@ -687,6 +662,11 @@ public class NuevoPaciente extends javax.swing.JDialog {
     private void nombresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombresActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_nombresActionPerformed
+
+    private void nombresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombresKeyPressed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_nombresKeyPressed
     
     private boolean validarCamposObligatorios(String nombre, String apellidoPat, String rut, String fechaNacimiento, String telefono){
         
