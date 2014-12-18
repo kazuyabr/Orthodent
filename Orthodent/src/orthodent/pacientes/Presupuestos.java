@@ -1102,7 +1102,9 @@ public class Presupuestos extends JPanel{
             for(int i=0; i<this.tablaLaboratorio.getRowCount(); i++){ //recorro las filas
                 try {
                     int pieza = Integer.parseInt((String) this.tablaLaboratorio.getValueAt(i, 0));
-
+                    if(pieza < 0) {
+                        throw new Exception();
+                    }
                     String a = (String)this.tablaLaboratorio.getValueAt(i, 1);
 
                     if(a.equals("")){
@@ -1116,7 +1118,7 @@ public class Presupuestos extends JPanel{
 
                     try{
                         int val = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 2));
-                        if(pieza < 0)
+                        if(val < 0)
                             throw new Exception();
                     }
                     catch(Exception e){
@@ -1162,6 +1164,8 @@ public class Presupuestos extends JPanel{
                                     for(int i=0; i<this.tablaLaboratorio.getRowCount(); i++){ //recorro las filas
                                         
                                         int pieza = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 0));
+                                        if(pieza < 0)
+                                            throw new Exception();
                                         String prestacion = (String)this.tablaLaboratorio.getValueAt(i, 1);
                                         int valor = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 2));
                                         LaboratorioPiezaPresupuestoDB.crearLaboratorioPiezaPresupuesto(this.presupuestoSelected.getIdPresupuesto(), pieza, prestacion, valor);
@@ -1172,6 +1176,11 @@ public class Presupuestos extends JPanel{
                                     }
                                 }
                             } catch (Exception ex) {
+                                                    JOptionPane.showMessageDialog(this,
+                        "Hay datos incorrectos en la tabla o sin completar!",
+                        "Orthodent",
+                        JOptionPane.INFORMATION_MESSAGE);
+                    error = true;
                             }
                             this.cambios = false;
                             this.guardar.setEnabled(false);
@@ -1253,7 +1262,8 @@ public class Presupuestos extends JPanel{
             for(int i=0; i<this.tablaLaboratorio.getRowCount(); i++){ //recorro las filas
                 try {
                     int pieza = Integer.parseInt((String) this.tablaLaboratorio.getValueAt(i, 0));
-
+                    if(pieza < 0)
+                        throw new Exception();
                     String a = (String)this.tablaLaboratorio.getValueAt(i, 1);
 
                     if(a.equals("")){
@@ -1308,6 +1318,8 @@ public class Presupuestos extends JPanel{
                             try {
                                 for(int i=0; i<this.tablaLaboratorio.getRowCount(); i++){ //recorro las filas
                                     int pieza = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 0));
+                                    if(pieza < 0)
+                                        throw new Exception();
                                     String prestacion = (String)this.tablaLaboratorio.getValueAt(i, 1);
                                     int valor = Integer.parseInt((String)this.tablaLaboratorio.getValueAt(i, 2));
                                     LaboratorioPiezaPresupuestoDB.crearLaboratorioPiezaPresupuesto(pre.getIdPresupuesto(), pieza, prestacion, valor);
@@ -1317,6 +1329,11 @@ public class Presupuestos extends JPanel{
                                 } catch (Exception ex) {
                                 }
                             } catch (Exception ex) {
+                                                    JOptionPane.showMessageDialog(this,
+                        "Hay datos incorrectos en la tabla o sin completar!",
+                        "Orthodent",
+                        JOptionPane.INFORMATION_MESSAGE);
+                    error = true;
                             }
                         } catch (Exception ex) {
                         }
@@ -1424,7 +1441,8 @@ public class Presupuestos extends JPanel{
             for(int i=0; i<this.tablaPiezaTratamiento.getRowCount(); i++){ //recorro las filas
                 try {
                     int pieza = Integer.parseInt((String) this.tablaPiezaTratamiento.getValueAt(i, 0));
-
+                    if(pieza < 0)
+                        throw new Exception();
                     if(this.tablaPiezaTratamiento.getValueAt(i, 1)==null){
                         JOptionPane.showMessageDialog(this,
                             "Hay cambios en la tabla sin completar!",
@@ -1456,7 +1474,8 @@ public class Presupuestos extends JPanel{
             for(int i=0; i<this.tablaLaboratorio.getRowCount(); i++){ //recorro las filas
                 try {
                     int pieza = Integer.parseInt((String) this.tablaLaboratorio.getValueAt(i, 0));
-
+                    if(pieza < 0)
+                        throw new Exception();
                     String a = (String)this.tablaLaboratorio.getValueAt(i, 1);
 
                     if(a.equals("")){
