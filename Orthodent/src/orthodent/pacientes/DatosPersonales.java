@@ -480,7 +480,7 @@ public class DatosPersonales extends JPanel{
         labelEdad.setText("Edad");
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        jLabel1.setText("(*) Campos Obligatorio");
+        jLabel1.setText("(*) Campos Obligatorios");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
