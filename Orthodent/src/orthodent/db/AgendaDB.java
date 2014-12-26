@@ -185,5 +185,62 @@ public class AgendaDB {
         }
         return hor;
     }
+    
+    public static ArrayList<Cita> buscarCitas(String busqueda, AgendaSchedulerModel modelo, boolean todas){
+        ArrayList<Cita> citas = null;
+        try {
+            DbConnection db = new DbConnection();
+            Connection con = db.connection;
+            Date hoy = new Date();
+            DateTime dt2 = new DateTime(hoy);
+            String hoyS = dt2.toString("y-M-d");
+            java.sql.Statement st = con.createStatement();
+            ResultSet rs = null;
+            if(todas)
+                rs = st.executeQuery("SELECT * FROM cita;");
+            else
+                rs = st.executeQuery("SELECT * FROM cita WHERE fecha>='"+hoyS+"';"); 
+            citas = new ArrayList<Cita>();
+            while(rs.next()){
+                Paciente p = PacienteDB.getPaciente(rs.getInt("id_paciente"));
+                Cita c = new Cita(p.getNombre()+" "+p.getApellido_pat()+" "+p.getTelefono());
+                c.setFecha(rs.getString("fecha"));
+                c.setSemana(rs.getInt("semana"));
+                c.setProfesionalId(rs.getInt("id_profesional"));
+                c.setPacienteId(p.getId_paciente());
+                c.setId(rs.getInt("id_cita"));
+                c.setConfirmada(rs.getBoolean("confirmada"));
+                Date d = rs.getDate("fecha");
+                Time t = rs.getTime("hora_inicio");
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(d);
+                String[] hora = t.toString().split(":");
+                
+                cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hora[0]));
+                cal.set(Calendar.MINUTE, Integer.parseInt(hora[1]));
+                cal.set(Calendar.SECOND, 0);
+                
+                DateTime dt = new DateTime(cal.getTime());
+                c.setRealDateTime(dt);
+                c.setDateTime(new DateTime(modelo.obtenerLunes(cal.getTime())));
+                c.setDuration(Duration.standardMinutes(rs.getInt("duracion")));
+                c.setResource(modelo.calcularResource(c.getRealDateTime().toDate()));
+                //System.out.println(c.getRealDateTime()+" "+c.getDuration().toStandardSeconds().toStandardMinutes().getMinutes()+" "+c.getDateTime().toString());
+                if(p.getNombre().toLowerCase().contains(busqueda) || p.getApellido_pat().toLowerCase().contains(busqueda) || p.getApellido_mat().toLowerCase().contains(busqueda) || p.getRut().toLowerCase().contains(busqueda))
+                    citas.add(c);
+            }
+            rs.close();
+            con.close();
+            if(citas.size()>0)
+                return citas;
+            return null;
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(AgendaDB.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(AgendaDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;        
+    }
         
 }

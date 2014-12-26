@@ -240,7 +240,25 @@ public class Agenda extends JPanel implements Printable{
                     this.citasDeLaSemana.put(semana, citas);
                     this.semanasCargadas.put(semana, Boolean.TRUE);
                     for(Cita c : citas){
-                        System.out.println(c.getTitle());
+                        //System.out.println(c.getTitle());
+                        modelo.agregarCita(c);
+                        c.setAg(this);
+                    }
+                }
+                else{
+                    System.out.println("Retorno NULO");
+                }
+            }
+            else{
+                for(Cita c : this.citasDeLaSemana.get(semana)){
+                    this.modelo.eliminarCita(c);
+                }
+                ArrayList<Cita> citas = AgendaDB.obtenerCitas(semana, barraAcciones.getIdProfesional(),modelo);
+                if(citas!=null){
+                    this.semanasCargadas.put(semana, Boolean.TRUE);
+                    this.citasDeLaSemana.put(semana, citas);                    
+                    for(Cita c : citas){
+                        //System.out.println(c.getTitle());
                         modelo.agregarCita(c);
                         c.setAg(this);
                     }
@@ -266,11 +284,29 @@ public class Agenda extends JPanel implements Printable{
             if(!this.semanasCargadas.containsKey(semana)){
                 ArrayList<Cita> citas = AgendaDB.obtenerCitas(semana, barraAcciones.getIdProfesional(),modelo);
                 if(citas!=null){
+                    this.semanasCargadas.put(semana, Boolean.TRUE);
+                    this.citasDeLaSemana.put(semana, citas);
+                    for(Cita c : citas){
+                        //System.out.println(c.getTitle());
+                        modelo.agregarCita(c);
+                        c.setAg(this);
+                    }
+                }
+                else{
+                    System.out.println("Retorno NULO");
+                }
+            }
+            else{
+                for(Cita c : this.citasDeLaSemana.get(semana)){
+                    this.modelo.eliminarCita(c);
+                }
+                ArrayList<Cita> citas = AgendaDB.obtenerCitas(semana, barraAcciones.getIdProfesional(),modelo);
+                if(citas!=null){
+                    this.semanasCargadas.put(semana, Boolean.TRUE);
+                    this.citasDeLaSemana.put(semana, citas);
                     for(Cita c : citas){
                         System.out.println(c.getTitle());
                         modelo.agregarCita(c);
-                        this.semanasCargadas.put(semana, Boolean.TRUE);
-                        this.citasDeLaSemana.put(semana, citas);
                         c.setAg(this);
                     }
                 }
@@ -451,6 +487,14 @@ public class Agenda extends JPanel implements Printable{
         this.header.setRangoFechas(rango);
         this.header.setAño(año);
         this.header.setNumeroSemana(semana);
+    }
+
+    public AgendaSchedulerModel getModelo() {
+        return modelo;
+    }
+    
+    public void iniciarBarra(){
+        this.barraAcciones.initProfesionales();
     }
     
 }

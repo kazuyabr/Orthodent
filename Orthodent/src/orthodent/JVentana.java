@@ -266,6 +266,7 @@ public class JVentana extends JFrame{
             this.panelOpciones.setIconButton(1);
             
             this.add(this.contenedorAgenda,BorderLayout.CENTER);
+            this.agenda.iniciarBarra();
             this.contenedorAgenda.updateUI();
             this.opActual = 1;
         }
