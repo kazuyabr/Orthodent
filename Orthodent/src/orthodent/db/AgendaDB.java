@@ -69,7 +69,7 @@ public class AgendaDB {
         
     }
     
-    public static ArrayList<Cita> obtenerCitas(int semana, int id_profesional, AgendaSchedulerModel modelo){
+    public static ArrayList<Cita> obtenerCitas(int semana, int id_profesional, AgendaSchedulerModel modelo, DateTime fecha){
         ArrayList<Cita> citas = null;
         try {
             DbConnection db = new DbConnection();
@@ -103,8 +103,9 @@ public class AgendaDB {
                 c.setDateTime(new DateTime(modelo.obtenerLunes(cal.getTime())));
                 c.setDuration(Duration.standardMinutes(rs.getInt("duracion")));
                 c.setResource(modelo.calcularResource(c.getRealDateTime().toDate()));
-                System.out.println(c.getRealDateTime()+" "+c.getDuration().toStandardSeconds().toStandardMinutes().getMinutes()+" "+c.getDateTime().toString());
-                citas.add(c);
+                //System.out.println(c.getRealDateTime()+" "+c.getDuration().toStandardSeconds().toStandardMinutes().getMinutes()+" "+c.getDateTime().toString());
+                if( c.getRealDateTime().getYear() == fecha.getYear() )
+                    citas.add(c);
             }
             rs.close();
             con.close();
