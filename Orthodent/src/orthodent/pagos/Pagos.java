@@ -103,7 +103,7 @@ public class Pagos extends JPanel implements ActionListener{
         this.contenedorListarPagos = new JPanel();
         this.contenedorListarPagos.setLayout(new BorderLayout());
         
-        this.bannerFondo = new ImageIcon("src/imagenes/directorioPagos.png").getImage();
+        this.bannerFondo = new ImageIcon(getClass().getResource("/imagenes/directorioPagos.png")).getImage();
         
         this.labelProfesionales = new JLabel("Profesional");
         this.labelProfesionales.setFont(new Font("Georgia", 1, 12));

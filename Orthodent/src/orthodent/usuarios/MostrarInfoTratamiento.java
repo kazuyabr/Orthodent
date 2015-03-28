@@ -101,27 +101,27 @@ public class MostrarInfoTratamiento extends JPanel implements ActionListener{
         this.nombreUsuario.setForeground(new Color(255, 255, 255));
         
         this.userInfo = new JButton();
-        this.userInfo.setIcon(new ImageIcon("src/imagenes/userInfo.png"));
+        this.userInfo.setIcon(new ImageIcon(getClass().getResource("/imagenes/userInfo.png")));
         this.userInfo.setBorder(null);
         this.userInfo.setBorderPainted(false);
         this.userInfo.setContentAreaFilled(false);
         
         this.datosPersonales = new JButton();
-        this.datosPersonales.setIcon(new ImageIcon("src/imagenes/datosPersonalesInfoSelec.png"));
+        this.datosPersonales.setIcon(new ImageIcon(getClass().getResource("/imagenes/datosPersonalesInfoSelec.png")));
         this.datosPersonales.setBorder(null);
         this.datosPersonales.setBorderPainted(false);
         this.datosPersonales.setContentAreaFilled(false);
         this.datosPersonales.addActionListener(this);
         
         this.datosProfesionales = new JButton();
-        this.datosProfesionales.setIcon(new ImageIcon("src/imagenes/datosProfesionalInfo.png"));
+        this.datosProfesionales.setIcon(new ImageIcon(getClass().getResource("/imagenes/datosProfesionalInfo.png")));
         this.datosProfesionales.setBorder(null);
         this.datosProfesionales.setBorderPainted(false);
         this.datosProfesionales.setContentAreaFilled(false);
         this.datosProfesionales.addActionListener(this);
         
         this.horario = new JButton();
-        this.horario.setIcon(new ImageIcon("src/imagenes/horarioInfo.png"));
+        this.horario.setIcon(new ImageIcon(getClass().getResource("/imagenes/horarioInfo.png")));
         this.horario.setBorder(null);
         this.horario.setBorderPainted(false);
         this.horario.setContentAreaFilled(false);
@@ -318,19 +318,19 @@ public class MostrarInfoTratamiento extends JPanel implements ActionListener{
     
     public void setIconButton(int value){
         
-        this.datosPersonales.setIcon(new ImageIcon("src/imagenes/datosPersonalesInfo.png"));
-        this.datosProfesionales.setIcon(new ImageIcon("src/imagenes/datosProfesionalInfo.png"));
-        this.horario.setIcon(new ImageIcon("src/imagenes/horarioInfo.png"));
+        this.datosPersonales.setIcon(new ImageIcon(getClass().getResource("/imagenes/datosPersonalesInfo.png")));
+        this.datosProfesionales.setIcon(new ImageIcon(getClass().getResource("/imagenes/datosProfesionalInfo.png")));
+        this.horario.setIcon(new ImageIcon(getClass().getResource("/imagenes/horarioInfo.png")));
         
         switch(value){
             case 1:
-                this.datosPersonales.setIcon(new ImageIcon("src/imagenes/datosPersonalesInfoSelec.png"));
+                this.datosPersonales.setIcon(new ImageIcon(getClass().getResource("/imagenes/datosPersonalesInfoSelec.png")));
                 break;
             case 2:
-                this.datosProfesionales.setIcon(new ImageIcon("src/imagenes/datosProfesionalInfoSelec.png"));
+                this.datosProfesionales.setIcon(new ImageIcon(getClass().getResource("/imagenes/datosProfesionalInfoSelec.png")));
                 break;
             case 3:
-                this.horario.setIcon(new ImageIcon("src/imagenes/horarioInfoSelec.png"));
+                this.horario.setIcon(new ImageIcon(getClass().getResource("/imagenes/horarioInfoSelec.png")));
                 break;
         }
     }

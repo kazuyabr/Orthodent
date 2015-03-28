@@ -70,7 +70,7 @@ public class JVentana extends JFrame{
     }
 
     public void crearElementosVentana(){
-        this.icono = new ImageIcon("src/imagenes/icono.png").getImage();
+        this.icono = new ImageIcon(getClass().getResource("/imagenes/icono.png")).getImage();
         this.setIconImage(icono);
         
         this.panelOpciones = new PanelOpciones(this);

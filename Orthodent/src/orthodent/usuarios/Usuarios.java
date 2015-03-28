@@ -83,7 +83,7 @@ public class Usuarios extends JPanel implements ActionListener{
         this.contenedorListarUsuarios.setLayout(new BorderLayout());
         
         this.infoUsuario = null;
-        this.bannerFondo = new ImageIcon("src/imagenes/directorioUsuarios.png").getImage();
+        this.bannerFondo = new ImageIcon(getClass().getResource("/imagenes/directorioUsuarios.png")).getImage();
         
         this.buscador = new JTextField();
         
@@ -97,7 +97,7 @@ public class Usuarios extends JPanel implements ActionListener{
         this.botonBuscar = new JButton();
         this.botonBuscar.setForeground(new Color(11, 146, 181));
         this.botonBuscar.setFont(new Font("Georgia", 1, 12));
-        this.botonBuscar.setIcon(new ImageIcon("src/imagenes/lupa_mini.png"));
+        this.botonBuscar.setIcon(new ImageIcon(getClass().getResource("/imagenes/lupa_mini.png")));
         this.botonBuscar.setText("Buscar");
         this.botonBuscar.setBorder(null);
         this.botonBuscar.setBorderPainted(false);
@@ -107,7 +107,7 @@ public class Usuarios extends JPanel implements ActionListener{
         this.nuevoUsuario = new JButton();
         this.nuevoUsuario.setForeground(new Color(11, 146, 181));
         this.nuevoUsuario.setFont(new Font("Georgia", 1, 12));
-        this.nuevoUsuario.setIcon(new ImageIcon("src/imagenes/add_mini.png"));
+        this.nuevoUsuario.setIcon(new ImageIcon(getClass().getResource("/imagenes/add_mini.png")));
         this.nuevoUsuario.setText("Nuevo Usuario");
         this.nuevoUsuario.setBorder(null);
         this.nuevoUsuario.setBorderPainted(false);
@@ -524,7 +524,7 @@ public class Usuarios extends JPanel implements ActionListener{
         this.contenedorListarClinicas = new JPanel();
         this.contenedorListarClinicas.setLayout(new BorderLayout());
         
-        this.bannerClinicas = new ImageIcon("src/imagenes/directorioClinicas.png").getImage();
+        this.bannerClinicas = new ImageIcon(getClass().getResource("/imagenes/directorioClinicas.png")).getImage();
         
         this.buscadorClinicas = new JTextField();
         
@@ -538,7 +538,7 @@ public class Usuarios extends JPanel implements ActionListener{
         this.botonBuscarClinicas = new JButton();
         this.botonBuscarClinicas.setForeground(new Color(11, 146, 181));
         this.botonBuscarClinicas.setFont(new Font("Georgia", 1, 12));
-        this.botonBuscarClinicas.setIcon(new ImageIcon("src/imagenes/lupa_mini.png"));
+        this.botonBuscarClinicas.setIcon(new ImageIcon(getClass().getResource("/imagenes/lupa_mini.png")));
         this.botonBuscarClinicas.setText("Buscar");
         this.botonBuscarClinicas.setBorder(null);
         this.botonBuscarClinicas.setBorderPainted(false);
@@ -548,7 +548,7 @@ public class Usuarios extends JPanel implements ActionListener{
         this.nuevaClinica = new JButton();
         this.nuevaClinica.setForeground(new Color(11, 146, 181));
         this.nuevaClinica.setFont(new Font("Georgia", 1, 12));
-        this.nuevaClinica.setIcon(new ImageIcon("src/imagenes/add_mini.png"));
+        this.nuevaClinica.setIcon(new ImageIcon(getClass().getResource("/imagenes/add_mini.png")));
         this.nuevaClinica.setText("Nueva Clínica");
         this.nuevaClinica.setBorder(null);
         this.nuevaClinica.setBorderPainted(false);

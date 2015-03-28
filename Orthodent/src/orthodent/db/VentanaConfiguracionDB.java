@@ -265,7 +265,7 @@ public class VentanaConfiguracionDB extends javax.swing.JDialog {
                 Properties props = new jcProperties().getProperties();
                 FileOutputStream fos = null;
                 try {
-                    fos = new FileOutputStream("src/orthodent/db/parametrosDB.properties");
+                    fos = new FileOutputStream("/orthodent/db/parametrosDB.properties");
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(VentanaConfiguracionDB.class.getName()).log(Level.SEVERE, null, ex);
                 }

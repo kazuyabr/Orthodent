@@ -58,7 +58,7 @@ public abstract class EditarCita extends javax.swing.JDialog {
         this.jTextField1.setText(this.cita.getRealDateTime().toString("d/M/y"));
         this.jSpinner1.setValue(cita.getDuration().toStandardSeconds().toStandardMinutes().getMinutes()+1);
         this.jLabel9.setText(p.getTelefono());
-        this.setIconImage(new ImageIcon("src/imagenes/icono.png").getImage());
+        this.setIconImage(new ImageIcon(getClass().getResource("/imagenes/icono.png")).getImage());
         this.centrarVentana();
         this.jCheckBox1.setSelected(cita.isConfirmada());
     }

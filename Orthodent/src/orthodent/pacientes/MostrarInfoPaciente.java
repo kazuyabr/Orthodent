@@ -75,53 +75,53 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
         this.nombrePaciente.setForeground(new Color(255, 255, 255));
         
         this.pacienteInfo = new JButton();
-        this.pacienteInfo.setIcon(new ImageIcon("src/imagenes/userInfo.png"));
+        this.pacienteInfo.setIcon(new ImageIcon(getClass().getResource("/imagenes/userInfo.png")));
         this.pacienteInfo.setBorder(null);
         this.pacienteInfo.setBorderPainted(false);
         this.pacienteInfo.setContentAreaFilled(false);
         
         this.datosPersonales = new JButton();
-        this.datosPersonales.setIcon(new ImageIcon("src/imagenes/datosPersonalesInfoSelec.png"));
+        this.datosPersonales.setIcon(new ImageIcon(getClass().getResource("/imagenes/datosPersonalesInfoSelec.png")));
         this.datosPersonales.setBorder(null);
         this.datosPersonales.setBorderPainted(false);
         this.datosPersonales.setContentAreaFilled(false);
         this.datosPersonales.addActionListener(this);
         
         this.clinico = new JButton();
-        this.clinico.setIcon(new ImageIcon("src/imagenes/clinico.png"));
+        this.clinico.setIcon(new ImageIcon(getClass().getResource("/imagenes/clinico.png")));
         this.clinico.setBorder(null);
         this.clinico.setBorderPainted(false);
         this.clinico.setContentAreaFilled(false);
         
         this.planesTratamiento = new JButton();
-        this.planesTratamiento.setIcon(new ImageIcon("src/imagenes/planesDeTratamiento.png"));
+        this.planesTratamiento.setIcon(new ImageIcon(getClass().getResource("/imagenes/planesDeTratamiento.png")));
         this.planesTratamiento.setBorder(null);
         this.planesTratamiento.setBorderPainted(false);
         this.planesTratamiento.setContentAreaFilled(false);
         this.planesTratamiento.addActionListener(this);
         
         this.presupuesto = new JButton();
-        this.presupuesto.setIcon(new ImageIcon("src/imagenes/presupuesto.png"));
+        this.presupuesto.setIcon(new ImageIcon(getClass().getResource("/imagenes/presupuesto.png")));
         this.presupuesto.setBorder(null);
         this.presupuesto.setBorderPainted(false);
         this.presupuesto.setContentAreaFilled(false);
         this.presupuesto.addActionListener(this);
         
         this.fichasClinicas = new JButton();
-        this.fichasClinicas.setIcon(new ImageIcon("src/imagenes/fichasClinicas.png"));
+        this.fichasClinicas.setIcon(new ImageIcon(getClass().getResource("/imagenes/fichasClinicas.png")));
         this.fichasClinicas.setBorder(null);
         this.fichasClinicas.setBorderPainted(false);
         this.fichasClinicas.setContentAreaFilled(false);
         this.fichasClinicas.addActionListener(this);
         
         this.facturacion = new JButton();
-        this.facturacion.setIcon(new ImageIcon("src/imagenes/facturacion.png"));
+        this.facturacion.setIcon(new ImageIcon(getClass().getResource("/imagenes/facturacion.png")));
         this.facturacion.setBorder(null);
         this.facturacion.setBorderPainted(false);
         this.facturacion.setContentAreaFilled(false);
         
         this.recaudacion = new JButton();
-        this.recaudacion.setIcon(new ImageIcon("src/imagenes/recaudacion.png"));
+        this.recaudacion.setIcon(new ImageIcon(getClass().getResource("/imagenes/recaudacion.png")));
         this.recaudacion.setBorder(null);
         this.recaudacion.setBorderPainted(false);
         this.recaudacion.setContentAreaFilled(false);
@@ -352,27 +352,27 @@ public class MostrarInfoPaciente extends JPanel implements ActionListener{
     
     public void setIconButton(int value){
         
-        this.datosPersonales.setIcon(new ImageIcon("src/imagenes/datosPersonalesInfo.png"));
-        this.planesTratamiento.setIcon(new ImageIcon("src/imagenes/planesDeTratamiento.png"));
-        this.presupuesto.setIcon(new ImageIcon("src/imagenes/presupuesto.png"));
-        this.fichasClinicas.setIcon(new ImageIcon("src/imagenes/fichasClinicas.png"));
-        this.recaudacion.setIcon(new ImageIcon("src/imagenes/recaudacion.png"));
+        this.datosPersonales.setIcon(new ImageIcon(getClass().getResource("/imagenes/datosPersonalesInfo.png")));
+        this.planesTratamiento.setIcon(new ImageIcon(getClass().getResource("/imagenes/planesDeTratamiento.png")));
+        this.presupuesto.setIcon(new ImageIcon(getClass().getResource("/imagenes/presupuesto.png")));
+        this.fichasClinicas.setIcon(new ImageIcon(getClass().getResource("/imagenes/fichasClinicas.png")));
+        this.recaudacion.setIcon(new ImageIcon(getClass().getResource("/imagenes/recaudacion.png")));
         
         switch(value){
             case 1:
-                this.datosPersonales.setIcon(new ImageIcon("src/imagenes/datosPersonalesInfoSelec.png"));
+                this.datosPersonales.setIcon(new ImageIcon(getClass().getResource("/imagenes/datosPersonalesInfoSelec.png")));
                 break;
             case 2:
-                this.planesTratamiento.setIcon(new ImageIcon("src/imagenes/planesDeTratamientoSelec.png"));
+                this.planesTratamiento.setIcon(new ImageIcon(getClass().getResource("/imagenes/planesDeTratamientoSelec.png")));
                 break;
             case 3:
-                this.presupuesto.setIcon(new ImageIcon("src/imagenes/presupuestoSelec.png"));
+                this.presupuesto.setIcon(new ImageIcon(getClass().getResource("/imagenes/presupuestoSelec.png")));
                 break;
             case 4:
-                this.fichasClinicas.setIcon(new ImageIcon("src/imagenes/fichasClinicasSelec.png"));
+                this.fichasClinicas.setIcon(new ImageIcon(getClass().getResource("/imagenes/fichasClinicasSelec.png")));
                 break;
             case 5:
-                this.recaudacion.setIcon(new ImageIcon("src/imagenes/recaudacionSelec.png"));
+                this.recaudacion.setIcon(new ImageIcon(getClass().getResource("/imagenes/recaudacionSelec.png")));
                 break;
         }
     }

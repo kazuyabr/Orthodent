@@ -63,12 +63,12 @@ public class Tratamientos extends JPanel implements ActionListener{
         this.contenedorListarTratamientos = new JPanel();
         this.contenedorListarTratamientos.setLayout(new BorderLayout());
         
-        this.bannerFondo = new ImageIcon("src/imagenes/directorioTratamientos.png").getImage();
+        this.bannerFondo = new ImageIcon(getClass().getResource("/imagenes/directorioTratamientos.png")).getImage();
         
         this.editarValorUco = new JButton();
         this.editarValorUco.setForeground(new Color(11, 146, 181));
         this.editarValorUco.setFont(new Font("Georgia", 1, 12));
-        this.editarValorUco.setIcon(new ImageIcon("src/imagenes/edit_mini.png"));
+        this.editarValorUco.setIcon(new ImageIcon(getClass().getResource("/imagenes/edit_mini.png")));
         this.editarValorUco.setText("Editar Valor UCO  ");
         this.editarValorUco.setBorder(null);
         this.editarValorUco.setBorderPainted(false);

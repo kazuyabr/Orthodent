@@ -108,26 +108,26 @@ public class PanelOpciones extends JPanel implements ActionListener{
         this.usuarios.setContentAreaFilled(false);
         
         this.diente1.setForeground(new Color(255, 255, 255));
-        this.diente1.setIcon(new ImageIcon("src/imagenes/diente_mini.png"));
+        this.diente1.setIcon(new ImageIcon(getClass().getResource("/imagenes/diente_mini.png")));
         this.diente1.setBorder(null);
         this.diente1.setBorderPainted(false);
         this.diente1.setContentAreaFilled(false);
         
         this.diente2.setForeground(new Color(255, 255, 255));
-        this.diente2.setIcon(new ImageIcon("src/imagenes/diente2_mini.png"));
+        this.diente2.setIcon(new ImageIcon(getClass().getResource("/imagenes/diente2_mini.png")));
         this.diente2.setBorder(null);
         this.diente2.setBorderPainted(false);
         this.diente2.setContentAreaFilled(false);
         
         this.titulo.setForeground(new Color(255, 255, 255));
-        this.titulo.setIcon(new ImageIcon("src/imagenes/orthodent.png"));
+        this.titulo.setIcon(new ImageIcon(getClass().getResource("/imagenes/orthodent.png")));
         this.titulo.setBorder(null);
         this.titulo.setBorderPainted(false);
         this.titulo.setContentAreaFilled(false);
         
         this.miniUsuario.setFont(new java.awt.Font("Georgia", 1, 11));
         this.miniUsuario.setForeground(new Color(255, 255, 255));
-        this.miniUsuario.setIcon(new ImageIcon("src/imagenes/user_mini2.png"));
+        this.miniUsuario.setIcon(new ImageIcon(getClass().getResource("/imagenes/user_mini2.png")));
         this.miniUsuario.setBorder(null);
         this.miniUsuario.setBorderPainted(false);
         this.miniUsuario.setContentAreaFilled(false);
@@ -147,27 +147,27 @@ public class PanelOpciones extends JPanel implements ActionListener{
     
     public void setIconButton(int value){
         
-        this.agenda.setIcon(new ImageIcon("src/imagenes/agenda.png"));
-        this.pacientes.setIcon(new ImageIcon("src/imagenes/pacientes.png"));
-        this.pagos.setIcon(new ImageIcon("src/imagenes/pagos.png"));
-        this.tratamientos.setIcon(new ImageIcon("src/imagenes/tratamientos.png"));
-        this.usuarios.setIcon(new ImageIcon("src/imagenes/usuarios.png"));
+        this.agenda.setIcon(new ImageIcon(getClass().getResource("/imagenes/agenda.png")));
+        this.pacientes.setIcon(new ImageIcon(getClass().getResource("/imagenes/pacientes.png")));
+        this.pagos.setIcon(new ImageIcon(getClass().getResource("/imagenes/pagos.png")));
+        this.tratamientos.setIcon(new ImageIcon(getClass().getResource("/imagenes/tratamientos.png")));
+        this.usuarios.setIcon(new ImageIcon(getClass().getResource("/imagenes/usuarios.png")));
         
         switch(value){
             case 1:
-                this.agenda.setIcon(new ImageIcon("src/imagenes/agendaSelec.png"));
+                this.agenda.setIcon(new ImageIcon(getClass().getResource("/imagenes/agendaSelec.png")));
                 break;
             case 2:
-                this.pacientes.setIcon(new ImageIcon("src/imagenes/pacientesSelec.png"));
+                this.pacientes.setIcon(new ImageIcon(getClass().getResource("/imagenes/pacientesSelec.png")));
                 break;
             case 3:
-                this.pagos.setIcon(new ImageIcon("src/imagenes/pagosSelec.png"));
+                this.pagos.setIcon(new ImageIcon(getClass().getResource("/imagenes/pagosSelec.png")));
                 break;
             case 4:
-                this.tratamientos.setIcon(new ImageIcon("src/imagenes/tratamientosSelec.png"));
+                this.tratamientos.setIcon(new ImageIcon(getClass().getResource("/imagenes/tratamientosSelec.png")));
                 break;
             case 5:
-                this.usuarios.setIcon(new ImageIcon("src/imagenes/usuariosSelec.png"));
+                this.usuarios.setIcon(new ImageIcon(getClass().getResource("/imagenes/usuariosSelec.png")));
                 break;
         }
     }

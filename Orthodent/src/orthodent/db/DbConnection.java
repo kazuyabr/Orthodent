@@ -33,7 +33,7 @@ public class DbConnection {
         bd = (mispropiedades.getProperty("bd"));
         login = (mispropiedades.getProperty("login"));
         password = (mispropiedades.getProperty("password"));       
-       
+        
       try{
          //obtenemos el driver de para mysql
          Class.forName("com.mysql.jdbc.Driver");
@@ -46,6 +46,7 @@ public class DbConnection {
          }*/
       }
       catch(SQLException e){
+          e.printStackTrace();
       }catch(ClassNotFoundException e){
       }catch(Exception e){
       }

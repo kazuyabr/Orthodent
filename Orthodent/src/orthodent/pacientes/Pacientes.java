@@ -67,7 +67,7 @@ public class Pacientes extends JPanel implements ActionListener{
         this.contenedorListarPacientes.setLayout(new BorderLayout());
         
         this.infoPaciente = null;
-        this.bannerFondo = new ImageIcon("src/imagenes/directorioPacientes.png").getImage();
+        this.bannerFondo = new ImageIcon(getClass().getResource("/imagenes/directorioPacientes.png")).getImage();
         
         this.buscador = new JTextField();
         
@@ -81,7 +81,7 @@ public class Pacientes extends JPanel implements ActionListener{
         this.botonBuscar = new JButton();
         this.botonBuscar.setForeground(new Color(11, 146, 181));
         this.botonBuscar.setFont(new Font("Georgia", 1, 12));
-        this.botonBuscar.setIcon(new ImageIcon("src/imagenes/lupa_mini.png"));
+        this.botonBuscar.setIcon(new ImageIcon(getClass().getResource("/imagenes/lupa_mini.png")));
         this.botonBuscar.setText("Buscar");
         this.botonBuscar.setBorder(null);
         this.botonBuscar.setBorderPainted(false);
@@ -91,7 +91,7 @@ public class Pacientes extends JPanel implements ActionListener{
         this.nuevoPaciente = new JButton();
         this.nuevoPaciente.setForeground(new Color(11, 146, 181));
         this.nuevoPaciente.setFont(new Font("Georgia", 1, 12));
-        this.nuevoPaciente.setIcon(new ImageIcon("src/imagenes/add_mini.png"));
+        this.nuevoPaciente.setIcon(new ImageIcon(getClass().getResource("/imagenes/add_mini.png")));
         this.nuevoPaciente.setText("Nuevo Paciente");
         this.nuevoPaciente.setBorder(null);
         this.nuevoPaciente.setBorderPainted(false);
