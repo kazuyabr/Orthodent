@@ -60,7 +60,7 @@ public class AgendaSchedulerModel extends AbstractScheduleModel
     
     public void agregarCita(Cita cita)
     {
-        System.out.println("Cita agregada:" + ((AgendaResource)cita.getResource()).getPos());
+        //System.out.println("Cita agregada:" + ((AgendaResource)cita.getResource()).getPos());
         citas.add(cita);
         this.fireAppointmentAdded(cita);
     }

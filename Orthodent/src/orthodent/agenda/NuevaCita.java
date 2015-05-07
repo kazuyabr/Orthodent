@@ -292,7 +292,7 @@ public abstract class NuevaCita extends javax.swing.JDialog {
         } catch (Exception ex) {
             Logger.getLogger(NuevaCita.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Cita c = new Cita(pacientes.getSelectedItem().toString()+" "+p.getTelefono());
+        Cita c = new Cita(pacientes.getSelectedItem().toString().split(",")[1]+" "+p.getTelefono());
 
         int hour = 9 + jComboBox1.getSelectedIndex()/4;
         int minute = 15*(jComboBox1.getSelectedIndex()%4);

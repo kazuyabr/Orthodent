@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c4804cab-98dd-45b9-9217-7207aa4435cd">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="52"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -214,14 +214,14 @@ WHERE
 		<band height="107" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="143" height="70" uuid="33fdd4d0-8920-4d23-9361-fb841fafca4e"/>
-				<imageExpression><![CDATA[System.getProperty("user.dir")+ File.separator + "src" + File.separator+ "orthodent"+File.separator+"reportes"+File.separator+"logoOrthodent.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["C:\\Sistema Orthodent\\logoOrthodent.jpg"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="221" y="70" width="157" height="29" uuid="6757b8fb-8acd-4b57-a0a3-1ee4018ab082"/>
+				<reportElement x="188" y="70" width="190" height="29" uuid="6757b8fb-8acd-4b57-a0a3-1ee4018ab082"/>
 				<textElement>
 					<font size="20" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Presupuesto]]></text>
+				<text><![CDATA[Presupuesto Dental]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -390,11 +390,11 @@ WHERE
 				<text><![CDATA[Tratamientos]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="405" y="249" width="52" height="20" uuid="e80f42ce-d0fc-405a-a05b-dc81d7fe225e"/>
+				<reportElement positionType="FixRelativeToBottom" x="311" y="249" width="146" height="20" uuid="e80f42ce-d0fc-405a-a05b-dc81d7fe225e"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[TOTAL:  $]]></text>
+				<text><![CDATA[TOTAL TRATAMIENTOS:  $]]></text>
 			</staticText>
 			<textField>
 				<reportElement positionType="FixRelativeToBottom" x="457" y="249" width="98" height="15" uuid="f8a2fc14-f8ab-4e70-b53f-072a0cca354b"/>
@@ -466,11 +466,11 @@ WHERE
 				<text><![CDATA[Laboratorio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="405" y="100" width="52" height="20" uuid="a174058d-3249-48f5-a34e-3153b808397b"/>
+				<reportElement x="311" y="100" width="146" height="20" uuid="a174058d-3249-48f5-a34e-3153b808397b"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[TOTAL:  $]]></text>
+				<text><![CDATA[TOTAL LABORATORIO:  $]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="457" y="100" width="98" height="15" uuid="6860a300-186b-4e42-9cc7-8f7f69665b6c"/>
@@ -483,11 +483,11 @@ WHERE
 				<reportElement x="446" y="159" width="109" height="1" uuid="e35cbf3d-1331-4123-8a47-f580ad3539ba"/>
 			</line>
 			<staticText>
-				<reportElement x="405" y="145" width="52" height="20" uuid="85d76bb0-0158-4c72-a2a0-d6148af35ce2"/>
+				<reportElement x="311" y="145" width="146" height="20" uuid="85d76bb0-0158-4c72-a2a0-d6148af35ce2"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[TOTAL:  $]]></text>
+				<text><![CDATA[TOTAL PRESUPUESTO:  $]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="457" y="145" width="98" height="15" uuid="7fb38ebd-dd00-425f-b2c4-49a4c93acdc6"/>
@@ -496,6 +496,14 @@ WHERE
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="188" y="34" width="179" height="20" uuid="35e9e179-278a-440b-9e99-e547e75285ca"/>
+				<textElement textAlignment="Center">
+					<font isItalic="true"/>
+				</textElement>
+				<text><![CDATA[5 Oriente #1402 Fono (071) 2 217309]]></text>
+			</staticText>
+		</band>
 	</pageFooter>
 </jasperReport>

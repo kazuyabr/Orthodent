@@ -217,6 +217,7 @@ public class Presupuestos extends JPanel{
             }
         }
         comboBox.setModel(new DefaultComboBoxModel(model));
+        //comboBox.setEditable(true);
         //AutoCompleteDecorator.decorate(comboBox);
         tratamientos.setCellEditor(new DefaultCellEditor(comboBox));
     }
@@ -1759,10 +1760,20 @@ public class Presupuestos extends JPanel{
                 
                 JasperPrint reporte = Reportes.generarPresupuesto(p.getIdPresupuesto(), db);
                 db.desconectar();
-                File tempPdf;
-                tempPdf = File.createTempFile("orthodent_reporte", ".pdf");
+                /*File tempPdf = new File("C:\\presupuesto.pdf");
+                tempPdf.setExecutable(false);
+                tempPdf.setWritable(false);
+                tempPdf.setReadable(false);
+                /*if( tempPdf.createNewFile() ){
+                    JasperExportManager.exportReportToPdfFile(reporte, tempPdf.getPath());
+                    
+                }*/
+                
+                File tempPdf = File.createTempFile( "orthodent_reporte", ".pdf" );
+                System.out.println(tempPdf.getPath());
                 JasperExportManager.exportReportToPdfFile(reporte, tempPdf.getPath());
                 Desktop.getDesktop().open(tempPdf);
+                tempPdf.deleteOnExit();
             } catch (Exception ex) {
                 Logger.getLogger(Presupuestos.class.getName()).log(Level.SEVERE, null, ex);
             }

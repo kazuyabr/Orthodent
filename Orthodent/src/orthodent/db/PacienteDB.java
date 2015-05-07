@@ -164,8 +164,7 @@ public class PacienteDB {
             Connection con = db.connection;
             
             java.sql.Statement st = con.createStatement();
-            int aux = st.executeUpdate("UPDATE paciente\n" +
-                                            "SET activo="+0+"\n" +
+            int aux = st.executeUpdate("DELETE FROM paciente\n" +
                                             "WHERE id_paciente="+id_paciente);
             boolean resultado = (aux == 1)? true : false;
             st.close();

@@ -21,6 +21,4 @@ public class AgendaComponentFactory  extends BasicComponentFactory{
         CitaComponent component = new CitaComponent(appointment);
         return component;
     }
-    
-    
 }

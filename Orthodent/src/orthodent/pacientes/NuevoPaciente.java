@@ -562,6 +562,8 @@ public class NuevoPaciente extends javax.swing.JDialog {
                     "Orthodent",
                     JOptionPane.INFORMATION_MESSAGE);
         }
+        if(this.nuevaCita != null)
+            this.nuevaCita.initPacientes();
     }//GEN-LAST:event_aceptarActionPerformed
 
     private boolean rutCorrecto(String rut){

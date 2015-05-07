@@ -73,7 +73,7 @@ public class Agenda extends JPanel implements Printable{
         //this.cambiarSemanaDeAgenda(new Date());
         //Introducir código aquí
         this.setBackground(new Color(255,255,255));
-        this.setPreferredSize(new Dimension(1073, 600));
+        this.setPreferredSize(new Dimension(1200, 600));
         this.semanasCargadas = new HashMap<Integer,Boolean>();
         this.citasDeLaSemana = new HashMap<Integer,ArrayList<Cita>>();
         
@@ -108,7 +108,7 @@ public class Agenda extends JPanel implements Printable{
     
     public void handleAddAppointment(@Nullable Resource resource, @NotNull DateTime dateTime) {
         
-        if(this.usuarioActual.getId_rol()==3 || this.usuarioActual.getId_rol()==4) return;
+        if(this.usuarioActual.getId_rol()==3) return;
         boolean clickEnHorarioDeAtencion = false;
         Iterator<Availability> av = resource.getAvailability(dateTime.toLocalDate());
         while(av.hasNext()){
